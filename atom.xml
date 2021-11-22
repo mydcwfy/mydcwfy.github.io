@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>mydcwfy&#39;s Blog</title>
+  
+  
+  <link href="https://mydcwfy.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://mydcwfy.github.io/"/>
+  <updated>2021-11-22T03:45:45.190Z</updated>
+  <id>https://mydcwfy.github.io/</id>
+  
+  <author>
+    <name>mydcwfy</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hello, World</title>
+    <link href="https://mydcwfy.github.io/2021/11/22/Hello-World/"/>
+    <id>https://mydcwfy.github.io/2021/11/22/Hello-World/</id>
+    <published>2021-11-22T03:44:43.000Z</published>
+    <updated>2021-11-22T03:45:45.190Z</updated>
+    
+    <content type="html"><![CDATA[<p>hello</p><span id="more"></span><p>hello, world</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;hello&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="hello" scheme="https://mydcwfy.github.io/tags/hello/"/>
+    
+  </entry>
+  
+</feed>

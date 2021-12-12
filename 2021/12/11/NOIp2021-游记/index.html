@@ -28,8 +28,9 @@
 <meta property="og:description" content="可还行吧。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-12-11T12:36:25.000Z">
-<meta property="article:modified_time" content="2021-12-11T12:38:31.572Z">
+<meta property="article:modified_time" content="2021-12-12T06:32:05.467Z">
 <meta property="article:author" content="mydcwfy">
+<meta property="article:tag" content="游记">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://mydcwfy.github.io/2021/12/11/NOIp2021-%E6%B8%B8%E8%AE%B0/">
@@ -209,10 +210,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-12-11 20:36:25 / Modified: 20:38:31" itemprop="dateCreated datePublished" datetime="2021-12-11T20:36:25+08:00">2021-12-11</time>
+              <time title="Created: 2021-12-11 20:36:25" itemprop="dateCreated datePublished" datetime="2021-12-11T20:36:25+08:00">2021-12-11</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-12-12 14:32:05" itemprop="dateModified" datetime="2021-12-12T14:32:05+08:00">2021-12-12</time>
+              </span>
 
           
             <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
@@ -227,7 +234,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>3.3k</span>
+              <span>2.8k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -321,25 +328,6 @@
 <p><strong>upd on 2021-11-29：</strong> CCF T3 送了我 96 pts，看到了一些希望。</p>
 <p>实际分数：$100+85+96+24=305$。</p>
 <p>（另外，看到了 T2 的错误了，我在判断条件的时候，判断本位的时候写错了。</p>
-<pre><code class="cpp">for (int i = 1; i &lt;= m; ++ i)
-    &#123;
-        for (int j = 0; j &lt; N; ++ j)
-            for (int k = 0; k &lt;= K; ++ k)
-                for (int sta = 0; sta &lt; 18; ++ sta)
-                    f[i &amp; 1][j][k][sta] = 0;
-        for (int j = 0; j &lt;= n; ++ j)
-            for (int k = 0; k &lt;= K; ++ k)
-                for (int sta = 0; sta &lt; 16; ++ sta)
-                &#123;
-                    if (!f[(i - 1) &amp; 1][j][k][sta]) continue;
-                    for (int nowj = 0; nowj &lt;= n - j; ++ nowj)
-                        if (k + ((sta + j) &amp; 1) &lt;= K)// 这里，本身应该是 k + ((sta + nowj) &amp; 1) &lt;= K
-                            f[i &amp; 1][j + nowj][k + ((sta + nowj) &amp; 1)][(sta + nowj) &gt;&gt; 1] = 
-                            (f[i &amp; 1][j + nowj][k + ((sta + nowj) &amp; 1)][(sta + nowj) &gt;&gt; 1] +
-                            f[(i - 1) &amp; 1][j][k][sta] * v[i][nowj] % Mod * C[j + nowj][nowj] % Mod) % Mod;
-                &#125;
-    &#125;
-</code></pre>
 
     </div>
 
@@ -348,6 +336,10 @@
     
 
       <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%B8%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 游记</a>
+          </div>
 
         
 
@@ -433,14 +425,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -529,13 +521,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">13k</span>
+    <span title="Symbols count total">20k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">12 mins.</span>
+    <span title="Reading time total">18 mins.</span>
 </div>
 
 <div>

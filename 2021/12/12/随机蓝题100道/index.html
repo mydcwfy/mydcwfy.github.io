@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"mydcwfy.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="这个是我在 CSP-S 复习前进行刷题目，采用随机跳题 100 道的方法。 争取在 NOIP 之前做完啊！！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="随机蓝题100道">
+<meta property="og:url" content="https://mydcwfy.github.io/2021/12/12/%E9%9A%8F%E6%9C%BA%E8%93%9D%E9%A2%98100%E9%81%93/index.html">
+<meta property="og:site_name" content="mydcwfy&#39;s Blog">
+<meta property="og:description" content="这个是我在 CSP-S 复习前进行刷题目，采用随机跳题 100 道的方法。 争取在 NOIP 之前做完啊！！">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-12-12T08:31:07.000Z">
+<meta property="article:modified_time" content="2021-12-12T08:32:36.001Z">
+<meta property="article:author" content="mydcwfy">
+<meta property="article:tag" content="做题记录">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://mydcwfy.github.io/2021/12/12/%E9%9A%8F%E6%9C%BA%E8%93%9D%E9%A2%98100%E9%81%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>随机蓝题100道 | mydcwfy's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="mydcwfy's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">mydcwfy's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+  <a href="https://github.com/mydcwfy" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2021/12/12/%E9%9A%8F%E6%9C%BA%E8%93%9D%E9%A2%98100%E9%81%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="mydcwfy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mydcwfy's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          随机蓝题100道
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-12 16:31:07 / Modified: 16:32:36" itemprop="dateCreated datePublished" datetime="2021-12-12T16:31:07+08:00">2021-12-12</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>2.7k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>6 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这个是我在 CSP-S 复习前进行刷题目，采用随机跳题 100 道的方法。</p>
+<p><strong>争取在 NOIP 之前做完啊！！</strong></p>
+<span id="more"></span>
+
+<h2 id="1-正文"><a href="#1-正文" class="headerlink" title="1. 正文"></a>1. 正文</h2><h4 id="T1：P4147-玉蟾宫"><a href="#T1：P4147-玉蟾宫" class="headerlink" title="T1：P4147 玉蟾宫"></a>T1：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4147">P4147 玉蟾宫</a></h4><p>这个是一个单调栈（或者叫悬线法）的模板题。</p>
+<p>求 01 矩阵中只包含 1 的矩阵的面积最大值。</p>
+<h4 id="T2：P4854-MloVtry的咸鱼树"><a href="#T2：P4854-MloVtry的咸鱼树" class="headerlink" title="T2：P4854 MloVtry的咸鱼树"></a>T2：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4854">P4854 MloVtry的咸鱼树</a></h4><p>状态压缩 + 最短路。</p>
+<p>不太难想，看到 $n\leq15$ 的时候应该就有思路了。</p>
+<h4 id="T3：UVA10881-Piotr’s-Ants"><a href="#T3：UVA10881-Piotr’s-Ants" class="headerlink" title="T3：UVA10881 Piotr’s Ants"></a>T3：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/UVA10881">UVA10881 Piotr’s Ants</a></h4><p>接下来的两个题都是以前校内考试考过的题目的变式，大概思路是人的相对位置（即左右的排名）和所有人都绝对位置（即坐标）分离处理。两个题虽然有些不同，但是大体思路是向东的。</p>
+<h4 id="T4：P5835-USACO19DEC-Meetings-S"><a href="#T4：P5835-USACO19DEC-Meetings-S" class="headerlink" title="T4：P5835 [USACO19DEC]Meetings S"></a>T4：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5835">P5835 [USACO19DEC]Meetings S</a></h4><h4 id="T5：P5022-NOIP2018-提高组-旅行"><a href="#T5：P5022-NOIP2018-提高组-旅行" class="headerlink" title="T5：P5022 [NOIP2018 提高组] 旅行"></a>T5：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5022">P5022 [NOIP2018 提高组] 旅行</a></h4><p>CSP-S 前做的题目，主要是看一看以前的题目。</p>
+<p>也归入了 CSP-S 的随机蓝题了 qwq。</p>
+<h4 id="T6：P1127-词链"><a href="#T6：P1127-词链" class="headerlink" title="T6：P1127 词链"></a>T6：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1127">P1127 词链</a></h4><p>一个欧拉回路的好题。</p>
+<h4 id="T7：P1961-最轻的天平"><a href="#T7：P1961-最轻的天平" class="headerlink" title="T7：P1961 最轻的天平"></a>T7：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1961">P1961 最轻的天平</a></h4><p>没有任何所谓的算法（最多一个 gcd），就是思想可鉴。</p>
+<h4 id="T8：P5087-数学"><a href="#T8：P5087-数学" class="headerlink" title="T8：P5087 数学"></a>T8：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5087">P5087 数学</a></h4><p>没想到是 DP，看来看出 DP 还是有一定难度的。</p>
+<p>主要是没有想到重复元素怎么搞。</p>
+<h4 id="T9：P5994-PA2014-Kuglarz"><a href="#T9：P5994-PA2014-Kuglarz" class="headerlink" title="T9：P5994 [PA2014]Kuglarz"></a>T9：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5994">P5994 [PA2014]Kuglarz</a></h4><p>一个 Prim 的好题。</p>
+<h4 id="T10：P6859-蝴蝶与花"><a href="#T10：P6859-蝴蝶与花" class="headerlink" title="T10：P6859 蝴蝶与花"></a>T10：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P6859">P6859 蝴蝶与花</a></h4><p>校内考到原题了！（在我做了这个题之后）</p>
+<p>还是有些毒瘤（卡到了最优解），但是还好。</p>
+<p>首先数据结构内二分查找 $pre_i=tot/pre_i=tot+1$ 的 $i$，然后找下一个 1 就可以了。</p>
+<h4 id="T11：P6327-区间加区间sin和"><a href="#T11：P6327-区间加区间sin和" class="headerlink" title="T11：P6327 区间加区间sin和"></a>T11：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P6327">P6327 区间加区间sin和</a></h4><p>线段树的板子。不说了。</p>
+<p>（但是得复习 $sin(\alpha+\beta)=\sin\alpha\cos\beta+\cos\alpha\sin\beta $）</p>
+<h4 id="T12：P1783-海滩防御"><a href="#T12：P1783-海滩防御" class="headerlink" title="T12：P1783 海滩防御"></a>T12：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1783">P1783 海滩防御</a></h4><p>一个简单的二分题目。</p>
+<h4 id="T13：P7878-「SWTR-07」My-rating-is-1064（hard-version）"><a href="#T13：P7878-「SWTR-07」My-rating-is-1064（hard-version）" class="headerlink" title="T13：P7878 「SWTR-07」My rating is 1064（hard version）"></a>T13：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P7878">P7878 「SWTR-07」My rating is 1064（hard version）</a></h4><p>考场上做出来的。不说了。</p>
+<h4 id="T14：P5184-COCI-2009-PASIJANS"><a href="#T14：P5184-COCI-2009-PASIJANS" class="headerlink" title="T14：P5184 [COCI 2009] PASIJANS"></a>T14：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5184">P5184 [COCI 2009] PASIJANS</a></h4><p>看似很简单，但是要处理前面相同的栈的处理。</p>
+<h4 id="T15：P3917-异或序列"><a href="#T15：P3917-异或序列" class="headerlink" title="T15：P3917 异或序列"></a>T15：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3917">P3917 异或序列</a></h4><p>校内考过<br>$$<br>\sum_{i=1}^n\sum_{j=i}^n(a_i\ xor …xor\ a_j)^2<br>$$<br>所以就比较简单了。</p>
+<h4 id="T16：P2512-HAOI2008-糖果传递"><a href="#T16：P2512-HAOI2008-糖果传递" class="headerlink" title="T16：P2512 [HAOI2008]糖果传递"></a>T16：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2512">P2512 [HAOI2008]糖果传递</a></h4><p>简单的贪心。</p>
+<h4 id="T17：P1846-游戏"><a href="#T17：P1846-游戏" class="headerlink" title="T17：P1846 游戏"></a>T17：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1846">P1846 游戏</a></h4><p>很有意思，很难想到会用 DP。</p>
+<h4 id="T18：P2148-SDOI2009-E-amp-D"><a href="#T18：P2148-SDOI2009-E-amp-D" class="headerlink" title="T18：P2148 [SDOI2009]E&amp;D"></a>T18：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2148">P2148 [SDOI2009]E&amp;D</a></h4><p>有结论。（自己翻题解吧 qwq</p>
+<h4 id="T19：P4441-COCI2017-2018-3-Retro"><a href="#T19：P4441-COCI2017-2018-3-Retro" class="headerlink" title="T19：P4441 [COCI2017-2018#3] Retro"></a>T19：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4441">P4441 [COCI2017-2018#3] Retro</a></h4><h4 id="T20：P5689-CSP-S2019-江西-多叉堆"><a href="#T20：P5689-CSP-S2019-江西-多叉堆" class="headerlink" title="T20：P5689 [CSP-S2019 江西] 多叉堆"></a>T20：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5689">P5689 [CSP-S2019 江西] 多叉堆</a></h4><h4 id="T21：P5771-JSOI2016-反质数序列"><a href="#T21：P5771-JSOI2016-反质数序列" class="headerlink" title="T21：P5771 [JSOI2016]反质数序列"></a>T21：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5771">P5771 [JSOI2016]反质数序列</a></h4><h4 id="T22：P3946-ことりのおやつ（小鸟的点心）"><a href="#T22：P3946-ことりのおやつ（小鸟的点心）" class="headerlink" title="T22：P3946 ことりのおやつ（小鸟的点心）"></a>T22：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3946">P3946 ことりのおやつ（小鸟的点心）</a></h4><h4 id="T23：P6216-回文匹配"><a href="#T23：P6216-回文匹配" class="headerlink" title="T23：P6216 回文匹配"></a>T23：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P6216">P6216 回文匹配</a></h4><h4 id="T24：P3743-kotori的设备"><a href="#T24：P3743-kotori的设备" class="headerlink" title="T24：P3743 kotori的设备"></a>T24：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3743">P3743 kotori的设备</a></h4><h4 id="T25：P3572-POI2014-PTA-Little-Bird"><a href="#T25：P3572-POI2014-PTA-Little-Bird" class="headerlink" title="T25：P3572 [POI2014]PTA-Little Bird"></a>T25：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3572">P3572 [POI2014]PTA-Little Bird</a></h4><h4 id="T26：P3601-签到题"><a href="#T26：P3601-签到题" class="headerlink" title="T26：P3601 签到题"></a>T26：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3601">P3601 签到题</a></h4><h4 id="T27：P2627-USACO11OPEN-Mowing-the-Lawn-G"><a href="#T27：P2627-USACO11OPEN-Mowing-the-Lawn-G" class="headerlink" title="T27：P2627 [USACO11OPEN]Mowing the Lawn G"></a>T27：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2627">P2627 [USACO11OPEN]Mowing the Lawn G</a></h4><h4 id="T28：P4503-CTSC2014-企鹅QQ"><a href="#T28：P4503-CTSC2014-企鹅QQ" class="headerlink" title="T28：P4503 [CTSC2014]企鹅QQ"></a>T28：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4503">P4503 [CTSC2014]企鹅QQ</a></h4><h4 id="T29：P1602-Sramoc问题"><a href="#T29：P1602-Sramoc问题" class="headerlink" title="T29：P1602 Sramoc问题"></a>T29：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1602">P1602 Sramoc问题</a></h4><h4 id="T30：P2267-琪琪的项链"><a href="#T30：P2267-琪琪的项链" class="headerlink" title="T30：P2267 琪琪的项链"></a>T30：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2267">P2267 琪琪的项链</a></h4><h4 id="T31：CF1082B-Vova-and-Trophies"><a href="#T31：CF1082B-Vova-and-Trophies" class="headerlink" title="T31：CF1082B Vova and Trophies"></a>T31：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1082B">CF1082B Vova and Trophies</a></h4><h4 id="T32：P3029-USACO11NOV-Cow-Lineup-S"><a href="#T32：P3029-USACO11NOV-Cow-Lineup-S" class="headerlink" title="T32：P3029 [USACO11NOV]Cow Lineup S"></a>T32：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3029">P3029 [USACO11NOV]Cow Lineup S</a></h4><h4 id="T33：P2622-关灯问题II"><a href="#T33：P2622-关灯问题II" class="headerlink" title="T33：P2622 关灯问题II"></a>T33：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2622">P2622 关灯问题II</a></h4><h4 id="T34：P4092-HEOI2016-TJOI2016-树"><a href="#T34：P4092-HEOI2016-TJOI2016-树" class="headerlink" title="T34：P4092 [HEOI2016/TJOI2016]树"></a>T34：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4092">P4092 [HEOI2016/TJOI2016]树</a></h4><h4 id="T35：P4826-USACO15FEB-Superbull-S"><a href="#T35：P4826-USACO15FEB-Superbull-S" class="headerlink" title="T35：P4826 [USACO15FEB]Superbull S"></a>T35：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4826">P4826 [USACO15FEB]Superbull S</a></h4><h4 id="T36：P6218-USACO06NOV-Round-Numbers-S"><a href="#T36：P6218-USACO06NOV-Round-Numbers-S" class="headerlink" title="T36：P6218 [USACO06NOV] Round Numbers S"></a>T36：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P6218">P6218 [USACO06NOV] Round Numbers S</a></h4><h4 id="T37：P3469-POI2008-BLO-Blockade"><a href="#T37：P3469-POI2008-BLO-Blockade" class="headerlink" title="T37：P3469 [POI2008]BLO-Blockade"></a>T37：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3469">P3469 [POI2008]BLO-Blockade</a></h4><h4 id="T38：P6016-CSGRound3-出游"><a href="#T38：P6016-CSGRound3-出游" class="headerlink" title="T38：P6016 [CSGRound3]出游"></a>T38：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P6016">P6016 [CSGRound3]出游</a></h4><h4 id="T39：P2129-L国的战斗续之多路出击"><a href="#T39：P2129-L国的战斗续之多路出击" class="headerlink" title="T39：P2129 L国的战斗续之多路出击"></a>T39：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2129">P2129 L国的战斗续之多路出击</a></h4><h4 id="T40：P2915-USACO08NOV-Mixed-Up-Cows-G"><a href="#T40：P2915-USACO08NOV-Mixed-Up-Cows-G" class="headerlink" title="T40：P2915 [USACO08NOV]Mixed Up Cows G"></a>T40：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2915">P2915 [USACO08NOV]Mixed Up Cows G</a></h4><h4 id="T41：P2174-小Z的神奇数列"><a href="#T41：P2174-小Z的神奇数列" class="headerlink" title="T41：P2174 小Z的神奇数列"></a>T41：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2174">P2174 小Z的神奇数列</a></h4><h4 id="T42：P1262-间谍网络"><a href="#T42：P1262-间谍网络" class="headerlink" title="T42：P1262 间谍网络"></a>T42：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1262">P1262 间谍网络</a></h4><h4 id="T43：P1245-电话号码"><a href="#T43：P1245-电话号码" class="headerlink" title="T43：P1245 电话号码"></a>T43：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1245">P1245 电话号码</a></h4><h4 id="T44：P4231-三步必杀"><a href="#T44：P4231-三步必杀" class="headerlink" title="T44：P4231 三步必杀"></a>T44：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4231">P4231 三步必杀</a></h4><h4 id="T45：P2585-ZJOI2006-三色二叉树"><a href="#T45：P2585-ZJOI2006-三色二叉树" class="headerlink" title="T45：P2585 [ZJOI2006]三色二叉树"></a>T45：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2585">P2585 [ZJOI2006]三色二叉树</a></h4><h4 id="T46：P2700-逐个击破"><a href="#T46：P2700-逐个击破" class="headerlink" title="T46：P2700 逐个击破"></a>T46：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2700">P2700 逐个击破</a></h4><h4 id="T47：P6688-可重集"><a href="#T47：P6688-可重集" class="headerlink" title="T47：P6688 可重集"></a>T47：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P6688">P6688 可重集</a></h4><h4 id="T48：P3177-HAOI2015-树上染色"><a href="#T48：P3177-HAOI2015-树上染色" class="headerlink" title="T48：P3177 [HAOI2015]树上染色"></a>T48：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3177">P3177 [HAOI2015]树上染色</a></h4><h4 id="T49：P2602-ZJOI2010-数字计数"><a href="#T49：P2602-ZJOI2010-数字计数" class="headerlink" title="T49：P2602 [ZJOI2010]数字计数"></a>T49：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2602">P2602 [ZJOI2010]数字计数</a></h4><h4 id="T50：P1836-数页码"><a href="#T50：P1836-数页码" class="headerlink" title="T50：P1836 数页码"></a>T50：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1836">P1836 数页码</a></h4><h4 id="T51：SP3928-MDIGITS-Counting-Digits"><a href="#T51：SP3928-MDIGITS-Counting-Digits" class="headerlink" title="T51：SP3928 MDIGITS - Counting Digits"></a>T51：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/SP3928">SP3928 MDIGITS - Counting Digits</a></h4><h4 id="T52：UVA1640-统计问题-The-Counting-Problem"><a href="#T52：UVA1640-统计问题-The-Counting-Problem" class="headerlink" title="T52：UVA1640 统计问题 The Counting Problem"></a>T52：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/UVA1640">UVA1640 统计问题 The Counting Problem</a></h4><h4 id="T53：P7244-章节划分"><a href="#T53：P7244-章节划分" class="headerlink" title="T53：P7244 章节划分"></a>T53：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P7244">P7244 章节划分</a></h4><h4 id="T54：P5424-USACO19OPEN-Snakes-G"><a href="#T54：P5424-USACO19OPEN-Snakes-G" class="headerlink" title="T54：P5424 [USACO19OPEN]Snakes G"></a>T54：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5424">P5424 [USACO19OPEN]Snakes G</a></h4><h4 id="T55：P6026-餐馆"><a href="#T55：P6026-餐馆" class="headerlink" title="T55：P6026 餐馆"></a>T55：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P6026">P6026 餐馆</a></h4><h4 id="T56：P2363-马农"><a href="#T56：P2363-马农" class="headerlink" title="T56：P2363 马农"></a>T56：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2363">P2363 马农</a></h4><h4 id="T57：P4539-SCOI2006-zh-tree"><a href="#T57：P4539-SCOI2006-zh-tree" class="headerlink" title="T57：P4539 [SCOI2006]zh_tree"></a>T57：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4539">P4539 [SCOI2006]zh_tree</a></h4><h4 id="T58：P1709-USACO5-5-隐藏口令Hidden-Password"><a href="#T58：P1709-USACO5-5-隐藏口令Hidden-Password" class="headerlink" title="T58：P1709 [USACO5.5]隐藏口令Hidden Password"></a>T58：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1709">P1709 [USACO5.5]隐藏口令Hidden Password</a></h4><h4 id="T59：P5088-矩形"><a href="#T59：P5088-矩形" class="headerlink" title="T59：P5088 矩形"></a>T59：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5088">P5088 矩形</a></h4><h4 id="T60：P2303-SDOI2012-Longge-的问题"><a href="#T60：P2303-SDOI2012-Longge-的问题" class="headerlink" title="T60：P2303 [SDOI2012] Longge 的问题"></a>T60：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2303">P2303 [SDOI2012] Longge 的问题</a></h4><h4 id="T61：P5557-旅行"><a href="#T61：P5557-旅行" class="headerlink" title="T61：P5557 旅行"></a>T61：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5557">P5557 旅行</a></h4><h4 id="T62：CF337C-Quiz"><a href="#T62：CF337C-Quiz" class="headerlink" title="T62：CF337C Quiz"></a>T62：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF337C">CF337C Quiz</a></h4><h4 id="T63：P2051-AHOI2009-中国象棋"><a href="#T63：P2051-AHOI2009-中国象棋" class="headerlink" title="T63：P2051 [AHOI2009]中国象棋"></a>T63：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2051">P2051 [AHOI2009]中国象棋</a></h4><h4 id="T64：P4918-信仰收集"><a href="#T64：P4918-信仰收集" class="headerlink" title="T64：P4918 信仰收集"></a>T64：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4918">P4918 信仰收集</a></h4><h4 id="T65：CF1394B-Boboniu-Walks-on-Graph"><a href="#T65：CF1394B-Boboniu-Walks-on-Graph" class="headerlink" title="T65：CF1394B Boboniu Walks on Graph"></a>T65：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1394B">CF1394B Boboniu Walks on Graph</a></h4><h4 id="T66：CF1175B-Catch-Overflow"><a href="#T66：CF1175B-Catch-Overflow" class="headerlink" title="T66：CF1175B Catch Overflow!"></a>T66：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1175B">CF1175B Catch Overflow!</a></h4><h4 id="T67：CF1526E-Oolimry-and-Suffix-Array"><a href="#T67：CF1526E-Oolimry-and-Suffix-Array" class="headerlink" title="T67：CF1526E Oolimry and Suffix Array"></a>T67：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1526E">CF1526E Oolimry and Suffix Array</a></h4><h4 id="T68：CF1335F-Robots-on-a-Grid"><a href="#T68：CF1335F-Robots-on-a-Grid" class="headerlink" title="T68：CF1335F Robots on a Grid"></a>T68：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1335F">CF1335F Robots on a Grid</a></h4><h4 id="T69：CF1228E-Another-Filling-the-Grid"><a href="#T69：CF1228E-Another-Filling-the-Grid" class="headerlink" title="T69：CF1228E Another Filling the Grid"></a>T69：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1228E">CF1228E Another Filling the Grid</a></h4><h4 id="T70：CF884D-Boxes-And-Balls"><a href="#T70：CF884D-Boxes-And-Balls" class="headerlink" title="T70：CF884D Boxes And Balls"></a>T70：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF884D">CF884D Boxes And Balls</a></h4><h4 id="T71：P1654-OSU"><a href="#T71：P1654-OSU" class="headerlink" title="T71：P1654 OSU!"></a>T71：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1654">P1654 OSU!</a></h4><h4 id="T72：P1365-WJMZBMR打osu-Easy"><a href="#T72：P1365-WJMZBMR打osu-Easy" class="headerlink" title="T72：P1365 WJMZBMR打osu! / Easy"></a>T72：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1365">P1365 WJMZBMR打osu! / Easy</a></h4><h4 id="T73：CF235B-Let’s-Play-Osu"><a href="#T73：CF235B-Let’s-Play-Osu" class="headerlink" title="T73：CF235B Let’s Play Osu!"></a>T73：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF235B">CF235B Let’s Play Osu!</a></h4><h4 id="T74：P1659-国家集训队-拉拉队排练"><a href="#T74：P1659-国家集训队-拉拉队排练" class="headerlink" title="T74：P1659 [国家集训队]拉拉队排练"></a>T74：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1659">P1659 [国家集训队]拉拉队排练</a></h4><h4 id="T75：P2654-原核生物培养"><a href="#T75：P2654-原核生物培养" class="headerlink" title="T75：P2654 原核生物培养"></a>T75：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2654">P2654 原核生物培养</a></h4><h4 id="T76：P4881-hby与tkw的基情"><a href="#T76：P4881-hby与tkw的基情" class="headerlink" title="T76：P4881 hby与tkw的基情"></a>T76：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4881">P4881 hby与tkw的基情</a></h4><h4 id="T77：CF1131C-Birthday"><a href="#T77：CF1131C-Birthday" class="headerlink" title="T77：CF1131C Birthday"></a>T77：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1131C">CF1131C Birthday</a></h4><h4 id="T78：CF1416B-Make-Them-Equal"><a href="#T78：CF1416B-Make-Them-Equal" class="headerlink" title="T78：CF1416B Make Them Equal"></a>T78：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1416B">CF1416B Make Them Equal</a></h4><h4 id="T79：P1850-NOIP2016-提高组-换教室"><a href="#T79：P1850-NOIP2016-提高组-换教室" class="headerlink" title="T79：P1850 [NOIP2016 提高组] 换教室"></a>T79：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1850">P1850 [NOIP2016 提高组] 换教室</a></h4><h4 id="T80：P3802-小魔女帕琪"><a href="#T80：P3802-小魔女帕琪" class="headerlink" title="T80：P3802 小魔女帕琪"></a>T80：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3802">P3802 小魔女帕琪</a></h4><h4 id="T81：P3114-USACO15JAN-Stampede-S"><a href="#T81：P3114-USACO15JAN-Stampede-S" class="headerlink" title="T81：P3114 [USACO15JAN]Stampede S"></a>T81：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3114">P3114 [USACO15JAN]Stampede S</a></h4><h4 id="T82：P5160-WD与循环"><a href="#T82：P5160-WD与循环" class="headerlink" title="T82：P5160 WD与循环"></a>T82：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5160">P5160 WD与循环</a></h4><h4 id="T83：P5124-USACO18DEC-Teamwork-G"><a href="#T83：P5124-USACO18DEC-Teamwork-G" class="headerlink" title="T83：P5124 [USACO18DEC]Teamwork G"></a>T83：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5124">P5124 [USACO18DEC]Teamwork G</a></h4><h4 id="T84：P4753-River-Jumping"><a href="#T84：P4753-River-Jumping" class="headerlink" title="T84：P4753 River Jumping"></a>T84：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4753">P4753 River Jumping</a></h4><h4 id="T85：CF77B-Falling-Anvils"><a href="#T85：CF77B-Falling-Anvils" class="headerlink" title="T85：CF77B Falling Anvils"></a>T85：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF77B">CF77B Falling Anvils</a></h4><h4 id="T86：P1645-序列"><a href="#T86：P1645-序列" class="headerlink" title="T86：P1645 序列"></a>T86：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1645">P1645 序列</a></h4><h4 id="T87：P3868-TJOI2009-猜数字"><a href="#T87：P3868-TJOI2009-猜数字" class="headerlink" title="T87：P3868 [TJOI2009] 猜数字"></a>T87：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3868">P3868 [TJOI2009] 猜数字</a></h4><h4 id="T88：P5144-蜈蚣"><a href="#T88：P5144-蜈蚣" class="headerlink" title="T88：P5144 蜈蚣"></a>T88：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5144">P5144 蜈蚣</a></h4><h4 id="T89：CF306C-White-Black-and-White-Again"><a href="#T89：CF306C-White-Black-and-White-Again" class="headerlink" title="T89：CF306C White, Black and White Again"></a>T89：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF306C">CF306C White, Black and White Again</a></h4><h4 id="T90：CF919E-Congruence-Equation"><a href="#T90：CF919E-Congruence-Equation" class="headerlink" title="T90：CF919E Congruence Equation"></a>T90：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF919E">CF919E Congruence Equation</a></h4><h4 id="T91：CF598E-Chocolate-Bar"><a href="#T91：CF598E-Chocolate-Bar" class="headerlink" title="T91：CF598E Chocolate Bar"></a>T91：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF598E">CF598E Chocolate Bar</a></h4><h4 id="T92：P3932-浮游大陆的68号岛"><a href="#T92：P3932-浮游大陆的68号岛" class="headerlink" title="T92：P3932 浮游大陆的68号岛"></a>T92：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3932">P3932 浮游大陆的68号岛</a></h4><h4 id="T93：P6655-YsOI2020-制高"><a href="#T93：P6655-YsOI2020-制高" class="headerlink" title="T93：P6655 [YsOI2020]制高"></a>T93：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P6655">P6655 [YsOI2020]制高</a></h4><h4 id="T94：CF822D-My-pretty-girl-Noora"><a href="#T94：CF822D-My-pretty-girl-Noora" class="headerlink" title="T94：CF822D My pretty girl Noora"></a>T94：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF822D">CF822D My pretty girl Noora</a></h4><h4 id="T95：CF1143B-Nirvana"><a href="#T95：CF1143B-Nirvana" class="headerlink" title="T95：CF1143B Nirvana"></a>T95：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1143B">CF1143B Nirvana</a></h4><p>题目概述先鸽着 qwq</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" rel="tag"><i class="fa fa-tag"></i> 做题记录</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/12/12/Splay/" rel="prev" title="Splay">
+      <i class="fa fa-chevron-left"></i> Splay
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%AD%A3%E6%96%87"><span class="nav-number">1.</span> <span class="nav-text">1. 正文</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#T1%EF%BC%9AP4147-%E7%8E%89%E8%9F%BE%E5%AE%AB"><span class="nav-number">1.0.1.</span> <span class="nav-text">T1：P4147 玉蟾宫</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T2%EF%BC%9AP4854-MloVtry%E7%9A%84%E5%92%B8%E9%B1%BC%E6%A0%91"><span class="nav-number">1.0.2.</span> <span class="nav-text">T2：P4854 MloVtry的咸鱼树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T3%EF%BC%9AUVA10881-Piotr%E2%80%99s-Ants"><span class="nav-number">1.0.3.</span> <span class="nav-text">T3：UVA10881 Piotr’s Ants</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T4%EF%BC%9AP5835-USACO19DEC-Meetings-S"><span class="nav-number">1.0.4.</span> <span class="nav-text">T4：P5835 [USACO19DEC]Meetings S</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T5%EF%BC%9AP5022-NOIP2018-%E6%8F%90%E9%AB%98%E7%BB%84-%E6%97%85%E8%A1%8C"><span class="nav-number">1.0.5.</span> <span class="nav-text">T5：P5022 [NOIP2018 提高组] 旅行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T6%EF%BC%9AP1127-%E8%AF%8D%E9%93%BE"><span class="nav-number">1.0.6.</span> <span class="nav-text">T6：P1127 词链</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T7%EF%BC%9AP1961-%E6%9C%80%E8%BD%BB%E7%9A%84%E5%A4%A9%E5%B9%B3"><span class="nav-number">1.0.7.</span> <span class="nav-text">T7：P1961 最轻的天平</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T8%EF%BC%9AP5087-%E6%95%B0%E5%AD%A6"><span class="nav-number">1.0.8.</span> <span class="nav-text">T8：P5087 数学</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T9%EF%BC%9AP5994-PA2014-Kuglarz"><span class="nav-number">1.0.9.</span> <span class="nav-text">T9：P5994 [PA2014]Kuglarz</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T10%EF%BC%9AP6859-%E8%9D%B4%E8%9D%B6%E4%B8%8E%E8%8A%B1"><span class="nav-number">1.0.10.</span> <span class="nav-text">T10：P6859 蝴蝶与花</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T11%EF%BC%9AP6327-%E5%8C%BA%E9%97%B4%E5%8A%A0%E5%8C%BA%E9%97%B4sin%E5%92%8C"><span class="nav-number">1.0.11.</span> <span class="nav-text">T11：P6327 区间加区间sin和</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T12%EF%BC%9AP1783-%E6%B5%B7%E6%BB%A9%E9%98%B2%E5%BE%A1"><span class="nav-number">1.0.12.</span> <span class="nav-text">T12：P1783 海滩防御</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T13%EF%BC%9AP7878-%E3%80%8CSWTR-07%E3%80%8DMy-rating-is-1064%EF%BC%88hard-version%EF%BC%89"><span class="nav-number">1.0.13.</span> <span class="nav-text">T13：P7878 「SWTR-07」My rating is 1064（hard version）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T14%EF%BC%9AP5184-COCI-2009-PASIJANS"><span class="nav-number">1.0.14.</span> <span class="nav-text">T14：P5184 [COCI 2009] PASIJANS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T15%EF%BC%9AP3917-%E5%BC%82%E6%88%96%E5%BA%8F%E5%88%97"><span class="nav-number">1.0.15.</span> <span class="nav-text">T15：P3917 异或序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T16%EF%BC%9AP2512-HAOI2008-%E7%B3%96%E6%9E%9C%E4%BC%A0%E9%80%92"><span class="nav-number">1.0.16.</span> <span class="nav-text">T16：P2512 [HAOI2008]糖果传递</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T17%EF%BC%9AP1846-%E6%B8%B8%E6%88%8F"><span class="nav-number">1.0.17.</span> <span class="nav-text">T17：P1846 游戏</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T18%EF%BC%9AP2148-SDOI2009-E-amp-D"><span class="nav-number">1.0.18.</span> <span class="nav-text">T18：P2148 [SDOI2009]E&amp;D</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T19%EF%BC%9AP4441-COCI2017-2018-3-Retro"><span class="nav-number">1.0.19.</span> <span class="nav-text">T19：P4441 [COCI2017-2018#3] Retro</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T20%EF%BC%9AP5689-CSP-S2019-%E6%B1%9F%E8%A5%BF-%E5%A4%9A%E5%8F%89%E5%A0%86"><span class="nav-number">1.0.20.</span> <span class="nav-text">T20：P5689 [CSP-S2019 江西] 多叉堆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T21%EF%BC%9AP5771-JSOI2016-%E5%8F%8D%E8%B4%A8%E6%95%B0%E5%BA%8F%E5%88%97"><span class="nav-number">1.0.21.</span> <span class="nav-text">T21：P5771 [JSOI2016]反质数序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T22%EF%BC%9AP3946-%E3%81%93%E3%81%A8%E3%82%8A%E3%81%AE%E3%81%8A%E3%82%84%E3%81%A4%EF%BC%88%E5%B0%8F%E9%B8%9F%E7%9A%84%E7%82%B9%E5%BF%83%EF%BC%89"><span class="nav-number">1.0.22.</span> <span class="nav-text">T22：P3946 ことりのおやつ（小鸟的点心）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T23%EF%BC%9AP6216-%E5%9B%9E%E6%96%87%E5%8C%B9%E9%85%8D"><span class="nav-number">1.0.23.</span> <span class="nav-text">T23：P6216 回文匹配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T24%EF%BC%9AP3743-kotori%E7%9A%84%E8%AE%BE%E5%A4%87"><span class="nav-number">1.0.24.</span> <span class="nav-text">T24：P3743 kotori的设备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T25%EF%BC%9AP3572-POI2014-PTA-Little-Bird"><span class="nav-number">1.0.25.</span> <span class="nav-text">T25：P3572 [POI2014]PTA-Little Bird</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T26%EF%BC%9AP3601-%E7%AD%BE%E5%88%B0%E9%A2%98"><span class="nav-number">1.0.26.</span> <span class="nav-text">T26：P3601 签到题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T27%EF%BC%9AP2627-USACO11OPEN-Mowing-the-Lawn-G"><span class="nav-number">1.0.27.</span> <span class="nav-text">T27：P2627 [USACO11OPEN]Mowing the Lawn G</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T28%EF%BC%9AP4503-CTSC2014-%E4%BC%81%E9%B9%85QQ"><span class="nav-number">1.0.28.</span> <span class="nav-text">T28：P4503 [CTSC2014]企鹅QQ</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T29%EF%BC%9AP1602-Sramoc%E9%97%AE%E9%A2%98"><span class="nav-number">1.0.29.</span> <span class="nav-text">T29：P1602 Sramoc问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T30%EF%BC%9AP2267-%E7%90%AA%E7%90%AA%E7%9A%84%E9%A1%B9%E9%93%BE"><span class="nav-number">1.0.30.</span> <span class="nav-text">T30：P2267 琪琪的项链</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T31%EF%BC%9ACF1082B-Vova-and-Trophies"><span class="nav-number">1.0.31.</span> <span class="nav-text">T31：CF1082B Vova and Trophies</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T32%EF%BC%9AP3029-USACO11NOV-Cow-Lineup-S"><span class="nav-number">1.0.32.</span> <span class="nav-text">T32：P3029 [USACO11NOV]Cow Lineup S</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T33%EF%BC%9AP2622-%E5%85%B3%E7%81%AF%E9%97%AE%E9%A2%98II"><span class="nav-number">1.0.33.</span> <span class="nav-text">T33：P2622 关灯问题II</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T34%EF%BC%9AP4092-HEOI2016-TJOI2016-%E6%A0%91"><span class="nav-number">1.0.34.</span> <span class="nav-text">T34：P4092 [HEOI2016&#x2F;TJOI2016]树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T35%EF%BC%9AP4826-USACO15FEB-Superbull-S"><span class="nav-number">1.0.35.</span> <span class="nav-text">T35：P4826 [USACO15FEB]Superbull S</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T36%EF%BC%9AP6218-USACO06NOV-Round-Numbers-S"><span class="nav-number">1.0.36.</span> <span class="nav-text">T36：P6218 [USACO06NOV] Round Numbers S</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T37%EF%BC%9AP3469-POI2008-BLO-Blockade"><span class="nav-number">1.0.37.</span> <span class="nav-text">T37：P3469 [POI2008]BLO-Blockade</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T38%EF%BC%9AP6016-CSGRound3-%E5%87%BA%E6%B8%B8"><span class="nav-number">1.0.38.</span> <span class="nav-text">T38：P6016 [CSGRound3]出游</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T39%EF%BC%9AP2129-L%E5%9B%BD%E7%9A%84%E6%88%98%E6%96%97%E7%BB%AD%E4%B9%8B%E5%A4%9A%E8%B7%AF%E5%87%BA%E5%87%BB"><span class="nav-number">1.0.39.</span> <span class="nav-text">T39：P2129 L国的战斗续之多路出击</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T40%EF%BC%9AP2915-USACO08NOV-Mixed-Up-Cows-G"><span class="nav-number">1.0.40.</span> <span class="nav-text">T40：P2915 [USACO08NOV]Mixed Up Cows G</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T41%EF%BC%9AP2174-%E5%B0%8FZ%E7%9A%84%E7%A5%9E%E5%A5%87%E6%95%B0%E5%88%97"><span class="nav-number">1.0.41.</span> <span class="nav-text">T41：P2174 小Z的神奇数列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T42%EF%BC%9AP1262-%E9%97%B4%E8%B0%8D%E7%BD%91%E7%BB%9C"><span class="nav-number">1.0.42.</span> <span class="nav-text">T42：P1262 间谍网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T43%EF%BC%9AP1245-%E7%94%B5%E8%AF%9D%E5%8F%B7%E7%A0%81"><span class="nav-number">1.0.43.</span> <span class="nav-text">T43：P1245 电话号码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T44%EF%BC%9AP4231-%E4%B8%89%E6%AD%A5%E5%BF%85%E6%9D%80"><span class="nav-number">1.0.44.</span> <span class="nav-text">T44：P4231 三步必杀</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T45%EF%BC%9AP2585-ZJOI2006-%E4%B8%89%E8%89%B2%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="nav-number">1.0.45.</span> <span class="nav-text">T45：P2585 [ZJOI2006]三色二叉树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T46%EF%BC%9AP2700-%E9%80%90%E4%B8%AA%E5%87%BB%E7%A0%B4"><span class="nav-number">1.0.46.</span> <span class="nav-text">T46：P2700 逐个击破</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T47%EF%BC%9AP6688-%E5%8F%AF%E9%87%8D%E9%9B%86"><span class="nav-number">1.0.47.</span> <span class="nav-text">T47：P6688 可重集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T48%EF%BC%9AP3177-HAOI2015-%E6%A0%91%E4%B8%8A%E6%9F%93%E8%89%B2"><span class="nav-number">1.0.48.</span> <span class="nav-text">T48：P3177 [HAOI2015]树上染色</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T49%EF%BC%9AP2602-ZJOI2010-%E6%95%B0%E5%AD%97%E8%AE%A1%E6%95%B0"><span class="nav-number">1.0.49.</span> <span class="nav-text">T49：P2602 [ZJOI2010]数字计数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T50%EF%BC%9AP1836-%E6%95%B0%E9%A1%B5%E7%A0%81"><span class="nav-number">1.0.50.</span> <span class="nav-text">T50：P1836 数页码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T51%EF%BC%9ASP3928-MDIGITS-Counting-Digits"><span class="nav-number">1.0.51.</span> <span class="nav-text">T51：SP3928 MDIGITS - Counting Digits</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T52%EF%BC%9AUVA1640-%E7%BB%9F%E8%AE%A1%E9%97%AE%E9%A2%98-The-Counting-Problem"><span class="nav-number">1.0.52.</span> <span class="nav-text">T52：UVA1640 统计问题 The Counting Problem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T53%EF%BC%9AP7244-%E7%AB%A0%E8%8A%82%E5%88%92%E5%88%86"><span class="nav-number">1.0.53.</span> <span class="nav-text">T53：P7244 章节划分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T54%EF%BC%9AP5424-USACO19OPEN-Snakes-G"><span class="nav-number">1.0.54.</span> <span class="nav-text">T54：P5424 [USACO19OPEN]Snakes G</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T55%EF%BC%9AP6026-%E9%A4%90%E9%A6%86"><span class="nav-number">1.0.55.</span> <span class="nav-text">T55：P6026 餐馆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T56%EF%BC%9AP2363-%E9%A9%AC%E5%86%9C"><span class="nav-number">1.0.56.</span> <span class="nav-text">T56：P2363 马农</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T57%EF%BC%9AP4539-SCOI2006-zh-tree"><span class="nav-number">1.0.57.</span> <span class="nav-text">T57：P4539 [SCOI2006]zh_tree</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T58%EF%BC%9AP1709-USACO5-5-%E9%9A%90%E8%97%8F%E5%8F%A3%E4%BB%A4Hidden-Password"><span class="nav-number">1.0.58.</span> <span class="nav-text">T58：P1709 [USACO5.5]隐藏口令Hidden Password</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T59%EF%BC%9AP5088-%E7%9F%A9%E5%BD%A2"><span class="nav-number">1.0.59.</span> <span class="nav-text">T59：P5088 矩形</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T60%EF%BC%9AP2303-SDOI2012-Longge-%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.0.60.</span> <span class="nav-text">T60：P2303 [SDOI2012] Longge 的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T61%EF%BC%9AP5557-%E6%97%85%E8%A1%8C"><span class="nav-number">1.0.61.</span> <span class="nav-text">T61：P5557 旅行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T62%EF%BC%9ACF337C-Quiz"><span class="nav-number">1.0.62.</span> <span class="nav-text">T62：CF337C Quiz</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T63%EF%BC%9AP2051-AHOI2009-%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B"><span class="nav-number">1.0.63.</span> <span class="nav-text">T63：P2051 [AHOI2009]中国象棋</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T64%EF%BC%9AP4918-%E4%BF%A1%E4%BB%B0%E6%94%B6%E9%9B%86"><span class="nav-number">1.0.64.</span> <span class="nav-text">T64：P4918 信仰收集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T65%EF%BC%9ACF1394B-Boboniu-Walks-on-Graph"><span class="nav-number">1.0.65.</span> <span class="nav-text">T65：CF1394B Boboniu Walks on Graph</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T66%EF%BC%9ACF1175B-Catch-Overflow"><span class="nav-number">1.0.66.</span> <span class="nav-text">T66：CF1175B Catch Overflow!</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T67%EF%BC%9ACF1526E-Oolimry-and-Suffix-Array"><span class="nav-number">1.0.67.</span> <span class="nav-text">T67：CF1526E Oolimry and Suffix Array</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T68%EF%BC%9ACF1335F-Robots-on-a-Grid"><span class="nav-number">1.0.68.</span> <span class="nav-text">T68：CF1335F Robots on a Grid</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T69%EF%BC%9ACF1228E-Another-Filling-the-Grid"><span class="nav-number">1.0.69.</span> <span class="nav-text">T69：CF1228E Another Filling the Grid</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T70%EF%BC%9ACF884D-Boxes-And-Balls"><span class="nav-number">1.0.70.</span> <span class="nav-text">T70：CF884D Boxes And Balls</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T71%EF%BC%9AP1654-OSU"><span class="nav-number">1.0.71.</span> <span class="nav-text">T71：P1654 OSU!</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T72%EF%BC%9AP1365-WJMZBMR%E6%89%93osu-Easy"><span class="nav-number">1.0.72.</span> <span class="nav-text">T72：P1365 WJMZBMR打osu! &#x2F; Easy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T73%EF%BC%9ACF235B-Let%E2%80%99s-Play-Osu"><span class="nav-number">1.0.73.</span> <span class="nav-text">T73：CF235B Let’s Play Osu!</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T74%EF%BC%9AP1659-%E5%9B%BD%E5%AE%B6%E9%9B%86%E8%AE%AD%E9%98%9F-%E6%8B%89%E6%8B%89%E9%98%9F%E6%8E%92%E7%BB%83"><span class="nav-number">1.0.74.</span> <span class="nav-text">T74：P1659 [国家集训队]拉拉队排练</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T75%EF%BC%9AP2654-%E5%8E%9F%E6%A0%B8%E7%94%9F%E7%89%A9%E5%9F%B9%E5%85%BB"><span class="nav-number">1.0.75.</span> <span class="nav-text">T75：P2654 原核生物培养</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T76%EF%BC%9AP4881-hby%E4%B8%8Etkw%E7%9A%84%E5%9F%BA%E6%83%85"><span class="nav-number">1.0.76.</span> <span class="nav-text">T76：P4881 hby与tkw的基情</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T77%EF%BC%9ACF1131C-Birthday"><span class="nav-number">1.0.77.</span> <span class="nav-text">T77：CF1131C Birthday</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T78%EF%BC%9ACF1416B-Make-Them-Equal"><span class="nav-number">1.0.78.</span> <span class="nav-text">T78：CF1416B Make Them Equal</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T79%EF%BC%9AP1850-NOIP2016-%E6%8F%90%E9%AB%98%E7%BB%84-%E6%8D%A2%E6%95%99%E5%AE%A4"><span class="nav-number">1.0.79.</span> <span class="nav-text">T79：P1850 [NOIP2016 提高组] 换教室</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T80%EF%BC%9AP3802-%E5%B0%8F%E9%AD%94%E5%A5%B3%E5%B8%95%E7%90%AA"><span class="nav-number">1.0.80.</span> <span class="nav-text">T80：P3802 小魔女帕琪</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T81%EF%BC%9AP3114-USACO15JAN-Stampede-S"><span class="nav-number">1.0.81.</span> <span class="nav-text">T81：P3114 [USACO15JAN]Stampede S</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T82%EF%BC%9AP5160-WD%E4%B8%8E%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.0.82.</span> <span class="nav-text">T82：P5160 WD与循环</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T83%EF%BC%9AP5124-USACO18DEC-Teamwork-G"><span class="nav-number">1.0.83.</span> <span class="nav-text">T83：P5124 [USACO18DEC]Teamwork G</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T84%EF%BC%9AP4753-River-Jumping"><span class="nav-number">1.0.84.</span> <span class="nav-text">T84：P4753 River Jumping</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T85%EF%BC%9ACF77B-Falling-Anvils"><span class="nav-number">1.0.85.</span> <span class="nav-text">T85：CF77B Falling Anvils</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T86%EF%BC%9AP1645-%E5%BA%8F%E5%88%97"><span class="nav-number">1.0.86.</span> <span class="nav-text">T86：P1645 序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T87%EF%BC%9AP3868-TJOI2009-%E7%8C%9C%E6%95%B0%E5%AD%97"><span class="nav-number">1.0.87.</span> <span class="nav-text">T87：P3868 [TJOI2009] 猜数字</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T88%EF%BC%9AP5144-%E8%9C%88%E8%9A%A3"><span class="nav-number">1.0.88.</span> <span class="nav-text">T88：P5144 蜈蚣</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T89%EF%BC%9ACF306C-White-Black-and-White-Again"><span class="nav-number">1.0.89.</span> <span class="nav-text">T89：CF306C White, Black and White Again</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T90%EF%BC%9ACF919E-Congruence-Equation"><span class="nav-number">1.0.90.</span> <span class="nav-text">T90：CF919E Congruence Equation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T91%EF%BC%9ACF598E-Chocolate-Bar"><span class="nav-number">1.0.91.</span> <span class="nav-text">T91：CF598E Chocolate Bar</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T92%EF%BC%9AP3932-%E6%B5%AE%E6%B8%B8%E5%A4%A7%E9%99%86%E7%9A%8468%E5%8F%B7%E5%B2%9B"><span class="nav-number">1.0.92.</span> <span class="nav-text">T92：P3932 浮游大陆的68号岛</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T93%EF%BC%9AP6655-YsOI2020-%E5%88%B6%E9%AB%98"><span class="nav-number">1.0.93.</span> <span class="nav-text">T93：P6655 [YsOI2020]制高</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T94%EF%BC%9ACF822D-My-pretty-girl-Noora"><span class="nav-number">1.0.94.</span> <span class="nav-text">T94：CF822D My pretty girl Noora</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T95%EF%BC%9ACF1143B-Nirvana"><span class="nav-number">1.0.95.</span> <span class="nav-text">T95：CF1143B Nirvana</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="mydcwfy"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">mydcwfy</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mydcwfy" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mydcwfy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mydcwfy@outlook.com" title="E-Mail → mailto:mydcwfy@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://sighttp.qq.com/msgrd?v=1&uin=2206704749" title="QQ → https:&#x2F;&#x2F;sighttp.qq.com&#x2F;msgrd?v&#x3D;1&amp;uin&#x3D;2206704749" rel="noopener" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.luogu.com.cn/user/342891" title="LuoGu → https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;user&#x2F;342891" rel="noopener" target="_blank"><i class=" fa-fw"></i>LuoGu</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      机房大佬们(LuoGu ID)
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.pigaunt.top/" title="https:&#x2F;&#x2F;www.pigaunt.top" rel="noopener" target="_blank">PigAunt</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://hewo233.blog.luogu.org/" title="https:&#x2F;&#x2F;hewo233.blog.luogu.org" rel="noopener" target="_blank">Hewo</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://wiki.pigaunt.top/" title="https:&#x2F;&#x2F;wiki.pigaunt.top" rel="noopener" target="_blank">PekingOpera</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://luckyleaves.github.io/" title="https:&#x2F;&#x2F;luckyleaves.github.io" rel="noopener" target="_blank">lucky叶</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dyd-true.github.io/" title="https:&#x2F;&#x2F;dyd-true.github.io" rel="noopener" target="_blank">Dyd本人</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://evrgardenviolet.github.io/" title="https:&#x2F;&#x2F;evrgardenviolet.github.io" rel="noopener" target="_blank">闲人</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://rusunoi.github.io/" title="https:&#x2F;&#x2F;rusunoi.github.io" rel="noopener" target="_blank">RuSun</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.luogu.com.cn/blog/koshentoP/" title="https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;blog&#x2F;koshentoP&#x2F;" rel="noopener" target="_blank">Tir_JK_LOVER</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mydcwfy</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">35k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">1:16</span>
+</div>
+
+<div>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("11/23/2021 00:00:00");
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "The site has running for "+dnum+" days ";
+        document.getElementById("times").innerHTML = hnum + " hours " + mnum + " minutes " + snum + " seconds";
+    }
+setInterval("createtime()",250);
+</script>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

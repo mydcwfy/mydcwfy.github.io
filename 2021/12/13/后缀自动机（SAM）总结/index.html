@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"mydcwfy.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自认为写得还行。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="后缀自动机（SAM）总结">
+<meta property="og:url" content="https://mydcwfy.github.io/2021/12/13/%E5%90%8E%E7%BC%80%E8%87%AA%E5%8A%A8%E6%9C%BA%EF%BC%88SAM%EF%BC%89%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="mydcwfy&#39;s Blog">
+<meta property="og:description" content="自认为写得还行。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/u717hbc3.png">
+<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/eolba4ep.png">
+<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/hib4zlyo.png">
+<meta property="article:published_time" content="2021-12-13T08:53:58.000Z">
+<meta property="article:modified_time" content="2021-12-13T09:01:51.909Z">
+<meta property="article:author" content="mydcwfy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.luogu.com.cn/upload/image_hosting/u717hbc3.png">
+
+<link rel="canonical" href="https://mydcwfy.github.io/2021/12/13/%E5%90%8E%E7%BC%80%E8%87%AA%E5%8A%A8%E6%9C%BA%EF%BC%88SAM%EF%BC%89%E6%80%BB%E7%BB%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>后缀自动机（SAM）总结 | mydcwfy's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="mydcwfy's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">mydcwfy's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+  <a href="https://github.com/mydcwfy" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2021/12/13/%E5%90%8E%E7%BC%80%E8%87%AA%E5%8A%A8%E6%9C%BA%EF%BC%88SAM%EF%BC%89%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="mydcwfy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mydcwfy's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          后缀自动机（SAM）总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-13 16:53:58 / Modified: 17:01:51" itemprop="dateCreated datePublished" datetime="2021-12-13T16:53:58+08:00">2021-12-13</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4.6k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>10 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自认为写得还行。</p>
+<span id="more"></span>
+
+<h1 id="后缀自动机（SAM）总结"><a href="#后缀自动机（SAM）总结" class="headerlink" title="后缀自动机（SAM）总结"></a>后缀自动机（SAM）总结</h1><h3 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h3><p>本文不比前面的学习笔记 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/mydcwfy-342891/suffix-automation">后缀自动机笔记</a>，这篇文章大概能保证你能理解。</p>
+<p>本文同样不会给出证明，但是会亲近读者，尽可能让读者看懂。</p>
+<h3 id="1-职能"><a href="#1-职能" class="headerlink" title="1. 职能"></a>1. 职能</h3><p>这个就是一个可以快速查找一个字符串的子串，1 号点是根节点，走 1 号点可以走到所有的子串。</p>
+<p>预处理和寻找都是线性 $O(n)$ 的。</p>
+<h3 id="2-前置知识"><a href="#2-前置知识" class="headerlink" title="2. 前置知识"></a>2. 前置知识</h3><p>$\text{endpos}$ 的一些基本定义和性质。</p>
+<p>顾名思义，$\text{endpos}$ 对于字符串中的一个子串而定义，是指所有出现的地方的最后一个字符的位置。</p>
+<p>（可能有些绕，看一下下面的解释</p>
+<p>首先，我们定义，$\text{endpos}$ 相同的作为一个等价类，可以看做同一个状态，对应在 SAM 中是同一个结点。</p>
+<p>比如，我们还是来看一个实例 $\texttt{abcbc}$：</p>
+<ul>
+<li>${\texttt{abcbc},\texttt{bcbc},\texttt{cbc} }$ 的 $\text{endpos}$ 都是 ${5}$。</li>
+<li>${\texttt{bc},\texttt{c} }$ 的 $\text{endpos}$ 都是 ${3,5}$。</li>
+</ul>
+<p>当然没有列举完，读者可以自己推一下（？</p>
+<p>可以发现，$\text{endpos}$ 有一个性质，就是如果 $\text{endpos}$ 相同的，一定是长度递减的字符串。</p>
+<p>还是看上面的实例：</p>
+<ul>
+<li>${\texttt{abcbc},\texttt{bcbc},\texttt{cbc} }$ 是长度递减的字符串，且后面一个是前面一个的后缀。</li>
+<li>${\texttt{bc},\texttt{c} }$ 是长度递减的字符串，且后面一个是前面一个的后缀。</li>
+</ul>
+<p>现在，大概理解了 $\text{endpos}$ 的基本性质了吧。</p>
+<h3 id="3-SAM-的构造"><a href="#3-SAM-的构造" class="headerlink" title="3. SAM 的构造"></a>3. SAM 的构造</h3><p>这里我们先贴代码。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> len, fa;</span><br><span class="line">    <span class="keyword">int</span> ch[<span class="number">26</span>];</span><br><span class="line">&#125;tr[N];</span><br><span class="line"><span class="keyword">int</span> len = <span class="number">1</span>, tot = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">char</span> str[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">extend</span><span class="params">(<span class="keyword">int</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> p = last;<span class="keyword">int</span> np = ++ tot;</span><br><span class="line">	f[tot] = <span class="number">1</span>;</span><br><span class="line">	tr[np].len = tr[p].len + <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (; p &amp;&amp; !tr[p].ch[c]; p = tr[p].fa) tr[p].ch[c] = np;</span><br><span class="line">	last = tot;</span><br><span class="line">	<span class="keyword">if</span> (!p) tr[np].fa = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> q = tr[p].ch[c];</span><br><span class="line">		<span class="keyword">if</span> (tr[q].len == tr[p].len + <span class="number">1</span>) tr[np].fa = q;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> nq = ++ tot;</span><br><span class="line">			tr[nq] = tr[q], tr[nq].len = tr[p].len + <span class="number">1</span>;</span><br><span class="line">			tr[q].fa = tr[np].fa = nq;</span><br><span class="line">			<span class="keyword">for</span> (; p &amp;&amp; tr[p].ch[c] == q; p = tr[p].fa) tr[p].ch[c] = nq;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>主函数调用的时候，直接 <code>for (int i = 1; str[i]; ++ i) extend(str[i] - &#39;a&#39;);</code> （这里假设只有小写字母）。</p>
+<p><del>可以先背代码，再看下面的讲解</del>。</p>
+<p>下面一点一点的讲解：</p>
+<hr>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> len, fa;</span><br><span class="line">    <span class="keyword">int</span> ch[<span class="number">26</span>];</span><br><span class="line">&#125;tr[N];</span><br></pre></td></tr></table></figure>
+
+<p>说明一下每一个变量的含义：</p>
+<p><code>tr[N]</code>：前面所讲的 $\text{endpos}$ 相同的子串将会被放入同一个结点，也就是说这些子串遍历时会走到这个结点停止。</p>
+<p><code>ch[26]</code>：指所有的结点的转移。</p>
+<p><code>len</code>：指所有的子串的最大长度。</p>
+<p><code>fa</code>：可以看做 <code>fail</code>，也就是匹配失败的时候会走到哪个结点（现在大概用不到，有点像 KMP）。</p>
+<p><strong>性质</strong>：$fa$ 指向的结点的最长长度就是当前结点所代表的子串的最短长度减 1。</p>
+<p>还是拿 $\texttt{abcbc}$ 来说：</p>
+<p>${\texttt{abcbc},\texttt{bcbc},\texttt{cbc} }$ 的最短长度是 3，那么这个结点的 $fa$ 是 $\texttt{bc}$ 所在的结点， 长度为 2。</p>
+<p>这里有一些重要，请务必理解。（其实认真读一下上面的定义就可以了）</p>
+<p>然后，还有一个<strong>重要的性质</strong>：如果当前所代表的最长子串是 $s$，那么按照 $fa$ 一直跳的话，所有遍历到的结点所代表的子串一定都是 $s$ 的后缀，且 $s$ 的后缀一定都被遍历到。</p>
+<p>拿 ${\texttt{abcbc},\texttt{bcbc},\texttt{cbc} }$ 为例：这个结点的 $fa$ 会指向 $\texttt{bc}$ 所在的结点，然后 ${\texttt{bc},\texttt{c}}$ 是一个结点，然后 $fa$ 是 $\varnothing$。可以发现，整个遍历到的是 ${\texttt{abcbc,bcbc,cbc,bc,c},\varnothing }$，恰好是 $\texttt{abcbc}$ 的后缀的所有。 </p>
+<hr>
+<p><code>last = tot = 1</code>：这里表示开始已经有了一个节点，我们定义最开始结点的 $fa$ 是 0，长度也是 0。</p>
+<hr>
+<p><code>int p = last, np = ++ tot; ...; last = tot; </code>：$p$ 表示前面的结点，$np$ 表示当前的结点，处理完当前结点的时候要将 $last$ 更新。</p>
+<hr>
+<p><code>for (; p &amp;&amp; !tr[p].ch[c]; p = tr[p].fa) tr[p].ch[c] = np;</code></p>
+<p>根据刚才的性质：</p>
+<blockquote>
+<p>如果当前所代表的最长子串是 $s$，那么按照 $fa$ 一直跳的话，所有遍历到的结点所代表的子串一定都是 $s$ 的后缀，且 $s$ 的后缀一定都被遍历到。</p>
+</blockquote>
+<p>有了这个结论的话，这里就比较简单了：直接一直按照 $fa$ 跳，将所有的结点都加上当前字符 $c$。</p>
+<p>为什么要加上 <code>!tr[p].ch[c]</code> 呢？</p>
+<p>因为如果出现了相同的字符，我们就有可能出现 $\text{endpos}$ 不是当前结点的，我们要特殊处理。</p>
+<p>这个稍微有点复杂，现在可以理解为有原来的指向了，如果再赋值就会导致一些被覆盖，我们等一下再讲。</p>
+<hr>
+<p><code>if (!p) tr[np].fa = 1;</code>：这个说明程序退出循环是因为 $p=0$，所以说明 $last$ 结点所代表的最长子串，也就是原串（每一次扩展时 $last$ 都赋值给了最新的那个，也就是最长的那个），原串的所有后缀都加了当前字符 $c$，然后到了 $np$ 这个结点。</p>
+<p>所以，$np$ 所代表的子串的长度一定从 $1$ 到最长长度。</p>
+<p>比如，原来的串是 $\texttt{abc}$，加上了 $\texttt{d}$，那么 $\texttt{abc},\texttt{bc},\texttt{c},\varnothing$ 都会加上 $d$ 这个字符。</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/u717hbc3.png"></p>
+<p>（黑色边代表 $ch[]$，绿色边代表 $fa$）</p>
+<p>前面没有理解可以看一下这个图。</p>
+<p>那么，$np$ 的 $fa$ 就是长度为 $0$ 的串在的结点，也就是 $1$。</p>
+<hr>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> q = tr[p].ch[c];</span><br><span class="line"><span class="keyword">if</span> (tr[q].len == tr[p].len + <span class="number">1</span>) tr[np].fa = q;</span><br></pre></td></tr></table></figure>
+
+<p>这里就有些难理解了，我们首先填一下前面的坑。</p>
+<p>因为 $p$ 既可以转移到 $q$，也可以转移到 $np$，那么可以得到结论：$p$ 转移的 $ch[c]$ 有两个出现。</p>
+<p>这里我们用一下前面的例子，在前面的基础 $\texttt{ab}$ 加上 $\texttt{b}$。</p>
+<p>当循环到 $p=1$ 的时候，我们发现已经有了 $b$ 的转移边，这意味着 $\varnothing+\texttt{b}$ 已经出现了一次，这里又一次出现了，也就是说，$\text{endpos}$ 结果是不同于 $q$ 本身的 $\text{endpos}$ 了，所以要特殊处理。</p>
+<p>这里明显是遇上了也有 $c$ 转移的。</p>
+<p>我们首先记录下 $ch[c]$ 的位置 $q$。</p>
+<p>首先，为什么 <code>tr[q].len = tr[p].len + 1</code> 与 <code>tr[q].len != tr[p].len + 1</code> 是不同的呢？</p>
+<p>画一个图。</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/eolba4ep.png"></p>
+<p>根据前面所讲，$\texttt{b}$ 的 $\text{endpos}$ 是 ${2,3}$，不同于原来 3 号结点的 $\text{endpos}$。</p>
+<p>但是，这里判断的 <code>tr[q].len = tr[p].len + 1</code> 是什么意思呢？</p>
+<p>前面讲到，$len$ 的意思是一个结点所代表的子串的最长长度。</p>
+<p>如果 <code>tr[q].len == tr[p].len + 1</code> 的话，那么这里只有长度为 $tr[q].len$ 的一个子串！</p>
+<p>所以我们可以直接将这个结点的 $\text{endpos}$ 改为新的子串。</p>
+<p>比如说，前面的 $q=3$ 的 $\text{endpos}$ 为 2，但是又添加了 $b$ 这个字符，我们就将 $q=3$ 的 $\text{endpos}$ 直接改为 ${2,3}$ 就可以了。</p>
+<p>很明显，3 号结点所代表的子串仍然是 ${\texttt{ab},\texttt{b}}$，然后 $np=4$ 所代表的子串是 ${\texttt{abb}}$，比较明显，4 的 $fa$ 是 3。</p>
+<hr>
+<p>（你以为完了？还多着呢</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> nq = ++ tot;</span><br><span class="line">tr[nq] = tr[q], tr[nq].len = tr[p].len + <span class="number">1</span>;</span><br><span class="line">tr[q].fa = tr[np].fa = nq;</span><br><span class="line"><span class="keyword">for</span> (; p &amp;&amp; tr[p].ch[c] == q; p = tr[p].fa) tr[p].ch[c] = nq;</span><br></pre></td></tr></table></figure>
+
+<p>这里是前面情况的相反情况，也就是 <code>tr[q].len != tr[p].len + 1</code>。</p>
+<p>那么，我们这里就需要将 $q$ 结点拆为两个结点。</p>
+<p>其中一个仍然是 $q$，另一个是 $nq$，也就是新建结点。</p>
+<p>我们再画一个图，建的是 $\texttt{abcb}$ 的后缀自动机。</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/hib4zlyo.png"></p>
+<p><code>tr[nq] = tr[q]</code>：这一个比较简单，因为就是复制过来即可。</p>
+<p><code>tr[nq].len = tr[p].len + 1</code>：这里是指将 $q$ 的长度为 $tr[p].len+1$ 的子串。</p>
+<p><code>tr[q].fa = tr[np].fa = nq</code>：首先，我们从例子中学习。</p>
+<p>很明显，$q$ 的最短子串是 $\texttt{ab}$，也就是长度减 1 的就是 $\texttt{b}$，同理，$np$ 的最短子串是 $\texttt{cb}$，长度减 1 也是 $\texttt{b}$。</p>
+<p>再从证明入手。</p>
+<p>前面说到，$nq$ 这个结点是从 $q$ 这个结点分离出来的，且是最短的子串被分离了的。</p>
+<p>所以，$q$ 的 $fa$ 就应该是 $q$，这个显然 <del>（显然大法）</del>。</p>
+<p>然后，因为 $np$ 本来应该也是有 $nq$ 这个结点所代表的子串的。</p>
+<p>那么，我们也可以说 $nq$ 是从 $np$ 分离出来的。</p>
+<p>所以，这一句显然。</p>
+<hr>
+<p><code>for (; p &amp;&amp; tr[p].ch[c] == q; p = tr[p].fa) tr[p].ch[c] = nq;</code></p>
+<p> 这里是指，既然 $p$ 这个结点所代表的最长子串都是重复了的，那么 $p$ 的所有 $fa$（前提是原来是 $tr[p].ch[c] == q$）都应该有 $ch[c]$ 指到 $nq$ 这个结点。</p>
+<p>看一下上面的例子。</p>
+<p>$p$ 所代表的是 $\varnothing$，它接上 $\texttt{b}$ 也应该属于 $nq$，所以 $tr[p].ch[‘b’-‘a’]=nq$。</p>
+<p>$p$ 的 $fa$ 是 0，所以结束。</p>
+<hr>
+<h3 id="4-SAM-时空复杂度的理解与简要证明"><a href="#4-SAM-时空复杂度的理解与简要证明" class="headerlink" title="4. SAM 时空复杂度的理解与简要证明"></a>4. SAM 时空复杂度的理解与简要证明</h3><p>这里，只说明 $tot\leq 2\operatorname{strlen}(s) - 1$。</p>
+<p>很明显，每一次最多只会多 2 个结点。</p>
+<p>查询也是线性，不用多说。</p>
+<hr>
+<h3 id="5-结语"><a href="#5-结语" class="headerlink" title="5. 结语"></a>5. 结语</h3><p>如果你还没有理解的话，<del>请喷作者</del>并发再评论。</p>
+<p>希望能帮助到你。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/12/13/%E5%90%8E%E7%BC%80%E8%87%AA%E5%8A%A8%E6%9C%BA%EF%BC%88SAM%EF%BC%89/" rel="prev" title="后缀自动机（SAM）">
+      <i class="fa fa-chevron-left"></i> 后缀自动机（SAM）
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8E%E7%BC%80%E8%87%AA%E5%8A%A8%E6%9C%BA%EF%BC%88SAM%EF%BC%89%E6%80%BB%E7%BB%93"><span class="nav-number">1.</span> <span class="nav-text">后缀自动机（SAM）总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-%E5%89%8D%E8%A8%80"><span class="nav-number">1.0.1.</span> <span class="nav-text">0. 前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%81%8C%E8%83%BD"><span class="nav-number">1.0.2.</span> <span class="nav-text">1. 职能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="nav-number">1.0.3.</span> <span class="nav-text">2. 前置知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-SAM-%E7%9A%84%E6%9E%84%E9%80%A0"><span class="nav-number">1.0.4.</span> <span class="nav-text">3. SAM 的构造</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-SAM-%E6%97%B6%E7%A9%BA%E5%A4%8D%E6%9D%82%E5%BA%A6%E7%9A%84%E7%90%86%E8%A7%A3%E4%B8%8E%E7%AE%80%E8%A6%81%E8%AF%81%E6%98%8E"><span class="nav-number">1.0.5.</span> <span class="nav-text">4. SAM 时空复杂度的理解与简要证明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E7%BB%93%E8%AF%AD"><span class="nav-number">1.0.6.</span> <span class="nav-text">5. 结语</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="mydcwfy"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">mydcwfy</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mydcwfy" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mydcwfy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mydcwfy@outlook.com" title="E-Mail → mailto:mydcwfy@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://sighttp.qq.com/msgrd?v=1&uin=2206704749" title="QQ → https:&#x2F;&#x2F;sighttp.qq.com&#x2F;msgrd?v&#x3D;1&amp;uin&#x3D;2206704749" rel="noopener" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.luogu.com.cn/user/342891" title="LuoGu → https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;user&#x2F;342891" rel="noopener" target="_blank"><i class=" fa-fw"></i>LuoGu</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      机房大佬们(LuoGu ID)
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.pigaunt.top/" title="https:&#x2F;&#x2F;www.pigaunt.top" rel="noopener" target="_blank">PigAunt</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://hewo233.blog.luogu.org/" title="https:&#x2F;&#x2F;hewo233.blog.luogu.org" rel="noopener" target="_blank">Hewo</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://wiki.pigaunt.top/" title="https:&#x2F;&#x2F;wiki.pigaunt.top" rel="noopener" target="_blank">PekingOpera</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://luckyleaves.github.io/" title="https:&#x2F;&#x2F;luckyleaves.github.io" rel="noopener" target="_blank">lucky叶</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dyd-true.github.io/" title="https:&#x2F;&#x2F;dyd-true.github.io" rel="noopener" target="_blank">Dyd本人</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://evrgardenviolet.github.io/" title="https:&#x2F;&#x2F;evrgardenviolet.github.io" rel="noopener" target="_blank">闲人</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://rusunoi.github.io/" title="https:&#x2F;&#x2F;rusunoi.github.io" rel="noopener" target="_blank">RuSun</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.luogu.com.cn/blog/koshentoP/" title="https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;blog&#x2F;koshentoP&#x2F;" rel="noopener" target="_blank">Tir_JK_LOVER</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mydcwfy</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">58k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">2:05</span>
+</div>
+
+<div>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("11/23/2021 00:00:00");
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "The site has running for "+dnum+" days ";
+        document.getElementById("times").innerHTML = hnum + " hours " + mnum + " minutes " + snum + " seconds";
+    }
+setInterval("createtime()",250);
+</script>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

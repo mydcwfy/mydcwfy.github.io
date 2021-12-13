@@ -20,19 +20,21 @@
     var CONFIG = {"hostname":"mydcwfy.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="mydcwfy">
-<meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="https://mydcwfy.github.io/about/index.html">
+  <meta name="description" content="前方高能！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FFT 详解">
+<meta property="og:url" content="https://mydcwfy.github.io/2021/12/11/FFT-%E8%AF%A6%E8%A7%A3/index.html">
 <meta property="og:site_name" content="mydcwfy&#39;s Blog">
-<meta property="og:description" content="mydcwfy">
+<meta property="og:description" content="前方高能！">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-11-15T08:14:35.000Z">
-<meta property="article:modified_time" content="2021-11-22T03:43:24.000Z">
+<meta property="article:published_time" content="2021-12-11T08:26:24.000Z">
+<meta property="article:modified_time" content="2021-12-13T08:47:12.872Z">
 <meta property="article:author" content="mydcwfy">
+<meta property="article:tag" content="数论">
+<meta property="article:tag" content="多项式">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://mydcwfy.github.io/about/">
+<link rel="canonical" href="https://mydcwfy.github.io/2021/12/11/FFT-%E8%AF%A6%E8%A7%A3/">
 
 
 <script id="page-configurations">
@@ -40,13 +42,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>about | mydcwfy's Blog
-</title>
+  <title>FFT 详解 | mydcwfy's Blog</title>
   
 
 
@@ -180,46 +181,180 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
-          <div class="content page posts-expand">
+          <div class="content post posts-expand">
             
 
     
-    
-    
-    <div class="post-block" lang="en">
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2021/12/11/FFT-%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="mydcwfy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mydcwfy's Blog">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          FFT 详解
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">about
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
 
-<div class="post-meta">
+              <time title="Created: 2021-12-11 16:26:24" itemprop="dateCreated datePublished" datetime="2021-12-11T16:26:24+08:00">2021-12-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-12-13 16:47:12" itemprop="dateModified" datetime="2021-12-13T16:47:12+08:00">2021-12-13</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>2.9k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>6 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><strong>前方高能！</strong></p>
+<span id="more"></span>
+
+<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>本节是数学之中算非常难的模板题了。</p>
+<p>注意，如果有没学过的知识点，请记住结论即可，不必深挖使自己绕晕。</p>
+<h2 id="1-解决问题"><a href="#1-解决问题" class="headerlink" title="1. 解决问题"></a>1. 解决问题</h2><p>求两个高次多项式的乘积。</p>
+<p>设 $A(x)$ 多项式为 $n$ 次，$B(x)$ 多项式为 $m$ 次（$n\geq m$）。</p>
+<p>朴素复杂度为 $O(nm)$，该算法可以在 $O(n\log n)$ 的时间求出。</p>
+<h2 id="2-主要方法"><a href="#2-主要方法" class="headerlink" title="2. 主要方法"></a>2. 主要方法</h2><h3 id="1）前置知识"><a href="#1）前置知识" class="headerlink" title="1）前置知识"></a>1）前置知识</h3><h4 id="A-点值表示"><a href="#A-点值表示" class="headerlink" title="A. 点值表示"></a>A. 点值表示</h4><p>任意一个 $n$ 次多项式都可以用任意 $n+1$ 个点来表示，其中 $n+1$ 个点都在函数上。</p>
+<p>证明不难，就是 $n+1$ 个 $n+1$ 元一次方程有唯一解。</p>
+<p>经过“范德蒙矩阵”的行列式推导，当且仅当 $x_i\not=x_j(i\not=j)$ 时原方程有唯一解。</p>
+<h4 id="B-复数的基本运算"><a href="#B-复数的基本运算" class="headerlink" title="B. 复数的基本运算"></a>B. 复数的基本运算</h4><p>首先，令 $i=\sqrt{-1}$。</p>
+<p>所以，所有的复数都可以表示为 $a+bi$。</p>
+<p>复数的加法：$(a+bi)+(c+di)=(a+c) +(b+d)i$。</p>
+<p>用向量的角度看，就是两个向量的合成。</p>
+<p>复数的乘法：$(a+bi)\times(c+di)=(ac-bd)+(ad+bc)i$。</p>
+<p>从向量的角度看，乘积的模就为原来的向量的模的乘积。</p>
+<p>乘积的角度为 $\theta=\theta_1+\theta_2$。$\theta$ 为向量与 x 轴正半轴的夹角。</p>
+<h4 id="C-复数域上的单位根"><a href="#C-复数域上的单位根" class="headerlink" title="C. 复数域上的单位根"></a>C. 复数域上的单位根</h4><p>画一个单位圆。</p>
+<p>将该圆划分为 $n$ 份，取了 $k$ 份后，终边所表示的向量记为 $\omega_n^k$。</p>
+<p>$n$ 次单位根为：$\omega_n^k(k\in [0,n-1])$。</p>
+<p>它有几个性质：</p>
+<ol>
+<li>$\forall i\not=j,\omega_n^i \not=\omega_n^j$。</li>
+<li>$\omega_n^k=\cos\dfrac{2k \pi}{n}+\sin\dfrac{2k\pi}{n}i$。</li>
+<li>$\omega_n^0=\omega_n^n=1$。</li>
+<li>$\omega_{2n}^{2k}=\omega_n^k$。</li>
+<li>$\omega_n^{k+\frac{n}{2}}=-\omega_n^k$。</li>
+</ol>
+<p>同样，具有上述几个性质的点也是 $n$ 次单位根。</p>
+<h3 id="2）核心：点值表示与系数表示的转换"><a href="#2）核心：点值表示与系数表示的转换" class="headerlink" title="2）核心：点值表示与系数表示的转换"></a>2）核心：点值表示与系数表示的转换</h3><p>在 FFT 中，我们一共取 $n+m+1$ 个点。</p>
+<p>怎样求出 $C(x)$ 的表达式？</p>
+<p>我们设定 $n+m+1$ 个点，然后求出每一个点的函数值，就求出了点值表示。</p>
+<p>怎样转换为系数表示呢？</p>
+<p>首先，我们考虑取哪些点。</p>
+<p>对于 $A(x)$ 来说，我们取 $\omega_n^k (k\in[0,n-1])$ $n$ 个横坐标。</p>
+<p>我们还是首先考虑怎样从系数表示转换为点值表示。</p>
+<p>然后，我们按次数分类，分为奇数次和偶数次。</p>
+<p>$A(x)=a_0+a_1x+a_2x^2+…+a_{n-1}x^{n-1}$。</p>
+<p>假设 $n$ 为偶数。</p>
+<p>$A_1(x)=a_0+a_2x+a_4x^2+…+a_{n-2}x^{\frac{n}{2}-1}$。</p>
+<p>$A_2(x)=a_1+a_3x+a_5x^2+…+a_{n-1}x^{\frac{n}{2}-1}$。</p>
+<p>所以，我们惊喜地发现：$A(x)=A_1( x^2)+xA_2(x^2)$！</p>
+<p>然后我们将 $\omega_n^k$ 代入，得到：</p>
+<p>如果 $k\in[0,\dfrac{n}{2}-1]$，原式可以写成：<br>$$<br>A(\omega_n^k)=A_1(\omega_n^{2k})+\omega_n^kA_2(\omega_n^{2k})=A_1(\omega_{\frac{n}{2}}^k)+\omega_n^kA_2(\omega_{\frac{n}{2}}^k)<br>$$<br>如果 $k\in[\dfrac{n}{2},n-1]$，原式可以写成：<br>$$<br>A(\omega_n^k)=A_1(\omega_n^{2k})+\omega_n^kA_2(\omega_n^{2k})=A_1(\omega_n^{2k-n})-\omega_n^{k-\frac{n}{2}}A_2(\omega_n^{2k-n})<br>$$</p>
+<p>这样，我们就可以在 $O(n\log n)$ 的时间内从系数表示转换到点值表示。</p>
+<p>下面，我们进行逆变化：从点值表示转换到系数表示。</p>
+<p>假设最终的答案为 $A(x)=c_0+c_1x+…+ c_{n-1}x^{n-1}$。</p>
+<p><strong>结论：</strong><br>$$<br>c_k=\dfrac{\sum_{i=0}^{n-1}y_i(\omega_n^{-k})^i}{n}<br>$$<br>其中，$y_i$ 表示最终得到的纵坐标。</p>
+<p>首先，我们假设该结论成立。</p>
+<p>再定义 $B(x)=y_0+y_1x+y_2x^2+…+y_{n-1}x^ {n-1}$。</p>
+<p>不难发现 $n\cdot c_i=B(\omega_n^{-i})$。</p>
+<p>所以，我们相当于把 $B$ 从系数表示法转换为点值表示法，就在做一次前面的即可。</p>
+<p>可以发现（？），有一个负号不影响答案。</p>
+<p>好，下面我们来证明该结论。</p>
+<p><strong>证明：（从结论反推）</strong><br>$$<br>\begin{aligned}<br>&amp; \sum_{i=0}^{n-1}y_i(\omega_{n} ^ {-k})^i\\<br>= &amp; \sum_{i=0}^{n-1}(\sum_{j = 0}^{n-1} c_j(\omega_{n}^{i}) ^ j)(\omega_{n} ^ {-k}) ^ i\\<br>= &amp; \sum_{i=0}^{n-1}\sum_{j = 0}^{n - 1}c_j (\omega_{n}^{i}) ^ j(\omega_{n} ^ {-k}) ^ i\\<br>= &amp; \sum_{i=0}^{n - 1}\sum_{j = 0}^{n - 1} c_j (\omega_{n}^{j-k}) ^ i\\<br>= &amp; \sum_{j=0}^{n - 1} c_j(\sum_{i = 0}^{n - 1} (\omega_{n}^{j - k}) ^ i)<br>\end{aligned}<br>$$</p>
+<p>在最里面的括号 $(\omega_{n}^{j-k})^i$，$j,k$ 都是常量，$i$ 是变量，所以我们可以再构造 $D(x)=\sum_{i = 0}^{n-1}x^i$，原式就可以化成：<br>$$<br>=\sum_{j=0}^{n-1}c_j*D(\omega_{n}^{j-k})<br>$$<br>接着，我们讨论 $D(\omega_{n}^{x})$ 的取值：</p>
+<p>$x\not=0$：，首先，$D(\omega_{n}^{x})= \omega_{n}^{0}+\omega_{n}^{x}+ \omega_{n}^{2x}+…+\omega_{n} ^{(n-1)x}$。</p>
+<p>其次，$\omega_{n}^{x}D( \omega_{n}^{x})=\omega_{n}^{x}+ \omega_{n}^{2x}+…+\omega_{n} ^{(n-1)x}+(\omega_{n}^{nx}=\omega_{n}^0)$。</p>
+<p>发现，这两项相等。</p>
+<p>于是，$(\omega_{n}^{x}-1)D(\omega_{n}^{x})=0$，又 $x\not=0$，所以 $\omega_{n}^{x}\not=1$，于是 $D(\omega_{n}^{x})=0$。</p>
+<p>$x=0$：$D(\omega_{n}^{x})=D(1)=n$。</p>
+<p>所以，当 $j\not=k$ 时，原式为 $0$。</p>
+<p>带入原式，便可以得到：<br>$$<br>=nc_k<br>$$<br><strong>证毕。</strong></p>
+<p>在实践中，递归的常数较大，我们使用迭代。</p>
+<p>首先，我们预处理长度为 $1$ 的 $n$ 个点。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E8%AE%BA/" rel="tag"><i class="fa fa-tag"></i> 数论</a>
+              <a href="/tags/%E5%A4%9A%E9%A1%B9%E5%BC%8F/" rel="tag"><i class="fa fa-tag"></i> 多项式</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/20/NOIp2021-%E6%B8%B8%E8%AE%B0/" rel="prev" title="NOIp2021 游记">
+      <i class="fa fa-chevron-left"></i> NOIp2021 游记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/12/12/%E6%96%AF%E7%89%B9%E6%9E%97%E6%95%B0/" rel="next" title="斯特林数">
+      斯特林数 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-          <h2 id="mydcwfy"><a href="#mydcwfy" class="headerlink" title="mydcwfy"></a>mydcwfy</h2><ul>
-<li></li>
-</ul>
-
-      </div>
-      
-      
-      
-    </div>
-    
-
-    
-    
-    
 
 
           </div>
@@ -270,7 +405,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#mydcwfy"><span class="nav-number">1.</span> <span class="nav-text">mydcwfy</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">0. 前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">1. 解决问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%B8%BB%E8%A6%81%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">2. 主要方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="nav-number">3.1.</span> <span class="nav-text">1）前置知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#A-%E7%82%B9%E5%80%BC%E8%A1%A8%E7%A4%BA"><span class="nav-number">3.1.1.</span> <span class="nav-text">A. 点值表示</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B-%E5%A4%8D%E6%95%B0%E7%9A%84%E5%9F%BA%E6%9C%AC%E8%BF%90%E7%AE%97"><span class="nav-number">3.1.2.</span> <span class="nav-text">B. 复数的基本运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#C-%E5%A4%8D%E6%95%B0%E5%9F%9F%E4%B8%8A%E7%9A%84%E5%8D%95%E4%BD%8D%E6%A0%B9"><span class="nav-number">3.1.3.</span> <span class="nav-text">C. 复数域上的单位根</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E6%A0%B8%E5%BF%83%EF%BC%9A%E7%82%B9%E5%80%BC%E8%A1%A8%E7%A4%BA%E4%B8%8E%E7%B3%BB%E6%95%B0%E8%A1%A8%E7%A4%BA%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.2.</span> <span class="nav-text">2）核心：点值表示与系数表示的转换</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

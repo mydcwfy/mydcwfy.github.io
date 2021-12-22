@@ -4,6 +4,27 @@
   
     
     <entry>
+      <title>Manacher</title>
+      <link href="/2021/12/22/Manacher-Algorithm/"/>
+      <url>/2021/12/22/Manacher-Algorithm/</url>
+      
+        <content type="html"><![CDATA[<p>其实应用范围并不是很广。主要是预处理比较麻烦，而且很多问题回归原串的话是比较麻烦的。</p><span id="more"></span><h2 id="1-思想"><a href="#1-思想" class="headerlink" title="1. 思想"></a>1. 思想</h2><p>解决最长回文串的问题。</p><p>其实字符串的思想其实是比较类似的，都是将一个 $O(n ^ 2)$ 或者更高的复杂度的一个算法降一个 $n$。</p><p>比如，这里的 Manacher，暴力匹配是 $O(n ^ 2)$，但是我们通过 Manacher，可以优化到 $O(n)$。（但是有二分加 Hash $O(n \log n)$）</p><h2 id="2-算法流程"><a href="#2-算法流程" class="headerlink" title="2. 算法流程"></a>2. 算法流程</h2><h3 id="1）预处理"><a href="#1）预处理" class="headerlink" title="1）预处理"></a>1）预处理</h3><p>由于 Manacher <del>比较拙劣</del>只能处理长度为奇数的回文串，所以我们需要一些预处理。</p><p>其实很简单，我们直接在每两个字符之间加上另外一个没有出现过的字符，然后回文中心其实就是新加入的字符。</p><p>比如说，$\texttt{abba}$，然后我们变为：$\texttt{a<em>b</em>b*a}$，于是回文中心就是中间的 *。</p><p>注意我们可能会一些比较神奇的匹配出现，同时为了防止边界问题，我们在前面再加一个都没有出现过的字符。</p><p>于是就是：$\texttt{+a<em>b</em>b*a}$，很明显匹配的时候，我们会匹配到 + 的时候是一定不会在往前匹配的。所以一定不会导越界。</p><h3 id="2）主流程"><a href="#2）主流程" class="headerlink" title="2）主流程"></a>2）主流程</h3><p>定义 $p(i)$ 表示以 $s(i)$ 为中心的最长回文串半径。比如 $\texttt{a<em>b</em>a}$，中间 $b$ 的下标是 $3$，那么 $p(3) = 3$，因为半径就是 $\texttt{b*a}$ 的长度。</p><p>首先，我们定义当前匹配的回文串最远可以达到 $r$，贡献这一个最远的是 $mid$，即 $r = \max(i + p(i) - 1)$，且 $r = mid + p(mid) - 1$。</p><p>我们计算 $p(i)$ 的时候，如果 $i &lt; r$，那么就可以得到 $p(i)\geq p(2 * mid - i)$。为什么呢？</p><p>首先，我们计算 $p(i)$ 的时候，$mid &lt; i$，然后 $2 * mid - i &lt; i$，所以</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 字符串 </tag>
+            
+            <tag> Manacher </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>并查集</title>
       <link href="/2021/12/17/Disjoint-set/"/>
       <url>/2021/12/17/Disjoint-set/</url>

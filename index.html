@@ -182,6 +182,446 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2021/12/26/P4897/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="mydcwfy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mydcwfy's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/26/P4897/" class="post-title-link" itemprop="url">P4897</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-26 12:03:28 / Modified: 12:04:17" itemprop="dateCreated datePublished" datetime="2021-12-26T12:03:28+08:00">2021-12-26</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>3.7k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>8 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <span id="more"></span>
+
+<h3 id="看大家都是倍增，我换一个简单点的方法吧"><a href="#看大家都是倍增，我换一个简单点的方法吧" class="headerlink" title="看大家都是倍增，我换一个简单点的方法吧"></a>看大家都是倍增，我换一个简单点的方法吧</h3><p><del>一开始还以为是最小割的模板呢</del></p>
+<h2 id="1-题意"><a href="#1-题意" class="headerlink" title="1.题意"></a>1.题意</h2><p><a target="_blank" rel="noopener" href="http://luogu.org/problem/P4897">题目传送门</a></p>
+<ol>
+<li>每次询问$u$到$v$的最小割。</li>
+<li>有$Q$个询问，点数、边数分别为$n$、$m$。</li>
+<li>$Q \leq 10^5,n \leq 500,m \leq 1500$。</li>
+</ol>
+<h2 id="2-知识储备"><a href="#2-知识储备" class="headerlink" title="2.知识储备"></a>2.知识储备</h2><p>网络流 + 最大流</p>
+<p>最大流最小割定理</p>
+<p>不会请移步<br><a href="">我的博客</a> 或者百度</p>
+<h2 id="3-最小割树"><a href="#3-最小割树" class="headerlink" title="3.最小割树"></a>3.最小割树</h2><p>很明显，不可能每次求最小割（复杂度为 $O(Qn^2m)$）。</p>
+<p>我们将一个网络流的图转化为一棵树，其中原图 $u$ 到 $v$ 的最小割即为转化到树上。</p>
+<p>树的一个性质是：删除一条边，树变得不连通。</p>
+<p>那么，我们可以任意选 2 个点 $s$ 与 $t$，跑最小割（即最大流），然后再连一条从 $s$ 到 $t$ 的边。</p>
+<p>又 Dinic 算法最后一次 bfs 相当于求一个最小割，原图就被分为了两部分。</p>
+<p>最后分治就可以了，复杂度为 $O(n^3m)$（Dinic 跑不满的，所以不会超时）。</p>
+<p>按这样建出的树，就是一棵无根树。</p>
+<p>我们可以发现一个有趣的性质：$u$ 到 $v$ 的最小割就是树上从 $u$ 到 $v$ 的所有路径长的最小值。</p>
+<p>可以感性地理解一下（ <del>主要是太菜不会证</del> ）：最小割即为最小的路径长，把 $u$ 到 $v$ 的任意一条路径切断，都是割。</p>
+<h4 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h4><p>每次跑 Dinic 时，都要对全图进行，否则就不是最大流<br>（$u$ 到 $v$ 的最大流就是针对全局的）。</p>
+<p>Code：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">work</span><span class="params">(<span class="keyword">int</span> l,<span class="keyword">int</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;<span class="comment">//node存放要处理的节点，l与r分别是左右端点</span></span><br><span class="line">	<span class="keyword">if</span> (l==r) <span class="keyword">return</span> ;</span><br><span class="line">	S=node[l],T=node[l+<span class="number">1</span>];</span><br><span class="line">	<span class="keyword">int</span> t=<span class="built_in">dinic</span>();</span><br><span class="line">	ans[T][S]=ans[S][T]=t;<span class="comment">//or add(S,T,t),add(T,S,t)</span></span><br><span class="line">	<span class="keyword">int</span> cnt1=<span class="number">0</span>,cnt2=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i=l;i&lt;=r;++i)</span><br><span class="line">		<span class="keyword">if</span> (d[node[i]]) tmp1[++cnt1]=node[i];</span><br><span class="line">		<span class="keyword">else</span> tmp2[++cnt2]=node[i];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=cnt1;++i) node[i+l<span class="number">-1</span>]=tmp1[i];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=cnt2;++i) node[cnt1+l+i<span class="number">-1</span>]=tmp2[i];</span><br><span class="line">	<span class="built_in">work</span>(l,l+cnt1<span class="number">-1</span>);</span><br><span class="line">	<span class="built_in">work</span>(l+cnt1,r);</span><br><span class="line">   	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-处理询问"><a href="#4-处理询问" class="headerlink" title="4.处理询问"></a>4.处理询问</h2><p>由于询问数很多（ $Q \leq 10^5$ ），很多 dalao 选择了树上倍增的做法，复杂度为 $O(Q \log n)$。</p>
+<p>鉴于本人对倍增不太熟练，我换了一种方式。</p>
+<p>观察题目数据范围，发现 $n$ 较小，而 $Q$ 较大，所以使用预处理的方式，先将答案处理好。</p>
+<p>复杂度为 $O(n^2)$。</p>
+<p>我们甚至不用建树（心中有“树”即可），在每一个 work(l,r) 函数中直接统计从 $s$ 所在集合 $S$ 到 $t$ 所在集合 $T$ 的答案。</p>
+<p>当前 $S$ 与 $T$ 集合的连接只有 $s$ 与 $t$（其他的都在集合内部）。</p>
+<p>则 $\forall u \in S,v \in T$，都有：<br>$$ans(u,v)=\min (ans(u,s),ans(s,t),ans(t,v))$$</p>
+<p>同时，由于正向与反向都相同，所以不要忘记处理反向。</p>
+<p>最后每个询问，输出答案即可。</p>
+<p>代码实现时，注意以下几个细节：</p>
+<ol>
+<li><p>每一次最大流时，都要先恢复开始的网络流（即退流）。</p>
+</li>
+<li><p>插入网络流的边时，要双向插入（题目没有指明哪个是起点）。</p>
+</li>
+<li><p>下标从 0 开始到 $n$。</p>
+</li>
+<li><p>每一次最大流时，先保存源点和汇点，防止被覆盖（如果 $s$ 与 $t$ 使用全局变量）（ <del>卡了一个多小时我才发现</del> ）。</p>
+</li>
+</ol>
+<p>其余细节看代码吧。</p>
+<p>Code：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N=<span class="number">505</span>,M=<span class="number">6005</span>,INF=<span class="number">0x3f3f3f3f</span>;</span><br><span class="line"><span class="comment">//M要开4倍，因为正反各要2条边</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> h[N],e[M],ne[M],w[M],idx;</span><br><span class="line"><span class="keyword">int</span> cur[N],q[N],d[N],S,T,n,m;</span><br><span class="line"><span class="keyword">int</span> node[N],ans[N][N],tmp1[N],tmp2[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b,<span class="keyword">int</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	e[idx]=b,ne[idx]=h[a],w[idx]=c,h[a]=idx++;</span><br><span class="line">	e[idx]=a,ne[idx]=h[b],w[idx]=<span class="number">0</span>,h[b]=idx++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">bfs</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">memset</span>(d,<span class="number">0</span>,<span class="keyword">sizeof</span> d);</span><br><span class="line">	<span class="keyword">int</span> hh=<span class="number">1</span>,tt=<span class="number">1</span>;</span><br><span class="line">	q[<span class="number">1</span>]=S;cur[S]=h[S];d[S]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span> (hh&lt;=tt)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> x=q[hh++];</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i=h[x];~i;i=ne[i])</span><br><span class="line">			<span class="keyword">if</span> (!d[e[i]]&amp;&amp;w[i])</span><br><span class="line">			&#123;</span><br><span class="line">				d[e[i]]=d[x]+<span class="number">1</span>;</span><br><span class="line">				cur[e[i]]=h[e[i]];</span><br><span class="line">				<span class="keyword">if</span> (e[i]==T) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">				q[++tt]=e[i];</span><br><span class="line">			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">findflow</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> limit)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (x==T) <span class="keyword">return</span> limit;</span><br><span class="line">	<span class="keyword">int</span> flow=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i=cur[x];~i&amp;&amp;flow&lt;limit;i=ne[i])</span><br><span class="line">	&#123;</span><br><span class="line">		cur[x]=i;</span><br><span class="line">		<span class="keyword">if</span> (d[e[i]]==d[x]+<span class="number">1</span>&amp;&amp;w[i])</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> t=<span class="built_in">findflow</span>(e[i],<span class="built_in">min</span>(w[i],limit-flow));</span><br><span class="line">			<span class="keyword">if</span> (!t) d[e[i]]=<span class="number">-1</span>;</span><br><span class="line">			w[i]-=t,w[i^<span class="number">1</span>]+=t,flow+=t;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> flow;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;idx;i+=<span class="number">2</span>)</span><br><span class="line">		w[i]=(w[i]+w[i^<span class="number">1</span>]),w[i^<span class="number">1</span>]=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;<span class="comment">//注意退流的方式</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dinic</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">init</span>();</span><br><span class="line">	<span class="keyword">int</span> r=<span class="number">0</span>,flow;</span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">bfs</span>()) <span class="keyword">while</span> (flow=<span class="built_in">findflow</span>(S,INF)) r+=flow;</span><br><span class="line">	<span class="keyword">return</span> r;</span><br><span class="line">&#125;<span class="comment">//Dinic模板</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">work</span><span class="params">(<span class="keyword">int</span> l,<span class="keyword">int</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (l==r) <span class="keyword">return</span> ;</span><br><span class="line">	S=node[l],T=node[l+<span class="number">1</span>];</span><br><span class="line">	<span class="keyword">int</span> t=<span class="built_in">dinic</span>(),s=node[l],tt=node[l+<span class="number">1</span>];<span class="comment">//将源汇点存下来</span></span><br><span class="line">	ans[T][S]=ans[S][T]=t;</span><br><span class="line">	<span class="keyword">int</span> cnt1=<span class="number">0</span>,cnt2=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i=l;i&lt;=r;++i)</span><br><span class="line">		<span class="keyword">if</span> (d[node[i]]) tmp1[++cnt1]=node[i];</span><br><span class="line">		<span class="keyword">else</span> tmp2[++cnt2]=node[i];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=cnt1;++i) node[i+l<span class="number">-1</span>]=tmp1[i];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=cnt2;++i) node[cnt1+l+i<span class="number">-1</span>]=tmp2[i];</span><br><span class="line">	<span class="built_in">work</span>(l,l+cnt1<span class="number">-1</span>);</span><br><span class="line">	<span class="built_in">work</span>(l+cnt1,r);<span class="comment">//分治</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=cnt1;++i)</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=cnt2;++j)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> ii=node[i+l<span class="number">-1</span>],jj=node[j+cnt1+l<span class="number">-1</span>];</span><br><span class="line">			ans[jj][ii]=ans[ii][jj]=<span class="built_in">min</span>(<span class="built_in">min</span>(ans[ii][s],ans[s][tt]),ans[tt][jj]);</span><br><span class="line">		&#125;<span class="comment">//每个点都要处理</span></span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">memset</span>(h,<span class="number">-1</span>,<span class="keyword">sizeof</span> h);</span><br><span class="line">	<span class="built_in">memset</span>(ans,<span class="number">0x3f</span>,<span class="keyword">sizeof</span> ans);</span><br><span class="line">	cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">	<span class="keyword">int</span> x,y,z;</span><br><span class="line">	<span class="keyword">while</span> (m--)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %d %d&quot;</span>,&amp;x,&amp;y,&amp;z);</span><br><span class="line">		<span class="built_in">add</span>(x,y,z);<span class="built_in">add</span>(y,x,z);<span class="comment">//双向边</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=n;++i) node[i]=i;</span><br><span class="line">	<span class="built_in">work</span>(<span class="number">0</span>,n);<span class="comment">//下标从0开始</span></span><br><span class="line">	<span class="keyword">int</span> que;cin&gt;&gt;que;</span><br><span class="line">	<span class="keyword">while</span> (que--)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>,&amp;x,&amp;y);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,ans[x][y]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2021/12/26/Network-flow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="mydcwfy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mydcwfy's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/26/Network-flow/" class="post-title-link" itemprop="url">网络流</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-26 11:56:23 / Modified: 11:57:54" itemprop="dateCreated datePublished" datetime="2021-12-26T11:56:23+08:00">2021-12-26</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>2.5k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>5 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>update: 2021-4-12 9:58 增加最小割的内容</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/26/Network-flow/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2021/12/26/P5192/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="mydcwfy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mydcwfy's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/26/P5192/" class="post-title-link" itemprop="url">P5192</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-26 11:55:23 / Modified: 12:02:07" itemprop="dateCreated datePublished" datetime="2021-12-26T11:55:23+08:00">2021-12-26</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>5.4k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>12 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>同步发表于 P5192 题解。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/26/P5192/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2021/12/26/Bipartite-graph/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="mydcwfy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mydcwfy's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/26/Bipartite-graph/" class="post-title-link" itemprop="url">二分图</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-26 11:52:49 / Modified: 11:54:31" itemprop="dateCreated datePublished" datetime="2021-12-26T11:52:49+08:00">2021-12-26</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4.8k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>10 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>简单的前置知识。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/26/Bipartite-graph/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2021/12/26/Euler-circuit-and-Eulerian-path/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="mydcwfy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mydcwfy's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/26/Euler-circuit-and-Eulerian-path/" class="post-title-link" itemprop="url">欧拉回路</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-26 11:50:30 / Modified: 11:51:45" itemprop="dateCreated datePublished" datetime="2021-12-26T11:50:30+08:00">2021-12-26</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>代码简单。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/26/Euler-circuit-and-Eulerian-path/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2021/12/22/Manacher-Algorithm/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -205,10 +645,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-12-22 22:01:34 / Modified: 22:25:50" itemprop="dateCreated datePublished" datetime="2021-12-22T22:01:34+08:00">2021-12-22</time>
+              <time title="Created: 2021-12-22 22:01:34" itemprop="dateCreated datePublished" datetime="2021-12-22T22:01:34+08:00">2021-12-22</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-12-26 10:10:26" itemprop="dateModified" datetime="2021-12-26T10:10:26+08:00">2021-12-26</time>
+              </span>
 
           <br>
             <span class="post-meta-item" title="Symbols count in article">
@@ -216,7 +662,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>739</span>
+              <span>745</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -1384,420 +1830,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2021/12/17/%E7%AD%9B%E8%B4%A8%E6%95%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="mydcwfy">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mydcwfy's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/17/%E7%AD%9B%E8%B4%A8%E6%95%B0/" class="post-title-link" itemprop="url">筛质数</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-12-17 20:15:23 / Modified: 20:16:16" itemprop="dateCreated datePublished" datetime="2021-12-17T20:15:23+08:00">2021-12-17</time>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>3.6k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>8 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>比较简单的前置知识。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/12/17/%E7%AD%9B%E8%B4%A8%E6%95%B0/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2021/12/15/CF-Round-758/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="mydcwfy">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mydcwfy's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/15/CF-Round-758/" class="post-title-link" itemprop="url">CF Round#758</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-12-15 21:37:44" itemprop="dateCreated datePublished" datetime="2021-12-15T21:37:44+08:00">2021-12-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-12-16 21:44:39" itemprop="dateModified" datetime="2021-12-16T21:44:39+08:00">2021-12-16</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>4.3k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>9 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>比赛记录：ABC Accepted，Scores：1645，Rank #727（似乎有点巧，<code>Fly727</code>，Rating 829 -&gt; 1239。</p>
-<p>改题进度：ABCD Accepted。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/12/15/CF-Round-758/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2021/12/13/%E5%90%8E%E7%BC%80%E6%95%B0%E7%BB%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="mydcwfy">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mydcwfy's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/13/%E5%90%8E%E7%BC%80%E6%95%B0%E7%BB%84/" class="post-title-link" itemprop="url">后缀数组</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-12-13 22:25:44" itemprop="dateCreated datePublished" datetime="2021-12-13T22:25:44+08:00">2021-12-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-12-20 21:53:52" itemprop="dateModified" datetime="2021-12-20T21:53:52+08:00">2021-12-20</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>9.2k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>20 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>和后缀自动机几乎是字符串最难的两个专题了。</p>
-<p><strong>注意很多题不能相互替代。</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/12/13/%E5%90%8E%E7%BC%80%E6%95%B0%E7%BB%84/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2021/12/13/%E7%82%B9%E5%88%86%E6%B2%BB%E5%92%8C%E7%82%B9%E5%88%86%E6%A0%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="mydcwfy">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mydcwfy's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/13/%E7%82%B9%E5%88%86%E6%B2%BB%E5%92%8C%E7%82%B9%E5%88%86%E6%A0%91/" class="post-title-link" itemprop="url">点分治和点分树</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-12-13 22:21:47 / Modified: 22:23:28" itemprop="dateCreated datePublished" datetime="2021-12-13T22:21:47+08:00">2021-12-13</time>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>9.7k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>21 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>将来自数组的分治搬到树上。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/12/13/%E7%82%B9%E5%88%86%E6%B2%BB%E5%92%8C%E7%82%B9%E5%88%86%E6%A0%91/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2021/12/13/%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="mydcwfy">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mydcwfy's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/13/%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86/" class="post-title-link" itemprop="url">中国剩余定理</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-12-13 22:17:55 / Modified: 22:19:26" itemprop="dateCreated datePublished" datetime="2021-12-13T22:17:55+08:00">2021-12-13</time>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>890</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>2 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>注意公式。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/12/13/%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1869,14 +1901,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-count">49</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -1965,13 +1997,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">229k</span>
+    <span title="Symbols count total">248k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">8:19</span>
+    <span title="Reading time total">8:59</span>
 </div>
 
 <div>

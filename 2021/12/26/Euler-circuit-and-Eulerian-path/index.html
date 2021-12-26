@@ -27,14 +27,14 @@
 <meta property="og:site_name" content="mydcwfy&#39;s Blog">
 <meta property="og:description" content="代码简单。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/olg0wl1u.png">
+<meta property="og:image" content="https://mydcwfy.github.io/2021/12/26/Euler-circuit-and-Eulerian-path/%E6%AC%A7%E6%8B%89%E5%9B%9E%E8%B7%AF%E4%BE%8B%E5%9B%BE.png">
 <meta property="article:published_time" content="2021-12-26T03:50:30.000Z">
-<meta property="article:modified_time" content="2021-12-26T03:51:45.799Z">
+<meta property="article:modified_time" content="2021-12-26T04:30:18.288Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="图论">
 <meta property="article:tag" content="欧拉回路">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.luogu.com.cn/upload/image_hosting/olg0wl1u.png">
+<meta name="twitter:image" content="https://mydcwfy.github.io/2021/12/26/Euler-circuit-and-Eulerian-path/%E6%AC%A7%E6%8B%89%E5%9B%9E%E8%B7%AF%E4%BE%8B%E5%9B%BE.png">
 
 <link rel="canonical" href="https://mydcwfy.github.io/2021/12/26/Euler-circuit-and-Eulerian-path/">
 
@@ -215,7 +215,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-12-26 11:50:30 / Modified: 11:51:45" itemprop="dateCreated datePublished" datetime="2021-12-26T11:50:30+08:00">2021-12-26</time>
+              <time title="Created: 2021-12-26 11:50:30 / Modified: 12:30:18" itemprop="dateCreated datePublished" datetime="2021-12-26T11:50:30+08:00">2021-12-26</time>
             </span>
 
           
@@ -270,7 +270,8 @@
 <p>首先，可以明确的是，欧拉路径是又若干个环所组成的。</p>
 <p>那么，我们怎样将所有的边接为一个大环呢？</p>
 <p>我们模拟栈的回溯过程，将第二个环嵌在第一个环中间。</p>
-<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/olg0wl1u.png"></p>
+<img src="/2021/12/26/Euler-circuit-and-Eulerian-path/%E6%AC%A7%E6%8B%89%E5%9B%9E%E8%B7%AF%E4%BE%8B%E5%9B%BE.png" class="">
+
 <p>这个会按照 红-绿 的颜色进行递归的，然后按照这个倒序的话，我们就可以找到这个欧拉回路，也就是这个 红-绿 路径。</p>
 <p>栈的模拟十分简单，回溯的时候直接将这条边入栈，最后倒序输出就可以了。</p>
 <p>但是，这样的时间复杂度是 $O(nm)$（虽然和 spfa 差不多），我们很多时候需要优化，变为严格 $O(n+m)$。</p>
@@ -379,14 +380,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-count">63</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">48</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -475,13 +476,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">248k</span>
+    <span title="Symbols count total">287k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">8:59</span>
+    <span title="Reading time total">10:25</span>
 </div>
 
 <div>

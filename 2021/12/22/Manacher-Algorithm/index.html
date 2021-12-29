@@ -27,12 +27,14 @@
 <meta property="og:site_name" content="mydcwfy&#39;s Blog">
 <meta property="og:description" content="其实应用范围并不是很广。主要是预处理比较麻烦，而且很多问题回归原串的话是比较麻烦的。">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mydcwfy.github.io/2021/12/22/Manacher-Algorithm/Manacher1.png">
 <meta property="article:published_time" content="2021-12-22T14:01:34.000Z">
-<meta property="article:modified_time" content="2021-12-26T02:10:26.128Z">
+<meta property="article:modified_time" content="2021-12-28T13:35:08.368Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="字符串">
 <meta property="article:tag" content="Manacher">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mydcwfy.github.io/2021/12/22/Manacher-Algorithm/Manacher1.png">
 
 <link rel="canonical" href="https://mydcwfy.github.io/2021/12/22/Manacher-Algorithm/">
 
@@ -219,7 +221,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-12-26 10:10:26" itemprop="dateModified" datetime="2021-12-26T10:10:26+08:00">2021-12-26</time>
+                <time title="Modified: 2021-12-28 21:35:08" itemprop="dateModified" datetime="2021-12-28T21:35:08+08:00">2021-12-28</time>
               </span>
 
           
@@ -235,14 +237,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>745</span>
+              <span>1.9k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>2 mins.</span>
+              <span>4 mins.</span>
             </span>
 
         </div>
@@ -265,10 +267,23 @@
 <p>比如说，$\texttt{abba}$，然后我们变为：$\texttt{a|b|b|a}$，于是回文中心就是中间的 |。</p>
 <p>注意我们可能会一些比较神奇的匹配出现，同时为了防止边界问题，我们在前面再加一个都没有出现过的字符。</p>
 <p>于是就是：$\texttt{+a|b|b|a}$，很明显匹配的时候，我们会匹配到 + 的时候是一定不会在往前匹配的。所以一定不会导越界。</p>
+<p>（代码中加的字符似乎不一样）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">readstr</span><span class="params">()</span><span class="comment">//读入该串并转化</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">    str[++ len] = <span class="string">&#x27;@&#x27;</span>;</span><br><span class="line">    str[++ len] = <span class="string">&#x27;%&#x27;</span>;</span><br><span class="line">    <span class="keyword">char</span> c;</span><br><span class="line">    <span class="keyword">while</span> ((c = <span class="built_in">getchar</span>()) &lt; <span class="string">&#x27;a&#x27;</span> || c &gt; <span class="string">&#x27;z&#x27;</span>);</span><br><span class="line">    str[++ len] = c, str[++ len] = <span class="string">&#x27;%&#x27;</span>;</span><br><span class="line">    <span class="keyword">while</span> ((c = <span class="built_in">getchar</span>()) &gt;= <span class="string">&#x27;a&#x27;</span> &amp;&amp; c &lt;= <span class="string">&#x27;z&#x27;</span>)</span><br><span class="line">        str[++ len] = c, str[++ len] = <span class="string">&#x27;%&#x27;</span>;</span><br><span class="line">    <span class="keyword">return</span> len;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h3 id="2）主流程"><a href="#2）主流程" class="headerlink" title="2）主流程"></a>2）主流程</h3><p>定义 $p(i)$ 表示以 $s(i)$ 为中心的最长回文串半径。比如 $\texttt{a|b|a}$，中间 $b$ 的下标是 $3$，那么 $p(3) = 3$，因为半径就是 $\texttt{b|a}$ 的长度。</p>
 <p>首先，我们定义当前匹配的回文串最远可以达到 $r$，贡献这一个最远的是 $mid$，即 $r = \max(i + p(i) - 1)$，且 $r = mid + p(mid) - 1$。</p>
-<p>我们计算 $p(i)$ 的时候，如果 $i &lt; r$，那么就可以得到 $p(i)\geq p(2 * mid - i)$。为什么呢？</p>
-<p>首先，我们计算 $p(i)$ 的时候，$mid &lt; i$，然后 $2 * mid - i &lt; i$，所以</p>
+<p>我们计算 $p(i)$ 的时候，如果 $i &lt; r$，那么就可以得到 $p(i)\geq \min(r - i + 1, p(2 * mid - i))$。为什么呢？</p>
+<p>首先，我们计算 $p(i)$ 的时候，$mid &lt; i$，然后 $2 * mid - i &lt; i$，所以 $p(i)$ 的信息可以由 $p(2 * mid - i)$ 求出来。注意不能越出最长的回文串，不然就可能不是合法的。</p>
+<img src="/2021/12/22/Manacher-Algorithm/Manacher1.png" class="">
+
+<p>计算出来之后，我们直接暴力匹配就可以了。可以证明时间复杂度为 $O(n)$。先看代码。然后我们再证明复杂度。</p>
+<p>如果要求原串的最长回文串，我们发现，不管是长度为奇数还是偶数，都是 $p(i) - 1$。看两个例子就可以了：$\texttt{|b|b|}$：$p(i) = 3$；$\texttt{|a|b|a|}$：$p(i) = 4$。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Manacher</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ans = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">int</span> ri = <span class="number">1</span>, mid = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (i &lt; ri) p[i] = <span class="built_in">min</span>(p[<span class="number">2</span> * mid - i], ri - i);</span><br><span class="line">        <span class="keyword">else</span> p[i] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (str[i - p[i]] == str[i + p[i]]) p[i] ++;</span><br><span class="line">        <span class="keyword">if</span> (ri &lt; i + p[i]) mid = i, ri = i + p[i];</span><br><span class="line">        ans = <span class="built_in">max</span>(ans, p[i] - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-时间复杂度的证明"><a href="#3-时间复杂度的证明" class="headerlink" title="3. 时间复杂度的证明"></a>3. 时间复杂度的证明</h2><p>很明显，时间的主要消耗是在 <code>while (str[i - p[i]] == str[i + p[i]]) p[i] ++;</code>。</p>
+<p>假设 $p(2\times mid - i) &lt; r - i + 1$，说明我们在匹配 $2 \times mid - i$ 的时候已经发现无法再匹配下去了，而这个无法匹配的字符仍然会被回文到 $i$ 附近，说明匹配 $i$ 的时候，同样会遇到这种情况。那么 <code>while</code> 只会执行一次。</p>
+<p>另外的情况，即 $p(2 \times mid - i)\geq r - i + 1$，那么我一直匹配的话，一定会导致 $r$ 跟着增加（因为 $r$ 会被 $i$ 更新）。并且 $r$ 的增加量就是 <code>while</code> 的执行次数。</p>
+<p>很明显，$r$ 向右移动的次数不超过 $O(n)$。于是我们证明了 Manacher 就是 $O(n)$。</p>
 
     </div>
 
@@ -354,7 +369,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%80%9D%E6%83%B3"><span class="nav-number">1.</span> <span class="nav-text">1. 思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">2. 算法流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">2.1.</span> <span class="nav-text">1）预处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E4%B8%BB%E6%B5%81%E7%A8%8B"><span class="nav-number">2.2.</span> <span class="nav-text">2）主流程</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%80%9D%E6%83%B3"><span class="nav-number">1.</span> <span class="nav-text">1. 思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">2. 算法流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">2.1.</span> <span class="nav-text">1）预处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E4%B8%BB%E6%B5%81%E7%A8%8B"><span class="nav-number">2.2.</span> <span class="nav-text">2）主流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E7%9A%84%E8%AF%81%E6%98%8E"><span class="nav-number">3.</span> <span class="nav-text">3. 时间复杂度的证明</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -466,13 +481,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">302k</span>
+    <span title="Symbols count total">307k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">10:56</span>
+    <span title="Reading time total">11:08</span>
 </div>
 
 <div>

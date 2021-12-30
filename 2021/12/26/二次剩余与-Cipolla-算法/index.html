@@ -28,7 +28,7 @@
 <meta property="og:description" content="虽说比较困难，但是代码实现十分简单。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-12-26T07:24:45.000Z">
-<meta property="article:modified_time" content="2021-12-26T08:21:41.552Z">
+<meta property="article:modified_time" content="2021-12-30T12:11:50.248Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="数论">
 <meta property="article:tag" content="二次剩余">
@@ -211,10 +211,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-12-26 15:24:45 / Modified: 16:21:41" itemprop="dateCreated datePublished" datetime="2021-12-26T15:24:45+08:00">2021-12-26</time>
+              <time title="Created: 2021-12-26 15:24:45" itemprop="dateCreated datePublished" datetime="2021-12-26T15:24:45+08:00">2021-12-26</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-12-30 20:11:50" itemprop="dateModified" datetime="2021-12-30T20:11:50+08:00">2021-12-30</time>
+              </span>
 
           
             <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
@@ -229,14 +235,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>1.5k</span>
+              <span>2.3k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>3 mins.</span>
+              <span>5 mins.</span>
             </span>
 
         </div>
@@ -271,6 +277,12 @@
 <p>然后就可以直接实现了。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ll <span class="title">calc</span><span class="params">(ll n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ll a;</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        a = <span class="built_in">rand</span>() % p;</span><br><span class="line">        w = (a * a % p - n + p) % p;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">qpow</span>(w, (p - <span class="number">1</span>) / <span class="number">2</span>) == p - <span class="number">1</span>) <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">qpow_com</span>(&#123;a, <span class="number">1</span>&#125;, (p + <span class="number">1</span>) / <span class="number">2</span>).x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>完全版。</p>
+<details>
+<summary>详细代码</summary>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cipolla</span>&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Complex</span>&#123;</span></span><br><span class="line">    LL x, y;</span><br><span class="line">&#125;;</span><br><span class="line">LL w, Mod;</span><br><span class="line"></span><br><span class="line"><span class="function">Complex <span class="title">mul</span><span class="params">(Complex a, Complex b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;(a.x * b.x % Mod + a.y * b.y % Mod * w % Mod) % Mod, (a.x * b.y + a.y * b.x) % Mod&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Complex <span class="title">qpow_com</span><span class="params">(Complex a, <span class="keyword">int</span> k)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Complex res = &#123;<span class="number">1</span>, <span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">while</span> (k)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (k &amp; <span class="number">1</span>) res = <span class="built_in">mul</span>(res, a);</span><br><span class="line">        a = <span class="built_in">mul</span>(a, a);</span><br><span class="line">        k &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">LL <span class="title">qpow</span><span class="params">(LL a, LL k)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    LL res = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (k)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (k &amp; <span class="number">1</span>) res = res * a % Mod;</span><br><span class="line">        a = a * a % Mod;</span><br><span class="line">        k &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="built_in">Cipolla</span>(<span class="keyword">int</span> _Mod = <span class="number">998244353</span>) : <span class="built_in">Mod</span>(_Mod) &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">LL <span class="title">Mod_Sqrt</span><span class="params">(LL n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    LL a;</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        a = <span class="built_in">rand</span>() % Mod;</span><br><span class="line">        w = (a * a - n + Mod) % Mod;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">qpow</span>(w, (Mod - <span class="number">1</span>) &gt;&gt; <span class="number">1</span>) == Mod - <span class="number">1</span>) <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">qpow_com</span>(&#123;a, <span class="number">1</span>&#125;, (Mod + <span class="number">1</span>) &gt;&gt; <span class="number">1</span>).x;</span><br><span class="line">&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</details>
     </div>
 
     
@@ -467,13 +479,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">307k</span>
+    <span title="Symbols count total">316k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">11:08</span>
+    <span title="Reading time total">11:27</span>
 </div>
 
 <div>

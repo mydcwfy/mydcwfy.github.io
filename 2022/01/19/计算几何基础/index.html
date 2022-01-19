@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://mydcwfy.github.io/2022/01/19/%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95%E5%9F%BA%E7%A1%80/%E5%BF%AB%E9%80%9F%E6%8E%92%E6%96%A5%E5%AE%9E%E9%AA%8C.png">
 <meta property="og:image" content="https://mydcwfy.github.io/2022/01/19/%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95%E5%9F%BA%E7%A1%80/%E5%BF%AB%E9%80%9F%E6%8E%92%E6%96%A5%E5%AE%9E%E9%AA%8C2.png">
 <meta property="article:published_time" content="2022-01-19T06:28:54.000Z">
-<meta property="article:modified_time" content="2022-01-19T08:45:00.460Z">
+<meta property="article:modified_time" content="2022-01-19T12:32:46.419Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="计算几何">
 <meta name="twitter:card" content="summary">
@@ -215,7 +215,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-01-19 14:28:54 / Modified: 16:45:00" itemprop="dateCreated datePublished" datetime="2022-01-19T14:28:54+08:00">2022-01-19</time>
+              <time title="Created: 2022-01-19 14:28:54 / Modified: 20:32:46" itemprop="dateCreated datePublished" datetime="2022-01-19T14:28:54+08:00">2022-01-19</time>
             </span>
 
           
@@ -281,7 +281,7 @@
 
 <p>还有一个，我们转一个角。</p>
 <p>直接写出公式，证明可以使用和差角公式：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Point <span class="title">rotate</span><span class="params">(Point a, <span class="keyword">double</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;a.x * <span class="built_in">cos</span>(c) + a.y * <span class="built_in">sin</span>(c), -a.x * <span class="built_in">sin</span>(c) + a.y * <span class="built_in">cos</span>(c)&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Point <span class="title">rotate</span><span class="params">(Point a, <span class="keyword">double</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;a.x * <span class="built_in">cos</span>(c) - a.y * <span class="built_in">sin</span>(c), a.x * <span class="built_in">sin</span>(c) + a.y * <span class="built_in">cos</span>(c)&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="4-计算几何"><a href="#4-计算几何" class="headerlink" title="4. 计算几何"></a>4. 计算几何</h2><p>似乎能写的似乎不多……</p>
 <p>我们简单的看几个比较常用的。</p>
@@ -339,7 +339,10 @@
     <a href="/2021/12/27/P3321/" rel="prev" title="P3321">
       <i class="fa fa-chevron-left"></i> P3321
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/01/19/%E5%87%B8%E5%8C%85%E4%B8%8E%E6%97%8B%E8%BD%AC%E5%8D%A1%E5%A3%B3/" rel="next" title="凸包与旋转卡壳">
+      凸包与旋转卡壳 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -414,14 +417,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-count">70</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-count">53</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -510,13 +513,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">323k</span>
+    <span title="Symbols count total">324k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">11:41</span>
+    <span title="Reading time total">11:45</span>
 </div>
 
 <div>

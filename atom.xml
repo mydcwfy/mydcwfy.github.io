@@ -6,7 +6,7 @@
   <link href="https://mydcwfy.github.io/atom.xml" rel="self"/>
   
   <link href="https://mydcwfy.github.io/"/>
-  <updated>2022-01-20T11:58:39.381Z</updated>
+  <updated>2022-01-22T01:04:23.686Z</updated>
   <id>https://mydcwfy.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>三角剖分</title>
+    <link href="https://mydcwfy.github.io/2022/01/21/%E4%B8%89%E8%A7%92%E5%89%96%E5%88%86/"/>
+    <id>https://mydcwfy.github.io/2022/01/21/%E4%B8%89%E8%A7%92%E5%89%96%E5%88%86/</id>
+    <published>2022-01-21T12:58:39.000Z</published>
+    <updated>2022-01-22T01:04:23.686Z</updated>
+    
+    <content type="html"><![CDATA[<p>需要计算几何。</p><span id="more"></span>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;需要计算几何。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="计算几何" scheme="https://mydcwfy.github.io/tags/%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95/"/>
+    
+    <category term="三角剖分" scheme="https://mydcwfy.github.io/tags/%E4%B8%89%E8%A7%92%E5%89%96%E5%88%86/"/>
+    
+  </entry>
   
   <entry>
     <title>最小圆覆盖</title>
@@ -418,28 +439,6 @@
     <category term="图论" scheme="https://mydcwfy.github.io/tags/%E5%9B%BE%E8%AE%BA/"/>
     
     <category term="差分约束" scheme="https://mydcwfy.github.io/tags/%E5%B7%AE%E5%88%86%E7%BA%A6%E6%9D%9F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>最小割</title>
-    <link href="https://mydcwfy.github.io/2021/12/26/Min-cut/"/>
-    <id>https://mydcwfy.github.io/2021/12/26/Min-cut/</id>
-    <published>2021-12-26T04:15:20.000Z</published>
-    <updated>2021-12-26T04:18:31.115Z</updated>
-    
-    <content type="html"><![CDATA[<p><strong>update：2021-04-13 21:49 根据<a href="https://www.luogu.com.cn/user/185726">RuSun</a>的建议，更改了解题步骤</strong></p><p><strong>请确保你知道网络流、最大流、最小割</strong></p><span id="more"></span><p><a href="https://mydcwfy.github.io/2021/12/26/Network-flow/">我的博客</a></p><p>鉴于最小割模型不宜想到，且变化多端，特出此笔记</p><h2 id="1-应用"><a href="#1-应用" class="headerlink" title="1.应用"></a>1.应用</h2><p>最小割常用来求最小代价，以及最大收益（满足一定条件才能获得）</p><p>最小割的复杂度与最大流相同，为$O(n^2m)$</p><p>由于模板没有可考察的，所以难点一般在建图上。</p><h2 id="2-模型"><a href="#2-模型" class="headerlink" title="2.模型"></a>2.模型</h2><h3 id="0）-前言"><a href="#0）-前言" class="headerlink" title="0） 前言"></a>0） 前言</h3><p>最小割求的是最小代价，即不选某条边的代价</p><p>满流表示的是割断该条边，并支付该代价</p><p>未满流的边，一般视为0</p><p>最小割求的是边的割，如果是点的代价，则使用拆点法</p><p>对于不能割断的边，将其流量设为 $+\infty$</p><h3 id="1）-最小代价型"><a href="#1）-最小代价型" class="headerlink" title="1） 最小代价型"></a>1） 最小代价型</h3><h4 id="T1："><a href="#T1：" class="headerlink" title="T1："></a>T1：</h4><p><a href="https://www.luogu.com.cn/problem/P1345">P1345 [USACO5.4]奶牛的电信Telecowmunication</a></p><p>这是一道典型的 01 最小代价问题，从入点到出点都是1的代价。</p><p>将每个点拆为入点和出点，之间的代价为1</p><p>每条边的代价为 $+\infty$，即不能割断。</p><p>不贴代码了，自己建图最大流就可以了。</p><h4 id="T2："><a href="#T2：" class="headerlink" title="T2："></a>T2：</h4><p><a href="https://www.luogu.com.cn/problem/P3866">P3866 [TJOI2009]战争游戏</a></p><p>这是一道多代价问题，不只是 1 的代价</p><p>同样要用到拆点法，入点与出点的连边为轰炸该点的炸药数，</p><p>注意，如果是本身是障碍物的话，相当于轰炸为0代价，在网络流中可以直接掠过。</p><p>从敌军位置向起点连边，从边界向汇点连边，就可以了。</p><h3 id="2）-最大收益类"><a href="#2）-最大收益类" class="headerlink" title="2） 最大收益类"></a>2） 最大收益类</h3><p>其实最大收益类都可以转化为最小代价类。</p><p>为什么单独拿出来说呢？因为很多时候，看不出来是最小割。</p><p>看几道题理解一下。</p><h4 id="T1：-1"><a href="#T1：-1" class="headerlink" title="T1："></a>T1：</h4><p><a href="https://www.luogu.com.cn/problem/P2774">P2774 方格取数问题</a></p><p>很多同学看到“最大和”，迫不及待地要用最大流。</p><p>但这道题，如果是最大流的话，会使图的规模增长一个数量级，并且杂乱无章。</p><p>（<del>所以讲一下还是有必要的</del>）</p><p>我们考虑应该不要哪些点。</p><p>回归割的定义，任意一条从 s 到 t 的路径，必有一条是割边。</p><p>我们将有关联的点全部连在一起，再将这些点分别接到源汇点上，会发现，任意一条边，要么左边满流（取其代价），要么右边满流</p><p>进一步观察题目，挖掘性质，我们可以发现，可将原图分为两部，相邻的点在不同部。</p><p>我们就可以发现，再将两部的点分别连到源汇点，就满足了上面的性质！</p><p>这样建图就可以了，用最大流跑。</p><h4 id="T2：-1"><a href="#T2：-1" class="headerlink" title="T2："></a>T2：</h4><p><a href="https://www.luogu.com.cn/problem/P2762">P2762 太空飞行计划问题</a></p><p>输出里直接说到“最大利润”，所以是最大收益的题目。</p><p>我们考虑哪些实验不要，以及需要支付的费用。</p><p>先将每个实验与源点连边，接着与需要的配置连边$+\infty$，然后把配置与汇点连边。</p><p>挖掘性质：任意一条从 s 到 t 的路径，都会经过一个实验和配置。</p><p>要么实验满流（既不选），要么配置满流（即支付该费用）。</p><p>满足原问题的性质。</p><h4 id="T3："><a href="#T3：" class="headerlink" title="T3："></a>T3：</h4><p><a href="https://www.luogu.com.cn/problem/P4177">P4177 [CEOI2008]order</a></p><p>这道题与上道题类似，只不过多了一个租的环节。</p><p>分析上一题，发现相当于是租的费用为 $+\infty$，这道题，改为对应代价即可。</p><p>每一部分，要么不选工作，要么对应边满流（即租），要么买。</p><h4 id="T4："><a href="#T4：" class="headerlink" title="T4："></a>T4：</h4><p><a href="https://www.luogu.com.cn/problem/P3872">P3872 [TJOI2010]电影迷</a></p><p>这道题提到，$-1000 \leq v(x) \leq 1000$，即可能为负。</p><p>我们可以把负点看做是代价，并将联系正负的分别与源汇点连边。</p><p>注意，负点不是收益，而是代价，该点没有满流代表不选该点</p><p>可以发现，要么正的满流（即不看），要么中间断开（即支付不看的代价），要么从负点断开（即支付看他的代价）。</p><p>详细证明参见 <a href="https://www.luogu.com.cn/blog/Feliks-GMYB/solution-p3872">这篇博客</a></p><h4 id="T5："><a href="#T5：" class="headerlink" title="T5："></a>T5：</h4><p><a href="https://www.luogu.com.cn/problem/P4313">P4313 文理分科</a></p><p>这是最能体现最小割通法的题目了。</p><p>按照先前的思路，就会发现牵扯过多，而不好建图。</p><p>这时我们采取的策略是：<br><strong>先将所有的利益加进来，在将不能共存的状态连边（或者一定的费用），将连边的端点分别以一定代价连边源汇点。</strong><br>按照这个思路，几乎可以秒杀该题。</p><p>将所有利益加起来，然后将 $same_art$ 与几个 $science$ 连边，$same_science$ 同理。</p><p>将带 $art$ 的与源点连边，其余的与汇点连边，用总收益减最小割即可。</p><h3 id="3）-总结"><a href="#3）-总结" class="headerlink" title="3） 总结"></a>3） 总结</h3><p>我们可以用最小割解决问题，都用上面的策略建图即可。</p><h2 id="3-解题步骤"><a href="#3-解题步骤" class="headerlink" title="3. 解题步骤"></a>3. 解题步骤</h2><ol><li><p>判断是不是最小割问题。</p></li><li><p>判断是不是最大收益类，如果是，先将收益加起来。</p></li><li><p>如果是最大收益类，就将不能共存的点连接起来。</p></li><li><p>如果是最小代价类，就将两点必须有至少其一的点连接起来。</p></li><li><p>跑最小割即可。</p></li></ol><h4 id="注意：这两类一般只能处理二分图的形式的题，除了一些明显的最小割问题"><a href="#注意：这两类一般只能处理二分图的形式的题，除了一些明显的最小割问题" class="headerlink" title="注意：这两类一般只能处理二分图的形式的题，除了一些明显的最小割问题"></a>注意：这两类一般只能处理二分图的形式的题，除了一些明显的最小割问题</h4><p>没有总结到的，请在评论区提出，我会按时回复。</p><p>希望对你有所帮助。</p>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;strong&gt;update：2021-04-13 21:49 根据&lt;a href=&quot;https://www.luogu.com.cn/user/185726&quot;&gt;RuSun&lt;/a&gt;的建议，更改了解题步骤&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;请确保你知道网络流、最大流、最小割&lt;/strong&gt;&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="图论" scheme="https://mydcwfy.github.io/tags/%E5%9B%BE%E8%AE%BA/"/>
-    
-    <category term="网络流" scheme="https://mydcwfy.github.io/tags/%E7%BD%91%E7%BB%9C%E6%B5%81/"/>
     
   </entry>
   

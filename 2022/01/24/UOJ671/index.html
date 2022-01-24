@@ -20,21 +20,20 @@
     var CONFIG = {"hostname":"mydcwfy.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="需要计算几何。">
+  <meta name="description" content="思想值得借鉴。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="三角剖分">
-<meta property="og:url" content="https://mydcwfy.github.io/2022/01/21/%E4%B8%89%E8%A7%92%E5%89%96%E5%88%86/index.html">
+<meta property="og:title" content="UOJ671诡异操作 题解">
+<meta property="og:url" content="https://mydcwfy.github.io/2022/01/24/UOJ671/index.html">
 <meta property="og:site_name" content="mydcwfy&#39;s Blog">
-<meta property="og:description" content="需要计算几何。">
+<meta property="og:description" content="思想值得借鉴。">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-01-21T12:58:39.000Z">
-<meta property="article:modified_time" content="2022-01-22T01:04:23.686Z">
+<meta property="article:published_time" content="2022-01-24T11:40:42.000Z">
+<meta property="article:modified_time" content="2022-01-24T12:14:26.963Z">
 <meta property="article:author" content="mydcwfy">
-<meta property="article:tag" content="计算几何">
-<meta property="article:tag" content="三角剖分">
+<meta property="article:tag" content="线段树">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://mydcwfy.github.io/2022/01/21/%E4%B8%89%E8%A7%92%E5%89%96%E5%88%86/">
+<link rel="canonical" href="https://mydcwfy.github.io/2022/01/24/UOJ671/">
 
 
 <script id="page-configurations">
@@ -47,7 +46,7 @@
   };
 </script>
 
-  <title>三角剖分 | mydcwfy's Blog</title>
+  <title>UOJ671诡异操作 题解 | mydcwfy's Blog</title>
   
 
 
@@ -189,7 +188,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2022/01/21/%E4%B8%89%E8%A7%92%E5%89%96%E5%88%86/">
+    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2022/01/24/UOJ671/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -202,7 +201,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          三角剖分
+          UOJ671诡异操作 题解
         </h1>
 
         <div class="post-meta">
@@ -211,16 +210,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2022-01-21 20:58:39" itemprop="dateCreated datePublished" datetime="2022-01-21T20:58:39+08:00">2022-01-21</time>
+              <time title="Created: 2022-01-24 19:40:42 / Modified: 20:14:26" itemprop="dateCreated datePublished" datetime="2022-01-24T19:40:42+08:00">2022-01-24</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-01-22 09:04:23" itemprop="dateModified" datetime="2022-01-22T09:04:23+08:00">2022-01-22</time>
-              </span>
 
           
             <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
@@ -235,14 +228,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>7</span>
+              <span>2.5k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
+              <span>5 mins.</span>
             </span>
 
         </div>
@@ -254,8 +247,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>需要计算几何。</p>
+        <p>思想值得借鉴。</p>
 <span id="more"></span>
+
+<h2 id="1-题意"><a href="#1-题意" class="headerlink" title="1. 题意"></a>1. 题意</h2><p><a target="_blank" rel="noopener" href="https://uoj.ac/problem/671">题目传送门 UOJ</a></p>
+<p>给定长度为 $n$ 的数组，最大为 $2^{128} - 1$，要求支持以下操作：</p>
+<ol>
+<li>$\forall i \in [l, r],\  a(i):= \dfrac{a(i)}{v}$。</li>
+<li>$\forall i \in [l, r],\ a(i) := a(i)$ &amp; $v$。</li>
+<li>求 $\sum_{i = l}^r a(i)$，答案对 $2^{128}$ 取模。</li>
+</ol>
+<p>$n\leq 3\times10^5, q\leq 2 \times 10 ^ 5$，时限 3s，空间 1GB。</p>
+<h2 id="2-解法"><a href="#2-解法" class="headerlink" title="2. 解法"></a>2. 解法</h2><p>$a(i)$ 用 <code>__uint128_t</code> 存储，可能常数有<del>亿</del>点大。</p>
+<p>首先观察 $a(i)$ 在操作中不断减小，所以最多被除 $\log a(i)$ 次，存一下该区间有没有非 0 的数，没有的话直接退出。时间复杂度易得为 $O(q(\log n + \log a(i)))$。</p>
+<p>对于第二个操作，我们可以先在这个区间上打一个标记，然后可以用一个 128 的数组存下来每一位出现了多少次，然后 &amp;v 的时候直接将对应的 1 位赋值为 0，更新答案即可。时间复杂度为 $O(q\log n\log a(i))$。<del>（然后你会发现 5000 的点都要跑 1s+）</del></p>
+<p>怎么优化呢？</p>
+<p>我们只要考虑压缩 128 的数组。这个数组每一个数都不大于 $len$，用 short 就可以存下来，显然信息密度不够。</p>
+<p>我们考虑<strong>将 128 数组里的每一个位里存的数二进制拆分，然后将答案存入一个 $\log len$ 的数组。</strong></p>
+<p>具体来说，比如有一个 $2^5$ 出现了 5 次，那么我们就在 $cnt[0]$ 和 $cnt[2]$ 插入 $2^5$。这样就可以实现一个 $\log a_i$ 向 $\log len$ 的方向转变。</p>
+<p>我们再来看，如果 &amp;v 的时候怎么样呢？之间每一位都 &amp;v 就可以了，因为每一位存的是出现 $2^i$ 次的数的总和，而又不会互相干扰。</p>
+<p>求和的时候，直接 $\sum cnt(i) \times 2^i$ 就可以了，时间复杂度同样是 $\log len$。</p>
+<p>所以我们就可以得到复杂度为 $O(\log n \log len) = O(\log^2 n)$。</p>
+<p>总时间复杂度为 $O(q(\log a(i) + \log^2 n))$，空间复杂度 $O(n \log n)$，卡一卡就可以过了。（但是有些 Hack 数据真的毒瘤，$cnt$ 数组用 <code>vector</code> 实现就 T 了，必须使用数组。</p>
+<p><strong>总结：可以将一个 $\log a$ 长但存的数不大的数组通过二进制拆分的手段压缩为 $\log len$。</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> l(x) (x &lt;&lt; 1)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> r(x) (x &lt;&lt; 1 | 1)</span></span><br><span class="line"><span class="keyword">using</span> u128 = <span class="keyword">__uint128_t</span>;</span><br><span class="line"><span class="keyword">const</span> u128 Mand = <span class="number">-1</span>;<span class="comment">//明显任意一个数 &amp;Mand 不变</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pushup</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	tr[x].any = tr[<span class="built_in">l</span>(x)].any | tr[<span class="built_in">r</span>(x)].any;</span><br><span class="line">	u128 now = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; tr[x].sz; ++ i)&#123;</span><br><span class="line">		u128 le = i &lt; tr[<span class="built_in">l</span>(x)].sz ? tr[<span class="built_in">l</span>(x)].cnt[i] : <span class="number">0</span>,</span><br><span class="line">			ri = i &lt; tr[<span class="built_in">r</span>(x)].sz ? tr[<span class="built_in">r</span>(x)].cnt[i] : <span class="number">0</span>;</span><br><span class="line">		tr[x].cnt[i] = (le ^ ri) ^ now;</span><br><span class="line">		now = (le &amp; ri) | ((le ^ ri) &amp; now);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">update_and</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">const</span> u128 &amp;v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	tr[x].lt &amp;= v;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; tr[x].sz; ++ i) tr[x].cnt[i] &amp;= v;</span><br><span class="line">	tr[x].any = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; tr[x].sz; ++ i) tr[x].any |= (tr[x].cnt[i] &gt; <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pushdown</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (tr[x].lt == Mand) <span class="keyword">return</span>;</span><br><span class="line">	<span class="built_in">update_and</span>(<span class="built_in">l</span>(x), tr[x].lt), <span class="built_in">update_and</span>(<span class="built_in">r</span>(x), tr[x].lt);</span><br><span class="line">	tr[x].lt = Mand;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">update_div</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">const</span> u128 &amp;v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (!tr[x].any) <span class="keyword">return</span>;</span><br><span class="line">	<span class="keyword">if</span> (tr[x].l == tr[x].r)</span><br><span class="line">	&#123;</span><br><span class="line">		tr[x].cnt[<span class="number">0</span>] /= v, tr[x].any = (tr[x].cnt[<span class="number">0</span>] &gt; <span class="number">0</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">pushdown</span>(x);</span><br><span class="line">	<span class="built_in">update_div</span>(<span class="built_in">l</span>(x), v), <span class="built_in">update_div</span>(<span class="built_in">r</span>(x), v);</span><br><span class="line">	<span class="built_in">pushup</span>(x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">modify_and</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">const</span> u128 &amp;v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (tr[x].l &gt;= l &amp;&amp; tr[x].r &lt;= r) <span class="keyword">return</span> <span class="built_in">update_and</span>(x, v);</span><br><span class="line">	<span class="built_in">pushdown</span>(x);</span><br><span class="line">	<span class="keyword">int</span> mid = (tr[x].l + tr[x].r) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span> (l &lt;= mid) <span class="built_in">modify_and</span>(<span class="built_in">l</span>(x), l, r, v);</span><br><span class="line">	<span class="keyword">if</span> (r &gt; mid) <span class="built_in">modify_and</span>(<span class="built_in">r</span>(x), l, r, v);</span><br><span class="line">	<span class="built_in">pushup</span>(x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">modify_div</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">const</span> u128 &amp;v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (tr[x].l &gt;= l &amp;&amp; tr[x].r &lt;= r) <span class="keyword">return</span> <span class="built_in">update_div</span>(x, v);</span><br><span class="line">	<span class="built_in">pushdown</span>(x);</span><br><span class="line">	<span class="keyword">int</span> mid = (tr[x].l + tr[x].r) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span> (l &lt;= mid) <span class="built_in">modify_div</span>(<span class="built_in">l</span>(x), l, r, v);</span><br><span class="line">	<span class="keyword">if</span> (r &gt; mid) <span class="built_in">modify_div</span>(<span class="built_in">r</span>(x), l, r, v);</span><br><span class="line">	<span class="built_in">pushup</span>(x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
     </div>
@@ -267,8 +282,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95/" rel="tag"><i class="fa fa-tag"></i> 计算几何</a>
-              <a href="/tags/%E4%B8%89%E8%A7%92%E5%89%96%E5%88%86/" rel="tag"><i class="fa fa-tag"></i> 三角剖分</a>
+              <a href="/tags/%E7%BA%BF%E6%AE%B5%E6%A0%91/" rel="tag"><i class="fa fa-tag"></i> 线段树</a>
           </div>
 
         
@@ -339,6 +353,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%A2%98%E6%84%8F"><span class="nav-number">1.</span> <span class="nav-text">1. 题意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%A7%A3%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">2. 解法</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -361,7 +376,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-count">53</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -450,13 +465,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">337k</span>
+    <span title="Symbols count total">340k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">12:13</span>
+    <span title="Reading time total">12:18</span>
 </div>
 
 <div>

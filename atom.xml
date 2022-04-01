@@ -6,7 +6,7 @@
   <link href="https://mydcwfy.github.io/atom.xml" rel="self"/>
   
   <link href="https://mydcwfy.github.io/"/>
-  <updated>2022-03-08T12:38:20.701Z</updated>
+  <updated>2022-04-01T11:55:32.807Z</updated>
   <id>https://mydcwfy.github.io/</id>
   
   <author>
@@ -15,6 +15,23 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>NOI Online 2022 游记</title>
+    <link href="https://mydcwfy.github.io/2022/04/01/NOI-Online-2022/"/>
+    <id>https://mydcwfy.github.io/2022/04/01/NOI-Online-2022/</id>
+    <published>2022-04-01T10:25:26.000Z</published>
+    <updated>2022-04-01T11:55:32.807Z</updated>
+    
+    <content type="html"><![CDATA[<p>考的似乎比较套路，没有去年的思维 / 数学。</p><span id="more"></span><p>以考试当天为 Day 0。</p><h2 id="Day-？"><a href="#Day-？" class="headerlink" title="Day ？"></a>Day ？</h2><p>很早就报名了，都快忘记这件事了（</p><h2 id="Day-0"><a href="#Day-0" class="headerlink" title="Day 0"></a>Day 0</h2><p>在学校考试。</p><p>校内又说什么要占机房考试，好不容易在 8：20 的时候才到机房安心坐下来。</p><p>8：30 开题，还好没咕，不像 NOI 线上，一个小时还没拿到题。</p><p>结果盯着 T1 发呆了许久，满脑子里都是二维数点 $O(n\log^2 n)$，根本做不了这题。半个小时过去了，没有任何收获。</p><p>意识到事情没对，马上开 T2，发现是一个输出一个方案即可的题，似乎哪年 NOI 考过这样的题，还是随机化过去的？</p><p>tg 应该不是这类题目，推了推性质，发现可以按 <code>size</code> 分类，相同 <code>size</code> 的只可能不交或是完全相同，否则一定合法。</p><p>胡了一个只用判 <code>size</code> 相邻的做法，发现没对，可以按 <code>size</code> 倒序插入，用桶维护哪个点被那个集合覆盖，如果新来的一个集合覆盖的颜色不止一种，一定合法。</p><p>赛时没想清楚，随便输出一个颜色，考后才发现要输出不同颜色中 <code>size</code> 最小的。</p><p>写完 T2，过样例，由于不会造数据，只好跳过。此时 10：10。</p><p>发现 T3 似乎是一个简单题，拆一拆贡献，记录每一个位置的数被统计为最大值 / 最小值了多少次，发现剩下的是一个三维偏序（才没想什么还可以转化为二维偏序的方法），可以 $O(n\log^2 n)$，做 8 次，感觉有点卡。</p><p>马上开始码，还算顺利，没调多久就过了所有样例，极限数据 1.79 s，感觉很稳。</p><p>回过头来看 T1，已是 10：50。大力猜一手结论，应该是直接找到后面第一个比自己大的，然后如果颜色相同一直向前跳，扫描线处理询问，可以做到 $O(n\log n)$（不算向前跳的假的复杂度）。</p><p>发现要码 2 个线段树，心态不好，看到自己只有 30 min 左右的时间了，结果写完死活过不了大样例，此时已经是 11：40 了。</p><p>发现中间有一步不应该将因颜色相同而跳过的点删去，改了过后，过了大样例，还只要 0.5 s，马上交上去，11：47。</p><p>跳了过程可以用并查集优化，快速码了一个，11：51，<del>发现自己 AK 了</del>，<strong>交不上去了！</strong></p><p>最后 10 min 中，在狂躁之中度过，发现一点转机都没有，守到 12 点，唉声叹气地走了。</p><p>出来议论，发现一些人做出来 T1 了，连低一个年级的同学都有人做出来。可惜我没交上去（悲</p><p>但是大家似乎没做出来 T3，似乎随便写写，得了个暴力 + 部分分。赶紧去食堂吃饭了。</p><p>下午还得考试，又回到机房，12：28，了转反，<strong>考试延期了半个小时！</strong></p><p>确认一下是不是真的，马上将自己的 T1 交了上去。不知道自己怎么样了呢。</p><p>水了一会，又去看各大 OJ 有没有测的，发现 InfOJ 可以测，<del>但是已经排了 24 页的提交记录了</del>。</p><p>13：30 左右，lg 可以测了，发现 T1，T2，T3 都过了，心态很不错。看到 T2 有人说要取 <code>size</code> 最小的，没在意。</p><p>等到看到 InfOJ 可以测 T2 时，发现只有 Subtask 2 没过，连 Subtask 6 都过了，80 pts。我相信 CCF 的数据应该不强（flag</p><p>lg 加强了几次 T2 数据，结果随便就过了，不知道该相信哪边（<del>事后看显然是 InfOJ</del></p><p>等 CCF 数据。</p><h2 id="Day-4"><a href="#Day-4" class="headerlink" title="Day 4"></a>Day 4</h2><p>看到 CCF 出了一个“成绩公示”，结果什么都是访问异常，啥也看不到。</p><p>看到有人说用另外的网址可以看到成绩，<strong>开幕雷击</strong>，一车人直接 AK 了！</p><p>发现 CCF 数据实在是强，直接 10 个点卡了我四个点，T2 直接 60 pts，和随机化寻找一个分了（<del>我可是写挂了正解呀</del></p><p>$100 + 60 + 100 = 260$。</p><p>结果 lg 上一车人说数据过水，痛苦面具。水一点该多好啊，<del>难得接近 AK 一次</del>。</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>对于这种偏结论或乱搞的题目，感觉自己很多细节没有想清楚，这种东西赛时很难检查到，赛后后悔也来不及了。还是多做这种结论题吧。</p><p>还有，怎么没考 DP？一考大概率裂开。</p><p>等联合省选。</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;考的似乎比较套路，没有去年的思维 / 数学。&lt;/p&gt;</summary>
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>CF Round#775</title>
@@ -422,27 +439,6 @@
     
     
     <summary type="html">&lt;p&gt;简单的模拟。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="题解" scheme="https://mydcwfy.github.io/tags/%E9%A2%98%E8%A7%A3/"/>
-    
-    <category term="CF" scheme="https://mydcwfy.github.io/tags/CF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CF337C</title>
-    <link href="https://mydcwfy.github.io/2021/12/26/CF337C/"/>
-    <id>https://mydcwfy.github.io/2021/12/26/CF337C/</id>
-    <published>2021-12-26T04:40:44.000Z</published>
-    <updated>2021-12-26T04:41:12.714Z</updated>
-    
-    <content type="html"><![CDATA[<p>还是比较好想的，感觉难度应该在黄至绿之间。</p><span id="more"></span><p>话说这道题怎么没人做啊……</p><p>如果有没有考虑到的，请轻喷作者 qwq</p><h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><ul><li>给出 $n$ 道题，答对了 $m$ 道题，按照规则安排 $m$ 道题的顺序，使得分数最小。输出对 $10^9+9$ 取模后的值。</li><li>从前向后扫描，答对一道分数加 $1$，计数器 $cnt$ 加一，如果 $cnt=k$，那么当前分数翻倍，$cnt$ 清零。如果答错 $cnt$ 清零。</li><li>$2\leq k\leq n\leq10^9,0\leq m\leq n$。</li></ul><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>我们首先考虑的肯定是尽量让 $m$ 道题目被翻倍的次数最少。</p><p>首先，一种情况是我们间隔开 $m$ 道题，使得每一道题都不会翻倍，那么答案就是 $m$。</p><p>具体就是 $k-1$ 道对，$1$ 道错，排列下去最后可以不需要 $1$ 道错误。</p><p>判断条件就是 $(n-m+1)\cdot(k-1)\geq m$。</p><p>第二种情况就是不得不要翻倍。</p><p>考虑第二个样例：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">input:</span><br><span class="line">5 4 2</span><br><span class="line">output:</span><br><span class="line">6</span><br></pre></td></tr></table></figure><p>我们发现，不论怎么放错误的那个，一定都会有 $2$ 个会相连。（三个相连可以拆分为 $2+1$</p><p>那么，让相连的放在哪呢？</p><p>如果放在后面的话，一定会使答案变大，所以肯定放在最前面，让翻倍的尽量少。</p><p>所以，就可以构造成这样了：</p><p><img src="https://cdn.luogu.com.cn/upload/image_hosting/ha2e8qfg.png"></p><p>注意到，前面会有 $n-(n-m)\cdot k$ 个连续的绿色。</p><p>按照这样计算即可.</p><p>假设前面有 $t$ 个连续的 $k$ 个绿色，前面的绿色的贡献就是 $k\cdot2^t+k\cdot2^{t-1}+…+k\cdot2$，注意最后未满 $k$ 个的由于没有特殊贡献，可以放到后面计算，为 $m-t\cdot k$。</p><p>前面的式子可以化简为 $k\cdot(2^{t+1}-2)$，快速幂即可。</p><h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">cin &gt;&gt; n &gt;&gt; m &gt;&gt; k;</span><br><span class="line"><span class="keyword">if</span> ((n - m + <span class="number">1</span>) * (k - <span class="number">1</span>) &gt;= m)</span><br><span class="line">&#123;</span><br><span class="line">cout &lt;&lt; m &lt;&lt; endl;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line">ll t = (m - (n - m) * (k - <span class="number">1</span>)) / k;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>, (k * (<span class="built_in">qpow</span>(<span class="number">2</span>, t + <span class="number">1</span>) - <span class="number">2</span> + Mod) % Mod + m - k * t) % Mod);</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;还是比较好想的，感觉难度应该在黄至绿之间。&lt;/p&gt;</summary>
     
     
     

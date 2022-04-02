@@ -20,21 +20,20 @@
     var CONFIG = {"hostname":"mydcwfy.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="单调队列。">
+  <meta name="description" content="解决数论函数的有利武器。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="P7590">
-<meta property="og:url" content="https://mydcwfy.github.io/2021/12/26/P7590/index.html">
+<meta property="og:title" content="狄利克雷生成函数">
+<meta property="og:url" content="https://mydcwfy.github.io/2022/04/02/Dirichlet-generating-function/index.html">
 <meta property="og:site_name" content="mydcwfy&#39;s Blog">
-<meta property="og:description" content="单调队列。">
+<meta property="og:description" content="解决数论函数的有利武器。">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-12-26T05:00:01.000Z">
-<meta property="article:modified_time" content="2021-12-26T05:01:58.637Z">
+<meta property="article:published_time" content="2022-04-01T23:40:53.000Z">
+<meta property="article:modified_time" content="2022-04-02T02:53:17.838Z">
 <meta property="article:author" content="mydcwfy">
-<meta property="article:tag" content="题解">
-<meta property="article:tag" content="单调队列">
+<meta property="article:tag" content="数论">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://mydcwfy.github.io/2021/12/26/P7590/">
+<link rel="canonical" href="https://mydcwfy.github.io/2022/04/02/Dirichlet-generating-function/">
 
 
 <script id="page-configurations">
@@ -47,7 +46,7 @@
   };
 </script>
 
-  <title>P7590 | mydcwfy's Blog</title>
+  <title>狄利克雷生成函数 | mydcwfy's Blog</title>
   
 
 
@@ -189,7 +188,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2021/12/26/P7590/">
+    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2022/04/02/Dirichlet-generating-function/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -202,7 +201,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          P7590
+          狄利克雷生成函数
         </h1>
 
         <div class="post-meta">
@@ -213,7 +212,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-12-26 13:00:01 / Modified: 13:01:58" itemprop="dateCreated datePublished" datetime="2021-12-26T13:00:01+08:00">2021-12-26</time>
+              <time title="Created: 2022-04-02 07:40:53 / Modified: 10:53:17" itemprop="dateCreated datePublished" datetime="2022-04-02T07:40:53+08:00">2022-04-02</time>
             </span>
 
           
@@ -229,14 +228,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>2.2k</span>
+              <span>3.1k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>5 mins.</span>
+              <span>7 mins.</span>
             </span>
 
         </div>
@@ -248,39 +247,27 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>单调队列。</p>
+        <p>解决数论函数的有利武器。</p>
 <span id="more"></span>
 
-<h2 id="0-前置知识-amp-废话"><a href="#0-前置知识-amp-废话" class="headerlink" title="0. 前置知识 &amp; 废话"></a>0. 前置知识 &amp; 废话</h2><p>说实话，出题人的办法我没太看懂，于是就想了另外一种方法。</p>
-<p>本题解需要你掌握：单调队列</p>
-<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1886">本算法位置</a></p>
-<p>时间复杂度仍为 $O(n)$，但常数较标程略大，故需要点 <del>玄学优化</del>。</p>
-<h2 id="1-题意"><a href="#1-题意" class="headerlink" title="1. 题意"></a>1. 题意</h2><p>给你一个环，每一个点都可以加一定的权值 x，从一个点到下一个点都要减少一定的权值，要保证随时都要 $x\geq0$，可以在一个点时恰好为 0。</p>
-<p>从每一个点开始时，权值都等于 0。</p>
-<p>如果有一个点可以运动 1 周，输出最小编号，否则输出 “Failed!”。</p>
-<h2 id="2-思路"><a href="#2-思路" class="headerlink" title="2. 思路"></a>2. 思路</h2><p>出题人的方法我确实没看懂。</p>
-<h3 id="1）朴素"><a href="#1）朴素" class="headerlink" title="1）朴素"></a>1）朴素</h3><p>首先考虑朴素算法。</p>
-<p>定义<br>$$<br>d[x]=a[x]-b[x],sum[x]=\sum_{i=1}^{x}d[i]<br>$$<br>所以如果从 i 可以到 i+1，需要满足：<br>$$<br>a[i]=sum[i+1]-sum[i]\geq 0<br>$$<br>我们可以考虑将环拆成 2 倍的链。</p>
-<p>如果从 i 可以的话，需要满足：<br>$$<br>\forall j\in [i,i+n-1],sum[j]\geq sum[i-1]<br>$$<br>时间复杂度为 $O(n^2)$，期望得分 30 分。</p>
-<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/paste/oewr50t0">代码放置处</a></p>
-<p>实际打代码时，我们可以以它为对拍代码。</p>
-<h3 id="2）堆优化"><a href="#2）堆优化" class="headerlink" title="2）堆优化"></a>2）堆优化</h3><p>其实，我们不难发现，对于该式，我们可以使用堆优化。</p>
-<p>时间复杂度 $O(n\log n)$，期望得分 70 分。</p>
-<p>不放代码了 <del>逃</del>。</p>
-<h3 id="3）单调队列"><a href="#3）单调队列" class="headerlink" title="3）单调队列"></a>3）单调队列</h3><p>我们进一步挖掘性质，可以发现，我们需要的是 $[i,i+n-1]$ 的最小值，且 i 不断变大。</p>
-<p>这难道不是和单调队列相似吗？</p>
-<p>那么就可以了。</p>
-<p>如果 $j&lt;k,sum[j]&gt;sum[k]$，那么 j 不可能成为某个点的最小值。</p>
-<p>维护一个单调队列，使其保持递增的顺序。</p>
-<p>队头是最小值。</p>
-<p>那么就可以了 吗？ <del>雾</del>。</p>
-<p>单调队列虽然是 $O(n)$,但常数相对于标程更大，而最大 $\sum n=2\times 10^7$，很可能超时。</p>
-<h2 id="3-常数优化"><a href="#3-常数优化" class="headerlink" title="3. 常数优化"></a>3. 常数优化</h2><ol>
-<li>我开始 scanf+O2 竟然超时了，所以快读是时候了。</li>
-<li>听说 register 可以加快，用一用也不错。</li>
-</ol>
-<p>这样一阵 <del>玄学</del> 优化后，我们就不用 O2 最大点也可以只用 600ms 就过了。</p>
-<h2 id="4-代码"><a href="#4-代码" class="headerlink" title="4. 代码"></a>4. 代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> re register</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N=<span class="number">1e6</span>+<span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">ll d[<span class="number">2</span>*N],sum[<span class="number">2</span>*N];</span><br><span class="line"><span class="keyword">int</span> hh,tt,q[<span class="number">2</span>*N];</span><br><span class="line"><span class="keyword">char</span> c;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">while</span> (hh&lt;=tt&amp;&amp;sum[q[tt]]&gt;=sum[x]) tt--;</span><br><span class="line">	q[++tt]=x;</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> &amp;x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span> ((c=<span class="built_in">getchar</span>())&lt;<span class="string">&#x27;0&#x27;</span>||c&gt;<span class="string">&#x27;9&#x27;</span>) ;</span><br><span class="line">    x=c-<span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">    <span class="keyword">while</span> ((c=<span class="built_in">getchar</span>())&gt;=<span class="string">&#x27;0&#x27;</span>&amp;&amp;c&lt;=<span class="string">&#x27;9&#x27;</span>) x=(x&lt;&lt;<span class="number">3</span>)+(x&lt;&lt;<span class="number">1</span>)+c-<span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// freopen(&quot;randdata.in&quot;,&quot;r&quot;,stdin);</span></span><br><span class="line">	<span class="comment">// freopen(&quot;myans.out&quot;,&quot;w&quot;,stdout);</span></span><br><span class="line">	re <span class="keyword">int</span> cas,n,x;</span><br><span class="line">	<span class="built_in">get</span>(cas);</span><br><span class="line">	<span class="keyword">while</span> (cas--)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">get</span>(n);</span><br><span class="line">		<span class="keyword">for</span> (re <span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;++i) <span class="built_in">get</span>(x),d[i]=x;</span><br><span class="line">		<span class="keyword">for</span> (re <span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;++i)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">get</span>(x);</span><br><span class="line">			d[i]-=x;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> (re <span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;++i) d[i+n]=d[i];</span><br><span class="line">		<span class="keyword">for</span> (re <span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=<span class="number">2</span>*n;++i) sum[i]=sum[i<span class="number">-1</span>]+d[i];<span class="comment">//,cout&lt;&lt;sum[i]&lt;&lt;&#x27; &#x27;;</span></span><br><span class="line">		hh=<span class="number">1</span>;tt=<span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (re <span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;++i) <span class="built_in">insert</span>(i);</span><br><span class="line">		re <span class="keyword">bool</span> flag=<span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (re <span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;++i)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">while</span> (hh&lt;=tt&amp;&amp;q[hh]&lt;i) hh++;</span><br><span class="line">			<span class="built_in">insert</span>(i+n<span class="number">-1</span>);</span><br><span class="line">			<span class="comment">// printf(&quot;%d %d\n&quot;,hh,tt);</span></span><br><span class="line">			<span class="keyword">if</span> (sum[i<span class="number">-1</span>]&lt;=sum[q[hh]])</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,i);</span><br><span class="line">				flag=<span class="number">1</span>;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (!flag) <span class="built_in">puts</span>(<span class="string">&quot;Failed!&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h2><p>定义一个数列的<strong>狄利克雷生成函数</strong>（DGF）为：<br>$$<br>\tilde F(x) = \sum_{i\geq 1} \dfrac{f_i}{i^x}<br>$$<br>我们如果将 ${f_i}$ 看作是一个从 $\mathbb N _ +$ 到 $\mathbb Z$ 的一个函数，那么该生成函数就与一个数论函数相对应。一般来说，$f_1 = 1$。下文默认 $f_1 = 1$。</p>
+<p>如果该函数是积性的，即满足 $\forall i\bot j, f(ij) = f(i) \times f(j)$，那么 $\tilde F(x)$ 的表达可以由质数以及质数的幂的值来表达，记作（设 $P$ 表示全体质数集合）：<br>$$<br>\tilde F(x) = \prod_{p\in P}(1 + \dfrac {f(p)}{p ^ x} + \dfrac{f(p) ^ 2}{p ^ {2x}} + …)<br>$$</p>
+<h2 id="2-狄利克雷函数的卷积"><a href="#2-狄利克雷函数的卷积" class="headerlink" title="2. 狄利克雷函数的卷积"></a>2. 狄利克雷函数的卷积</h2><p>就是一个简单的定义。</p>
+<p>定义：<br>$$<br>\tilde F(x)\tilde G(x) = \sum_{ij}\dfrac {f(i)g(j)}{ij}<br>$$<br>这个和 $(f * g)(x) = \sum_{d | x}f(d)g(\dfrac xd)$ 是相同的。</p>
+<h2 id="3-常见函数"><a href="#3-常见函数" class="headerlink" title="3. 常见函数"></a>3. 常见函数</h2><h3 id="1）常值函数"><a href="#1）常值函数" class="headerlink" title="1）常值函数"></a>1）常值函数</h3><p>在数论中，我们常见到 $I(x) = 1$ 的函数，即 ${1, 1, 1, …}$ 的数列。他的 DGF 为<strong>黎曼函数</strong>，记作 $\zeta (x)$。</p>
+<p>常值函数显然也是积性函数，我们尝试使用质数及质数的幂的值来表达，即：<br>$$<br>\tilde F(x) = \prod_{p\in P}(1 + \dfrac 1{p ^ x} + \dfrac 1{p ^ {2x}} + …)<br>$$<br>我们将质数内部的用等比数列求和展开，公比 $p^{-x}$，即为：<br>$$<br>1 + \dfrac 1{p ^ x} + \dfrac 1{p ^ {2x}} + … = \dfrac{-1}{p ^ {-x} - 1} = \dfrac 1{1 - p^{-x}}<br>$$<br>那么，我们得到黎曼函数的另外的表达方式：<br>$$<br>\zeta(x) = \prod_{p\in P}\dfrac 1{1 - p ^ {-x}}<br>$$</p>
+<h3 id="2）标号函数"><a href="#2）标号函数" class="headerlink" title="2）标号函数"></a>2）标号函数</h3><p>（记不得叫什么了</p>
+<p>定义 $id(x) = x$，那么我们来探究一下 ${1, 2, 3\dots}$ 的 DGF。</p>
+<p>还是根据积性函数的性质，我们可以得到：<br>$$<br>\tilde F(x) = \prod_{p\in P}(1 + \dfrac{p}{p ^ x} + \dfrac{p ^ 2}{p ^ {2x}}+ \dots)<br>$$<br>等比数列求和，可以得到：<br>$$<br>\tilde F(x) = \prod_{p\in P}\dfrac 1{1 - p ^ {1 - x}}<br>$$<br>而这个由可以表示成黎曼函数：<br>$$<br>\tilde F(x) = \zeta(x - 1)<br>$$<br>如果我们将这个换成 $id ^ k(x) = x ^ k$，那么答案就是：<br>$$<br>\tilde F(x) = \prod_{p\in P}\dfrac 1{1 - p ^ {k - x}} = \zeta(x - k)<br>$$</p>
+<h3 id="3）莫比乌斯函数"><a href="#3）莫比乌斯函数" class="headerlink" title="3）莫比乌斯函数"></a>3）莫比乌斯函数</h3><p>对于一般的函数，我们通常讨论在质数点的取值来得到 DGF。<br>$$<br>\tilde F(x) = \prod_{p\in P}(1 + \dfrac{-1}{p ^ x}) = \prod_{p\in P}\dfrac{p ^ x - 1}{p ^ x}<br>$$<br>这个怎样用黎曼函数表示呢？</p>
+<p>发现 $\displaystyle \dfrac 1{\tilde F(x)} = \prod_{p\in P}\dfrac{p ^ x}{p ^ x - 1} = \prod_{p\in P}\dfrac 1{1 - p ^ {-x}} = \zeta(x)$，所以 $\tilde F(x) = \dfrac 1{\zeta(x)}$。</p>
+<h3 id="4）欧拉函数"><a href="#4）欧拉函数" class="headerlink" title="4）欧拉函数"></a>4）欧拉函数</h3><p>同样，直接上式子：<br>$$<br>\tilde F(x) = \prod_{p\in P}(1 + \dfrac{p - 1}{p ^ x} + \dfrac{p(p - 1)}{p ^ {2x}} + \dfrac{p ^ 2(p - 1)}{p ^ {3x}} + \dots)<br>$$<br>我们直接考虑先改成封闭形式：<br>$$<br>\begin{aligned}<br>\tilde F(x) &amp;= \prod_{p\in P}(1 + \dfrac{p}{p ^ x} + \dfrac{p ^ 2}{p ^ {2x}} + \dots - \dfrac{1}{p ^ x} (1 + \dfrac{p}{p ^ x} + …))<br>\\&amp;= \prod_{p\in P}(\dfrac 1{1 - p ^ {1 - x}} - \dfrac{p ^ {-x}}{1 - p ^ {1 - x}}) \\ &amp;= \prod_{p\in P}\dfrac{1 - p ^ {-x}}{1 - p ^ {1 - x}}<br>\\ &amp;= \dfrac{\zeta(x - 1)}{\zeta(x)}<br>\end{aligned}<br>$$<br>那么，这个和 $id^0 = I$ 卷积，就可以得到：$\dfrac{\zeta(x - 1)}{\zeta(x)} * \zeta(x) = \zeta(x - 1)$。这对应着 $id(x)$。</p>
+<h3 id="5）约数-k-次幂"><a href="#5）约数-k-次幂" class="headerlink" title="5）约数 k 次幂"></a>5）约数 k 次幂</h3><p>首先定义 $\sigma_0(x) = \sum_{d | x}$，表示约数个数。而 $\sigma_k(x) = \sum_{d | x}d ^ k$。这里给出 $\sigma_1(k)$ 的推导。<br>$$<br>\begin{aligned}<br>\tilde F(x) &amp;= \prod_{p\in P}(1 + \dfrac{p ^ 2 - 1}{p ^ x(p - 1)} + \dfrac{p ^ 3 - 1}{p ^ {2x}(p - 1)} + \dots)<br>\\ &amp;= \prod_{p\in P}\dfrac 1{p - 1}((\dfrac{p}{p ^ {0x}} + \dfrac{p ^ 2}{p ^ x} + \dots) - (\dfrac{1}{p ^ {0x}} + \dfrac{1}{p ^ {x}} + \dots))<br>\\ &amp;= \prod_{p \in P}\dfrac 1{p - 1}(\dfrac{p}{1 - p ^ {1 - x}} - \dfrac{1}{1 - p ^ {-x}})<br>\\ &amp;= \prod_{p\in P}\dfrac 1{p - 1}\dfrac{p - 1}{(1 - p ^ {1 - x})(1 - p ^ {-x})}<br>\\ &amp;= \prod_{p\in P}\dfrac{1}{(1 - p^{-x})(1 - p^{1 - x})}<br>\\ &amp;= \zeta(x)\zeta(x - 1)<br>\end{aligned}<br>$$<br>而对于 $\sigma_k(x) = \sum_{d | x}d ^ k$，我们有：$\tilde F(x) = \zeta(x)\zeta(x - k)$。本处证明略去。</p>
+<h3 id="6）乘上-x-k"><a href="#6）乘上-x-k" class="headerlink" title="6）乘上  $x^k$"></a>6）乘上  $x^k$</h3><p><strong>结论：</strong>若 $f(x)$ 的 DGF 是 $\tilde F(x)$，那么 $g(x) = f(x)\times x ^ k$ 的 DGF 是 $\tilde G(x) = \tilde F(x - k)$。这个可以通过改变质数处的取值得到。证明略去。</p>
+<h2 id="4-例题"><a href="#4-例题" class="headerlink" title="4. 例题"></a>4. 例题</h2><h3 id="T1：简单的数学题"><a href="#T1：简单的数学题" class="headerlink" title="T1：简单的数学题"></a>T1：简单的数学题</h3><p>求 $\sum_{i = 1}^n i ^ 2\varphi(i)$，使用杜教筛。</p>
+<p>直接使用 $\tilde F(x) = \dfrac{\zeta(x - 3)}{\zeta(x - 2)}$，那么 $f(i) * id^2(i) = id^3(i)$。直接筛就可以了。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> LL = <span class="keyword">long</span> <span class="keyword">long</span>;</span><br><span class="line"></span><br><span class="line"><span class="function">LL <span class="title">get_sphi</span><span class="params">(LL n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (n &lt; N) <span class="keyword">return</span> sphi[n];</span><br><span class="line">	<span class="keyword">if</span> (Sphi.<span class="built_in">find</span>(n) != Sphi.<span class="built_in">end</span>()) <span class="keyword">return</span> Sphi[n];</span><br><span class="line">	LL ans = <span class="built_in">sum3</span>(n);</span><br><span class="line">	<span class="keyword">for</span> (ll l = <span class="number">2</span>, r; l &lt;= n; l = r + <span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		r = n / (n / l);</span><br><span class="line">		ans = (-(<span class="built_in">sum2</span>(r) - <span class="built_in">sum2</span>(l - <span class="number">1</span>)) * <span class="built_in">get_sphi</span>(n / l) % Mod + ans + Mod) % Mod;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> Sphi[n] = ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 
     </div>
 
@@ -291,8 +278,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/%E9%A2%98%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 题解</a>
-              <a href="/tags/%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97/" rel="tag"><i class="fa fa-tag"></i> 单调队列</a>
+              <a href="/tags/%E6%95%B0%E8%AE%BA/" rel="tag"><i class="fa fa-tag"></i> 数论</a>
           </div>
 
         
@@ -301,13 +287,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/12/26/P7225/" rel="prev" title="P7225">
-      <i class="fa fa-chevron-left"></i> P7225
+    <a href="/2022/04/01/NOI-Online-2022/" rel="prev" title="NOI Online 2022 游记">
+      <i class="fa fa-chevron-left"></i> NOI Online 2022 游记
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/12/26/%E4%BA%8C%E6%AC%A1%E5%89%A9%E4%BD%99%E4%B8%8E-Cipolla-%E7%AE%97%E6%B3%95/" rel="next" title="二次剩余与 Cipolla 算法">
-      二次剩余与 Cipolla 算法 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -366,7 +349,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86-amp-%E5%BA%9F%E8%AF%9D"><span class="nav-number">1.</span> <span class="nav-text">0. 前置知识 &amp; 废话</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%A2%98%E6%84%8F"><span class="nav-number">2.</span> <span class="nav-text">1. 题意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%80%9D%E8%B7%AF"><span class="nav-number">3.</span> <span class="nav-text">2. 思路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E6%9C%B4%E7%B4%A0"><span class="nav-number">3.1.</span> <span class="nav-text">1）朴素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E5%A0%86%E4%BC%98%E5%8C%96"><span class="nav-number">3.2.</span> <span class="nav-text">2）堆优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97"><span class="nav-number">3.3.</span> <span class="nav-text">3）单调队列</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%B8%B8%E6%95%B0%E4%BC%98%E5%8C%96"><span class="nav-number">4.</span> <span class="nav-text">3. 常数优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E4%BB%A3%E7%A0%81"><span class="nav-number">5.</span> <span class="nav-text">4. 代码</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">1. 定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%8B%84%E5%88%A9%E5%85%8B%E9%9B%B7%E5%87%BD%E6%95%B0%E7%9A%84%E5%8D%B7%E7%A7%AF"><span class="nav-number">2.</span> <span class="nav-text">2. 狄利克雷函数的卷积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%B8%B8%E8%A7%81%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">3. 常见函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89%E5%B8%B8%E5%80%BC%E5%87%BD%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">1）常值函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89%E6%A0%87%E5%8F%B7%E5%87%BD%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">2）标号函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89%E8%8E%AB%E6%AF%94%E4%B9%8C%E6%96%AF%E5%87%BD%E6%95%B0"><span class="nav-number">3.3.</span> <span class="nav-text">3）莫比乌斯函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89%E6%AC%A7%E6%8B%89%E5%87%BD%E6%95%B0"><span class="nav-number">3.4.</span> <span class="nav-text">4）欧拉函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%EF%BC%89%E7%BA%A6%E6%95%B0-k-%E6%AC%A1%E5%B9%82"><span class="nav-number">3.5.</span> <span class="nav-text">5）约数 k 次幂</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%EF%BC%89%E4%B9%98%E4%B8%8A-x-k"><span class="nav-number">3.6.</span> <span class="nav-text">6）乘上  $x^k$</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E4%BE%8B%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text">4. 例题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#T1%EF%BC%9A%E7%AE%80%E5%8D%95%E7%9A%84%E6%95%B0%E5%AD%A6%E9%A2%98"><span class="nav-number">4.1.</span> <span class="nav-text">T1：简单的数学题</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

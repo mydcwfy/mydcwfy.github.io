@@ -20,21 +20,22 @@
     var CONFIG = {"hostname":"mydcwfy.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="update：2021-04-13 21:49 根据RuSun的建议，更改了解题步骤 请确保你知道网络流、最大流、最小割">
+  <meta name="description" content="分治的妙妙题。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="最小割">
-<meta property="og:url" content="https://mydcwfy.github.io/2021/12/26/Min-cut/index.html">
+<meta property="og:title" content="P7843">
+<meta property="og:url" content="https://mydcwfy.github.io/2022/04/04/P7843/index.html">
 <meta property="og:site_name" content="mydcwfy&#39;s Blog">
-<meta property="og:description" content="update：2021-04-13 21:49 根据RuSun的建议，更改了解题步骤 请确保你知道网络流、最大流、最小割">
+<meta property="og:description" content="分治的妙妙题。">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-12-26T04:15:20.000Z">
-<meta property="article:modified_time" content="2021-12-26T04:18:31.115Z">
+<meta property="article:published_time" content="2022-04-04T13:28:17.000Z">
+<meta property="article:modified_time" content="2022-04-04T14:18:33.529Z">
 <meta property="article:author" content="mydcwfy">
-<meta property="article:tag" content="图论">
-<meta property="article:tag" content="网络流">
+<meta property="article:tag" content="题解">
+<meta property="article:tag" content="分治">
+<meta property="article:tag" content="并查集">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://mydcwfy.github.io/2021/12/26/Min-cut/">
+<link rel="canonical" href="https://mydcwfy.github.io/2022/04/04/P7843/">
 
 
 <script id="page-configurations">
@@ -47,7 +48,7 @@
   };
 </script>
 
-  <title>最小割 | mydcwfy's Blog</title>
+  <title>P7843 | mydcwfy's Blog</title>
   
 
 
@@ -189,7 +190,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2021/12/26/Min-cut/">
+    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2022/04/04/P7843/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -202,7 +203,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          最小割
+          P7843
         </h1>
 
         <div class="post-meta">
@@ -213,7 +214,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-12-26 12:15:20 / Modified: 12:18:31" itemprop="dateCreated datePublished" datetime="2021-12-26T12:15:20+08:00">2021-12-26</time>
+              <time title="Created: 2022-04-04 21:28:17 / Modified: 22:18:33" itemprop="dateCreated datePublished" datetime="2022-04-04T21:28:17+08:00">2022-04-04</time>
             </span>
 
           
@@ -229,14 +230,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>1.7k</span>
+              <span>2.7k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>4 mins.</span>
+              <span>6 mins.</span>
             </span>
 
         </div>
@@ -248,81 +249,24 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><strong>update：2021-04-13 21:49 根据<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/user/185726">RuSun</a>的建议，更改了解题步骤</strong></p>
-<p><strong>请确保你知道网络流、最大流、最小割</strong></p>
+        <p>分治的妙妙题。</p>
 <span id="more"></span>
 
-<p><a href="https://mydcwfy.github.io/2021/12/26/Network-flow/">我的博客</a></p>
-<p>鉴于最小割模型不宜想到，且变化多端，特出此笔记</p>
-<h2 id="1-应用"><a href="#1-应用" class="headerlink" title="1.应用"></a>1.应用</h2><p>最小割常用来求最小代价，以及最大收益（满足一定条件才能获得）</p>
-<p>最小割的复杂度与最大流相同，为$O(n^2m)$</p>
-<p>由于模板没有可考察的，所以难点一般在建图上。</p>
-<h2 id="2-模型"><a href="#2-模型" class="headerlink" title="2.模型"></a>2.模型</h2><h3 id="0）-前言"><a href="#0）-前言" class="headerlink" title="0） 前言"></a>0） 前言</h3><p>最小割求的是最小代价，即不选某条边的代价</p>
-<p>满流表示的是割断该条边，并支付该代价</p>
-<p>未满流的边，一般视为0</p>
-<p>最小割求的是边的割，如果是点的代价，则使用拆点法</p>
-<p>对于不能割断的边，将其流量设为 $+\infty$</p>
-<h3 id="1）-最小代价型"><a href="#1）-最小代价型" class="headerlink" title="1） 最小代价型"></a>1） 最小代价型</h3><h4 id="T1："><a href="#T1：" class="headerlink" title="T1："></a>T1：</h4><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1345">P1345 [USACO5.4]奶牛的电信Telecowmunication</a></p>
-<p>这是一道典型的 01 最小代价问题，从入点到出点都是1的代价。</p>
-<p>将每个点拆为入点和出点，之间的代价为1</p>
-<p>每条边的代价为 $+\infty$，即不能割断。</p>
-<p>不贴代码了，自己建图最大流就可以了。</p>
-<h4 id="T2："><a href="#T2：" class="headerlink" title="T2："></a>T2：</h4><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3866">P3866 [TJOI2009]战争游戏</a></p>
-<p>这是一道多代价问题，不只是 1 的代价</p>
-<p>同样要用到拆点法，入点与出点的连边为轰炸该点的炸药数，</p>
-<p>注意，如果是本身是障碍物的话，相当于轰炸为0代价，在网络流中可以直接掠过。</p>
-<p>从敌军位置向起点连边，从边界向汇点连边，就可以了。</p>
-<h3 id="2）-最大收益类"><a href="#2）-最大收益类" class="headerlink" title="2） 最大收益类"></a>2） 最大收益类</h3><p>其实最大收益类都可以转化为最小代价类。</p>
-<p>为什么单独拿出来说呢？因为很多时候，看不出来是最小割。</p>
-<p>看几道题理解一下。</p>
-<h4 id="T1：-1"><a href="#T1：-1" class="headerlink" title="T1："></a>T1：</h4><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2774">P2774 方格取数问题</a></p>
-<p>很多同学看到“最大和”，迫不及待地要用最大流。</p>
-<p>但这道题，如果是最大流的话，会使图的规模增长一个数量级，并且杂乱无章。</p>
-<p>（<del>所以讲一下还是有必要的</del>）</p>
-<p>我们考虑应该不要哪些点。</p>
-<p>回归割的定义，任意一条从 s 到 t 的路径，必有一条是割边。</p>
-<p>我们将有关联的点全部连在一起，再将这些点分别接到源汇点上，会发现，任意一条边，要么左边满流（取其代价），要么右边满流</p>
-<p>进一步观察题目，挖掘性质，我们可以发现，可将原图分为两部，相邻的点在不同部。</p>
-<p>我们就可以发现，再将两部的点分别连到源汇点，就满足了上面的性质！</p>
-<p>这样建图就可以了，用最大流跑。</p>
-<h4 id="T2：-1"><a href="#T2：-1" class="headerlink" title="T2："></a>T2：</h4><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2762">P2762 太空飞行计划问题</a></p>
-<p>输出里直接说到“最大利润”，所以是最大收益的题目。</p>
-<p>我们考虑哪些实验不要，以及需要支付的费用。</p>
-<p>先将每个实验与源点连边，接着与需要的配置连边$+\infty$，然后把配置与汇点连边。</p>
-<p>挖掘性质：任意一条从 s 到 t 的路径，都会经过一个实验和配置。</p>
-<p>要么实验满流（既不选），要么配置满流（即支付该费用）。</p>
-<p>满足原问题的性质。</p>
-<h4 id="T3："><a href="#T3：" class="headerlink" title="T3："></a>T3：</h4><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4177">P4177 [CEOI2008]order</a></p>
-<p>这道题与上道题类似，只不过多了一个租的环节。</p>
-<p>分析上一题，发现相当于是租的费用为 $+\infty$，这道题，改为对应代价即可。</p>
-<p>每一部分，要么不选工作，要么对应边满流（即租），要么买。</p>
-<h4 id="T4："><a href="#T4：" class="headerlink" title="T4："></a>T4：</h4><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3872">P3872 [TJOI2010]电影迷</a></p>
-<p>这道题提到，$-1000 \leq v(x) \leq 1000$，即可能为负。</p>
-<p>我们可以把负点看做是代价，并将联系正负的分别与源汇点连边。</p>
-<p>注意，负点不是收益，而是代价，该点没有满流代表不选该点</p>
-<p>可以发现，要么正的满流（即不看），要么中间断开（即支付不看的代价），要么从负点断开（即支付看他的代价）。</p>
-<p>详细证明参见 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/Feliks-GMYB/solution-p3872">这篇博客</a></p>
-<h4 id="T5："><a href="#T5：" class="headerlink" title="T5："></a>T5：</h4><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4313">P4313 文理分科</a></p>
-<p>这是最能体现最小割通法的题目了。</p>
-<p>按照先前的思路，就会发现牵扯过多，而不好建图。</p>
-<p>这时我们采取的策略是：<br><strong>先将所有的利益加进来，在将不能共存的状态连边（或者一定的费用），将连边的端点分别以一定代价连边源汇点。</strong><br>按照这个思路，几乎可以秒杀该题。</p>
-<p>将所有利益加起来，然后将 $same_art$ 与几个 $science$ 连边，$same_science$ 同理。</p>
-<p>将带 $art$ 的与源点连边，其余的与汇点连边，用总收益减最小割即可。</p>
-<h3 id="3）-总结"><a href="#3）-总结" class="headerlink" title="3） 总结"></a>3） 总结</h3><p>我们可以用最小割解决问题，都用上面的策略建图即可。</p>
-<h2 id="3-解题步骤"><a href="#3-解题步骤" class="headerlink" title="3. 解题步骤"></a>3. 解题步骤</h2><ol>
-<li><p>判断是不是最小割问题。</p>
-</li>
-<li><p>判断是不是最大收益类，如果是，先将收益加起来。</p>
-</li>
-<li><p>如果是最大收益类，就将不能共存的点连接起来。</p>
-</li>
-<li><p>如果是最小代价类，就将两点必须有至少其一的点连接起来。</p>
-</li>
-<li><p>跑最小割即可。</p>
-</li>
-</ol>
-<h4 id="注意：这两类一般只能处理二分图的形式的题，除了一些明显的最小割问题"><a href="#注意：这两类一般只能处理二分图的形式的题，除了一些明显的最小割问题" class="headerlink" title="注意：这两类一般只能处理二分图的形式的题，除了一些明显的最小割问题"></a>注意：这两类一般只能处理二分图的形式的题，除了一些明显的最小割问题</h4><p>没有总结到的，请在评论区提出，我会按时回复。</p>
-<p>希望对你有所帮助。</p>
+<h2 id="1-题意"><a href="#1-题意" class="headerlink" title="1. 题意"></a>1. 题意</h2><p>给定 $m$ 个双向的 2-SAT 限制（即 $u_i$ 选了 $x_i$ 则 $v_i$ 要选 $y_i$，同样 $v_i$ 选了 $y_i$ 则 $u_i$ 要选$x_i$），$q$ 次询问 $[l, r]$ 最少能划分成多少段有解的 2-SAT 限制。</p>
+<p>$n\leq 10 ^ 5, m\leq 6\times 10 ^ 5, q\leq 10 ^ 6$，时限 2.5 s。</p>
+<h2 id="2-思路"><a href="#2-思路" class="headerlink" title="2. 思路"></a>2. 思路</h2><p>首先考虑如何判定 2-SAT 限制是否有解，发现这个 Tarjan 实质是在求联通分量（因为有双向边，联通分量一定是强连通分量）。</p>
+<p>那么，我们可以使用一个并查集维护联通性，如果一次之后出现了 $u_i$ 和 $u_i$ 的反面在一个强连通分量，则不合法。</p>
+<p>如何求一个区间最少划分成多少个有解的 2-SAT 问题？这个可以简单的贪心，预处理每一个限制一直向右扩展到哪一处开始不合法（显然不合法之后不可能再合法），前面的显然划为一段，如此贪心。这个贪心过程可以使用倍增优化，也就是说，如果我们能找到从一个限制一直向右扩展到哪一处开始不合法，我们可以倍增跳，做到 $O(q\log n)$ 的复杂度，显然已经足够了。问题在于如何求哪一处开始不合法。</p>
+<p>记 $f(i)$ 为极短的 $[i, f(i)]$ 为无解的限制，这个就类似一个 DP 了。我们发现似乎没有什么方法可以做到比较优的复杂度，因为这个和一般的 DP 又不尽相同。</p>
+<p>考虑 $f(i)$ 的性质，我们发现，$f(i)$ 显然是具有单调性的，这启示我们向 DP 的决策单调性的方向思考。</p>
+<p>类似于决策单调性的求法，我们考虑二分，<code>solve(l, r, sl, sr)</code> 表示处理 $[l, r]$ 之间的$f(i)$，已知答案区间为 $[sl, sr]$。直接计算 $f(mid)$，然后向下递归即可。</p>
+<p>如何计算 $f(mid)$，如果我们暴力向右扩展的话，其实复杂度是错误的。回顾决策单调性的写法与时间复杂度的证明，我们取的时候，必须只能在 $[sl, sr]$ 之间计算，也就是说，我们的时间复杂度应只与 $sr - sl$ 有关。但是这个题，我们发现，如果 $mid &lt; sl$，即使我们知道答案不会出现在这一段区间，我们还是得扫一遍，为后面判断做铺垫，而这造成了错误，使得复杂度不对。如何处理他呢？</p>
+<p>感觉上，这个东西应该是留给上一层计算才对，于是我们强制要求<strong>在 $[r + 1, sl - 1]$ 之间的限制已经被加入并查集了</strong>。这样才能保证我们计算的时候，不会进入多余的无用的计算。递归结束时显然要撤回，所以用可撤销并查集，预处理时间复杂度 $O(m\log m\log n)$，总时间复杂度为 $O(m\log m\log n + q\log n)$。至于为什么不将 $[mid, sl - 1]$ 或是 $[l, sl - 1]$ 加入并查集，是因为这不是 $[l, r]$ 所有节点所必需的，所以先不管。具体在实现部分讲。</p>
+<h2 id="3-实现"><a href="#3-实现" class="headerlink" title="3. 实现"></a>3. 实现</h2><p>这个题由于要保证 $[r + 1, sl - 1]$ 的在进入该层前已经加入了并查集了，所以我们注意我们如果要计算 $f(mid)$，要先将 $[mid, \min{r, sl - 1}]$ 的加入，然后再从 $sl$ 向右扫。如果要向左区间递归，那么 $[mid, sl - 1]$ 的保留（因为向 $[l, mid - 1]$ 递归），所以我们要将第一次加入的边保留。而向右区间，则是 $[r, f(mid) - 1]$，这个直接实现即可。</p>
+<p>考虑复杂度，同整体二分，$O(m\log m)$，加上可撤销并查集，$O(m\log m\log n)$，可以通过。</p>
+<p>注意可能前面上层的就已经不合法了，所以要将前面是否合法并向下递归。还要注意判断自相矛盾的情况。可能比较难写，放一个二分的代码。（到底是什么二分 / 分治呢？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DSU</span> &#123;</span>  &#125; dsu ;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">check</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123; <span class="keyword">return</span> dsu.<span class="built_in">find</span>(x) != dsu.<span class="built_in">find</span>(x ^ <span class="number">1</span>); &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span> sl, <span class="keyword">int</span> sr, <span class="keyword">bool</span> frm)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// printf(&quot;Solve [%d, %d] : [%d, %d]\n&quot;, l, r, sl, sr);</span></span><br><span class="line">	<span class="keyword">if</span> (l &gt; r) <span class="keyword">return</span>;</span><br><span class="line">	<span class="keyword">if</span> (sl == sr) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = l; i &lt;= r; ++ i) f[i] = sl;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> mid = (l + r) &gt;&gt; <span class="number">1</span>, now = frm, st = dsu.top;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = mid; i &lt;= r &amp;&amp; i &lt; sl; ++ i) &#123;</span><br><span class="line">		dsu.<span class="built_in">merge</span>(opt[i].first, opt[i].second);</span><br><span class="line">		dsu.<span class="built_in">merge</span>(opt[i].first ^ <span class="number">1</span>, opt[i].second ^ <span class="number">1</span>);</span><br><span class="line">		now &amp;= <span class="built_in">check</span>(opt[i].first);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> bac = dsu.top, ls = now;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = std::<span class="built_in">max</span>(sl, mid); i &lt;= sr; ++ i) &#123;</span><br><span class="line">		dsu.<span class="built_in">merge</span>(opt[i].first, opt[i].second);</span><br><span class="line">		dsu.<span class="built_in">merge</span>(opt[i].first ^ <span class="number">1</span>, opt[i].second ^ <span class="number">1</span>);</span><br><span class="line">		now &amp;= <span class="built_in">check</span>(opt[i].first);</span><br><span class="line">		<span class="keyword">if</span> (!now) &#123;</span><br><span class="line">			f[mid] = i;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (now) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = mid; i &lt;= r; ++ i) f[i] = m + <span class="number">1</span>;</span><br><span class="line">		dsu.<span class="built_in">back</span>(bac);</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">solve</span>(l, mid - <span class="number">1</span>, sl, sr, ls), dsu.<span class="built_in">back</span>(st);</span><br><span class="line">	&#125;</span><br><span class="line">	dsu.<span class="built_in">back</span>(bac), <span class="built_in">solve</span>(l, mid - <span class="number">1</span>, sl, f[mid], ls);</span><br><span class="line">	dsu.<span class="built_in">back</span>(st), now = frm;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = std::<span class="built_in">max</span>(sl, r + <span class="number">1</span>); i &lt; f[mid]; ++ i) &#123;</span><br><span class="line">		dsu.<span class="built_in">merge</span>(opt[i].first, opt[i].second);</span><br><span class="line">		dsu.<span class="built_in">merge</span>(opt[i].first ^ <span class="number">1</span>, opt[i].second ^ <span class="number">1</span>);</span><br><span class="line">		now &amp;= <span class="built_in">check</span>(opt[i].first);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">solve</span>(mid + <span class="number">1</span>, r, f[mid], sr, now), dsu.<span class="built_in">back</span>(st);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">solve</span>(<span class="number">1</span>, m, <span class="number">1</span>, m + <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 
     </div>
 
@@ -333,8 +277,9 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag"><i class="fa fa-tag"></i> 图论</a>
-              <a href="/tags/%E7%BD%91%E7%BB%9C%E6%B5%81/" rel="tag"><i class="fa fa-tag"></i> 网络流</a>
+              <a href="/tags/%E9%A2%98%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 题解</a>
+              <a href="/tags/%E5%88%86%E6%B2%BB/" rel="tag"><i class="fa fa-tag"></i> 分治</a>
+              <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag"><i class="fa fa-tag"></i> 并查集</a>
           </div>
 
         
@@ -343,13 +288,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/12/26/Tarjan-algorithm/" rel="prev" title="Tarjan 算法">
-      <i class="fa fa-chevron-left"></i> Tarjan 算法
+    <a href="/2022/04/04/high-precision/" rel="prev" title="高精度模板">
+      <i class="fa fa-chevron-left"></i> 高精度模板
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/12/26/Difference-constraint/" rel="next" title="差分约束">
-      差分约束 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -408,7 +350,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%BA%94%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">1.应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">2.模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0%EF%BC%89-%E5%89%8D%E8%A8%80"><span class="nav-number">2.1.</span> <span class="nav-text">0） 前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89-%E6%9C%80%E5%B0%8F%E4%BB%A3%E4%BB%B7%E5%9E%8B"><span class="nav-number">2.2.</span> <span class="nav-text">1） 最小代价型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#T1%EF%BC%9A"><span class="nav-number">2.2.1.</span> <span class="nav-text">T1：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T2%EF%BC%9A"><span class="nav-number">2.2.2.</span> <span class="nav-text">T2：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89-%E6%9C%80%E5%A4%A7%E6%94%B6%E7%9B%8A%E7%B1%BB"><span class="nav-number">2.3.</span> <span class="nav-text">2） 最大收益类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#T1%EF%BC%9A-1"><span class="nav-number">2.3.1.</span> <span class="nav-text">T1：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T2%EF%BC%9A-1"><span class="nav-number">2.3.2.</span> <span class="nav-text">T2：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T3%EF%BC%9A"><span class="nav-number">2.3.3.</span> <span class="nav-text">T3：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T4%EF%BC%9A"><span class="nav-number">2.3.4.</span> <span class="nav-text">T4：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#T5%EF%BC%9A"><span class="nav-number">2.3.5.</span> <span class="nav-text">T5：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89-%E6%80%BB%E7%BB%93"><span class="nav-number">2.4.</span> <span class="nav-text">3） 总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%A7%A3%E9%A2%98%E6%AD%A5%E9%AA%A4"><span class="nav-number">3.</span> <span class="nav-text">3. 解题步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A%E8%BF%99%E4%B8%A4%E7%B1%BB%E4%B8%80%E8%88%AC%E5%8F%AA%E8%83%BD%E5%A4%84%E7%90%86%E4%BA%8C%E5%88%86%E5%9B%BE%E7%9A%84%E5%BD%A2%E5%BC%8F%E7%9A%84%E9%A2%98%EF%BC%8C%E9%99%A4%E4%BA%86%E4%B8%80%E4%BA%9B%E6%98%8E%E6%98%BE%E7%9A%84%E6%9C%80%E5%B0%8F%E5%89%B2%E9%97%AE%E9%A2%98"><span class="nav-number">3.0.1.</span> <span class="nav-text">注意：这两类一般只能处理二分图的形式的题，除了一些明显的最小割问题</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%A2%98%E6%84%8F"><span class="nav-number">1.</span> <span class="nav-text">1. 题意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">2. 思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">3. 实现</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

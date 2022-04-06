@@ -6,7 +6,7 @@
   <link href="https://mydcwfy.github.io/atom.xml" rel="self"/>
   
   <link href="https://mydcwfy.github.io/"/>
-  <updated>2022-04-04T14:18:33.529Z</updated>
+  <updated>2022-04-06T14:09:53.081Z</updated>
   <id>https://mydcwfy.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CF843D</title>
+    <link href="https://mydcwfy.github.io/2022/04/06/CF843D/"/>
+    <id>https://mydcwfy.github.io/2022/04/06/CF843D/</id>
+    <published>2022-04-06T13:50:25.000Z</published>
+    <updated>2022-04-06T14:09:53.081Z</updated>
+    
+    <content type="html"><![CDATA[<p>Dijkstra 的好题。</p><span id="more"></span><p>题意：给定一张图，可能询问某点到 1 的最短距离或是给 $c$ 条边的边权加 1。$n, m\leq 10 ^ 5, q\leq 2000, \sum c\leq 10 ^ 6$。</p><p>直接考虑朴素的 Dijkstra，每次我们加边的时候，都暴力重构长度。时间复杂度 $O(mq\log n)$，很卡。<del>标算都卡的很，这还能过？</del></p><p>另一种方法是用 SPFA 代替，时间复杂度 $O(kmq)$，<del>好像被构造卡了</del>。</p><p>10 s 的时间，看样子不是什么特别优的算法，应该是 $O(mq)$。</p><p>似乎只有 BFS 可以做到这个复杂度，01 双端队列似乎可以解决！</p><p>但是我们没有考虑原来的边的边权，这个显然是有问题的，因为对于边权非 1 的情况会处理错误。那么有什么方法呢？</p><p>考虑 Dijkstra 的算法流程：</p><blockquote><ol><li>找到当前未扩展的点中，距离起点最近的点。</li><li>松弛其他点到起点的距离。</li></ol></blockquote><p>在标准的 Dijkstra 算法中，我们使用了一个堆实时维护。我们是否可以找到另外的替代呢？直接考虑最暴力的桶，于是我们得到了一个 $O(m + W)$ 的做法，其中 $W$ 是指最短路的值域范围。</p><p>每次加 $c$ 条边的边权时，到其他所有点的距离变化一定不超过 $\min{c, n - 1}$（最短路不超过 $n - 1$ 条边），这启示我们可以使用桶 - Dijkstra 的算法来计算增量。</p><p>但是在一般的认知中，是没有办法求最短路的增量的。可以考虑类似 Johnson 全源最短路的做法，我们设置一条边的新权值为 $e(u, v)’ = e(u, v) + dis(u) - dis(v)$。类似 Johnson 的证明，我们三角不等式易得边权仍然是非负的。而我们走到一个点的时候，他的势能加上他的新图上的距离就是原图上的最短路。而新图的距离是好求的，于是我们可以得到单次 $O(m + W) = O(m)$ 的做法了。总时间复杂度 $O(m\log m + mq)$（开始必须跑一遍 Dijkstra</p><p>注意仍然比较卡常，注意实现细节的错误可能导致 TLE。放一个代码。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">std::queue&lt;<span class="keyword">int</span>&gt; q[N];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bfs</span><span class="params">(<span class="keyword">int</span> Lim = n - <span class="number">1</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= Lim; ++ i)</span><br><span class="line"><span class="keyword">while</span> (!q[i].<span class="built_in">empty</span>()) q[i].<span class="built_in">pop</span>();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) now[i] = n;</span><br><span class="line">q[<span class="number">0</span>].<span class="built_in">push</span>(<span class="number">1</span>), now[<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> mx = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> l = <span class="number">0</span>, x; l &lt;= mx; ++ l)</span><br><span class="line"><span class="keyword">while</span> (!q[l].<span class="built_in">empty</span>()) &#123;</span><br><span class="line">x = q[l].<span class="built_in">front</span>();</span><br><span class="line">q[l].<span class="built_in">pop</span>();</span><br><span class="line"><span class="keyword">if</span> (now[x] &lt; l) <span class="keyword">continue</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> &amp;[i, v] : g[x])</span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">chkmin</span>(now[v], <span class="built_in"><span class="keyword">int</span></span>(now[x] + w[i] + d[x] - d[e[i]])) &amp;&amp; now[v] &lt;= Lim)</span><br><span class="line">q[now[v]].<span class="built_in">push</span>(v), <span class="built_in">chkmax</span>(mx, now[v]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line"><span class="keyword">if</span> (d[i] &lt; (INF &gt;&gt; <span class="number">1</span>)) d[i] += now[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;Dijkstra 的好题。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="题解" scheme="https://mydcwfy.github.io/tags/%E9%A2%98%E8%A7%A3/"/>
+    
+    <category term="图论" scheme="https://mydcwfy.github.io/tags/%E5%9B%BE%E8%AE%BA/"/>
+    
+    <category term="CF" scheme="https://mydcwfy.github.io/tags/CF/"/>
+    
+  </entry>
   
   <entry>
     <title>P7843</title>
@@ -415,27 +438,6 @@
     <category term="题解" scheme="https://mydcwfy.github.io/tags/%E9%A2%98%E8%A7%A3/"/>
     
     <category term="SG 函数" scheme="https://mydcwfy.github.io/tags/SG-%E5%87%BD%E6%95%B0/"/>
-    
-    <category term="CF" scheme="https://mydcwfy.github.io/tags/CF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CF919E</title>
-    <link href="https://mydcwfy.github.io/2021/12/26/CF919E/"/>
-    <id>https://mydcwfy.github.io/2021/12/26/CF919E/</id>
-    <published>2021-12-26T04:49:27.000Z</published>
-    <updated>2021-12-26T04:50:43.969Z</updated>
-    
-    <content type="html"><![CDATA[<p>模拟和逆元题目。</p><span id="more"></span><h2 id="1-题意"><a href="#1-题意" class="headerlink" title="1. 题意"></a>1. 题意</h2><p>求<br>$$<br>n\cdot a^n\equiv b\pmod p<br>$$<br>在 $[1,x]$ 的正整数解的个数，其中 $a,b,p,x$ 给定。</p><p>$p\leq10^6+3,x\leq10^{12},1\leq a,b&lt;p$。</p><h2 id="2-思路"><a href="#2-思路" class="headerlink" title="2. 思路"></a>2. 思路</h2><p>首先，看到 $p\leq10^6+3$，一定是要 $O(p)$ 枚举，然后再做。</p><h4 id="a）枚举-n"><a href="#a）枚举-n" class="headerlink" title="a）枚举 $n$"></a>a）枚举 $n$</h4><p>那么，原题转化为了 $t\cdot a^n\equiv b\pmod p$ 的解了。</p><p>很明显是一个 BSGS，时间复杂度为 $O(\sqrt p)$ 或 $O(\sqrt p\log \sqrt p)$，取决于 map 还是 Hash。</p><p>但是，总时间为 $O(p\sqrt p)$，很明显无法通过。</p><h4 id="b）枚举-a-n"><a href="#b）枚举-a-n" class="headerlink" title="b）枚举 $a^n$"></a>b）枚举 $a^n$</h4><p>首先，我们考虑 $a^n$ 的取值有多少种。</p><p>由于 $a^{p-1}\equiv 1\pmod p$，所以循环节一定是 $p-1$，那么我们就可以枚举 $n\bmod (p-1)$，得到所有的 $a^n$ 的取值。</p><p>那么，原题就是 $n\cdot t\equiv b\pmod p$ 的解。</p><p>咦，这不就是一个逆元了吗？</p><p>于是，我们可以 $O(\log p)$ 求出逆元（因为一定有），那么，我们就可以求出 $n\bmod p$ 的值。</p><h4 id="c）合并答案"><a href="#c）合并答案" class="headerlink" title="c）合并答案"></a>c）合并答案</h4><p>这道题在 CF 上有中国剩余定理的标签，大概就是这里用的吧。</p><p>我们已经得到了 $t1=n\bmod (p-1)$ 和 $t2=n\bmod p$ 的值，直接由中国剩余定理就可以了。</p><p>其实手玩也不是不可以，直接设 $n=kp+t2$，代入第一个就可以得到：<br>$$<br>\begin{aligned}<br>kp+t2&amp;\equiv t1 \pmod {p-1}\<br>k+t2&amp;\equiv t1\pmod {p-1}\<br>k&amp;\equiv t2-t1\pmod {p-1}<br>\end{aligned}<br>$$<br>就解出了 $n$ 的最小正整数取值了。</p><p>周期<del>很明显</del>是 $p\cdot(p-1)$，将答案加入即可。</p><h2 id="3-代码"><a href="#3-代码" class="headerlink" title="3. 代码"></a>3. 代码</h2><p>实际实现的时候可以预处理算出 $a$ 的逆元，每次枚举 ${a^t}$ 的逆元的时候可以通过 ${a^{t-1}}^{-1}$ 乘上 $a^{-1}$ 即可。</p><p>码风略丑，请见谅。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">cin &gt;&gt; a &gt;&gt; b &gt;&gt; Mod &gt;&gt; x;</span><br><span class="line">ll now = b, inv = <span class="built_in">qpow</span>(a, Mod - <span class="number">2</span>), lim = Mod * (Mod - <span class="number">1</span>), ans = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (ll modp1 = <span class="number">0</span>; modp1 &lt; Mod - <span class="number">1</span>; ++ modp1, now = now * inv % Mod)</span><br><span class="line">&#123;<span class="comment">//modp1 是枚举的 t，now 就是上面的 b 乘以（ a 的 t 次方的逆元），也就是 t1</span></span><br><span class="line">ll mx = (modp1 - now + (Mod - <span class="number">1</span>)) % (Mod - <span class="number">1</span>) * Mod + now;<span class="comment">//mx 是 n 的最小取值</span></span><br><span class="line">mx = (mx % lim + lim) % lim;<span class="comment">//lim 是 Mod * Mod - 1，是 n 的周期</span></span><br><span class="line"><span class="keyword">if</span> (mx &lt;= x) ans += (x - mx + lim) / lim;</span><br><span class="line">&#125;</span><br><span class="line">cout &lt;&lt; ans &lt;&lt; endl;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;模拟和逆元题目。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="题解" scheme="https://mydcwfy.github.io/tags/%E9%A2%98%E8%A7%A3/"/>
     
     <category term="CF" scheme="https://mydcwfy.github.io/tags/CF/"/>
     

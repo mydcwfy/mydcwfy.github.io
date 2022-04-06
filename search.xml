@@ -4,6 +4,29 @@
   
     
     <entry>
+      <title>CF843D</title>
+      <link href="/2022/04/06/CF843D/"/>
+      <url>/2022/04/06/CF843D/</url>
+      
+        <content type="html"><![CDATA[<p>Dijkstra 的好题。</p><span id="more"></span><p>题意：给定一张图，可能询问某点到 1 的最短距离或是给 $c$ 条边的边权加 1。$n, m\leq 10 ^ 5, q\leq 2000, \sum c\leq 10 ^ 6$。</p><p>直接考虑朴素的 Dijkstra，每次我们加边的时候，都暴力重构长度。时间复杂度 $O(mq\log n)$，很卡。<del>标算都卡的很，这还能过？</del></p><p>另一种方法是用 SPFA 代替，时间复杂度 $O(kmq)$，<del>好像被构造卡了</del>。</p><p>10 s 的时间，看样子不是什么特别优的算法，应该是 $O(mq)$。</p><p>似乎只有 BFS 可以做到这个复杂度，01 双端队列似乎可以解决！</p><p>但是我们没有考虑原来的边的边权，这个显然是有问题的，因为对于边权非 1 的情况会处理错误。那么有什么方法呢？</p><p>考虑 Dijkstra 的算法流程：</p><blockquote><ol><li>找到当前未扩展的点中，距离起点最近的点。</li><li>松弛其他点到起点的距离。</li></ol></blockquote><p>在标准的 Dijkstra 算法中，我们使用了一个堆实时维护。我们是否可以找到另外的替代呢？直接考虑最暴力的桶，于是我们得到了一个 $O(m + W)$ 的做法，其中 $W$ 是指最短路的值域范围。</p><p>每次加 $c$ 条边的边权时，到其他所有点的距离变化一定不超过 $\min{c, n - 1}$（最短路不超过 $n - 1$ 条边），这启示我们可以使用桶 - Dijkstra 的算法来计算增量。</p><p>但是在一般的认知中，是没有办法求最短路的增量的。可以考虑类似 Johnson 全源最短路的做法，我们设置一条边的新权值为 $e(u, v)’ = e(u, v) + dis(u) - dis(v)$。类似 Johnson 的证明，我们三角不等式易得边权仍然是非负的。而我们走到一个点的时候，他的势能加上他的新图上的距离就是原图上的最短路。而新图的距离是好求的，于是我们可以得到单次 $O(m + W) = O(m)$ 的做法了。总时间复杂度 $O(m\log m + mq)$（开始必须跑一遍 Dijkstra</p><p>注意仍然比较卡常，注意实现细节的错误可能导致 TLE。放一个代码。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">std::queue&lt;<span class="keyword">int</span>&gt; q[N];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bfs</span><span class="params">(<span class="keyword">int</span> Lim = n - <span class="number">1</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= Lim; ++ i)</span><br><span class="line"><span class="keyword">while</span> (!q[i].<span class="built_in">empty</span>()) q[i].<span class="built_in">pop</span>();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) now[i] = n;</span><br><span class="line">q[<span class="number">0</span>].<span class="built_in">push</span>(<span class="number">1</span>), now[<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> mx = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> l = <span class="number">0</span>, x; l &lt;= mx; ++ l)</span><br><span class="line"><span class="keyword">while</span> (!q[l].<span class="built_in">empty</span>()) &#123;</span><br><span class="line">x = q[l].<span class="built_in">front</span>();</span><br><span class="line">q[l].<span class="built_in">pop</span>();</span><br><span class="line"><span class="keyword">if</span> (now[x] &lt; l) <span class="keyword">continue</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> &amp;[i, v] : g[x])</span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">chkmin</span>(now[v], <span class="built_in"><span class="keyword">int</span></span>(now[x] + w[i] + d[x] - d[e[i]])) &amp;&amp; now[v] &lt;= Lim)</span><br><span class="line">q[now[v]].<span class="built_in">push</span>(v), <span class="built_in">chkmax</span>(mx, now[v]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line"><span class="keyword">if</span> (d[i] &lt; (INF &gt;&gt; <span class="number">1</span>)) d[i] += now[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 题解 </tag>
+            
+            <tag> 图论 </tag>
+            
+            <tag> CF </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>P7843</title>
       <link href="/2022/04/04/P7843/"/>
       <url>/2022/04/04/P7843/</url>

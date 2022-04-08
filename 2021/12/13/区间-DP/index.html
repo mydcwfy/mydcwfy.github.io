@@ -354,6 +354,7 @@
 
           </div>
           
+    <div class="comments" id="gitalk-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -416,7 +417,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-count">84</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -518,7 +519,7 @@
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">13:36</span>
+    <span title="Reading time total">13:38</span>
 </div>
 
 <div>
@@ -653,6 +654,26 @@ setInterval("createtime()",250);
     
 
   
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '588cb5060d280689f1e5',
+      clientSecret: 'ea06ff31a09d01ce0664577fce9904b86eccd8fc',
+      repo        : 'https://github.com/mydcwfy/mydcwfy.github.io',
+      owner       : 'mydcwfy',
+      admin       : ['mydcwfy'],
+      id          : '5db3ba3b0fe704ca908edae4a543abfc',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
 </body>
 </html>

@@ -28,7 +28,7 @@
 <meta property="og:description" content="Dijkstra 的好题。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-04-06T13:50:25.000Z">
-<meta property="article:modified_time" content="2022-04-06T14:09:53.081Z">
+<meta property="article:modified_time" content="2022-04-07T03:47:44.580Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="题解">
 <meta property="article:tag" content="图论">
@@ -212,10 +212,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-04-06 21:50:25 / Modified: 22:09:53" itemprop="dateCreated datePublished" datetime="2022-04-06T21:50:25+08:00">2022-04-06</time>
+              <time title="Created: 2022-04-06 21:50:25" itemprop="dateCreated datePublished" datetime="2022-04-06T21:50:25+08:00">2022-04-06</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-04-07 11:47:44" itemprop="dateModified" datetime="2022-04-07T11:47:44+08:00">2022-04-07</time>
+              </span>
 
           
             <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
@@ -266,7 +272,7 @@
 </ol>
 </blockquote>
 <p>在标准的 Dijkstra 算法中，我们使用了一个堆实时维护。我们是否可以找到另外的替代呢？直接考虑最暴力的桶，于是我们得到了一个 $O(m + W)$ 的做法，其中 $W$ 是指最短路的值域范围。</p>
-<p>每次加 $c$ 条边的边权时，到其他所有点的距离变化一定不超过 $\min{c, n - 1}$（最短路不超过 $n - 1$ 条边），这启示我们可以使用桶 - Dijkstra 的算法来计算增量。</p>
+<p>每次加 $c$ 条边的边权时，到其他所有点的距离变化一定不超过 $\min\{c, n - 1\}$（最短路不超过 $n - 1$ 条边），这启示我们可以使用桶 - Dijkstra 的算法来计算增量。</p>
 <p>但是在一般的认知中，是没有办法求最短路的增量的。可以考虑类似 Johnson 全源最短路的做法，我们设置一条边的新权值为 $e(u, v)’ = e(u, v) + dis(u) - dis(v)$。类似 Johnson 的证明，我们三角不等式易得边权仍然是非负的。而我们走到一个点的时候，他的势能加上他的新图上的距离就是原图上的最短路。而新图的距离是好求的，于是我们可以得到单次 $O(m + W) = O(m)$ 的做法了。总时间复杂度 $O(m\log m + mq)$（开始必须跑一遍 Dijkstra</p>
 <p>注意仍然比较卡常，注意实现细节的错误可能导致 TLE。放一个代码。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">std::queue&lt;<span class="keyword">int</span>&gt; q[N];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bfs</span><span class="params">(<span class="keyword">int</span> Lim = n - <span class="number">1</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= Lim; ++ i)</span><br><span class="line">		<span class="keyword">while</span> (!q[i].<span class="built_in">empty</span>()) q[i].<span class="built_in">pop</span>();</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) now[i] = n;</span><br><span class="line">	q[<span class="number">0</span>].<span class="built_in">push</span>(<span class="number">1</span>), now[<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> mx = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> l = <span class="number">0</span>, x; l &lt;= mx; ++ l)</span><br><span class="line">		<span class="keyword">while</span> (!q[l].<span class="built_in">empty</span>()) &#123;</span><br><span class="line">			x = q[l].<span class="built_in">front</span>();</span><br><span class="line">			q[l].<span class="built_in">pop</span>();</span><br><span class="line">			<span class="keyword">if</span> (now[x] &lt; l) <span class="keyword">continue</span>;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">auto</span> &amp;[i, v] : g[x])</span><br><span class="line">				<span class="keyword">if</span> (<span class="built_in">chkmin</span>(now[v], <span class="built_in"><span class="keyword">int</span></span>(now[x] + w[i] + d[x] - d[e[i]])) &amp;&amp; now[v] &lt;= Lim)</span><br><span class="line">					q[now[v]].<span class="built_in">push</span>(v), <span class="built_in">chkmax</span>(mx, now[v]);</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (d[i] &lt; (INF &gt;&gt; <span class="number">1</span>)) d[i] += now[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -297,7 +303,10 @@
     <a href="/2022/04/04/P7843/" rel="prev" title="P7843">
       <i class="fa fa-chevron-left"></i> P7843
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/07/CF653G/" rel="next" title="CF653G">
+      CF653G <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -310,6 +319,7 @@
 
           </div>
           
+    <div class="comments" id="gitalk-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -371,7 +381,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-count">84</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -473,7 +483,7 @@
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">13:36</span>
+    <span title="Reading time total">13:38</span>
 </div>
 
 <div>
@@ -608,6 +618,26 @@ setInterval("createtime()",250);
     
 
   
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '588cb5060d280689f1e5',
+      clientSecret: 'ea06ff31a09d01ce0664577fce9904b86eccd8fc',
+      repo        : 'https://github.com/mydcwfy/mydcwfy.github.io',
+      owner       : 'mydcwfy',
+      admin       : ['mydcwfy'],
+      id          : 'e9cf4d30e0ca57651f5d8a3416bde88e',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
 </body>
 </html>

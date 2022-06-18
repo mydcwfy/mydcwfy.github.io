@@ -79,9 +79,9 @@
       
         <tags>
             
-            <tag> 容斥 </tag>
-            
             <tag> 状态压缩 </tag>
+            
+            <tag> 容斥 </tag>
             
         </tags>
       
@@ -102,9 +102,9 @@
             
             <tag> CF </tag>
             
-            <tag> 容斥 </tag>
-            
             <tag> DP 及其优化 </tag>
+            
+            <tag> 容斥 </tag>
             
             <tag> 二项式反演 </tag>
             
@@ -125,9 +125,9 @@
       
         <tags>
             
-            <tag> 容斥 </tag>
-            
             <tag> 状态压缩 </tag>
+            
+            <tag> 容斥 </tag>
             
             <tag> AtCoder </tag>
             

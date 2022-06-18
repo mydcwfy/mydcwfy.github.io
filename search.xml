@@ -4,6 +4,71 @@
   
     
     <entry>
+      <title>Luogu P4705 玩游戏</title>
+      <link href="/2022/06/18/Luogu-P4705/"/>
+      <url>/2022/06/18/Luogu-P4705/</url>
+      
+        <content type="html"><![CDATA[<p>求自然数等幂和的几乎模板题。</p><span id="more"></span><p>题意：从 $a_1, a_2, \cdots, a_n$ 和 $b_1, b_2\cdots, b_m$ 中任意选数 $x$ 和 $y$，求 $(x + y) ^ k$ 的期望。你需要求出 $k\in [1, t]$ 的所有答案。$n, m, t\leq 10 ^ 5$，3s。</p><p>首先大力拆贡献，可以得到：<br>$$<br>\begin{aligned}<br>ans_k =&amp; \dfrac 1{nm} \sum_{i = 1} ^ n\sum_{j = 1} ^ m (a_i + b_j) ^ k\\<br>=&amp; \dfrac 1{nm} \sum_{i = 1} ^ n \sum_{j = 1} ^ m \sum_{l = 0} ^ k \binom kl a_i ^ l b_j ^ {k - l}\\<br>=&amp; \dfrac 1{nm} \sum_{l = 0} ^ k \binom kl \sum_{i = 1} ^ n a_i ^ l\sum_{j = 1} ^ m b_j ^ {k - l}\\<br>=&amp; \dfrac 1{nm} \sum_{l = 0} ^ k \dfrac{\sum_{i = 1} ^ n a_i ^ l}{l!} \dfrac{\sum_{j = 1} ^ m b_j ^ {k - l}}{(k - l)!}<br>\end{aligned}<br>$$<br>容易发现如果我们已经得到了 $\sum_{i = 1} ^ n a_i ^ l$，卷积一下即可在 $O(n\log n)$ 时间内完成。于是问题变为了快速求出 $\sum_{i = 1} ^ n a_i ^ l$。</p><p>考虑生成函数 $F(x) = \prod_{i = 1} ^ n (a_ix + 1)$，容易发现这个可以使用分治在 $O(n\log ^ 2 n)$ 的时间内求出。</p><p>考虑对两边求 $\ln$，可以得到：$\ln F(x) = \sum_{i = 1} ^ n \ln (a_ix + 1)$。</p><p>考虑对 $\ln(1 + x)$ 泰勒展开，可以得到 $\ln(1 + x) = x - \dfrac{x ^ 2}2 + \dfrac{x ^ 3}3 - \dfrac{x ^ 4}{4}+\cdots$。于是我们带入即可得到：<br>$$<br>\begin{aligned}<br>\ln F(x) =&amp; -\sum_{i = 1} ^ n \sum_{j = 1}\dfrac{(-a_ix) ^ j}{j}\\<br>=&amp; -\sum_{j = 1} ^ n \dfrac{(-x) ^ j}{j} \sum_{i = 1} ^ n a_i ^ j<br>\end{aligned}<br>$$<br>容易发现后半段就是我们要求的东西，于是对 $F(x)$ 取 $\ln$，稍加变换即可得到 $\sum_{i = 1} ^ n a_i ^ j$，于是时间复杂度 $O(n\log ^ 2n)$，<del>稍加卡常</del>即可通过。注意上面的式子无法计算 $\sum_{i = 1} ^ n a_i ^ 0$，需要特殊计算。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">poly <span class="title">calcpow</span><span class="params">(poly a, <span class="keyword">int</span> m)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">auto</span> solve = [&amp;](<span class="keyword">auto</span> &amp;self, poly &amp;a, <span class="keyword">int</span> l, <span class="keyword">int</span> r) -&gt; poly &#123;</span><br><span class="line"><span class="keyword">if</span> (l == r) <span class="keyword">return</span> &#123;<span class="number">1</span>, a[l]&#125;;</span><br><span class="line"><span class="keyword">int</span> mid = (l + r) &gt;&gt; <span class="number">1</span>;</span><br><span class="line"><span class="keyword">return</span> <span class="built_in">self</span>(self, a, l, mid) * <span class="built_in">self</span>(self, a, mid + <span class="number">1</span>, r);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">auto</span> b = <span class="built_in">solve</span>(solve, a, <span class="number">0</span>, a.<span class="built_in">size</span>() - <span class="number">1</span>);</span><br><span class="line">b.<span class="built_in">resize</span>(m + <span class="number">1</span>), b = <span class="built_in">Ln</span>(b);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= m; ++ i)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span> (!(i &amp; <span class="number">1</span>)) <span class="built_in">adj</span>(b[i] = -b[i]);</span><br><span class="line">b[i] = (LL) b[i] * i % Mod;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="built_in">init</span>();</span><br><span class="line"><span class="keyword">int</span> n, m, t;</span><br><span class="line">std::cin &gt;&gt; n &gt;&gt; m;</span><br><span class="line"><span class="function">poly <span class="title">a</span><span class="params">(n)</span>, <span class="title">b</span><span class="params">(m)</span></span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> &amp;x : a) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;x);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> &amp;x : b) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;x);</span><br><span class="line">std::cin &gt;&gt; t;</span><br><span class="line">a = <span class="built_in">calcpow</span>(a, t), a[<span class="number">0</span>] = n;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= t; ++ i) a[i] = (LL) a[i] * infact[i] % Mod;</span><br><span class="line">b = <span class="built_in">calcpow</span>(b, t), b[<span class="number">0</span>] = m;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= t; ++ i) b[i] = (LL) b[i] * infact[i] % Mod;</span><br><span class="line">a = a * b;</span><br><span class="line"><span class="keyword">int</span> Inv = <span class="built_in">qpow</span>((LL) n * m % Mod);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= t; ++ i) a[i] = (LL) a[i] * fact[i] % Mod * Inv % Mod;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= t; ++ i) <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, a[i]);</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 多项式 </tag>
+            
+            <tag> 分治 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Luogu P4491 [HAOI2018]染色</title>
+      <link href="/2022/06/18/Luogu-P4491/"/>
+      <url>/2022/06/18/Luogu-P4491/</url>
+      
+        <content type="html"><![CDATA[<p>简单的二项式反演 + 卷积题目。</p><span id="more"></span><p>题意：对长度为 $n$ 的序列染上 $m$ 个颜色中的一个，假设恰好有 $k$ 个出现次数为 $S$，那么贡献为 $a_k$。求所有染色方案的贡献和。$n\leq 10 ^ 7$，$m\leq 10 ^ 5$。</p><p><strong>看到恰好，二项式反演</strong>。</p><p>设 $f(k)$ 表示<strong>恰好</strong>有 $k$ 个出现次数为 $S$ 的方案数，$g(k)$ 为<strong>钦定</strong>有 $k$ 个出现次数为 $S$ 的方案数，则可以得到：<br>$$<br>\begin{aligned}<br>f(k) =&amp; \sum_{i = k} ^ m (-1) ^ {i - k} \binom ik g(i)\\<br>ans =&amp; \sum_{i = 0} ^ m f(i) a(i)<br>\end{aligned}<br>$$<br>先考虑如何计算 $g(i)$。先选定 $i$ 种颜色 $\binom mi$，从 $n$ 个位置 $i$ 次从挑出 $S$ 个位置，贡献为 $\dfrac{n!}{S! ^ i (n - iS)!}$，剩下的 $n - iS$ 个位置可以任意填 $m - i$ 颜色的任意一个，为 $(m - i) ^ {n - iS}$，于是 $g(i)$ 为：<br>$$<br>g(i) = \binom mi \dfrac{n!(m - i) ^ {n - iS}}{S! ^ i (n - iS)!}<br>$$<br>可以在 $O(m\log m)$ 时间计算。</p><p>然后考虑如何由 $g(i)$ 算出 $f(i)$，根据组合数的性质容易得到：<br>$$<br>k!f(k) = \sum_{i = k} ^ m \dfrac{(-1) ^ {i - k}}{(i - k)!}i!g(i)<br>$$<br>显然是一个差卷积的形式，复杂度 $O(m\log m)$，预处理阶乘及逆元为 $O(n)$。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="built_in">init</span>();</span><br><span class="line"><span class="keyword">int</span> n, m, S;</span><br><span class="line">std::cin &gt;&gt; n &gt;&gt; m &gt;&gt; S;</span><br><span class="line"><span class="function">poly <span class="title">w</span><span class="params">(m + <span class="number">1</span>)</span>, <span class="title">g</span><span class="params">(infact, infact + m + <span class="number">1</span>)</span>, <span class="title">f</span><span class="params">(m + <span class="number">1</span>)</span></span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= m; ++ i)</span><br><span class="line"><span class="keyword">if</span> (i &amp; <span class="number">1</span>) <span class="built_in">adj</span>(g[i] = -g[i]);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> &amp;x : f) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;x);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= m; ++ i)</span><br><span class="line"><span class="keyword">if</span> (i * S &gt; n) w[i] = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">else</span> w[i] = (LL) <span class="built_in">C</span>(m, i) * fact[n] % Mod * <span class="built_in">qpow</span>(infact[S], i) % Mod</span><br><span class="line">* infact[n - i * S] % Mod * <span class="built_in">qpow</span>(m - i, n - i * S) % Mod * fact[i] % Mod;</span><br><span class="line">std::<span class="built_in">reverse</span>(g.<span class="built_in">begin</span>(), g.<span class="built_in">end</span>());</span><br><span class="line">w = w * g;</span><br><span class="line"><span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = m; i &lt;= <span class="number">2</span> * m; ++ i)</span><br><span class="line">res = (res + (LL) w[i] * infact[i - m] % Mod * f[i - m]) % Mod;</span><br><span class="line"><span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = m; i &lt;= <span class="number">2</span> * m; ++ i) <span class="built_in">adj</span>(sum += w[i] * (LL) infact[i - m] % Mod - Mod);</span><br><span class="line">std::cout &lt;&lt; res &lt;&lt; std::endl;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 多项式 </tag>
+            
+            <tag> 二项式反演 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>CF1375H Set Merging</title>
+      <link href="/2022/06/18/CF1375H/"/>
+      <url>/2022/06/18/CF1375H/</url>
+      
+        <content type="html"><![CDATA[<p>一道平衡规划分析复杂度的题目。</p><span id="more"></span><p>题意：你开始有 $n$ 个集合 $\{a_1\}, \{a_2, \}\cdots, \{a_n\}$，其中 $a_1, a_2, \cdots, a_n$ 是一个排列。你可以合并两个集合 $A$ 和 $B$，但需要保证 $\max(A)&lt;\min(B)$。注意合并之后 $A$ 和 $B$ 仍然存在。给定 $q$ 次询问 $[l, r]$，你需要合并出一个 $\{a_l, a_{l + 1},\cdots, a_r\}$，并输出编号。$n\leq 2 ^ {12}, q\leq 2 ^ {16}$，要求最后集合总数不超过 $2.2\times 10 ^ 6$。</p><p>先不考虑复杂度，我们直接考虑合并出所有答案：建一个值域线段树，计算当值域区间为 $[l, r]$，询问区间为 $[ql, qr]$ 时的答案，输出的编号显然是 $[1, n]$ 的答案。直接考虑在线段树上合并，将 $[l, mid]$ 和 $[mid + 1, r]$ 的答案合并起来。</p><p>这样其实是 $O(nq)$ 的，但是大家肯定都能想到将所有在一个节点的询问记忆化一下，还可以把 $[l, r]$ 区间离散化到当前节点所对应所有位置的集合再记忆化。</p><p>等你码完之后，你小心翼翼地写好提交，正准备迎接 Wrong Answer 的事实时，却发现过了！（如果你没有被卡常的话</p><p>下面考虑分析复杂度。假设 $d = \lceil\log_2 q\rceil, t = \lceil\log_2 n\rceil$，对于下面的 $\dfrac d2$ 层，假设所有的询问能将这些所有层的所有区间卡满，这一部分就是：<br>$$<br>cost = \sum_{i = 0} ^ {\frac d2}2 ^ {t - i} 2 ^ {2i} = 2 ^ {t + \frac d2} = O(n\sqrt q)<br>$$<br>其中第一部分表示节点个数，第二部分表示每一个节点所有的子区间。</p><p>对于上面的 $t - \dfrac d2$ 层，由于一次询问最多只能覆盖一个节点的一个区间，于是这一部分就是：<br>$$<br>cost = 2 ^ {t - \frac d2}q = 2 ^ {t + \frac d2} = O(n\sqrt q)<br>$$<br>于是最多只会合并出 $O(n\sqrt q)$ 个区间，在本题数据范围下为 $10 ^ 6$，实际运行为 $1.7\sim 2.0 \times 10 ^ 6$，可以通过。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">tr[x] = &#123;l, r, std::vector&lt;<span class="keyword">int</span>&gt;(r - l + <span class="number">1</span>)&#125;;</span><br><span class="line"><span class="keyword">if</span> (l == r) <span class="keyword">return</span> <span class="built_in"><span class="keyword">void</span></span>(tr[x].allid.<span class="built_in">front</span>() = nw[l]);</span><br><span class="line"><span class="keyword">int</span> mid = (l + r) &gt;&gt; <span class="number">1</span>;</span><br><span class="line"><span class="built_in">build</span>(x &lt;&lt; <span class="number">1</span>, l, mid), <span class="built_in">build</span>(x &lt;&lt; <span class="number">1</span> | <span class="number">1</span>, mid + <span class="number">1</span>, r);</span><br><span class="line"><span class="keyword">auto</span> &amp;v1 = tr[x &lt;&lt; <span class="number">1</span>].allid, &amp;v2 = tr[x &lt;&lt; <span class="number">1</span> | <span class="number">1</span>].allid;</span><br><span class="line">std::<span class="built_in">merge</span>(v1.<span class="built_in">begin</span>(), v1.<span class="built_in">end</span>(), v2.<span class="built_in">begin</span>(), v2.<span class="built_in">end</span>(), tr[x].allid.<span class="built_in">begin</span>());</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">auto</span> &amp;v = tr[x].allid;</span><br><span class="line"><span class="keyword">auto</span> iter1 = std::<span class="built_in">lower_bound</span>(v.<span class="built_in">begin</span>(), v.<span class="built_in">end</span>(), l), iter2 = std::<span class="built_in">upper_bound</span>(v.<span class="built_in">begin</span>(), v.<span class="built_in">end</span>(), r);</span><br><span class="line"><span class="keyword">if</span> (iter1 == v.<span class="built_in">end</span>() || iter2 == v.<span class="built_in">begin</span>()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">l = *iter1, r = *-- iter2;</span><br><span class="line"><span class="keyword">if</span> (l &gt; r) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> (l == r) <span class="keyword">return</span> l;</span><br><span class="line"><span class="keyword">if</span> (tr[x].mp.<span class="built_in">count</span>(&#123;l, r&#125;)) <span class="keyword">return</span> tr[x].mp[&#123;l, r&#125;];</span><br><span class="line"><span class="keyword">int</span> sl = <span class="built_in">query</span>(x &lt;&lt; <span class="number">1</span>, l, r), sr = <span class="built_in">query</span>(x &lt;&lt; <span class="number">1</span> | <span class="number">1</span>, l, r);</span><br><span class="line"><span class="keyword">if</span> (!sl || !sr) <span class="keyword">return</span> sl | sr;</span><br><span class="line">gt[++ tot] = &#123;sl, sr&#125;;</span><br><span class="line"><span class="keyword">return</span> tr[x].mp[&#123;l, r&#125;] = tot;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">std::cin &gt;&gt; n &gt;&gt; Q;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;p[i]);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) nw[p[i]] = i;</span><br><span class="line"><span class="built_in">build</span>(<span class="number">1</span>, <span class="number">1</span>, n), tot = n;</span><br><span class="line"><span class="keyword">int</span> l, r;</span><br><span class="line">std::vector&lt;<span class="keyword">int</span>&gt; ans;</span><br><span class="line"><span class="keyword">while</span> (Q --)</span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>, &amp;l, &amp;r);</span><br><span class="line">ans.<span class="built_in">push_back</span>(<span class="built_in">query</span>(<span class="number">1</span>, l, r));</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">write</span>(tot, <span class="string">&#x27;\n&#x27;</span>);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = n + <span class="number">1</span>; i &lt;= tot; ++ i) <span class="built_in">write</span>(gt[i].first, <span class="string">&#x27; &#x27;</span>, gt[i].second, <span class="string">&#x27;\n&#x27;</span>);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> &amp;x : ans) <span class="built_in">write</span>(x, <span class="string">&#x27; &#x27;</span>);</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> CF </tag>
+            
+            <tag> 线段树 </tag>
+            
+            <tag> 平衡规划 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>UOJ37 主旋律</title>
       <link href="/2022/06/12/UOJ37/"/>
       <url>/2022/06/12/UOJ37/</url>
@@ -14,9 +79,9 @@
       
         <tags>
             
-            <tag> 状态压缩 </tag>
-            
             <tag> 容斥 </tag>
+            
+            <tag> 状态压缩 </tag>
             
         </tags>
       
@@ -37,9 +102,9 @@
             
             <tag> CF </tag>
             
-            <tag> DP 及其优化 </tag>
-            
             <tag> 容斥 </tag>
+            
+            <tag> DP 及其优化 </tag>
             
             <tag> 二项式反演 </tag>
             
@@ -62,9 +127,9 @@
             
             <tag> 容斥 </tag>
             
-            <tag> AtCoder </tag>
+            <tag> 状态压缩 </tag>
             
-            <tag> 状态压缩、 </tag>
+            <tag> AtCoder </tag>
             
         </tags>
       
@@ -590,9 +655,9 @@
       
         <tags>
             
-            <tag> 分块 </tag>
-            
             <tag> 平衡规划 </tag>
+            
+            <tag> 分块 </tag>
             
         </tags>
       
@@ -1291,9 +1356,9 @@
       
         <tags>
             
-            <tag> 网络流 </tag>
-            
             <tag> 图论 </tag>
+            
+            <tag> 网络流 </tag>
             
         </tags>
       
@@ -1333,9 +1398,9 @@
       
         <tags>
             
-            <tag> 网络流 </tag>
-            
             <tag> 图论 </tag>
+            
+            <tag> 网络流 </tag>
             
         </tags>
       
@@ -1354,9 +1419,9 @@
       
         <tags>
             
-            <tag> Tarjan </tag>
-            
             <tag> 图论 </tag>
+            
+            <tag> Tarjan </tag>
             
         </tags>
       
@@ -1375,9 +1440,9 @@
       
         <tags>
             
-            <tag> 网络流 </tag>
-            
             <tag> 图论 </tag>
+            
+            <tag> 网络流 </tag>
             
             <tag> 题解 </tag>
             
@@ -1398,9 +1463,9 @@
       
         <tags>
             
-            <tag> 网络流 </tag>
-            
             <tag> 图论 </tag>
+            
+            <tag> 网络流 </tag>
             
             <tag> 题解 </tag>
             
@@ -1421,9 +1486,9 @@
       
         <tags>
             
-            <tag> 网络流 </tag>
-            
             <tag> 图论 </tag>
+            
+            <tag> 网络流 </tag>
             
         </tags>
       
@@ -1442,9 +1507,9 @@
       
         <tags>
             
-            <tag> 网络流 </tag>
-            
             <tag> 图论 </tag>
+            
+            <tag> 网络流 </tag>
             
             <tag> 题解 </tag>
             
@@ -2297,11 +2362,11 @@
       
         <tags>
             
+            <tag> 动态树 </tag>
+            
             <tag> 数据结构 </tag>
             
             <tag> Splay </tag>
-            
-            <tag> 动态树 </tag>
             
         </tags>
       

@@ -20,15 +20,21 @@
     var CONFIG = {"hostname":"mydcwfy.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="mydcwfy&#39;s Blog">
-<meta property="og:url" content="https://mydcwfy.github.io/tags/%E7%8A%B6%E6%80%81%E5%8E%8B%E7%BC%A9%E3%80%81/index.html">
+  <meta name="description" content="简单的二项式反演 + 卷积题目。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Luogu P4491 [HAOI2018]染色">
+<meta property="og:url" content="https://mydcwfy.github.io/2022/06/18/Luogu-P4491/index.html">
 <meta property="og:site_name" content="mydcwfy&#39;s Blog">
+<meta property="og:description" content="简单的二项式反演 + 卷积题目。">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-06-18T09:12:28.000Z">
+<meta property="article:modified_time" content="2022-06-18T09:38:17.333Z">
 <meta property="article:author" content="mydcwfy">
+<meta property="article:tag" content="多项式">
+<meta property="article:tag" content="二项式反演">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://mydcwfy.github.io/tags/%E7%8A%B6%E6%80%81%E5%8E%8B%E7%BC%A9%E3%80%81/">
+<link rel="canonical" href="https://mydcwfy.github.io/2022/06/18/Luogu-P4491/">
 
 
 <script id="page-configurations">
@@ -36,12 +42,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Tag: 状态压缩、 | mydcwfy's Blog</title>
+  <title>Luogu P4491 [HAOI2018]染色 | mydcwfy's Blog</title>
   
 
 
@@ -176,57 +182,120 @@
         <div class="content-wrap">
           
 
-          <div class="content tag">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">状态压缩、
-          <small>Tag</small>
-        </h2>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2022/06/18/Luogu-P4491/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="mydcwfy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mydcwfy's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Luogu P4491 [HAOI2018]染色
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-18 17:12:28 / Modified: 17:38:17" itemprop="dateCreated datePublished" datetime="2022-06-18T17:12:28+08:00">2022-06-18</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>1.3k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>3 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2022</span>
+        <p>简单的二项式反演 + 卷积题目。</p>
+<span id="more"></span>
+
+<p>题意：对长度为 $n$ 的序列染上 $m$ 个颜色中的一个，假设恰好有 $k$ 个出现次数为 $S$，那么贡献为 $a_k$。求所有染色方案的贡献和。$n\leq 10 ^ 7$，$m\leq 10 ^ 5$。</p>
+<p><strong>看到恰好，二项式反演</strong>。</p>
+<p>设 $f(k)$ 表示<strong>恰好</strong>有 $k$ 个出现次数为 $S$ 的方案数，$g(k)$ 为<strong>钦定</strong>有 $k$ 个出现次数为 $S$ 的方案数，则可以得到：<br>$$<br>\begin{aligned}<br>f(k) =&amp; \sum_{i = k} ^ m (-1) ^ {i - k} \binom ik g(i)\\<br>ans =&amp; \sum_{i = 0} ^ m f(i) a(i)<br>\end{aligned}<br>$$<br>先考虑如何计算 $g(i)$。先选定 $i$ 种颜色 $\binom mi$，从 $n$ 个位置 $i$ 次从挑出 $S$ 个位置，贡献为 $\dfrac{n!}{S! ^ i (n - iS)!}$，剩下的 $n - iS$ 个位置可以任意填 $m - i$ 颜色的任意一个，为 $(m - i) ^ {n - iS}$，于是 $g(i)$ 为：<br>$$<br>g(i) = \binom mi \dfrac{n!(m - i) ^ {n - iS}}{S! ^ i (n - iS)!}<br>$$<br>可以在 $O(m\log m)$ 时间计算。</p>
+<p>然后考虑如何由 $g(i)$ 算出 $f(i)$，根据组合数的性质容易得到：<br>$$<br>k!f(k) = \sum_{i = k} ^ m \dfrac{(-1) ^ {i - k}}{(i - k)!}i!g(i)<br>$$<br>显然是一个差卷积的形式，复杂度 $O(m\log m)$，预处理阶乘及逆元为 $O(n)$。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">init</span>();</span><br><span class="line">	<span class="keyword">int</span> n, m, S;</span><br><span class="line">	std::cin &gt;&gt; n &gt;&gt; m &gt;&gt; S;</span><br><span class="line">	<span class="function">poly <span class="title">w</span><span class="params">(m + <span class="number">1</span>)</span>, <span class="title">g</span><span class="params">(infact, infact + m + <span class="number">1</span>)</span>, <span class="title">f</span><span class="params">(m + <span class="number">1</span>)</span></span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= m; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (i &amp; <span class="number">1</span>) <span class="built_in">adj</span>(g[i] = -g[i]);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> &amp;x : f) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;x);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= m; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (i * S &gt; n) w[i] = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">else</span> w[i] = (LL) <span class="built_in">C</span>(m, i) * fact[n] % Mod * <span class="built_in">qpow</span>(infact[S], i) % Mod</span><br><span class="line">			* infact[n - i * S] % Mod * <span class="built_in">qpow</span>(m - i, n - i * S) % Mod * fact[i] % Mod;</span><br><span class="line">	std::<span class="built_in">reverse</span>(g.<span class="built_in">begin</span>(), g.<span class="built_in">end</span>());</span><br><span class="line">	w = w * g;</span><br><span class="line">	<span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = m; i &lt;= <span class="number">2</span> * m; ++ i)</span><br><span class="line">		res = (res + (LL) w[i] * infact[i - m] % Mod * f[i - m]) % Mod;</span><br><span class="line">	<span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = m; i &lt;= <span class="number">2</span> * m; ++ i) <span class="built_in">adj</span>(sum += w[i] * (LL) infact[i - m] % Mod - Mod);</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; std::endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-06-11T22:07:14+08:00"
-              content="2022-06-11">
-          06-11
-        </time>
-      </div>
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%A4%9A%E9%A1%B9%E5%BC%8F/" rel="tag"><i class="fa fa-tag"></i> 多项式</a>
+              <a href="/tags/%E4%BA%8C%E9%A1%B9%E5%BC%8F%E5%8F%8D%E6%BC%94/" rel="tag"><i class="fa fa-tag"></i> 二项式反演</a>
+          </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/06/11/ARC093F/" itemprop="url">
-            <span itemprop="name">ARC093F Dark Horse</span>
-          </a>
-      </div>
+        
 
-    </header>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/06/18/CF1375H/" rel="prev" title="CF1375H Set Merging">
+      <i class="fa fa-chevron-left"></i> CF1375H Set Merging
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/06/18/Luogu-P4705/" rel="next" title="Luogu P4705 玩游戏">
+      Luogu P4705 玩游戏 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
-
-    </div>
-  </div>
   
   
-  
-
   
 
 
 
           </div>
           
+    <div class="comments" id="gitalk-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -288,14 +357,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-count">117</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-count">69</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -384,13 +453,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">464k</span>
+    <span title="Symbols count total">469k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">16:49</span>
+    <span title="Reading time total">17:01</span>
 </div>
 
 <div>
@@ -470,9 +539,81 @@ setInterval("createtime()",250);
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = 'https://rusunoi.github.io/mathjax/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
+<link rel="stylesheet" href="https://rusunoi.github.io/gitalk/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('https://rusunoi.github.io/gitalk/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '588cb5060d280689f1e5',
+      clientSecret: 'ea06ff31a09d01ce0664577fce9904b86eccd8fc',
+      repo        : 'mydcwfy.github.io',
+      owner       : 'mydcwfy',
+      admin       : ['mydcwfy'],
+      id          : '971f716ecc67085b101270a058eb8adf',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
 </body>
 </html>

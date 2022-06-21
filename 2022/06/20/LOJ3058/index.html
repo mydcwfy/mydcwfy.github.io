@@ -28,7 +28,7 @@
 <meta property="og:description" content="过程比较繁琐，知识比较综合。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-06-20T11:30:42.000Z">
-<meta property="article:modified_time" content="2022-06-20T12:13:49.284Z">
+<meta property="article:modified_time" content="2022-06-21T07:40:22.409Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="多项式">
 <meta property="article:tag" content="矩阵乘法">
@@ -212,10 +212,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-06-20 19:30:42 / Modified: 20:13:49" itemprop="dateCreated datePublished" datetime="2022-06-20T19:30:42+08:00">2022-06-20</time>
+              <time title="Created: 2022-06-20 19:30:42" itemprop="dateCreated datePublished" datetime="2022-06-20T19:30:42+08:00">2022-06-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-06-21 15:40:22" itemprop="dateModified" datetime="2022-06-21T15:40:22+08:00">2022-06-21</time>
+              </span>
 
           
             <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
@@ -237,7 +243,7 @@
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>5 mins.</span>
+              <span>6 mins.</span>
             </span>
 
         </div>
@@ -260,7 +266,7 @@
 <p>考虑如下两个变换：<br>$$<br>\begin{aligned}<br>(x + y) ^ 2 - x ^ 2 - y ^ 2 =&amp; 2xy\\<br>\binom{x + y}2 - \binom x2 - \binom y2 =&amp; xy<br>\end{aligned}<br>$$<br>两个式子展开一下即可证明。我们惊喜的发现，这个恰好把 $xy$ 化为了 $(x + y)$，这样看样子就可以卷积了！</p>
 <p>套用第一个式子：<br>$$<br>k\times ans_t = \omega_k ^ {\frac{t ^ 2}2}\sum_{j = 0} ^ {k - 1} f(j)\omega_k ^ {\frac{j ^ 2}{2}}\omega_k ^ {-\frac{(j + t) ^ 2}2}<br>$$<br>但是除以 2 不好处理，因为我们可能没法开根。</p>
 <p>考虑套用第二个式子：<br>$$<br>\begin{aligned}<br>k\times ans_t =&amp; \sum_{j = 0} ^ {k - 1} \omega_k ^ {-tj} f(j)\\<br>=&amp; \sum_{j = 0} ^ {k - 1} \omega_k ^ {\binom t2+ \binom j2 - \binom{t + j}2}f(j)\\<br>=&amp; \omega_k ^ {\binom t2}\sum_{j = 0} ^ {k - 1} f(j)\omega_k ^ {\binom j2}\omega_k ^ {-\binom{j + t}{2}}<br>\end{aligned}<br>$$<br>显然这是一个差卷积，直接做即可，时间复杂度 $O(k\log k)$，可以通过。</p>
-<p>另外，这后半部分拆开指数上的乘积其实就是一个叫 BlueStein 的算法。容易发现这个算法其实解决了任意长度的 FFT，因为 FFT 和这个算法都是计算 $n$ 个单位根位置的点值的，只不过 FFT 的 $n$ 是 2 的次幂。</p>
+<p>另外，这后半部分拆开指数上的乘积其实就是一个叫 BlueStein 的算法。容易发现这个算法其实解决了任意长度的 FFT，因为 FFT 和这个算法都是计算 $n$ 个单位根位置的点值的，只不过 FFT 的 $n$ 是 2 的次幂。更详细的信息看 <a href="/2022/06/21/BlueStein-Algorithm/#more">这篇 Blog</a>。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Matrix a;</span><br><span class="line">	<span class="keyword">int</span> k, L, x, y, G;</span><br><span class="line">	std::cin &gt;&gt; n &gt;&gt; k &gt;&gt; L &gt;&gt; x &gt;&gt; y &gt;&gt; Mod, -- x, -- y;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++ i)</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; ++ j) std::cin &gt;&gt; a[i][j];</span><br><span class="line">	w = <span class="built_in">qpow</span>(G = <span class="built_in">findrt</span>(), (Mod - <span class="number">1</span>) / k);</span><br><span class="line">	<span class="function">poly <span class="title">f</span><span class="params">(k)</span></span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> l = <span class="number">0</span>; l &lt; k; ++ l)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">static</span> Matrix tmp;</span><br><span class="line">		<span class="keyword">int</span> cur = <span class="built_in">qpow</span>(w, l);</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++ i)</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; ++ j)</span><br><span class="line">				tmp[i][j] = ((LL) a[i][j] * cur + (i == j)) % Mod;</span><br><span class="line">		f[l] = <span class="built_in">qpow</span>(tmp, L)[x][y];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; ++ i)</span><br><span class="line">		f[i] = (LL) f[i] * <span class="built_in">qpow</span>(w, (i - <span class="number">1LL</span>) * i / <span class="number">2</span> % (Mod - <span class="number">1</span>)) % Mod;</span><br><span class="line">	std::<span class="built_in">reverse</span>(f.<span class="built_in">begin</span>(), f.<span class="built_in">end</span>());</span><br><span class="line">	<span class="function">poly <span class="title">g</span><span class="params">(<span class="number">2</span> * k)</span></span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">2</span> * k; ++ i)</span><br><span class="line">		g[i] = <span class="built_in">qpow</span>(w, (Mod - <span class="number">1</span> - i * (i - <span class="number">1LL</span>) / <span class="number">2</span> % (Mod - <span class="number">1</span>)) % (Mod - <span class="number">1</span>));</span><br><span class="line">	f = f * g, f = std::vector&lt;<span class="keyword">int</span>&gt;(f.<span class="built_in">data</span>() + k - <span class="number">1</span>, f.<span class="built_in">data</span>() + <span class="number">2</span> * k - <span class="number">1</span>);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; ++ i)</span><br><span class="line">		f[i] = (LL) f[i] * <span class="built_in">qpow</span>(w, (i - <span class="number">1LL</span>) * i / <span class="number">2</span> % (Mod - <span class="number">1</span>)) % Mod * <span class="built_in">qpow</span>(k) % Mod;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> &amp;x : f) <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, x);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
@@ -364,14 +370,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-count">125</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-count">72</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -460,13 +466,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">476k</span>
+    <span title="Symbols count total">485k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">17:16</span>
+    <span title="Reading time total">17:33</span>
 </div>
 
 <div>

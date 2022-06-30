@@ -4,6 +4,136 @@
   
     
     <entry>
+      <title>CF1109D Sasha and Interesting Fact from Graph Theory</title>
+      <link href="/2022/06/30/CF1109D/"/>
+      <url>/2022/06/30/CF1109D/</url>
+      
+        <content type="html"><![CDATA[<p>神秘 prufer 序列 + 组合数学。</p><span id="more"></span><p>题意：有多少棵 $n$ 个点的树，满足每一条边的边权在 $[1, m]$ 中，且满足 $a, b$ 的距离为 $m$。$n, m\leq 10 ^ 6$。</p><p>直接考虑 prufer 序列计算，首先枚举 $a, b$ 之间一共有多少点，设为 $d$，此时我们需要枚举 $a, b$ 之间的点分别是哪些，贡献为 $(n - 2) ^ \underline{d - 2}$。然后考虑中间的边权，容易得到 $d - 1$ 个的和为 $m$，那么就是 $\binom{m - 1}{d - 1}$。然后考虑剩下的贡献。注意到其实 $d$ 个点可以看作缩成了一个点，还剩 $n - d + 1$ 个点，只不过每次他的出现，可以有 $d$ 个可连。</p><p><strong>和度数相关，考虑 prufer 序列</strong>。先不管复杂度，考虑枚举 prufer 序列，枚举缩的大点在 prufer 序列中出现了 $j$ 次，那么贡献需要选 $j$ 个位置，为 $\binom{n - d - 1}{j}$，然后每个 $d$ 个点都可以连，为 $d ^ {j + 1}$（注意是出现次数 +1 为度数），剩下的点随便选，为 $(n - d)$ 种，总贡献为 $(n - d) ^ {n - d - j - 1}$。还有边权没有算，容易得到就是 $m ^ {n - d}$。</p><p>于是总贡献可以写作：<br>$$<br>\sum_{d = 2} ^ n (n - 2) ^ \underline{d - 2} \binom{m - 1}{d - 1}m ^ {n - d} \sum_{j = 0} ^ {n - d - 1} \binom{n - d - 1}j d ^ {j + 1} (n - d) ^ {n - d - j - 1}<br>$$<br>注意到后面的 $d ^ {j + 1}$ 去掉一个 $d$ 移到前面，后面就是一个二项式定理。可以写作：<br>$$<br>\sum_{d = 2} ^ n (n - 2) ^ \underline{d - 2} \binom{m - 1}{d - 1} m ^ {n - d} n ^ {n - d - 1}<br>$$<br>但是注意 $d = n$ 时会出锅，于是对 $d = n$，单独计算，为 $(n - 2)!\binom{m - 1}{n - 2}$。直接计算即可，时间复杂度 $O(n\log n)$ 或 $O(n)$。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="built_in">init</span>();</span><br><span class="line"><span class="keyword">int</span> n, m;</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%d %d %*d %*d&quot;</span>, &amp;n, &amp;m);</span><br><span class="line"><span class="keyword">int</span> res = (LL) <span class="built_in">C</span>(m - <span class="number">1</span>, n - <span class="number">2</span>) * fact[n - <span class="number">2</span>] % Mod;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; n; ++ i)</span><br><span class="line">res = (res + (LL) <span class="built_in">qpow</span>(m, n - i) * <span class="built_in">C</span>(m - <span class="number">1</span>, i - <span class="number">2</span>) % Mod * fact[n - <span class="number">2</span>] % Mod</span><br><span class="line">* infact[n - i] % Mod * i % Mod * <span class="built_in">qpow</span>(n, n - i - <span class="number">1</span>)) % Mod;</span><br><span class="line">std::cout &lt;&lt; res &lt;&lt; std::endl;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 组合数学 </tag>
+            
+            <tag> prufer 序列 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Luogu P5219 无聊的水题 I</title>
+      <link href="/2022/06/30/Luogu-P5219/"/>
+      <url>/2022/06/30/Luogu-P5219/</url>
+      
+        <content type="html"><![CDATA[<p>prufer 序列 + 多项式重工业。</p><span id="more"></span><p>题意：求有多少棵大小为 $n$ 的有根树满足最大度数为 $m$。$n\leq 5\times 10 ^ 4$，$m\leq n$。</p><p>最大点度数为 $m$，显然可以转化为最大点度数 $\geq m$ 减去最大点度数 $\leq m - 1$ 的方案数。下面仅计算 $\leq m$ 的情况。</p><p><strong>树的计数的常用两个手段是 Matrix-Tree 矩阵树定理和 prufer 序列</strong>。考虑使用 prufer 序列计算。由于度数等于出现次数 +1，于是我们只需要限定每一个点的出现次数 $&lt;m$ 即可。</p><p>由于是同一个点出现多次只算一种方案，考虑使用 EGF，然后直接计算他的 $n$ 次方即可。直接使用倍增快速幂即可通过，似乎没必要使用什么 $\ln/\exp$ 的方法。</p><p>时间复杂度 $O(n\log ^ 2n)$ 或 $O(n\log n)$。并不卡常。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">solve</span><span class="params">(<span class="keyword">int</span> lim)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">if</span> (lim &lt;= <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"><span class="function">poly <span class="title">bs</span><span class="params">(lim + <span class="number">1</span>, <span class="number">1</span>)</span>, <span class="title">res</span><span class="params">(<span class="number">1</span>, <span class="number">1</span>)</span></span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= lim; ++ i) bs[i] = (LL) bs[i] * infact[i] % Mod;</span><br><span class="line"><span class="keyword">int</span> k = n;</span><br><span class="line"><span class="keyword">for</span> (; k; k &gt;&gt;= <span class="number">1</span>, bs = bs * bs, bs.<span class="built_in">resize</span>(std::<span class="built_in">min</span>((<span class="keyword">int</span>) bs.<span class="built_in">size</span>(), n - <span class="number">1</span>)))</span><br><span class="line"><span class="keyword">if</span> (k &amp; <span class="number">1</span>) res = res * bs, res.<span class="built_in">resize</span>(std::<span class="built_in">min</span>((<span class="keyword">int</span>) res.<span class="built_in">size</span>(), n - <span class="number">1</span>));</span><br><span class="line"><span class="keyword">return</span> res[n - <span class="number">2</span>] * (LL) fact[n - <span class="number">2</span>] % Mod;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="built_in">init</span>();</span><br><span class="line"><span class="keyword">int</span> m, res;</span><br><span class="line">std::cin &gt;&gt; n &gt;&gt; m;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="built_in">adj</span>(res = <span class="built_in">solve</span>(m - <span class="number">1</span>) - <span class="built_in">solve</span>(m - <span class="number">2</span>)));</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 多项式 </tag>
+            
+            <tag> prufer 序列 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>LOJ2106 [JLOI2015]有意义的字符串</title>
+      <link href="/2022/06/30/LOJ2106/"/>
+      <url>/2022/06/30/LOJ2106/</url>
+      
+        <content type="html"><![CDATA[<p>经典矩阵乘法计算无理数幂题目。</p><span id="more"></span><p>题意：求<br>$$<br>\lfloor (\dfrac{b + \sqrt d}2) ^ n \rfloor \bmod 7528443412579576937<br>$$<br>$b ^ 2\leq d &lt; (b + 1) ^ 2\leq 10 ^ {18}$，$b\bmod 2 = 1$，$d\bmod 4 = 1$。</p><p>首先样例给出了一个 $\dfrac{1 + \sqrt 5}{2}$（这个怎么不符合数据范围啊）的例子，我们很容易联想到计算 $(\dfrac {1 + \sqrt 5} 2) ^ n + (\dfrac {1 - \sqrt 5} 2) ^ n$，因为这是斐波那契数列的通项公式。</p><p>同样的，我们可以考虑计算 $(\dfrac{b + \sqrt d}2) ^ n + (\dfrac {b - \sqrt d}{2}) ^ n$ 的答案。容易发现这两个无理数其实是 $x ^ 2 - bx + \dfrac{b ^ 2 - d}{4} = 0$ 的两根。</p><p>然后给出一个经典结论：</p><blockquote><p>马上可以得到递推式为 $f_n = bf_{n - 1} + \dfrac{d - b ^ 2}4 f_{n - 2}$。</p></blockquote><p>证明可以考虑展开该式子。</p><blockquote><p>设 $a_1 = \dfrac{b + \sqrt d}2$，$a_2 = \dfrac{b - \sqrt d}2$，那么我们的答案就是 $a_1 ^ n + a_2 ^ n$。考虑化出 $a_1 ^ {n - 1} + a_2 ^ {n - 1}$，那么容易发现需要乘上一个 $a_1 + a_2$，但是还是会多一些项，我们整理一下，可以得到：<br>$$<br>a_1 ^ n - a_2 ^ n = (a_1 + a_2) (a_1 ^ {n - 1} + a_2 ^ {n - 1}) - a_1a_2(a_1 ^ {n - 2} + a_2 ^ {n - 2})<br>$$<br>于是代换为 $f_n$ 就可以得到上面的式子。至于为什么要扯到一元二次方程，是因为其实这个就是韦达定理（</p></blockquote><p>这样剩下的，我们只需要求出 $f_0, f_1$ 即可用矩阵乘法得到 $f_n$。</p><p>但是原问题还没完：怎么求得下取整的答案？</p><p>容易发现由于题目限制，我们很容易得到 $b - \sqrt d \in(-1, 0]$，那么显然 $(\dfrac{b - \sqrt d}2) ^ n$ 的绝对值 $&lt;1$。如果 $n$ 是偶数，并且 $b\not = \sqrt d$，那么加了一部分才得到 $f_n$，所以答案应 -1，否则不变。</p><p>注意模数很大，需要用龟速乘或者 <code>__int128</code> 计算乘法。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">LL b, d, n;</span><br><span class="line">std::cin &gt;&gt; b &gt;&gt; d &gt;&gt; n;</span><br><span class="line"><span class="keyword">if</span> (n == <span class="number">0</span>) <span class="keyword">return</span> <span class="built_in">puts</span>(<span class="string">&quot;1&quot;</span>), <span class="number">0</span>;</span><br><span class="line">Matrix st;</span><br><span class="line">st[<span class="number">1</span>][<span class="number">0</span>] = <span class="number">1</span>, st[<span class="number">1</span>][<span class="number">1</span>] = b, st[<span class="number">0</span>][<span class="number">1</span>] = (d - b * b) / <span class="number">4</span>;</span><br><span class="line">st = <span class="built_in">qpow</span>(st, n);</span><br><span class="line">LL res = ((s128) st[<span class="number">1</span>][<span class="number">0</span>] * b + (s128) <span class="number">2</span> * st[<span class="number">0</span>][<span class="number">0</span>]) % Mod;</span><br><span class="line"><span class="keyword">if</span> (!(n &amp; <span class="number">1</span>) &amp;&amp; d != b * b) res --;</span><br><span class="line">std::cout &lt;&lt; res &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 矩阵乘法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>LOJ2320 「清华集训 2017」生成树计数</title>
+      <link href="/2022/06/30/LOJ2320/"/>
+      <url>/2022/06/30/LOJ2320/</url>
+      
+        <content type="html"><![CDATA[<p>有难度的树上计数 + 多项式重工业。</p><span id="more"></span><p>题意：给定 $n$ 棵树，每棵树有 $a_i$ 个节点，随意连接 $n - 1$ 条边使得 $n$ 棵树联通，设连边后第 $i$ 棵树连边度数为 $d_i$，定义其权值为：<br>$$<br>(\prod_{i = 1} ^ n d_i ^ m) (\sum_{i = 1} ^ n d_i ^ m)<br>$$<br>求权值之和。$n\leq 3\times 10 ^ 4$，$m\leq 30$。</p><p>对 LOJ 讨论区题解的详细阐述，$m$ 可以 $10 ^ 9$。</p><p>首先不考虑 $\sum_{i = 1} ^ n d_i ^ m$ 怎么做。</p><p>直接考虑 prufer 序列，转化为序列问题，假设 $c_i$ 为 $i$ 出现的次数：<br>$$<br>\begin{aligned}<br>ans =&amp; (n - 2)! \prod_{i = 1} ^ n \dfrac{(c_i + 1) ^ m a_i ^ {c_i + 1}} {c_i!}\\<br>=&amp; (n - 2)!\prod_{i = 1} ^ n a_i \prod_{i = 1} ^ n \dfrac{(c_i + 1) ^ m a_i ^ {c_i}} {c_i!}<br>\end{aligned}<br>$$<br>考虑使用生成函数，设 $F_i(x)$ 表示 $i$ 树的生成函数，使用 EGF 即可得到：<br>$$<br>F_i(x) = \sum_{j = 0} \dfrac{(j + 1) ^ m (a_ix) ^ j}{j!}<br>$$<br>那么答案就是 $(n - 2)!\prod_{i = 1} ^ n a_i [x ^ {n - 2}] \prod_{i = 1} ^ n F_i(x)$。但是注意到有 $n$ 个生成函数，无法计算。</p><p>但是本题的生成函数有一个特殊的性质：$i$ 相关的只有 $(a_ix) ^ i$。这给我们一启示：按照 $a_ix$ 为一个整体先计算。</p><p>另外，所有都是乘法，不好做，<strong>乘转加使用 $\ln/\exp$，</strong>于是答案的生成函数可以写作：<br>$$<br>ans = (n - 2)!\prod_{i = 1} ^ n a_i [x ^ {n - 2}]\exp\sum_{i = 1} ^ n \ln F(a_i x)<br>$$<br>先计算出 $\ln F(a_i x)$，那么 $\ln$ 的和就可以写作：<br>$$<br>\sum_{i = 1} ^ n \ln F(a_ix) = \sum_{j = 0} x ^ j (\sum_{i = 1} ^ n a_i ^ j) [x ^ j]\ln F(a_ix)<br>$$<br>注意到有一个等幂和计算，于是可以套用 <a href="/2022/06/18/Luogu-P4705/">Luogu P4705 玩游戏</a> 的套路计算即可，于是我们可以在 $O(n\log ^ 2 n)$ 的时间内得出答案的生成函数。</p><p>然后考虑加上 $\sum_{i = 1} ^ n d_i ^ m$ 如何计算。分开考虑 $i$ 的贡献，那么其实是我们把 $F_i(x)$ 的生成函数相应部分去掉，然后加上 $G_i(x)$ 的贡献。$G_i(x)$ 的生成函数比较好表达，为：<br>$$<br>G_i(x) = \sum_{j = 0} \dfrac{(j + 1) ^ {2m} a_i ^ j x ^ j}{j!}<br>$$<br>那么整个的生成函数可以写作：<br>$$<br>(\sum_{i = 1} ^ n \dfrac{G_i(x)} {F_i(x)}) (\prod_{i = 1} ^ nF_i(x))<br>$$<br>容易发现这个 $G(x)$ 也可以使用类似于 $a_ix$ 绑定一起的方式计算，那么我们可以把 $\sum_{i = 1} ^ n\dfrac{G_i(x)}{F_i(x)}$ 用刚才求等幂和的算法求出来，最后把两个生成函数乘起来，就可以得到答案了。时间复杂度 $O(n\log ^ 2 n)$。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">auto</span> solve = [&amp;](<span class="keyword">auto</span> &amp;self, poly &amp;a, <span class="keyword">int</span> l, <span class="keyword">int</span> r) -&gt; poly &#123;</span><br><span class="line"><span class="keyword">if</span> (l == r) <span class="keyword">return</span> &#123;<span class="number">1</span>, a[l]&#125;;</span><br><span class="line"><span class="keyword">int</span> mid = (l + r) &gt;&gt; <span class="number">1</span>;</span><br><span class="line"><span class="keyword">return</span> <span class="built_in">self</span>(self, a, l, mid) * <span class="built_in">self</span>(self, a, mid + <span class="number">1</span>, r);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">init</span>();</span><br><span class="line"><span class="keyword">int</span> n, m;</span><br><span class="line">std::cin &gt;&gt; n &gt;&gt; m;</span><br><span class="line"><span class="function">poly <span class="title">a</span><span class="params">(n)</span>, <span class="title">f</span><span class="params">(n - <span class="number">1</span>)</span>, <span class="title">g</span><span class="params">(n - <span class="number">1</span>)</span></span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> &amp;x : a) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;x);</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">p1</span><span class="params">(solve(solve, a, <span class="number">0</span>, n - <span class="number">1</span>))</span></span>;</span><br><span class="line"><span class="keyword">int</span> res = p1.<span class="built_in">back</span>();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n - <span class="number">1</span>; ++ i) res = (LL) res * i % Mod;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; ++ i)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">int</span> mul = <span class="built_in">qpow</span>(i + <span class="number">1</span>, m);</span><br><span class="line">f[i] = (LL) infact[i] * mul % Mod;</span><br><span class="line">g[i] = (LL) infact[i] * mul % Mod * mul % Mod;</span><br><span class="line">&#125;</span><br><span class="line">g = g * <span class="built_in">Inv</span>(f), g.<span class="built_in">resize</span>(n - <span class="number">1</span>), p1 = <span class="built_in">Ln</span>(p1), f = <span class="built_in">Ln</span>(f);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++ i)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span> (!(i &amp; <span class="number">1</span>)) <span class="built_in">adj</span>(p1[i] = -p1[i]);</span><br><span class="line">p1[i] = (LL) p1[i] * i % Mod;</span><br><span class="line">&#125;</span><br><span class="line">p1[<span class="number">0</span>] = n;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; ++ i)</span><br><span class="line">g[i] = (LL) g[i] * p1[i] % Mod, f[i] = (LL) f[i] * p1[i] % Mod;</span><br><span class="line">res = (LL) res * (<span class="built_in">Exp</span>(f) * g)[n - <span class="number">2</span>] % Mod;</span><br><span class="line">std::cout &lt;&lt; res &lt;&lt; <span class="string">&#x27;\n&#x27;</span>; </span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 多项式 </tag>
+            
+            <tag> 分治 </tag>
+            
+            <tag> prufer 序列 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>AT Code Festival 2017 Qual A F Squeezing Slimes</title>
+      <link href="/2022/06/30/AT-Code-Festival-2017-Qual-A-F/"/>
+      <url>/2022/06/30/AT-Code-Festival-2017-Qual-A-F/</url>
+      
+        <content type="html"><![CDATA[<p>有趣的结论题。</p><span id="more"></span><p>题意：目前有 $\sum_{i = 1} ^ n a_i$ 个 1，每次可以选定一个长度为 $2m$ 的区间，然后 1、2 合并，3、4 合并，最后剩下 $m$ 个数，称为一次操作。问最少多少次操作使得该序列变为 $a$。$n\leq 10 ^ 5$，$a_i\leq 10 ^ 9$。</p><p><a href="https://atcoder.jp/contests/code-festival-2017-quala/tasks/code_festival_2017_quala_f">题目传送门 AtCoder</a></p><p>正向不好做，考虑逆向变换。假设 $x$ 为当前这个处理的数，设 $c$ 为最大的满足 $2 ^ c \leq x$ 的数，如果 $2 ^ c = x$，那么我们可以把 $c$ 次操作和前后都一起分裂，否则的话，我们需要另外一次操作，且只能和一边一起分裂。</p><p>画一个分解 5 的图理解：</p><img src="/2022/06/30/AT-Code-Festival-2017-Qual-A-F/sample.png" class=""><p>这样我们前两次分裂操作都可以和前面和后面同步，但最后一次操作只能和前面同步（也可以翻转和后面同步）。</p><p>按序扫描 $a$，记录 $ls$ 表示前面能传过来的操作次数。如果 $ls &lt; c$，那么我们需要额外的 $c - ls$ 操作来补齐，否则不需要。另外，如果需要额外的操作，如果 $ls &gt; c$，我们可以选择与前面一起分裂，否则重新开一次操作，$ls$ 也加 1。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> n, ls = <span class="number">0</span>, res = <span class="number">0</span>, x, cur;</span><br><span class="line">std::cin &gt;&gt; n;</span><br><span class="line"><span class="keyword">while</span> (n --)</span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;x), cur = std::<span class="built_in">log</span>(x) / std::<span class="built_in">log</span>(<span class="number">2</span>);</span><br><span class="line"><span class="keyword">bool</span> flag = (<span class="number">1</span> &lt;&lt; cur) != x;</span><br><span class="line"><span class="keyword">if</span> (ls &lt;= cur) res += cur - ls;</span><br><span class="line"><span class="keyword">else</span> flag = <span class="literal">false</span>;</span><br><span class="line">ls = cur;</span><br><span class="line"><span class="keyword">if</span> (flag) ls ++, res ++;</span><br><span class="line">&#125;</span><br><span class="line">std::cout &lt;&lt; res &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 构造 </tag>
+            
+            <tag> AtCoder </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>AGC038E Gachapon</title>
+      <link href="/2022/06/28/AGC038E/"/>
+      <url>/2022/06/28/AGC038E/</url>
+      
+        <content type="html"><![CDATA[<p>DP 优化 min-max 容斥套路似乎是 min-max 容斥唯一考法了……</p><span id="more"></span><p>题意：有一个随机数生成器，每次生成一个 $[1, n]$ 的随机数，$i$ 生成的概率是 $\dfrac{a_i}{\sum a_i}$，当所有数出现次数都 $\geq b_i$ 时停止，求期望操作次数。$n\leq 400$，$\sum a_i\leq 400$，$\sum b_i\leq 400$。</p><p>首先考虑 min-max 容斥，可以得到：<br>$$<br>ans = \sum_{S\subseteq \{1, 2, \cdots, n\}, s\not= \varnothing} E(\min_{i\in S})<br>$$<br>后面表示在 $S$ 当中 所有元素出现次数 $\geq b_i$ 时的操作次数 的最小值 的期望。考虑如何求出后面一坨。</p><p>操作次数显然很难求，考虑一个比较常见的转化：<strong>统计所有合法时操作次数的和等于统计所有不合法状态的概率和</strong>。容易发现这是对的。</p><p>考虑一个不合法的出现次数序列 $\{c_1, c_2, \cdots, c_n\}$，那么 $c_i &lt; b_i$，然后考虑这个的出现概率，即为：<br>$$<br>\prod_{i \in S} (\dfrac{a_i}{\sum_{j\in S}a_j}) ^ {c_i}\times  \dfrac{(\sum_{i\in S} c_i)!}{\prod_{i\in S} c_i!}<br>$$<br>第一个表示我们钦定每一位出现哪一个数，出现概率的乘积。后面表示可能出现的排列情况。</p><p>于是我们就可以把整个式子写出来了：<br>$$<br>\sum_{S\subseteq \{1, 2, \cdots, n\}, S\not=\varnothing} (-1) ^ {|S| - 1} \sum_{c_1, c_2, \cdots, c_n}[c_i&lt;b_i] \prod_{i \in S} (\dfrac{a_i}{\sum_{j\in S}a_j}) ^ {c_i}\times  \dfrac{(\sum_{i\in S} c_i)!}{\prod_{i\in S} c_i!}<br>$$<br>还是很难算，注意到我们需要把整体的设为状态，比如涉及到的有 $\sum_{i\in S} a_j$，$\sum_{i\in S}c_j$，于是考虑把这两维设为状态计算。剩下的拆开计算即可。</p><p>于是直接考虑转移，枚举 $i, \sum c, \sum a$ 和当前的 $c$，看似复杂度 $O(n ^ 4)$，但其实由于 $\sum b$ 是一个量级，所以枚举 $i$ 和 $c$ 总体是 $O(n)$，于是总时间复杂度 $O(n ^ 3)$，可以通过。空间比较卡，滚动即可。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="built_in">init</span>();</span><br><span class="line">std::cin &gt;&gt; n;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) std::cin &gt;&gt; a[i] &gt;&gt; b[i];</span><br><span class="line">f[<span class="number">0</span>][<span class="number">0</span>][<span class="number">0</span>] = Mod - <span class="number">1</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> id = <span class="number">1</span>; id &lt;= n; ++ id)</span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">memset</span>(f[id &amp; <span class="number">1</span>], <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(f[id &amp; <span class="number">1</span>]));</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> sa = <span class="number">0</span>; sa &lt; N; ++ sa)</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> sc = <span class="number">0</span>; sc &lt; N; ++ sc) &#123;</span><br><span class="line"><span class="keyword">if</span> (!f[(id - <span class="number">1</span>) &amp; <span class="number">1</span>][sa][sc]) <span class="keyword">continue</span>;</span><br><span class="line"><span class="keyword">int</span> frm = f[(id - <span class="number">1</span>) &amp; <span class="number">1</span>][sa][sc];</span><br><span class="line"><span class="built_in">adj</span>(f[id &amp; <span class="number">1</span>][sa][sc] += frm - Mod);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> c = <span class="number">0</span>, mul = <span class="number">1</span>; c &lt; b[id]; ++ c, mul = (LL) mul * a[id] % Mod) &#123;</span><br><span class="line"><span class="keyword">int</span> &amp;to = f[id &amp; <span class="number">1</span>][sa + a[id]][sc + c];</span><br><span class="line">to = (to + (LL) (Mod - mul) * infact[c] % Mod * frm) % Mod;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span> ans = <span class="number">0</span>, suma = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) suma += a[i];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> sa = <span class="number">0</span>; sa &lt; N; ++ sa)</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> sc = <span class="number">0</span>, frm; sc &lt; N; ++ sc) &#123;</span><br><span class="line"><span class="keyword">if</span> (!(frm = f[n &amp; <span class="number">1</span>][sa][sc])) <span class="keyword">continue</span>;</span><br><span class="line">ans = (ans + (LL) suma * <span class="built_in">qpow</span>(sa, Mod - <span class="number">2</span> - sc) % Mod * fact[sc] % Mod * frm) % Mod;</span><br><span class="line">&#125;</span><br><span class="line">std::cout &lt;&lt; ans &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> DP 及其优化 </tag>
+            
+            <tag> 期望 </tag>
+            
+            <tag> min-max 容斥 </tag>
+            
+            <tag> AtCoder </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Luogu P5850 calc加强版</title>
       <link href="/2022/06/28/Luogu-P5850/"/>
       <url>/2022/06/28/Luogu-P5850/</url>
@@ -161,9 +291,9 @@
             
             <tag> 高斯消元 </tag>
             
-            <tag> DP 及其优化 </tag>
-            
             <tag> 容斥 </tag>
+            
+            <tag> DP 及其优化 </tag>
             
             <tag> 数位 DP </tag>
             
@@ -444,9 +574,9 @@
       
         <tags>
             
-            <tag> 状态压缩 </tag>
-            
             <tag> 容斥 </tag>
+            
+            <tag> 状态压缩 </tag>
             
         </tags>
       
@@ -467,9 +597,9 @@
             
             <tag> CF </tag>
             
-            <tag> DP 及其优化 </tag>
-            
             <tag> 容斥 </tag>
+            
+            <tag> DP 及其优化 </tag>
             
             <tag> 二项式反演 </tag>
             
@@ -490,9 +620,9 @@
       
         <tags>
             
-            <tag> 状态压缩 </tag>
-            
             <tag> 容斥 </tag>
+            
+            <tag> 状态压缩 </tag>
             
             <tag> AtCoder </tag>
             

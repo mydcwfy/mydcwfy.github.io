@@ -28,7 +28,7 @@
 <meta property="og:description" content="DP 优化 min-max 容斥套路似乎是 min-max 容斥唯一考法了……">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-06-28T13:54:46.000Z">
-<meta property="article:modified_time" content="2022-06-30T01:12:13.286Z">
+<meta property="article:modified_time" content="2022-07-01T12:39:02.217Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="DP 及其优化">
 <meta property="article:tag" content="期望">
@@ -221,7 +221,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-06-30 09:12:13" itemprop="dateModified" datetime="2022-06-30T09:12:13+08:00">2022-06-30</time>
+                <time title="Modified: 2022-07-01 20:39:02" itemprop="dateModified" datetime="2022-07-01T20:39:02+08:00">2022-07-01</time>
               </span>
 
           
@@ -260,7 +260,7 @@
 <span id="more"></span>
 
 <p>题意：有一个随机数生成器，每次生成一个 $[1, n]$ 的随机数，$i$ 生成的概率是 $\dfrac{a_i}{\sum a_i}$，当所有数出现次数都 $\geq b_i$ 时停止，求期望操作次数。$n\leq 400$，$\sum a_i\leq 400$，$\sum b_i\leq 400$。</p>
-<p>首先考虑 min-max 容斥，可以得到：<br>$$<br>ans = \sum_{S\subseteq \{1, 2, \cdots, n\}, s\not= \varnothing} E(\min_{i\in S})<br>$$<br>后面表示在 $S$ 当中 所有元素出现次数 $\geq b_i$ 时的操作次数 的最小值 的期望。考虑如何求出后面一坨。</p>
+<p>首先考虑 min-max 容斥，可以得到：<br>$$<br>ans = \sum_{S\subseteq \{1, 2, \cdots, n\}, s\not= \varnothing} (-1) ^ {|S| - 1} E(\min_{i\in S})<br>$$<br>后面表示在 $S$ 当中 所有元素出现次数 $\geq b_i$ 时的操作次数 的最小值 的期望。考虑如何求出后面一坨。</p>
 <p>操作次数显然很难求，考虑一个比较常见的转化：<strong>统计所有合法时操作次数的和等于统计所有不合法状态的概率和</strong>。容易发现这是对的。</p>
 <p>考虑一个不合法的出现次数序列 $\{c_1, c_2, \cdots, c_n\}$，那么 $c_i &lt; b_i$，然后考虑这个的出现概率，即为：<br>$$<br>\prod_{i \in S} (\dfrac{a_i}{\sum_{j\in S}a_j}) ^ {c_i}\times  \dfrac{(\sum_{i\in S} c_i)!}{\prod_{i\in S} c_i!}<br>$$<br>第一个表示我们钦定每一位出现哪一个数，出现概率的乘积。后面表示可能出现的排列情况。</p>
 <p>于是我们就可以把整个式子写出来了：<br>$$<br>\sum_{S\subseteq \{1, 2, \cdots, n\}, S\not=\varnothing} (-1) ^ {|S| - 1} \sum_{c_1, c_2, \cdots, c_n}[c_i&lt;b_i] \prod_{i \in S} (\dfrac{a_i}{\sum_{j\in S}a_j}) ^ {c_i}\times  \dfrac{(\sum_{i\in S} c_i)!}{\prod_{i\in S} c_i!}<br>$$<br>还是很难算，注意到我们需要把整体的设为状态，比如涉及到的有 $\sum_{i\in S} a_j$，$\sum_{i\in S}c_j$，于是考虑把这两维设为状态计算。剩下的拆开计算即可。</p>
@@ -370,14 +370,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-count">142</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-count">74</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -466,13 +466,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">515k</span>
+    <span title="Symbols count total">521k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">18:39</span>
+    <span title="Reading time total">18:52</span>
 </div>
 
 <div>

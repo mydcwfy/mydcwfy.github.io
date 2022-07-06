@@ -28,7 +28,7 @@
 <meta property="og:description" content="求自然数等幂和的几乎模板题。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-06-18T12:46:10.000Z">
-<meta property="article:modified_time" content="2022-06-18T13:04:37.642Z">
+<meta property="article:modified_time" content="2022-07-04T02:47:18.522Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="多项式">
 <meta property="article:tag" content="分治">
@@ -211,19 +211,18 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-06-18 20:46:10 / Modified: 21:04:37" itemprop="dateCreated datePublished" datetime="2022-06-18T20:46:10+08:00">2022-06-18</time>
+              <time title="Created: 2022-06-18 20:46:10" itemprop="dateCreated datePublished" datetime="2022-06-18T20:46:10+08:00">2022-06-18</time>
             </span>
-
-          
-            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-07-04 10:47:18" itemprop="dateModified" datetime="2022-07-04T10:47:18+08:00">2022-07-04</time>
               </span>
-              <span class="post-meta-item-text">Views: </span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span><br>
+
+          <br>
             <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
@@ -252,7 +251,7 @@
 <span id="more"></span>
 
 <p>题意：从 $a_1, a_2, \cdots, a_n$ 和 $b_1, b_2\cdots, b_m$ 中任意选数 $x$ 和 $y$，求 $(x + y) ^ k$ 的期望。你需要求出 $k\in [1, t]$ 的所有答案。$n, m, t\leq 10 ^ 5$，3s。</p>
-<p>首先大力拆贡献，可以得到：<br>$$<br>\begin{aligned}<br>ans_k =&amp; \dfrac 1{nm} \sum_{i = 1} ^ n\sum_{j = 1} ^ m (a_i + b_j) ^ k\\<br>=&amp; \dfrac 1{nm} \sum_{i = 1} ^ n \sum_{j = 1} ^ m \sum_{l = 0} ^ k \binom kl a_i ^ l b_j ^ {k - l}\\<br>=&amp; \dfrac 1{nm} \sum_{l = 0} ^ k \binom kl \sum_{i = 1} ^ n a_i ^ l\sum_{j = 1} ^ m b_j ^ {k - l}\\<br>=&amp; \dfrac 1{nm} \sum_{l = 0} ^ k \dfrac{\sum_{i = 1} ^ n a_i ^ l}{l!} \dfrac{\sum_{j = 1} ^ m b_j ^ {k - l}}{(k - l)!}<br>\end{aligned}<br>$$<br>容易发现如果我们已经得到了 $\sum_{i = 1} ^ n a_i ^ l$，卷积一下即可在 $O(n\log n)$ 时间内完成。于是问题变为了快速求出 $\sum_{i = 1} ^ n a_i ^ l$。</p>
+<p>首先大力拆贡献，可以得到：<br>$$<br>\begin{aligned}<br>ans_k =&amp; \dfrac 1{nm} \sum_{i = 1} ^ n\sum_{j = 1} ^ m (a_i + b_j) ^ k\\<br>=&amp; \dfrac 1{nm} \sum_{i = 1} ^ n \sum_{j = 1} ^ m \sum_{l = 0} ^ k \binom kl a_i ^ l b_j ^ {k - l}\\<br>=&amp; \dfrac 1{nm} \sum_{l = 0} ^ k \binom kl \sum_{i = 1} ^ n a_i ^ l\sum_{j = 1} ^ m b_j ^ {k - l}\\<br>=&amp; \dfrac {k!}{nm} \sum_{l = 0} ^ k \dfrac{\sum_{i = 1} ^ n a_i ^ l}{l!} \dfrac{\sum_{j = 1} ^ m b_j ^ {k - l}}{(k - l)!}<br>\end{aligned}<br>$$<br>容易发现如果我们已经得到了 $\sum_{i = 1} ^ n a_i ^ l$，卷积一下即可在 $O(n\log n)$ 时间内完成。于是问题变为了快速求出 $\sum_{i = 1} ^ n a_i ^ l$。</p>
 <p>考虑生成函数 $F(x) = \prod_{i = 1} ^ n (a_ix + 1)$，容易发现这个可以使用分治在 $O(n\log ^ 2 n)$ 的时间内求出。</p>
 <p>考虑对两边求 $\ln$，可以得到：$\ln F(x) = \sum_{i = 1} ^ n \ln (a_ix + 1)$。</p>
 <p>考虑对 $\ln(1 + x)$ 泰勒展开，可以得到 $\ln(1 + x) = x - \dfrac{x ^ 2}2 + \dfrac{x ^ 3}3 - \dfrac{x ^ 4}{4}+\cdots$。于是我们带入即可得到：<br>$$<br>\begin{aligned}<br>\ln F(x) =&amp; -\sum_{i = 1} ^ n \sum_{j = 1}\dfrac{(-a_ix) ^ j}{j}\\<br>=&amp; -\sum_{j = 1} ^ n \dfrac{(-x) ^ j}{j} \sum_{i = 1} ^ n a_i ^ j<br>\end{aligned}<br>$$<br>容易发现后半段就是我们要求的东西，于是对 $F(x)$ 取 $\ln$，稍加变换即可得到 $\sum_{i = 1} ^ n a_i ^ j$，于是时间复杂度 $O(n\log ^ 2n)$，<del>稍加卡常</del>即可通过。注意上面的式子无法计算 $\sum_{i = 1} ^ n a_i ^ 0$，需要特殊计算。</p>
@@ -358,14 +357,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">142</span>
+          <span class="site-state-item-count">147</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-count">75</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -454,13 +453,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">521k</span>
+    <span title="Symbols count total">535k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">18:52</span>
+    <span title="Reading time total">19:23</span>
 </div>
 
 <div>
@@ -484,9 +483,6 @@ setInterval("createtime()",250);
 </div>
 
         
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-</div>
 
 
 

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -248,7 +248,7 @@
 <p><strong>看到恰好，二项式反演</strong>。</p>
 <p>设 $f(k)$ 表示<strong>恰好</strong>有 $k$ 个出现次数为 $S$ 的方案数，$g(k)$ 为<strong>钦定</strong>有 $k$ 个出现次数为 $S$ 的方案数，则可以得到：<br>$$<br>\begin{aligned}<br>f(k) =&amp; \sum_{i = k} ^ m (-1) ^ {i - k} \binom ik g(i)\\<br>ans =&amp; \sum_{i = 0} ^ m f(i) a(i)<br>\end{aligned}<br>$$<br>先考虑如何计算 $g(i)$。先选定 $i$ 种颜色 $\binom mi$，从 $n$ 个位置 $i$ 次从挑出 $S$ 个位置，贡献为 $\dfrac{n!}{S! ^ i (n - iS)!}$，剩下的 $n - iS$ 个位置可以任意填 $m - i$ 颜色的任意一个，为 $(m - i) ^ {n - iS}$，于是 $g(i)$ 为：<br>$$<br>g(i) = \binom mi \dfrac{n!(m - i) ^ {n - iS}}{S! ^ i (n - iS)!}<br>$$<br>可以在 $O(m\log m)$ 时间计算。</p>
 <p>然后考虑如何由 $g(i)$ 算出 $f(i)$，根据组合数的性质容易得到：<br>$$<br>k!f(k) = \sum_{i = k} ^ m \dfrac{(-1) ^ {i - k}}{(i - k)!}i!g(i)<br>$$<br>显然是一个差卷积的形式，复杂度 $O(m\log m)$，预处理阶乘及逆元为 $O(n)$。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">init</span>();</span><br><span class="line">	<span class="keyword">int</span> n, m, S;</span><br><span class="line">	std::cin &gt;&gt; n &gt;&gt; m &gt;&gt; S;</span><br><span class="line">	<span class="function">poly <span class="title">w</span><span class="params">(m + <span class="number">1</span>)</span>, <span class="title">g</span><span class="params">(infact, infact + m + <span class="number">1</span>)</span>, <span class="title">f</span><span class="params">(m + <span class="number">1</span>)</span></span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= m; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (i &amp; <span class="number">1</span>) <span class="built_in">adj</span>(g[i] = -g[i]);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> &amp;x : f) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;x);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= m; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (i * S &gt; n) w[i] = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">else</span> w[i] = (LL) <span class="built_in">C</span>(m, i) * fact[n] % Mod * <span class="built_in">qpow</span>(infact[S], i) % Mod</span><br><span class="line">			* infact[n - i * S] % Mod * <span class="built_in">qpow</span>(m - i, n - i * S) % Mod * fact[i] % Mod;</span><br><span class="line">	std::<span class="built_in">reverse</span>(g.<span class="built_in">begin</span>(), g.<span class="built_in">end</span>());</span><br><span class="line">	w = w * g;</span><br><span class="line">	<span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = m; i &lt;= <span class="number">2</span> * m; ++ i)</span><br><span class="line">		res = (res + (LL) w[i] * infact[i - m] % Mod * f[i - m]) % Mod;</span><br><span class="line">	<span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = m; i &lt;= <span class="number">2</span> * m; ++ i) <span class="built_in">adj</span>(sum += w[i] * (LL) infact[i - m] % Mod - Mod);</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; std::endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">init</span>();</span><br><span class="line">	<span class="type">int</span> n, m, S;</span><br><span class="line">	std::cin &gt;&gt; n &gt;&gt; m &gt;&gt; S;</span><br><span class="line">	<span class="function">poly <span class="title">w</span><span class="params">(m + <span class="number">1</span>)</span>, <span class="title">g</span><span class="params">(infact, infact + m + <span class="number">1</span>)</span>, <span class="title">f</span><span class="params">(m + <span class="number">1</span>)</span></span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= m; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (i &amp; <span class="number">1</span>) <span class="built_in">adj</span>(g[i] = -g[i]);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> &amp;x : f) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;x);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= m; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (i * S &gt; n) w[i] = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">else</span> w[i] = (LL) <span class="built_in">C</span>(m, i) * fact[n] % Mod * <span class="built_in">qpow</span>(infact[S], i) % Mod</span><br><span class="line">			* infact[n - i * S] % Mod * <span class="built_in">qpow</span>(m - i, n - i * S) % Mod * fact[i] % Mod;</span><br><span class="line">	std::<span class="built_in">reverse</span>(g.<span class="built_in">begin</span>(), g.<span class="built_in">end</span>());</span><br><span class="line">	w = w * g;</span><br><span class="line">	<span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = m; i &lt;= <span class="number">2</span> * m; ++ i)</span><br><span class="line">		res = (res + (LL) w[i] * infact[i - m] % Mod * f[i - m]) % Mod;</span><br><span class="line">	<span class="type">int</span> sum = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = m; i &lt;= <span class="number">2</span> * m; ++ i) <span class="built_in">adj</span>(sum += w[i] * (LL) infact[i - m] % Mod - Mod);</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; std::endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -350,14 +350,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">151</span>
+          <span class="site-state-item-count">156</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-count">77</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -446,13 +446,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">547k</span>
+    <span title="Symbols count total">565k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">19:48</span>
+    <span title="Reading time total">20:28</span>
 </div>
 
 <div>

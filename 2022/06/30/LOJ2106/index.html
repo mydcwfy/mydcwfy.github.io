@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -258,7 +258,7 @@
 <p>但是原问题还没完：怎么求得下取整的答案？</p>
 <p>容易发现由于题目限制，我们很容易得到 $b - \sqrt d \in(-1, 0]$，那么显然 $(\dfrac{b - \sqrt d}2) ^ n$ 的绝对值 $&lt;1$。如果 $n$ 是偶数，并且 $b\not = \sqrt d$，那么加了一部分才得到 $f_n$，所以答案应 -1，否则不变。</p>
 <p>注意模数很大，需要用龟速乘或者 <code>__int128</code> 计算乘法。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	LL b, d, n;</span><br><span class="line">	std::cin &gt;&gt; b &gt;&gt; d &gt;&gt; n;</span><br><span class="line">	<span class="keyword">if</span> (n == <span class="number">0</span>) <span class="keyword">return</span> <span class="built_in">puts</span>(<span class="string">&quot;1&quot;</span>), <span class="number">0</span>;</span><br><span class="line">	Matrix st;</span><br><span class="line">	st[<span class="number">1</span>][<span class="number">0</span>] = <span class="number">1</span>, st[<span class="number">1</span>][<span class="number">1</span>] = b, st[<span class="number">0</span>][<span class="number">1</span>] = (d - b * b) / <span class="number">4</span>;</span><br><span class="line">	st = <span class="built_in">qpow</span>(st, n);</span><br><span class="line">	LL res = ((s128) st[<span class="number">1</span>][<span class="number">0</span>] * b + (s128) <span class="number">2</span> * st[<span class="number">0</span>][<span class="number">0</span>]) % Mod;</span><br><span class="line">	<span class="keyword">if</span> (!(n &amp; <span class="number">1</span>) &amp;&amp; d != b * b) res --;</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	LL b, d, n;</span><br><span class="line">	std::cin &gt;&gt; b &gt;&gt; d &gt;&gt; n;</span><br><span class="line">	<span class="keyword">if</span> (n == <span class="number">0</span>) <span class="keyword">return</span> <span class="built_in">puts</span>(<span class="string">&quot;1&quot;</span>), <span class="number">0</span>;</span><br><span class="line">	Matrix st;</span><br><span class="line">	st[<span class="number">1</span>][<span class="number">0</span>] = <span class="number">1</span>, st[<span class="number">1</span>][<span class="number">1</span>] = b, st[<span class="number">0</span>][<span class="number">1</span>] = (d - b * b) / <span class="number">4</span>;</span><br><span class="line">	st = <span class="built_in">qpow</span>(st, n);</span><br><span class="line">	LL res = ((s128) st[<span class="number">1</span>][<span class="number">0</span>] * b + (s128) <span class="number">2</span> * st[<span class="number">0</span>][<span class="number">0</span>]) % Mod;</span><br><span class="line">	<span class="keyword">if</span> (!(n &amp; <span class="number">1</span>) &amp;&amp; d != b * b) res --;</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
     </div>
@@ -360,14 +360,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">151</span>
+          <span class="site-state-item-count">156</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-count">77</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -456,13 +456,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">547k</span>
+    <span title="Symbols count total">565k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">19:48</span>
+    <span title="Reading time total">20:28</span>
 </div>
 
 <div>

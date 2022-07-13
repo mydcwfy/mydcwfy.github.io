@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -252,7 +252,7 @@
 <p>如果我们先填入 $k$ 个极大值中最大的那一个，填的时候我们将前 $k - 1$ 个所覆盖的（指至少有一维坐标相同）的先不管。这启示我们可以递推下去，假设这个函数为 $g(k)$。</p>
 <p>我们填的时候，有影响的位置就应该是 $a_{k - 1} - a_k$，然后我们需要在 $nml - a_k - 1$ 个数（没有这个极大值，因为他一定选最大的那一个）中随意选出 $a_{k - 1} - a_k - 1$ 个数，然后除了极大值的位置固定以外，其他的又随意填，贡献就是：<br>$$<br>\binom{nml - a_k - 1}{a_{k - 1} - a_k - 1}(a_{k - 1} - a_k - 1)!<br>$$<br>通过这个，我们很容易从 $g(k - 1)$ 转移到 $g(k)$，而转移系数就是上面那个式子。</p>
 <p>接下来就是把上面的式子一通合并（防止重名，题目中的 $k$ 更换为 $st$）：<br>$$<br>\begin{aligned}<br>ans =&amp; \dfrac 1{nml!}\sum_{k = st} ^ {lim} (-1) ^ {k - st} \binom k{st} n ^ {\underline k}m ^ {\underline k} l ^ {\underline k} nml ^ {\underline{a_k}} g(k)\\<br>=&amp; \dfrac 1{nml!}\sum_{k = st} ^ {lim} (-1) ^ {k - st} \binom k{st} n ^ {\underline k}m ^ {\underline k} l ^ {\underline k} nml ^ {\underline{a_k}} \prod_{i = 1} ^ k \dfrac{(nml - a_k - 1)!} {(nml - a_{k - 1})!} \\<br>=&amp; \sum_{k = st} ^ {lim} (-1) ^ {k - st} \binom k{st} n ^ {\underline k} m ^ {\underline k} l ^ {\underline k} \prod_{i = 1} ^ k \dfrac{1}{(nml - a_k)!}<br>\end{aligned}<br>$$<br>这样我们线性预处理前缀逆元即可 $O(n)$ 计算。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">work</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	std::cin &gt;&gt; n &gt;&gt; m &gt;&gt; l &gt;&gt; k, lim = std::<span class="built_in">min</span>(&#123;n, m, l&#125;);</span><br><span class="line">	<span class="keyword">if</span> (k &gt; lim) <span class="keyword">return</span> <span class="built_in"><span class="keyword">void</span></span>(<span class="built_in">puts</span>(<span class="string">&quot;0&quot;</span>));</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= lim; ++ i)</span><br><span class="line">		<span class="built_in">adj</span>(r[i] = (LL) n * m % Mod * l % Mod - (LL) (n - i) * (m - i) % Mod * (l - i) % Mod);</span><br><span class="line">	<span class="keyword">int</span> tot = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= lim; ++ i) tot = (LL) tot * r[i] % Mod;</span><br><span class="line">	tot = <span class="built_in">qpow</span>(tot), pre[lim] = tot;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = lim - <span class="number">1</span>; i; -- i) pre[i] = (LL) pre[i + <span class="number">1</span>] * r[i + <span class="number">1</span>] % Mod;</span><br><span class="line">	<span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = k, op = <span class="number">1</span>; i &lt;= lim; ++ i, op = Mod - op)</span><br><span class="line">		res = (res + (LL) op * <span class="built_in">C</span>(n, i) % Mod * <span class="built_in">C</span>(m, i) % Mod * <span class="built_in">C</span>(l, i)</span><br><span class="line">			% Mod * <span class="built_in">qpow</span>(fact[i], <span class="number">3</span>) % Mod * pre[i] % Mod * <span class="built_in">C</span>(i, k)) % Mod;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, res);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	std::cin &gt;&gt; n &gt;&gt; m &gt;&gt; l &gt;&gt; k, lim = std::<span class="built_in">min</span>(&#123;n, m, l&#125;);</span><br><span class="line">	<span class="keyword">if</span> (k &gt; lim) <span class="keyword">return</span> <span class="built_in">void</span>(<span class="built_in">puts</span>(<span class="string">&quot;0&quot;</span>));</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= lim; ++ i)</span><br><span class="line">		<span class="built_in">adj</span>(r[i] = (LL) n * m % Mod * l % Mod - (LL) (n - i) * (m - i) % Mod * (l - i) % Mod);</span><br><span class="line">	<span class="type">int</span> tot = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= lim; ++ i) tot = (LL) tot * r[i] % Mod;</span><br><span class="line">	tot = <span class="built_in">qpow</span>(tot), pre[lim] = tot;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = lim - <span class="number">1</span>; i; -- i) pre[i] = (LL) pre[i + <span class="number">1</span>] * r[i + <span class="number">1</span>] % Mod;</span><br><span class="line">	<span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = k, op = <span class="number">1</span>; i &lt;= lim; ++ i, op = Mod - op)</span><br><span class="line">		res = (res + (LL) op * <span class="built_in">C</span>(n, i) % Mod * <span class="built_in">C</span>(m, i) % Mod * <span class="built_in">C</span>(l, i)</span><br><span class="line">			% Mod * <span class="built_in">qpow</span>(fact[i], <span class="number">3</span>) % Mod * pre[i] % Mod * <span class="built_in">C</span>(i, k)) % Mod;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, res);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -354,14 +354,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">151</span>
+          <span class="site-state-item-count">156</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-count">77</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -450,13 +450,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">547k</span>
+    <span title="Symbols count total">565k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">19:48</span>
+    <span title="Reading time total">20:28</span>
 </div>
 
 <div>

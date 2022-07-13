@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -257,7 +257,7 @@
 <p>坏事同理。</p>
 <p>预处理组合数可以用 $O(n)$ 预处理阶乘及其逆元，不过没必要，直接 $O(n^2)$ 就可以了。</p>
 <h2 id="3-Code"><a href="#3-Code" class="headerlink" title="3. Code"></a>3. Code</h2><p>注意要处理两倍的大小。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">init</span>();</span><br><span class="line">    cin &gt;&gt; n &gt;&gt; w &gt;&gt; b;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> gday = <span class="number">1</span>; gday &lt; n; ++ gday)<span class="comment">//枚举好事的天数</span></span><br><span class="line">        ans = (ans + (gday - <span class="number">1ll</span>) * C[w - <span class="number">1</span>][gday - <span class="number">1</span>] % Mod * C[b - <span class="number">1</span>][n - gday - <span class="number">1</span>] % Mod) % Mod;</span><br><span class="line">    cout &lt;&lt; <span class="number">1ll</span> * ans * fact[w] % Mod * fact[b] % Mod &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">init</span>();</span><br><span class="line">    cin &gt;&gt; n &gt;&gt; w &gt;&gt; b;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> gday = <span class="number">1</span>; gday &lt; n; ++ gday)<span class="comment">//枚举好事的天数</span></span><br><span class="line">        ans = (ans + (gday - <span class="number">1ll</span>) * C[w - <span class="number">1</span>][gday - <span class="number">1</span>] % Mod * C[b - <span class="number">1</span>][n - gday - <span class="number">1</span>] % Mod) % Mod;</span><br><span class="line">    cout &lt;&lt; <span class="number">1ll</span> * ans * fact[w] % Mod * fact[b] % Mod &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -362,14 +362,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">151</span>
+          <span class="site-state-item-count">156</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-count">77</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -458,13 +458,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">547k</span>
+    <span title="Symbols count total">565k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">19:48</span>
+    <span title="Reading time total">20:28</span>
 </div>
 
 <div>

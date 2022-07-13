@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -31,8 +31,8 @@
 <meta property="article:modified_time" content="2022-05-11T12:08:38.315Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="组合数学">
-<meta property="article:tag" content="AtCoder">
 <meta property="article:tag" content="min-max 容斥">
+<meta property="article:tag" content="AtCoder">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://mydcwfy.github.io/2022/05/11/ABC242H/">
@@ -250,7 +250,7 @@
 <p>直接暴力枚举所有集合显然是不行的，我们考虑前面集合中都 $\subseteq \{1, 2, \dots, i - 1\}$在所有集合中加入 $i$，看需要维护什么。首先我们需要维护新加入 $i$ 后区间的个数，容斥系数直接每次加入元素时乘 -1 即可。维护区间个数需要我们维护出上一个选的数 $ls$，这样 $l\in [ls + 1, i], r\in [i, n]$ 的区间就是新加入的。容易发现这是对的。</p>
 <p>于是我们需要维护的就是 $ls$ 表示上一个选的数，$cnt$ 表示有交的区间。状态数为 $O(nm)$，转移为 $O(n)$，总复杂度 $O(n ^ 2m)$。</p>
 <p><strong>期望 max/min 可以互相转化</strong>。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	f[<span class="number">0</span>][<span class="number">0</span>] = Mod - <span class="number">1</span>; <span class="comment">// last position i, j intervals</span></span><br><span class="line">	<span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; ++ i)</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= m; ++ j) &#123;</span><br><span class="line">			<span class="keyword">if</span> (!f[i][j]) <span class="keyword">continue</span>;</span><br><span class="line">			res = (res + (LL) m * <span class="built_in">qpow</span>(j) % Mod * f[i][j]) % Mod;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> to = i + <span class="number">1</span>; to &lt;= n; ++ to)</span><br><span class="line">				<span class="built_in">adj</span>(f[to][j + cnt[i][to]] -= f[i][j]);</span><br><span class="line">		&#125;</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	f[<span class="number">0</span>][<span class="number">0</span>] = Mod - <span class="number">1</span>; <span class="comment">// last position i, j intervals</span></span><br><span class="line">	<span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= n; ++ i)</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt;= m; ++ j) &#123;</span><br><span class="line">			<span class="keyword">if</span> (!f[i][j]) <span class="keyword">continue</span>;</span><br><span class="line">			res = (res + (LL) m * <span class="built_in">qpow</span>(j) % Mod * f[i][j]) % Mod;</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> to = i + <span class="number">1</span>; to &lt;= n; ++ to)</span><br><span class="line">				<span class="built_in">adj</span>(f[to][j + cnt[i][to]] -= f[i][j]);</span><br><span class="line">		&#125;</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -262,8 +262,8 @@
           
           <div class="post-tags">
               <a href="/tags/%E7%BB%84%E5%90%88%E6%95%B0%E5%AD%A6/" rel="tag"><i class="fa fa-tag"></i> 组合数学</a>
-              <a href="/tags/AtCoder/" rel="tag"><i class="fa fa-tag"></i> AtCoder</a>
               <a href="/tags/min-max-%E5%AE%B9%E6%96%A5/" rel="tag"><i class="fa fa-tag"></i> min-max 容斥</a>
+              <a href="/tags/AtCoder/" rel="tag"><i class="fa fa-tag"></i> AtCoder</a>
           </div>
 
         
@@ -353,14 +353,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">151</span>
+          <span class="site-state-item-count">156</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-count">77</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -449,13 +449,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">547k</span>
+    <span title="Symbols count total">565k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">19:48</span>
+    <span title="Reading time total">20:28</span>
 </div>
 
 <div>

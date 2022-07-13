@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -267,7 +267,7 @@
 <p>每次加 $c$ 条边的边权时，到其他所有点的距离变化一定不超过 $\min\{c, n - 1\}$（最短路不超过 $n - 1$ 条边），这启示我们可以使用桶 - Dijkstra 的算法来计算增量。</p>
 <p>但是在一般的认知中，是没有办法求最短路的增量的。可以考虑类似 Johnson 全源最短路的做法，我们设置一条边的新权值为 $e(u, v)’ = e(u, v) + dis(u) - dis(v)$。类似 Johnson 的证明，我们三角不等式易得边权仍然是非负的。而我们走到一个点的时候，他的势能加上他的新图上的距离就是原图上的最短路。而新图的距离是好求的，于是我们可以得到单次 $O(m + W) = O(m)$ 的做法了。总时间复杂度 $O(m\log m + mq)$（开始必须跑一遍 Dijkstra</p>
 <p>注意仍然比较卡常，注意实现细节的错误可能导致 TLE。放一个代码。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">std::queue&lt;<span class="keyword">int</span>&gt; q[N];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bfs</span><span class="params">(<span class="keyword">int</span> Lim = n - <span class="number">1</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= Lim; ++ i)</span><br><span class="line">		<span class="keyword">while</span> (!q[i].<span class="built_in">empty</span>()) q[i].<span class="built_in">pop</span>();</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) now[i] = n;</span><br><span class="line">	q[<span class="number">0</span>].<span class="built_in">push</span>(<span class="number">1</span>), now[<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> mx = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> l = <span class="number">0</span>, x; l &lt;= mx; ++ l)</span><br><span class="line">		<span class="keyword">while</span> (!q[l].<span class="built_in">empty</span>()) &#123;</span><br><span class="line">			x = q[l].<span class="built_in">front</span>();</span><br><span class="line">			q[l].<span class="built_in">pop</span>();</span><br><span class="line">			<span class="keyword">if</span> (now[x] &lt; l) <span class="keyword">continue</span>;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">auto</span> &amp;[i, v] : g[x])</span><br><span class="line">				<span class="keyword">if</span> (<span class="built_in">chkmin</span>(now[v], <span class="built_in"><span class="keyword">int</span></span>(now[x] + w[i] + d[x] - d[e[i]])) &amp;&amp; now[v] &lt;= Lim)</span><br><span class="line">					q[now[v]].<span class="built_in">push</span>(v), <span class="built_in">chkmax</span>(mx, now[v]);</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (d[i] &lt; (INF &gt;&gt; <span class="number">1</span>)) d[i] += now[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">std::queue&lt;<span class="type">int</span>&gt; q[N];</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">bfs</span><span class="params">(<span class="type">int</span> Lim = n - <span class="number">1</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= Lim; ++ i)</span><br><span class="line">		<span class="keyword">while</span> (!q[i].<span class="built_in">empty</span>()) q[i].<span class="built_in">pop</span>();</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) now[i] = n;</span><br><span class="line">	q[<span class="number">0</span>].<span class="built_in">push</span>(<span class="number">1</span>), now[<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">	<span class="type">int</span> mx = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> l = <span class="number">0</span>, x; l &lt;= mx; ++ l)</span><br><span class="line">		<span class="keyword">while</span> (!q[l].<span class="built_in">empty</span>()) &#123;</span><br><span class="line">			x = q[l].<span class="built_in">front</span>();</span><br><span class="line">			q[l].<span class="built_in">pop</span>();</span><br><span class="line">			<span class="keyword">if</span> (now[x] &lt; l) <span class="keyword">continue</span>;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">auto</span> &amp;[i, v] : g[x])</span><br><span class="line">				<span class="keyword">if</span> (<span class="built_in">chkmin</span>(now[v], <span class="built_in">int</span>(now[x] + w[i] + d[x] - d[e[i]])) &amp;&amp; now[v] &lt;= Lim)</span><br><span class="line">					q[now[v]].<span class="built_in">push</span>(v), <span class="built_in">chkmax</span>(mx, now[v]);</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (d[i] &lt; (INF &gt;&gt; <span class="number">1</span>)) d[i] += now[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -372,14 +372,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">151</span>
+          <span class="site-state-item-count">156</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-count">77</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -468,13 +468,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">547k</span>
+    <span title="Symbols count total">565k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">19:48</span>
+    <span title="Reading time total">20:28</span>
 </div>
 
 <div>

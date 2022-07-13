@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -32,8 +32,8 @@
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="DP 及其优化">
 <meta property="article:tag" content="期望">
-<meta property="article:tag" content="AtCoder">
 <meta property="article:tag" content="min-max 容斥">
+<meta property="article:tag" content="AtCoder">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://mydcwfy.github.io/2022/06/28/AGC038E/">
@@ -259,7 +259,7 @@
 <p>现在我们已经把 $S$ 的期望算出来了，但是我们发现这个时候每选择 $S$ 中的数，其实在原问题中只是 $\dfrac {\sum_{i\in S} a_i}{\sum a}$ 的概率，那么就是说，我们的期望值还需要乘上 $\dfrac{\sum a}{\sum_{i\in S} a_i}$，才能得到在原问题中的期望。</p>
 <p>于是我们就可以把整个式子写出来了：<br>$$<br>\sum_{S\subseteq \{1, 2, \cdots, n\}, S\not=\varnothing} (-1) ^ {|S| - 1} \dfrac{\sum a}{\sum_{i\in S}a_i} \sum_{c_1, c_2, \cdots, c_n}[c_i&lt;b_i] \prod_{i \in S} (\dfrac{a_i}{\sum_{j\in S}a_j}) ^ {c_i}\times  \dfrac{(\sum_{i\in S} c_i)!}{\prod_{i\in S} c_i!}<br>$$<br>还是很难算，注意到我们需要把整体的设为状态，比如涉及到的有 $\sum_{i\in S} a_j$，$\sum_{i\in S}c_j$，于是考虑把这两维设为状态计算。剩下的拆开计算即可。</p>
 <p>于是直接考虑转移，枚举 $i, \sum_{\in S} c_i, \sum_{i\in S} a_i$ 和当前的 $c$，看似复杂度 $O(n ^ 4)$，但其实由于 $\sum b$ 是一个量级，所以枚举 $i$ 和 $c$ 总体是 $O(n)$，于是总时间复杂度 $O(n ^ 3)$，可以通过。空间比较卡，滚动即可。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">init</span>();</span><br><span class="line">	std::cin &gt;&gt; n;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) std::cin &gt;&gt; a[i] &gt;&gt; b[i];</span><br><span class="line">	f[<span class="number">0</span>][<span class="number">0</span>][<span class="number">0</span>] = Mod - <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> id = <span class="number">1</span>; id &lt;= n; ++ id)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">memset</span>(f[id &amp; <span class="number">1</span>], <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(f[id &amp; <span class="number">1</span>]));</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> sa = <span class="number">0</span>; sa &lt; N; ++ sa)</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> sc = <span class="number">0</span>; sc &lt; N; ++ sc) &#123;</span><br><span class="line">				<span class="keyword">if</span> (!f[(id - <span class="number">1</span>) &amp; <span class="number">1</span>][sa][sc]) <span class="keyword">continue</span>;</span><br><span class="line">				<span class="keyword">int</span> frm = f[(id - <span class="number">1</span>) &amp; <span class="number">1</span>][sa][sc];</span><br><span class="line">				<span class="built_in">adj</span>(f[id &amp; <span class="number">1</span>][sa][sc] += frm - Mod);</span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> c = <span class="number">0</span>, mul = <span class="number">1</span>; c &lt; b[id]; ++ c, mul = (LL) mul * a[id] % Mod) &#123;</span><br><span class="line">					<span class="keyword">int</span> &amp;to = f[id &amp; <span class="number">1</span>][sa + a[id]][sc + c];</span><br><span class="line">					to = (to + (LL) (Mod - mul) * infact[c] % Mod * frm) % Mod;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> ans = <span class="number">0</span>, suma = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) suma += a[i];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> sa = <span class="number">0</span>; sa &lt; N; ++ sa)</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> sc = <span class="number">0</span>, frm; sc &lt; N; ++ sc) &#123;</span><br><span class="line">			<span class="keyword">if</span> (!(frm = f[n &amp; <span class="number">1</span>][sa][sc])) <span class="keyword">continue</span>;</span><br><span class="line">			ans = (ans + (LL) suma * <span class="built_in">qpow</span>(sa, Mod - <span class="number">2</span> - sc) % Mod * fact[sc] % Mod * frm) % Mod;</span><br><span class="line">		&#125;</span><br><span class="line">	std::cout &lt;&lt; ans &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">init</span>();</span><br><span class="line">	std::cin &gt;&gt; n;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) std::cin &gt;&gt; a[i] &gt;&gt; b[i];</span><br><span class="line">	f[<span class="number">0</span>][<span class="number">0</span>][<span class="number">0</span>] = Mod - <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> id = <span class="number">1</span>; id &lt;= n; ++ id)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">memset</span>(f[id &amp; <span class="number">1</span>], <span class="number">0</span>, <span class="built_in">sizeof</span>(f[id &amp; <span class="number">1</span>]));</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> sa = <span class="number">0</span>; sa &lt; N; ++ sa)</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> sc = <span class="number">0</span>; sc &lt; N; ++ sc) &#123;</span><br><span class="line">				<span class="keyword">if</span> (!f[(id - <span class="number">1</span>) &amp; <span class="number">1</span>][sa][sc]) <span class="keyword">continue</span>;</span><br><span class="line">				<span class="type">int</span> frm = f[(id - <span class="number">1</span>) &amp; <span class="number">1</span>][sa][sc];</span><br><span class="line">				<span class="built_in">adj</span>(f[id &amp; <span class="number">1</span>][sa][sc] += frm - Mod);</span><br><span class="line">				<span class="keyword">for</span> (<span class="type">int</span> c = <span class="number">0</span>, mul = <span class="number">1</span>; c &lt; b[id]; ++ c, mul = (LL) mul * a[id] % Mod) &#123;</span><br><span class="line">					<span class="type">int</span> &amp;to = f[id &amp; <span class="number">1</span>][sa + a[id]][sc + c];</span><br><span class="line">					to = (to + (LL) (Mod - mul) * infact[c] % Mod * frm) % Mod;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> ans = <span class="number">0</span>, suma = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) suma += a[i];</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> sa = <span class="number">0</span>; sa &lt; N; ++ sa)</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> sc = <span class="number">0</span>, frm; sc &lt; N; ++ sc) &#123;</span><br><span class="line">			<span class="keyword">if</span> (!(frm = f[n &amp; <span class="number">1</span>][sa][sc])) <span class="keyword">continue</span>;</span><br><span class="line">			ans = (ans + (LL) suma * <span class="built_in">qpow</span>(sa, Mod - <span class="number">2</span> - sc) % Mod * fact[sc] % Mod * frm) % Mod;</span><br><span class="line">		&#125;</span><br><span class="line">	std::cout &lt;&lt; ans &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
     </div>
@@ -273,8 +273,8 @@
           <div class="post-tags">
               <a href="/tags/DP-%E5%8F%8A%E5%85%B6%E4%BC%98%E5%8C%96/" rel="tag"><i class="fa fa-tag"></i> DP 及其优化</a>
               <a href="/tags/%E6%9C%9F%E6%9C%9B/" rel="tag"><i class="fa fa-tag"></i> 期望</a>
-              <a href="/tags/AtCoder/" rel="tag"><i class="fa fa-tag"></i> AtCoder</a>
               <a href="/tags/min-max-%E5%AE%B9%E6%96%A5/" rel="tag"><i class="fa fa-tag"></i> min-max 容斥</a>
+              <a href="/tags/AtCoder/" rel="tag"><i class="fa fa-tag"></i> AtCoder</a>
           </div>
 
         
@@ -364,14 +364,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">151</span>
+          <span class="site-state-item-count">156</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-count">77</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -460,13 +460,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">547k</span>
+    <span title="Symbols count total">565k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">19:48</span>
+    <span title="Reading time total">20:28</span>
 </div>
 
 <div>

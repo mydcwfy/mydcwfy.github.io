@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -259,7 +259,7 @@
 <h3 id="6）乘上-x-k"><a href="#6）乘上-x-k" class="headerlink" title="6）乘上  $x^k$"></a>6）乘上  $x^k$</h3><p><strong>结论：</strong>若 $f(x)$ 的 DGF 是 $\tilde F(x)$，那么 $g(x) = f(x)\times x ^ k$ 的 DGF 是 $\tilde G(x) = \tilde F(x - k)$。这个可以通过改变质数处的取值得到。证明略去。</p>
 <h2 id="4-例题"><a href="#4-例题" class="headerlink" title="4. 例题"></a>4. 例题</h2><h3 id="T1：简单的数学题"><a href="#T1：简单的数学题" class="headerlink" title="T1：简单的数学题"></a>T1：简单的数学题</h3><p>求 $\sum_{i = 1}^n i ^ 2\varphi(i)$，使用杜教筛。</p>
 <p>直接使用 $\tilde F(x) = \dfrac{\zeta(x - 3)}{\zeta(x - 2)}$，那么 $f(i) * id^2(i) = id^3(i)$。直接筛就可以了。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> LL = <span class="keyword">long</span> <span class="keyword">long</span>;</span><br><span class="line"></span><br><span class="line"><span class="function">LL <span class="title">get_sphi</span><span class="params">(LL n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (n &lt; N) <span class="keyword">return</span> sphi[n];</span><br><span class="line">	<span class="keyword">if</span> (Sphi.<span class="built_in">find</span>(n) != Sphi.<span class="built_in">end</span>()) <span class="keyword">return</span> Sphi[n];</span><br><span class="line">	LL ans = <span class="built_in">sum3</span>(n);</span><br><span class="line">	<span class="keyword">for</span> (ll l = <span class="number">2</span>, r; l &lt;= n; l = r + <span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		r = n / (n / l);</span><br><span class="line">		ans = (-(<span class="built_in">sum2</span>(r) - <span class="built_in">sum2</span>(l - <span class="number">1</span>)) * <span class="built_in">get_sphi</span>(n / l) % Mod + ans + Mod) % Mod;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> Sphi[n] = ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> LL = <span class="type">long</span> <span class="type">long</span>;</span><br><span class="line"></span><br><span class="line"><span class="function">LL <span class="title">get_sphi</span><span class="params">(LL n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (n &lt; N) <span class="keyword">return</span> sphi[n];</span><br><span class="line">	<span class="keyword">if</span> (Sphi.<span class="built_in">find</span>(n) != Sphi.<span class="built_in">end</span>()) <span class="keyword">return</span> Sphi[n];</span><br><span class="line">	LL ans = <span class="built_in">sum3</span>(n);</span><br><span class="line">	<span class="keyword">for</span> (ll l = <span class="number">2</span>, r; l &lt;= n; l = r + <span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		r = n / (n / l);</span><br><span class="line">		ans = (-(<span class="built_in">sum2</span>(r) - <span class="built_in">sum2</span>(l - <span class="number">1</span>)) * <span class="built_in">get_sphi</span>(n / l) % Mod + ans + Mod) % Mod;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> Sphi[n] = ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
     </div>
@@ -362,14 +362,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">151</span>
+          <span class="site-state-item-count">156</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-count">77</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -458,13 +458,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">547k</span>
+    <span title="Symbols count total">565k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">19:48</span>
+    <span title="Reading time total">20:28</span>
 </div>
 
 <div>

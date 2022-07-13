@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -255,7 +255,7 @@
 <p>直接考虑 prufer 序列计算，首先枚举 $a, b$ 之间一共有多少点，设为 $d$，此时我们需要枚举 $a, b$ 之间的点分别是哪些，贡献为 $(n - 2) ^ \underline{d - 2}$。然后考虑中间的边权，容易得到 $d - 1$ 个的和为 $m$，那么就是 $\binom{m - 1}{d - 1}$。然后考虑剩下的贡献。注意到其实 $d$ 个点可以看作缩成了一个点，还剩 $n - d + 1$ 个点，只不过每次他的出现，可以有 $d$ 个可连。</p>
 <p><strong>和度数相关，考虑 prufer 序列</strong>。先不管复杂度，考虑枚举 prufer 序列，枚举缩的大点在 prufer 序列中出现了 $j$ 次，那么贡献需要选 $j$ 个位置，为 $\binom{n - d - 1}{j}$，然后每个 $d$ 个点都可以连，为 $d ^ {j + 1}$（注意是出现次数 +1 为度数），剩下的点随便选，为 $(n - d)$ 种，总贡献为 $(n - d) ^ {n - d - j - 1}$。还有边权没有算，容易得到就是 $m ^ {n - d}$。</p>
 <p>于是总贡献可以写作：<br>$$<br>\sum_{d = 2} ^ n (n - 2) ^ \underline{d - 2} \binom{m - 1}{d - 1}m ^ {n - d} \sum_{j = 0} ^ {n - d - 1} \binom{n - d - 1}j d ^ {j + 1} (n - d) ^ {n - d - j - 1}<br>$$<br>注意到后面的 $d ^ {j + 1}$ 去掉一个 $d$ 移到前面，后面就是一个二项式定理。可以写作：<br>$$<br>\sum_{d = 2} ^ n (n - 2) ^ \underline{d - 2} \binom{m - 1}{d - 1} m ^ {n - d} n ^ {n - d - 1}<br>$$<br>但是注意 $d = n$ 时会出锅，于是对 $d = n$，单独计算，为 $(n - 2)!\binom{m - 1}{n - 2}$。直接计算即可，时间复杂度 $O(n\log n)$ 或 $O(n)$。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">init</span>();</span><br><span class="line">	<span class="keyword">int</span> n, m;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d %*d %*d&quot;</span>, &amp;n, &amp;m);</span><br><span class="line">	<span class="keyword">int</span> res = (LL) <span class="built_in">C</span>(m - <span class="number">1</span>, n - <span class="number">2</span>) * fact[n - <span class="number">2</span>] % Mod;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; n; ++ i)</span><br><span class="line">		res = (res + (LL) <span class="built_in">qpow</span>(m, n - i) * <span class="built_in">C</span>(m - <span class="number">1</span>, i - <span class="number">2</span>) % Mod * fact[n - <span class="number">2</span>] % Mod</span><br><span class="line">			* infact[n - i] % Mod * i % Mod * <span class="built_in">qpow</span>(n, n - i - <span class="number">1</span>)) % Mod;</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; std::endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">init</span>();</span><br><span class="line">	<span class="type">int</span> n, m;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d %d %*d %*d&quot;</span>, &amp;n, &amp;m);</span><br><span class="line">	<span class="type">int</span> res = (LL) <span class="built_in">C</span>(m - <span class="number">1</span>, n - <span class="number">2</span>) * fact[n - <span class="number">2</span>] % Mod;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">2</span>; i &lt; n; ++ i)</span><br><span class="line">		res = (res + (LL) <span class="built_in">qpow</span>(m, n - i) * <span class="built_in">C</span>(m - <span class="number">1</span>, i - <span class="number">2</span>) % Mod * fact[n - <span class="number">2</span>] % Mod</span><br><span class="line">			* infact[n - i] % Mod * i % Mod * <span class="built_in">qpow</span>(n, n - i - <span class="number">1</span>)) % Mod;</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; std::endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
     </div>
@@ -359,14 +359,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">151</span>
+          <span class="site-state-item-count">156</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-count">77</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -455,13 +455,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">547k</span>
+    <span title="Symbols count total">565k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">19:48</span>
+    <span title="Reading time total">20:28</span>
 </div>
 
 <div>

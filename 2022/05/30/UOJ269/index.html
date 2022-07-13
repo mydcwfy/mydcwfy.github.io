@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -247,7 +247,7 @@
 <p>题意：求 $\displaystyle \sum_{k = 0} ^ n f(k) \binom nk x ^ k (1 - x) ^ {n - k}$，其中 $f(x)$ 以给出 $[0, m]$ 的点值 $a_{0\dots, m}$ 形式给出。$n\leq 10 ^ 9, m\leq 2\times 10 ^ 4$。</p>
 <p>这里给出一种神秘的做法：将 $f(x)$ 以下降幂的形式写出。即：<br>$$<br>f(x) = \sum_{i = 0} ^ m b_i \dfrac{m ^ {\underline i}}{i!}<br>$$<br>这个其实就是下降幂多项式。我们考虑如何求出 $b_i$，使用二项式反演（为了方便，还是使用广义组合数形式写出）：<br>$$<br>b_n = \sum_{i = 0} ^ n (-1) ^ {n - i} \binom ni a_i<br>$$<br>这个很容易化成卷积，这里不再展开。</p>
 <p>然后考虑将这个带入可得：<br>$$<br>\begin{aligned}<br>ans =&amp; \sum_{i = 0} ^ m b_i \sum_{k = 0} ^ n \binom nk\binom ki x ^ k (1 - x) ^ {n - k}\\<br>=&amp; \sum_{i = 0} ^ m b_i \sum_{k = 0} ^ n \binom ni \binom{n - i}kx ^ k (1 - x) ^ {n - k}\\<br>=&amp; \sum_{i = 0} ^ m b_i \binom ni x ^ i (x + 1 - x) ^ {n - k}\\<br>=&amp; \sum_{i = 0} ^ m b_i<br>\end{aligned}<br>$$<br>后面的部分可以 $O(m)$ 算得。总时间复杂度 $O(m\log m)$。看到似乎有 $O(m)$ 做法？</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">init</span>();</span><br><span class="line">	<span class="keyword">int</span> n, m, x;</span><br><span class="line">	std::cin &gt;&gt; n &gt;&gt; m &gt;&gt; x;</span><br><span class="line">	<span class="function">std::vector&lt;<span class="keyword">int</span>&gt; <span class="title">f</span><span class="params">(m + <span class="number">1</span>)</span>, <span class="title">g</span><span class="params">(m + <span class="number">1</span>)</span></span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= m; ++ i) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;f[i]), f[i] = (LL) f[i] * infact[i] % Mod;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, op = <span class="number">1</span>; i &lt;= m; ++ i, op = Mod - op)</span><br><span class="line">		g[i] = (LL) op * infact[i] % Mod;</span><br><span class="line">	f = f * g, f.<span class="built_in">resize</span>(m + <span class="number">1</span>);</span><br><span class="line">	<span class="keyword">int</span> mul = <span class="number">1</span>, res = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= m; ++ i)</span><br><span class="line">	&#123;</span><br><span class="line">		res = (res + (LL) f[i] * mul) % Mod;</span><br><span class="line">		mul = (LL) mul * x % Mod * (n - i) % Mod;</span><br><span class="line">	&#125;</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; std::endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">init</span>();</span><br><span class="line">	<span class="type">int</span> n, m, x;</span><br><span class="line">	std::cin &gt;&gt; n &gt;&gt; m &gt;&gt; x;</span><br><span class="line">	<span class="function">std::vector&lt;<span class="type">int</span>&gt; <span class="title">f</span><span class="params">(m + <span class="number">1</span>)</span>, <span class="title">g</span><span class="params">(m + <span class="number">1</span>)</span></span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= m; ++ i) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;f[i]), f[i] = (LL) f[i] * infact[i] % Mod;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>, op = <span class="number">1</span>; i &lt;= m; ++ i, op = Mod - op)</span><br><span class="line">		g[i] = (LL) op * infact[i] % Mod;</span><br><span class="line">	f = f * g, f.<span class="built_in">resize</span>(m + <span class="number">1</span>);</span><br><span class="line">	<span class="type">int</span> mul = <span class="number">1</span>, res = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= m; ++ i)</span><br><span class="line">	&#123;</span><br><span class="line">		res = (res + (LL) f[i] * mul) % Mod;</span><br><span class="line">		mul = (LL) mul * x % Mod * (n - i) % Mod;</span><br><span class="line">	&#125;</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; std::endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -348,14 +348,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">151</span>
+          <span class="site-state-item-count">156</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-count">77</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -444,13 +444,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">547k</span>
+    <span title="Symbols count total">565k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">19:48</span>
+    <span title="Reading time total">20:28</span>
 </div>
 
 <div>

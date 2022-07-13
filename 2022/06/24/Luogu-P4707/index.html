@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -261,7 +261,7 @@
 <p>我们很轻松的得到 $g(i, j)$ 如果要选当前物品的话，我们其实可以由 $-g(i - 1, j - cur)$ 和 $g(i, j - cur)$ 得到。</p>
 <p>那么这么做下去，剩下的思路就是按照这个转移，然后算完后统计一下答案即可。时间复杂度 $O(nmk)$（原题的 $k$ 被替换了），可以通过。注意空间复杂度也为 $O(nmk)$，需要滚动数组。</p>
 <p><strong>min-max 反演很多都只是一步，后面的步骤需要根据 min-max 发言的结果进一步 DP 等优化</strong>。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	std::cin &gt;&gt; n &gt;&gt; k &gt;&gt; m, k = n - k + <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) std::cin &gt;&gt; p[i];</span><br><span class="line">	f[<span class="number">0</span>][<span class="number">0</span>][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= k; ++ j)</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> sum = <span class="number">0</span>; sum &lt;= m; ++ sum) f[i &amp; <span class="number">1</span>][j][k] = <span class="number">0</span>;</span><br><span class="line">		<span class="comment">// f[i &amp; 1][0][0] = 1;</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= k; ++ j)</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> sum = <span class="number">0</span>; sum &lt;= m; ++ sum)</span><br><span class="line">			&#123;</span><br><span class="line">				f[i &amp; <span class="number">1</span>][j][sum] = f[(i - <span class="number">1</span>) &amp; <span class="number">1</span>][j][sum];</span><br><span class="line">				<span class="keyword">if</span> (j &amp;&amp; sum &gt;= p[i])</span><br><span class="line">					<span class="built_in">adj</span>(<span class="built_in">adj</span>(f[i &amp; <span class="number">1</span>][j][sum] += f[(i - <span class="number">1</span>) &amp; <span class="number">1</span>][j - <span class="number">1</span>][sum - p[i]] - Mod)</span><br><span class="line">						-= f[(i - <span class="number">1</span>) &amp; <span class="number">1</span>][j][sum - p[i]]);</span><br><span class="line">			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> sum = <span class="number">1</span>; sum &lt;= m; ++ sum)</span><br><span class="line">		res = (res + (LL) f[n &amp; <span class="number">1</span>][k][sum] * <span class="built_in">qpow</span>(sum) % Mod * m) % Mod;</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	std::cin &gt;&gt; n &gt;&gt; k &gt;&gt; m, k = n - k + <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) std::cin &gt;&gt; p[i];</span><br><span class="line">	f[<span class="number">0</span>][<span class="number">0</span>][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt;= k; ++ j)</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> sum = <span class="number">0</span>; sum &lt;= m; ++ sum) f[i &amp; <span class="number">1</span>][j][k] = <span class="number">0</span>;</span><br><span class="line">		<span class="comment">// f[i &amp; 1][0][0] = 1;</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt;= k; ++ j)</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> sum = <span class="number">0</span>; sum &lt;= m; ++ sum)</span><br><span class="line">			&#123;</span><br><span class="line">				f[i &amp; <span class="number">1</span>][j][sum] = f[(i - <span class="number">1</span>) &amp; <span class="number">1</span>][j][sum];</span><br><span class="line">				<span class="keyword">if</span> (j &amp;&amp; sum &gt;= p[i])</span><br><span class="line">					<span class="built_in">adj</span>(<span class="built_in">adj</span>(f[i &amp; <span class="number">1</span>][j][sum] += f[(i - <span class="number">1</span>) &amp; <span class="number">1</span>][j - <span class="number">1</span>][sum - p[i]] - Mod)</span><br><span class="line">						-= f[(i - <span class="number">1</span>) &amp; <span class="number">1</span>][j][sum - p[i]]);</span><br><span class="line">			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> sum = <span class="number">1</span>; sum &lt;= m; ++ sum)</span><br><span class="line">		res = (res + (LL) f[n &amp; <span class="number">1</span>][k][sum] * <span class="built_in">qpow</span>(sum) % Mod * m) % Mod;</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
     </div>
@@ -364,14 +364,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">151</span>
+          <span class="site-state-item-count">156</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-count">77</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -460,13 +460,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">547k</span>
+    <span title="Symbols count total">565k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">19:48</span>
+    <span title="Reading time total">20:28</span>
 </div>
 
 <div>

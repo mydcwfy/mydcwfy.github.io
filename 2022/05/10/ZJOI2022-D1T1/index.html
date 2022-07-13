@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -256,7 +256,7 @@
 <p>容易发现我们限制一个节点是叶子是容易的，直接记录前面都有多少非叶子即可转移，于是可以得到状态 $f(i, x, y)$ 表示处理到 $i$，$[1, i]$ 第一棵树有 $x$ 个非叶子，$[i, n]$ 有 $y$ 个非叶子。主要是限制非叶子比较麻烦。</p>
 <p>考虑容斥，假设我们选定的 $i$ 在第一棵树中是叶子，那么他在第二棵树中出现必须是非叶子。但是注意，我们不好限制非叶子。于是考虑容斥，虽然他是非叶子，我们考虑强制选择一个集合，使得集合内部的变为叶子，剩余的就不再需要考虑非叶子的问题了。这样容斥只需要是叶子容斥时系数乘 -1 即可，并且两边的容斥可以一起写。</p>
 <p>边界状态就是开始的时候 $f(1, 1, i) = i$，统计答案就是 $\sum f(i, x, 1) \times x$。理解了写起来很简单。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; ++ i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">1</span>; x &lt;= n; ++ x) ans = (ans + (LL) f[(i - <span class="number">1</span>) &amp; <span class="number">1</span>][x][<span class="number">1</span>] * x) % Mod;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, ans);</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">1</span>; x &lt;= n; ++ x)</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">1</span>; y &lt;= n; ++ y) f[i &amp; <span class="number">1</span>][x][y] = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">1</span>; x &lt;= n; ++ x)</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">1</span>; y &lt;= n; ++ y) &#123;</span><br><span class="line">				<span class="keyword">if</span> (!f[(i - <span class="number">1</span>) &amp; <span class="number">1</span>][x][y]) <span class="keyword">continue</span>;</span><br><span class="line">				<span class="built_in">adj</span>(f[i &amp; <span class="number">1</span>][x][y] -= (LL) f[(i - <span class="number">1</span>) &amp; <span class="number">1</span>][x][y] * x % Mod * y % Mod * <span class="number">2</span> % Mod),</span><br><span class="line">				f[i &amp; <span class="number">1</span>][x][y - <span class="number">1</span>] = (f[i &amp; <span class="number">1</span>][x][y - <span class="number">1</span>] + (LL) f[(i - <span class="number">1</span>) &amp; <span class="number">1</span>][x][y] * x % Mod * (y - <span class="number">1</span>)) % Mod;</span><br><span class="line">				f[i &amp; <span class="number">1</span>][x + <span class="number">1</span>][y] = (f[i &amp; <span class="number">1</span>][x + <span class="number">1</span>][y] + (LL) f[(i - <span class="number">1</span>) &amp; <span class="number">1</span>][x][y] * x % Mod * y) % Mod;</span><br><span class="line">			&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n; ++ i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> x = <span class="number">1</span>; x &lt;= n; ++ x) ans = (ans + (LL) f[(i - <span class="number">1</span>) &amp; <span class="number">1</span>][x][<span class="number">1</span>] * x) % Mod;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, ans);</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> x = <span class="number">1</span>; x &lt;= n; ++ x)</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> y = <span class="number">1</span>; y &lt;= n; ++ y) f[i &amp; <span class="number">1</span>][x][y] = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> x = <span class="number">1</span>; x &lt;= n; ++ x)</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> y = <span class="number">1</span>; y &lt;= n; ++ y) &#123;</span><br><span class="line">				<span class="keyword">if</span> (!f[(i - <span class="number">1</span>) &amp; <span class="number">1</span>][x][y]) <span class="keyword">continue</span>;</span><br><span class="line">				<span class="built_in">adj</span>(f[i &amp; <span class="number">1</span>][x][y] -= (LL) f[(i - <span class="number">1</span>) &amp; <span class="number">1</span>][x][y] * x % Mod * y % Mod * <span class="number">2</span> % Mod),</span><br><span class="line">				f[i &amp; <span class="number">1</span>][x][y - <span class="number">1</span>] = (f[i &amp; <span class="number">1</span>][x][y - <span class="number">1</span>] + (LL) f[(i - <span class="number">1</span>) &amp; <span class="number">1</span>][x][y] * x % Mod * (y - <span class="number">1</span>)) % Mod;</span><br><span class="line">				f[i &amp; <span class="number">1</span>][x + <span class="number">1</span>][y] = (f[i &amp; <span class="number">1</span>][x + <span class="number">1</span>][y] + (LL) f[(i - <span class="number">1</span>) &amp; <span class="number">1</span>][x][y] * x % Mod * y) % Mod;</span><br><span class="line">			&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -358,14 +358,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">151</span>
+          <span class="site-state-item-count">156</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-count">77</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -454,13 +454,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">547k</span>
+    <span title="Symbols count total">565k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">19:48</span>
+    <span title="Reading time total">20:28</span>
 </div>
 
 <div>

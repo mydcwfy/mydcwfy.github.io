@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -277,13 +277,13 @@
 </ul>
 <p>现在，大概理解了 $\text{endpos}$ 的基本性质了吧。</p>
 <h3 id="3-SAM-的构造"><a href="#3-SAM-的构造" class="headerlink" title="3. SAM 的构造"></a>3. SAM 的构造</h3><p>这里我们先贴代码。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> len, fa;</span><br><span class="line">    <span class="keyword">int</span> ch[<span class="number">26</span>];</span><br><span class="line">&#125;tr[N];</span><br><span class="line"><span class="keyword">int</span> len = <span class="number">1</span>, tot = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">char</span> str[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">extend</span><span class="params">(<span class="keyword">int</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> p = last;<span class="keyword">int</span> np = ++ tot;</span><br><span class="line">	f[tot] = <span class="number">1</span>;</span><br><span class="line">	tr[np].len = tr[p].len + <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (; p &amp;&amp; !tr[p].ch[c]; p = tr[p].fa) tr[p].ch[c] = np;</span><br><span class="line">	last = tot;</span><br><span class="line">	<span class="keyword">if</span> (!p) tr[np].fa = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> q = tr[p].ch[c];</span><br><span class="line">		<span class="keyword">if</span> (tr[q].len == tr[p].len + <span class="number">1</span>) tr[np].fa = q;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> nq = ++ tot;</span><br><span class="line">			tr[nq] = tr[q], tr[nq].len = tr[p].len + <span class="number">1</span>;</span><br><span class="line">			tr[q].fa = tr[np].fa = nq;</span><br><span class="line">			<span class="keyword">for</span> (; p &amp;&amp; tr[p].ch[c] == q; p = tr[p].fa) tr[p].ch[c] = nq;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Node</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> len, fa;</span><br><span class="line">    <span class="type">int</span> ch[<span class="number">26</span>];</span><br><span class="line">&#125;tr[N];</span><br><span class="line"><span class="type">int</span> len = <span class="number">1</span>, tot = <span class="number">1</span>;</span><br><span class="line"><span class="type">char</span> str[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">extend</span><span class="params">(<span class="type">int</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> p = last;<span class="type">int</span> np = ++ tot;</span><br><span class="line">	f[tot] = <span class="number">1</span>;</span><br><span class="line">	tr[np].len = tr[p].len + <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (; p &amp;&amp; !tr[p].ch[c]; p = tr[p].fa) tr[p].ch[c] = np;</span><br><span class="line">	last = tot;</span><br><span class="line">	<span class="keyword">if</span> (!p) tr[np].fa = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="type">int</span> q = tr[p].ch[c];</span><br><span class="line">		<span class="keyword">if</span> (tr[q].len == tr[p].len + <span class="number">1</span>) tr[np].fa = q;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="type">int</span> nq = ++ tot;</span><br><span class="line">			tr[nq] = tr[q], tr[nq].len = tr[p].len + <span class="number">1</span>;</span><br><span class="line">			tr[q].fa = tr[np].fa = nq;</span><br><span class="line">			<span class="keyword">for</span> (; p &amp;&amp; tr[p].ch[c] == q; p = tr[p].fa) tr[p].ch[c] = nq;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>主函数调用的时候，直接 <code>for (int i = 1; str[i]; ++ i) extend(str[i] - &#39;a&#39;);</code> （这里假设只有小写字母）。</p>
 <p><del>可以先背代码，再看下面的讲解</del>。</p>
 <p>下面一点一点的讲解：</p>
 <hr>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> len, fa;</span><br><span class="line">    <span class="keyword">int</span> ch[<span class="number">26</span>];</span><br><span class="line">&#125;tr[N];</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Node</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> len, fa;</span><br><span class="line">    <span class="type">int</span> ch[<span class="number">26</span>];</span><br><span class="line">&#125;tr[N];</span><br></pre></td></tr></table></figure>
 
 <p>说明一下每一个变量的含义：</p>
 <p><code>tr[N]</code>：前面所讲的 $\text{endpos}$ 相同的子串将会被放入同一个结点，也就是说这些子串遍历时会走到这个结点停止。</p>
@@ -319,7 +319,7 @@
 <p>前面没有理解可以看一下这个图。</p>
 <p>那么，$np$ 的 $fa$ 就是长度为 $0$ 的串在的结点，也就是 $1$。</p>
 <hr>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> q = tr[p].ch[c];</span><br><span class="line"><span class="keyword">if</span> (tr[q].len == tr[p].len + <span class="number">1</span>) tr[np].fa = q;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> q = tr[p].ch[c];</span><br><span class="line"><span class="keyword">if</span> (tr[q].len == tr[p].len + <span class="number">1</span>) tr[np].fa = q;</span><br></pre></td></tr></table></figure>
 
 <p>这里就有些难理解了，我们首先填一下前面的坑。</p>
 <p>因为 $p$ 既可以转移到 $q$，也可以转移到 $np$，那么可以得到结论：$p$ 转移的 $ch[c]$ 有两个出现。</p>
@@ -339,7 +339,7 @@
 <p>很明显，3 号结点所代表的子串仍然是 ${\texttt{ab},\texttt{b}}$，然后 $np=4$ 所代表的子串是 ${\texttt{abb}}$，比较明显，4 的 $fa$ 是 3。</p>
 <hr>
 <p>（你以为完了？还多着呢</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> nq = ++ tot;</span><br><span class="line">tr[nq] = tr[q], tr[nq].len = tr[p].len + <span class="number">1</span>;</span><br><span class="line">tr[q].fa = tr[np].fa = nq;</span><br><span class="line"><span class="keyword">for</span> (; p &amp;&amp; tr[p].ch[c] == q; p = tr[p].fa) tr[p].ch[c] = nq;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> nq = ++ tot;</span><br><span class="line">tr[nq] = tr[q], tr[nq].len = tr[p].len + <span class="number">1</span>;</span><br><span class="line">tr[q].fa = tr[np].fa = nq;</span><br><span class="line"><span class="keyword">for</span> (; p &amp;&amp; tr[p].ch[c] == q; p = tr[p].fa) tr[p].ch[c] = nq;</span><br></pre></td></tr></table></figure>
 
 <p>这里是前面情况的相反情况，也就是 <code>tr[q].len != tr[p].len + 1</code>。</p>
 <p>那么，我们这里就需要将 $q$ 结点拆为两个结点。</p>
@@ -471,14 +471,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">151</span>
+          <span class="site-state-item-count">156</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-count">77</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -567,13 +567,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">547k</span>
+    <span title="Symbols count total">565k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">19:48</span>
+    <span title="Reading time total">20:28</span>
 </div>
 
 <div>

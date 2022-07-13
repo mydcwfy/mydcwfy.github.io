@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -248,7 +248,7 @@
 <p>考虑如果是下面这种形式怎么做：<br>$$<br>\sum_{i = 0} ^ {n - 1} \sum_{j = 0} ^ {m - 1} a_ib_j c ^ {ij}<br>$$<br>这个我们在 <a href="/2022/06/21/BlueStein-Algorithm/#more">BlueStein 算法</a> 中提到过，就是 Chirp-Z 变换，把 $ij$ 拆成 $\binom{i + j}2 - \binom i2 - \binom j2$，可以在 $O(n\log n)$ 的时间内解决。</p>
 <p>现在考虑计算原式。一个显然的想法就是我们还是替换成上面的类型。于是，我们把 $a_i$ 贡献到 $i \times i$ 的位置，把 $b_j$ 贡献到 $j\times j\times j$ 的位置。但是注意到贡献的位置 $\bmod P - 1$ 相同则贡献相同，于是只需要贡献到 $i ^ 2\bmod P - 1$ 的位置即可，$j ^ 3$ 同理。</p>
 <p>最后我们直接按照上面的做法直接暴力变换，时间复杂度 $O(P\log P)$，可以通过。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n, m, c;</span><br><span class="line">	std::cin &gt;&gt; n &gt;&gt; m &gt;&gt; c;</span><br><span class="line">	<span class="function">poly <span class="title">a</span><span class="params">(Mod - <span class="number">1</span>)</span>, <span class="title">b</span><span class="params">(Mod - <span class="number">1</span>)</span></span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, x; i &lt; n; ++ i)</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;x), <span class="built_in">adj</span>(a[(LL) i * i % (Mod - <span class="number">1</span>)] += x - Mod);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, x; i &lt; m; ++ i)</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;x), <span class="built_in">adj</span>(b[(LL) i * i * i % (Mod - <span class="number">1</span>)] += x - Mod);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; Mod - <span class="number">1</span>; ++ i)</span><br><span class="line">		a[i] = (LL) a[i] * <span class="built_in">qpow</span>(c, Mod - <span class="number">1</span> - i * (i - <span class="number">1LL</span>) / <span class="number">2</span> % (Mod - <span class="number">1</span>)) % Mod;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; Mod - <span class="number">1</span>; ++ i)</span><br><span class="line">		b[i] = (LL) b[i] * <span class="built_in">qpow</span>(c, Mod - <span class="number">1</span> - i * (i - <span class="number">1LL</span>) / <span class="number">2</span> % (Mod - <span class="number">1</span>)) % Mod;</span><br><span class="line">	a = a * b;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, ed = a.<span class="built_in">size</span>(); i &lt; ed; ++ i)</span><br><span class="line">		a[i] = (LL) a[i] * <span class="built_in">qpow</span>(c, i * (i - <span class="number">1LL</span>) / <span class="number">2</span> % (Mod - <span class="number">1</span>)) % Mod;</span><br><span class="line">	<span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> &amp;x : a) <span class="built_in">adj</span>(res += x - Mod);</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> n, m, c;</span><br><span class="line">	std::cin &gt;&gt; n &gt;&gt; m &gt;&gt; c;</span><br><span class="line">	<span class="function">poly <span class="title">a</span><span class="params">(Mod - <span class="number">1</span>)</span>, <span class="title">b</span><span class="params">(Mod - <span class="number">1</span>)</span></span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>, x; i &lt; n; ++ i)</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;x), <span class="built_in">adj</span>(a[(LL) i * i % (Mod - <span class="number">1</span>)] += x - Mod);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>, x; i &lt; m; ++ i)</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;x), <span class="built_in">adj</span>(b[(LL) i * i * i % (Mod - <span class="number">1</span>)] += x - Mod);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; Mod - <span class="number">1</span>; ++ i)</span><br><span class="line">		a[i] = (LL) a[i] * <span class="built_in">qpow</span>(c, Mod - <span class="number">1</span> - i * (i - <span class="number">1LL</span>) / <span class="number">2</span> % (Mod - <span class="number">1</span>)) % Mod;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; Mod - <span class="number">1</span>; ++ i)</span><br><span class="line">		b[i] = (LL) b[i] * <span class="built_in">qpow</span>(c, Mod - <span class="number">1</span> - i * (i - <span class="number">1LL</span>) / <span class="number">2</span> % (Mod - <span class="number">1</span>)) % Mod;</span><br><span class="line">	a = a * b;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>, ed = a.<span class="built_in">size</span>(); i &lt; ed; ++ i)</span><br><span class="line">		a[i] = (LL) a[i] * <span class="built_in">qpow</span>(c, i * (i - <span class="number">1LL</span>) / <span class="number">2</span> % (Mod - <span class="number">1</span>)) % Mod;</span><br><span class="line">	<span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> &amp;x : a) <span class="built_in">adj</span>(res += x - Mod);</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -348,14 +348,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">151</span>
+          <span class="site-state-item-count">156</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-count">77</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -444,13 +444,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">547k</span>
+    <span title="Symbols count total">565k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">19:48</span>
+    <span title="Reading time total">20:28</span>
 </div>
 
 <div>

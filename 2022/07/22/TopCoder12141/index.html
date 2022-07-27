@@ -22,13 +22,13 @@
 
   <meta name="description" content="题意：给出 $n$ 个点，每个点有一个权值，$a_i\geq 0$ 表示这个点是好的，否则是不好的。任意构造一棵生成树，定义和至少一个好点连边的点是非常好的。求所有非常好的点权值和 $\leq lim$ 的方案数。$n\leq 40$，$-1\leq a_i\leq 2.5\times 10 ^ 8$，$lim\leq 10 ^ 9$。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TopCoder12141">
+<meta property="og:title" content="TopCoder12141 SweetFruits">
 <meta property="og:url" content="https://mydcwfy.github.io/2022/07/22/TopCoder12141/index.html">
 <meta property="og:site_name" content="mydcwfy&#39;s Blog">
 <meta property="og:description" content="题意：给出 $n$ 个点，每个点有一个权值，$a_i\geq 0$ 表示这个点是好的，否则是不好的。任意构造一棵生成树，定义和至少一个好点连边的点是非常好的。求所有非常好的点权值和 $\leq lim$ 的方案数。$n\leq 40$，$-1\leq a_i\leq 2.5\times 10 ^ 8$，$lim\leq 10 ^ 9$。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-07-22T13:46:10.000Z">
-<meta property="article:modified_time" content="2022-07-22T14:03:10.527Z">
+<meta property="article:modified_time" content="2022-07-22T23:57:53.594Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="容斥">
 <meta property="article:tag" content="矩阵树定理">
@@ -48,7 +48,7 @@
   };
 </script>
 
-  <title>TopCoder12141 | mydcwfy's Blog</title>
+  <title>TopCoder12141 SweetFruits | mydcwfy's Blog</title>
   
 
 
@@ -203,7 +203,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          TopCoder12141
+          TopCoder12141 SweetFruits
         </h1>
 
         <div class="post-meta">
@@ -212,10 +212,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-07-22 21:46:10 / Modified: 22:03:10" itemprop="dateCreated datePublished" datetime="2022-07-22T21:46:10+08:00">2022-07-22</time>
+              <time title="Created: 2022-07-22 21:46:10" itemprop="dateCreated datePublished" datetime="2022-07-22T21:46:10+08:00">2022-07-22</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-07-23 07:57:53" itemprop="dateModified" datetime="2022-07-23T07:57:53+08:00">2022-07-23</time>
+              </span>
 
           <br>
             <span class="post-meta-item" title="Symbols count in article">
@@ -277,7 +283,10 @@
     <a href="/2022/07/22/TopCoder13444/" rel="prev" title="TopCoder13444 CountTables">
       <i class="fa fa-chevron-left"></i> TopCoder13444 CountTables
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/07/23/HDU4997/" rel="next" title="HDU4997 Biconnected">
+      HDU4997 Biconnected <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -352,7 +361,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-count">167</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -448,13 +457,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">588k</span>
+    <span title="Symbols count total">600k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">21:18</span>
+    <span title="Reading time total">21:45</span>
 </div>
 
 <div>
@@ -572,7 +581,7 @@ setInterval("createtime()",250);
     };
     (function () {
       var script = document.createElement('script');
-      script.src = 'https://rusunoi.github.io/mathjax/tex-mml-chtml.js';
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
       script.defer = true;
       document.head.appendChild(script);
     })();
@@ -587,11 +596,11 @@ setInterval("createtime()",250);
 
   
 
-<link rel="stylesheet" href="https://rusunoi.github.io/gitalk/dist/gitalk.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
 
 <script>
 NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
-  NexT.utils.getScript('https://rusunoi.github.io/gitalk/dist/gitalk.min.js', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
       clientID    : '588cb5060d280689f1e5',
       clientSecret: 'ea06ff31a09d01ce0664577fce9904b86eccd8fc',

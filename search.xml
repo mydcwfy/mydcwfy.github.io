@@ -4,6 +4,96 @@
   
     
     <entry>
+      <title>UOJ559 [NOI2020]命运</title>
+      <link href="/2022/08/07/UOJ559/"/>
+      <url>/2022/08/07/UOJ559/</url>
+      
+        <content type="html"><![CDATA[<p>题意：给定一棵 $n$ 个点的有根树和 $m$ 条直上直下的链，问有多少种给每条边赋值 0 或 1 的方案数使得 $m$ 条链至少有一个 1。$n, m\leq 5\times 10 ^ 5$，2s，1024 MB。</p><span id="more"></span><p>题意明摆着叫你容斥，那么我们就容斥呗（但是好像有简单 DP 做法？）。暴力容斥，钦定一些链必须全部为 0，然后乘上 $(-1) ^ x$ 贡献到答案。直接做是 $O(2 ^ m n)$，用 DP 优化，考虑设 $f_{i, j}$ 表示 $i$ 为根的子树内已经选好，且从 $i$ 到 $j$ 链（$j$ 是 $i$ 的祖先）已经全部被钦定为 0 了的方案数。这样就可以写出转移：<br>$$<br>\begin{aligned}<br>f_{x, \min(j, k)} \leftarrow&amp; f_{v, j} f_{x, k} \\<br>f_{x, x} \leftarrow&amp; 2f_{v, v}\\<br>f_{x, u_i} \leftarrow&amp; -f_{x, x}[x = v_i]\\<br>f_{x, x} \leftarrow&amp; 1<br>\end{aligned}<br>$$<br>$j, k$ 按照 $dep$ 比较，$u, v$ 是一条直上直下的链。这样直接做是 $O(n ^ 2)$ 的，仍然无法通过。</p><p>我们观察转移，注意到非 0 项的个数其实并不多，产生一个非零项的方法只有从 $f_{x, x}$ 和从 $-f_{x, x}\rightarrow f_{x, u_i}$ 两个部分。容易发现产生的总 0 项的个数是 $O(n + m)$ 级别的。其余都是在不同的 $x$ 之间转移，于是这个可以使用线段树合并转移，时空复杂度均为 $O((n + q)\log n)$，可以通过。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">pushup</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123; <span class="built_in">adj</span>(tr[x].sum = tr[tr[x].lc].sum + tr[tr[x].rc].sum - Mod); &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">update</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> c)</span> </span>&#123;</span><br><span class="line"><span class="keyword">if</span> (!x) <span class="keyword">return</span>;</span><br><span class="line">tr[x].sum = (LL) tr[x].sum * c % Mod;</span><br><span class="line">tr[x].lt = (LL) tr[x].lt * c % Mod;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">pushdown</span><span class="params">(<span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">if</span> (tr[x].lt == <span class="number">1</span>) <span class="keyword">return</span>;</span><br><span class="line"><span class="built_in">update</span>(tr[x].lc, tr[x].lt), <span class="built_in">update</span>(tr[x].rc, tr[x].lt);</span><br><span class="line">tr[x].lt = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">merge</span><span class="params">(<span class="type">int</span> p, <span class="type">int</span> q, <span class="type">int</span> l, <span class="type">int</span> r, <span class="type">int</span> sump, <span class="type">int</span> sumq)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">if</span> (!p &amp;&amp; !q) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> (!p) <span class="keyword">return</span> <span class="built_in">update</span>(q, sump), q;</span><br><span class="line"><span class="keyword">if</span> (!q) <span class="keyword">return</span> <span class="built_in">update</span>(p, sumq), p;</span><br><span class="line"><span class="keyword">if</span> (l == r) &#123;</span><br><span class="line">tr[p].sum = ((LL) (tr[p].sum + sump) * tr[q].sum + (LL) sumq * tr[p].sum) % Mod;</span><br><span class="line"><span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">pushdown</span>(p), <span class="built_in">pushdown</span>(q);</span><br><span class="line"><span class="type">int</span> mid = (l + r) &gt;&gt; <span class="number">1</span>, rp = tr[tr[p].rc].sum, rq = tr[tr[q].rc].sum;</span><br><span class="line">tr[p].lc = <span class="built_in">merge</span>(tr[p].lc, tr[q].lc, l, mid,</span><br><span class="line"><span class="built_in">adj</span>(rp = sump + rp - Mod), <span class="built_in">adj</span>(rq = sumq + rq - Mod));</span><br><span class="line">tr[p].rc = <span class="built_in">merge</span>(tr[p].rc, tr[q].rc, mid + <span class="number">1</span>, r, sump, sumq);</span><br><span class="line"><span class="keyword">return</span> <span class="built_in">pushup</span>(p), p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">query</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> ql, <span class="type">int</span> qr, <span class="type">int</span> l, <span class="type">int</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">if</span> (!x || ql &gt; r || qr &lt; l) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> (l &gt;= ql &amp;&amp; r &lt;= qr) <span class="keyword">return</span> tr[x].sum;</span><br><span class="line"><span class="built_in">pushdown</span>(x);</span><br><span class="line"><span class="type">int</span> mid = (l + r) &gt;&gt; <span class="number">1</span>;</span><br><span class="line"><span class="keyword">return</span> <span class="built_in">query</span>(tr[x].lc, ql, qr, l, mid)</span><br><span class="line">+ <span class="built_in">query</span>(tr[x].rc, ql, qr, mid + <span class="number">1</span>, r);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">modify</span><span class="params">(<span class="type">int</span> &amp;x, <span class="type">int</span> l, <span class="type">int</span> r, <span class="type">int</span> pos, <span class="type">int</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">if</span> (!x) x = ++ nodecnt;</span><br><span class="line"><span class="keyword">if</span> (l == r) <span class="keyword">return</span> <span class="built_in">void</span>(<span class="built_in">adj</span>(tr[x].sum += c - Mod));</span><br><span class="line"><span class="built_in">pushdown</span>(x);</span><br><span class="line"><span class="type">int</span> mid = (l + r) &gt;&gt; <span class="number">1</span>;</span><br><span class="line"><span class="keyword">if</span> (pos &lt;= mid) <span class="built_in">modify</span>(tr[x].lc, l, mid, pos, c);</span><br><span class="line"><span class="keyword">else</span> <span class="built_in">modify</span>(tr[x].rc, mid + <span class="number">1</span>, r, pos, c);</span><br><span class="line"><span class="built_in">pushup</span>(x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">rdfs</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> fa = <span class="number">0</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">std::<span class="built_in">sort</span>(con[x].<span class="built_in">begin</span>(), con[x].<span class="built_in">end</span>(), std::<span class="built_in">greater</span>&lt;<span class="type">int</span>&gt;());</span><br><span class="line">con[x].<span class="built_in">erase</span>(std::<span class="built_in">unique</span>(con[x].<span class="built_in">begin</span>(), con[x].<span class="built_in">end</span>()), con[x].<span class="built_in">end</span>());</span><br><span class="line"><span class="keyword">if</span> (con[x].<span class="built_in">size</span>())</span><br><span class="line"><span class="built_in">modify</span>(rt[x], <span class="number">1</span>, n, con[x][<span class="number">0</span>], Mod - <span class="number">1</span>);</span><br><span class="line"><span class="built_in">modify</span>(rt[x], <span class="number">1</span>, n, dep[x], <span class="number">1</span>);</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> v : g[x])</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span> (v == fa) <span class="keyword">continue</span>;</span><br><span class="line"><span class="built_in">rdfs</span>(v, x);</span><br><span class="line"><span class="type">int</span> extra = <span class="built_in">query</span>(rt[v], dep[v], dep[v], <span class="number">1</span>, n);</span><br><span class="line"><span class="built_in">modify</span>(rt[v], <span class="number">1</span>, n, dep[v], Mod - extra);</span><br><span class="line"><span class="built_in">modify</span>(rt[v], <span class="number">1</span>, n, dep[x], extra * <span class="number">2</span> % Mod);</span><br><span class="line">rt[x] = <span class="built_in">merge</span>(rt[x], rt[v], <span class="number">1</span>, n, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*for (int i = 1; i &lt;= dep[x]; ++ i) std::cout &lt;&lt; query(rt[x], i, i, 1, n) &lt;&lt; &#x27; &#x27;;</span></span><br><span class="line"><span class="comment">std::cout &lt;&lt; &#x27;\n&#x27;;*/</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="built_in">init</span>();</span><br><span class="line">std::cin &gt;&gt; n;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>, u, v; i &lt; n; ++ i)</span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>, &amp;u, &amp;v);</span><br><span class="line">g[u].<span class="built_in">push_back</span>(v), g[v].<span class="built_in">push_back</span>(u);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">pre_dfs</span>(<span class="number">1</span>);</span><br><span class="line">std::cin &gt;&gt; m;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>, u, v; i &lt;= m; ++ i)</span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>, &amp;u, &amp;v);</span><br><span class="line">con[v].<span class="built_in">push_back</span>(dep[u]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">rdfs</span>(<span class="number">1</span>);</span><br><span class="line">std::cout &lt;&lt; <span class="built_in">query</span>(rt[<span class="number">1</span>], <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, n) &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 树相关 </tag>
+            
+            <tag> DP 及其优化 </tag>
+            
+            <tag> 容斥 </tag>
+            
+            <tag> 线段树合并 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>LOJ2268 [SDOI2017]苹果树</title>
+      <link href="/2022/08/06/LOJ2268/"/>
+      <url>/2022/08/06/LOJ2268/</url>
+      
+        <content type="html"><![CDATA[<p>题意：有一棵 $n$ 个点的有根树，每个点有 $a_i$ 个苹果，在 $i$ 处选一个苹果的价值是 $v_i$，一个节点能选苹果当且仅当他的父亲也选了至少一个。假设选的最大深度是 $d$，选了 $t$ 个苹果，要求 $t - d\leq k$，$k$ 给定。求能获得的最大价值。$T(T\leq 5)$ 组数据，$n\leq 2\times 10 ^ 4$，$ k\leq 5\times 10 ^ 5$，$nk\leq 2.5\times 10 ^ 7$，$1\leq v_i\leq 100$，5s。</p><span id="more"></span><p>容易发现题目直接给了个 $nk\leq 2.5\times 10 ^ 7$，那么显然复杂度就是 $O(nk)$，在多重背包的时候还必须使用单调队列优化。另外，不能使用任何的背包合并，因为复杂度为 $O(k ^ 2)$，唯一能合并的只是最后我们只需要一个答案，可以在 $O(k)$ 时间合并。那么我们必须找到两个背包合并得到答案。</p><p>首先容易发现一个事实：我们肯定会去选叶子节点。因为我们不选的话，让他任意选择一个儿子一定不劣。然后我们会发现一个树被我们用这一条根到叶子的链划分成了三部分：</p><ol><li>根到叶子的链</li><li>该链的左边</li><li>该链的右边</li></ol><p>这个左右暂且不好定义，我们先放在这里。容易发现我们根到叶子的链如果都只选择一个的话，这条链本身是免费的（不需要代价），如果要多选的话，我们可以考虑把这个点建一个新儿子，存放 $a_i - 1$ 个苹果。这个节点一定在链的左边或者右边（废话），那么就当作其他节点计算了。容易发现这个贡献方法是正确的。</p><p>首先我们考虑如何表示该链的左边和右边。这里巧妙的运用到了 <code>dfn</code> 序。考虑正向遍历邻接表和逆向遍历邻接表的后序遍历：</p><img src="/2022/08/06/LOJ2268/dfs1.png" class=""><img src="/2022/08/06/LOJ2268/dfs2.png" class=""><p>（注意这里没有新加的一个儿子）</p><p>假设我们考虑第一个图中 <code>dfn</code> 序为 2 的点，容易发现他的左边的点就是 <code>dfn</code> 序为 $[1, 1]$ 的区间。在第二个图中的 <code>dfn</code> 序为 4，$[1, 3]$ 区间的点就是他右边的点。</p><p>现在我们对树的左边和右边的定义就比较清晰了，我们预处理出这两个背包，然后 $O(k)$ 合并即可。</p><p>最后一个问题就是怎样求一段区间 <code>dfn</code> 序的树上背包。对于一个节点，可以强制至少选一个，否则的话需要跳过一个整的子树。这个是一个多重背包，显然 $O(nk)$ 即可。</p><p>综上，时间复杂度 $O(nk)$，可以通过，但比较卡常。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">chkpack</span><span class="params">(std::vector&lt;<span class="type">int</span>&gt; &amp;f, std::vector&lt;<span class="type">int</span>&gt; &amp;g)</span> </span>&#123; <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= lim; ++ i) <span class="built_in">chkmax</span>(f[i], g[i]); &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">backpack</span><span class="params">(std::vector&lt;<span class="type">int</span>&gt; &amp;f, <span class="type">int</span> w, <span class="type">int</span> v, <span class="type">bool</span> flag = <span class="literal">false</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">if</span> (!w) <span class="keyword">return</span>;</span><br><span class="line"><span class="comment">// std::cout &lt;&lt; &quot;backPack &quot; &lt;&lt; w &lt;&lt; &#x27; &#x27; &lt;&lt; v &lt;&lt; std::endl;</span></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> q[M];</span><br><span class="line"><span class="function">std::vector&lt;<span class="type">int</span>&gt; <span class="title">tmp</span><span class="params">(lim + <span class="number">1</span>)</span></span>;</span><br><span class="line"><span class="type">int</span> hh = <span class="number">1</span>, tt = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= lim; ++ i)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">while</span> (hh &lt;= tt &amp;&amp; i - q[hh] &gt; w) hh ++;</span><br><span class="line"><span class="keyword">if</span> (hh &lt;= tt) &#123;</span><br><span class="line"><span class="keyword">if</span> (flag) tmp[i] = f[q[hh]] + (i - q[hh]) * v;</span><br><span class="line"><span class="keyword">else</span> <span class="built_in">chkmax</span>(tmp[i], f[q[hh]] + (i - q[hh]) * v);</span><br><span class="line"><span class="comment">// chkmax(f[i], f[q[hh]] + (i - q[hh]) * v);</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (flag) tmp[i] = -INF;</span><br><span class="line"><span class="keyword">while</span> (hh &lt;= tt &amp;&amp; f[q[tt]] - q[tt] * v &lt; f[i] - i * v) tt --;</span><br><span class="line">q[++ tt] = i;</span><br><span class="line">&#125;</span><br><span class="line">f.<span class="built_in">swap</span>(tmp);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">dfs1</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> pre = <span class="number">0</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">sz[x] = <span class="number">1</span>, sum[x] = (pre += val[x]);</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> v : g[x]) <span class="built_in">dfs1</span>(v, pre), sz[x] += sz[v];</span><br><span class="line">nw1[dfn1[x] = ++ *dfn1] = x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">dfs2</span><span class="params">(<span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> v : g[x]) <span class="built_in">dfs2</span>(v);</span><br><span class="line">nw2[dfn2[x] = ++ *dfn2] = x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">std::cin &gt;&gt; n &gt;&gt; lim;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) <span class="built_in">scanf</span>(<span class="string">&quot;%d %d %d&quot;</span>, &amp;fa[i], &amp;a[i], &amp;val[i]);</span><br><span class="line"><span class="type">int</span> _n = n;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line">fa[++ _n] = i, a[_n] = a[i] - <span class="number">1</span>, val[_n] = val[i], a[i] = <span class="number">1</span>;</span><br><span class="line">pren = n, n = _n;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) g[i].<span class="built_in">clear</span>();</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) g[fa[i]].<span class="built_in">push_back</span>(i);</span><br><span class="line">*dfn1 = <span class="number">0</span>, <span class="built_in">dfs1</span>(<span class="number">1</span>);</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) std::<span class="built_in">reverse</span>(g[i].<span class="built_in">begin</span>(), g[i].<span class="built_in">end</span>());</span><br><span class="line">*dfn2 = <span class="number">0</span>, <span class="built_in">dfs2</span>(<span class="number">1</span>);</span><br><span class="line">pre1[<span class="number">0</span>].<span class="built_in">assign</span>(lim + <span class="number">1</span>, -INF), pre2[<span class="number">0</span>].<span class="built_in">assign</span>(lim + <span class="number">1</span>, -INF);</span><br><span class="line">pre1[<span class="number">0</span>][<span class="number">0</span>] = pre2[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line"><span class="built_in">backpack</span>(pre1[i] = pre1[i - <span class="number">1</span>], a[nw1[i]], val[nw1[i]], <span class="literal">true</span>), <span class="built_in">chkpack</span>(pre1[i], pre1[i - sz[nw1[i]]]);</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line"><span class="built_in">backpack</span>(pre2[i] = pre2[i - <span class="number">1</span>], a[nw2[i]], val[nw2[i]], <span class="literal">true</span>), <span class="built_in">chkpack</span>(pre2[i], pre2[i - sz[nw2[i]]]);</span><br><span class="line"><span class="comment">/*for (int i = 1; i &lt;= n; ++ i) std::cout &lt;&lt; nw1[i] &lt;&lt; &#x27; &#x27;;</span></span><br><span class="line"><span class="comment">std::cout &lt;&lt; &#x27;\n&#x27;;</span></span><br><span class="line"><span class="comment">for (int i = 1; i &lt;= n; ++ i, std::cout &lt;&lt; &#x27;\n&#x27;)</span></span><br><span class="line"><span class="comment">for (int j = 0; j &lt;= lim; ++ j) std::cout &lt;&lt; pre1[i][j] &lt;&lt; &#x27; &#x27;;*/</span></span><br><span class="line"><span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= pren; ++ i)</span><br><span class="line"><span class="keyword">if</span> (g[i].<span class="built_in">size</span>() == <span class="number">1</span>)</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt;= lim; ++ j) <span class="built_in">chkmax</span>(res, sum[i] + pre1[dfn1[i] - <span class="number">2</span>][j] + pre2[dfn2[i] - <span class="number">1</span>][lim - j]);</span><br><span class="line">std::cout &lt;&lt; res &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 构造 </tag>
+            
+            <tag> 树相关 </tag>
+            
+            <tag> DP 及其优化 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>LOJ2290 [THUWC2017]随机二分图</title>
+      <link href="/2022/08/06/LOJ2290/"/>
+      <url>/2022/08/06/LOJ2290/</url>
+      
+        <content type="html"><![CDATA[<p>题意：给定左右各 $n$ 个点的二分图和 $m$ 种边，每一种边有三种情况：</p><ol><li>这种边只有一条，有 $50\%$ 的概率出现。</li><li>这种边有两条，同时出现或者不出现，概率均为 $50\%$。</li><li>这种边有两条，分别出现，概率均为 $50\%$。</li></ol><p>求完美匹配的期望数量，对 $10 ^ 9 + 7$ 取模。$n\leq 15$。</p><span id="more"></span><p>首先考虑拆期望贡献，变为每一种完美匹配的出现概率之和。</p><p>我们直接考虑 DP，记 $f(S, T)$ 表示左边已选集合为 $S$，右边已选集合为 $T$ 的时候的期望数量。枚举不在 $S$ 中的最小元素和谁匹配即可，如果出现 2、3 类边，直接暴力转移。复杂度 $O(2 ^ {2n})$，实际由于 $S$ 的情况很少，可以通过。</p><p>这个做法看似很对，但是在处理 2 和 3 类边的时候会出现一些问题。具体的，虽然我们可能同时出现了两条边，但是在最后的完美匹配中的边可能只有一条，这样的话这种方法就不太可行。</p><p>我们容易发现如果我们只考虑两条边中的一条，他的出现概率就是 $50\%$，只不过会在两条边同时出现的时候出现一些问题。我们先不管这个条件，按照 1 类边的表针任意选择两条边，这样在不选边和选一条边都是正确的。唯一不正确的就是当两条边同时存在时，这个概率并不是 $25 \%$。2 类边是 $50\%$ 的概率，所以我们钦定强制选这两条边，并钦定同时出现的概率为 $25\%$。3 类边同理。</p><p>这样我们可以在 $O(2 ^ {2n})$ 的时间内解决该问题，用记忆化搜索可以通过。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">Dp</span><span class="params">(<span class="type">int</span> S, <span class="type">int</span> T)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">if</span> (S == tot &amp;&amp; T == tot) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line"><span class="keyword">if</span> (mp[S].<span class="built_in">count</span>(T)) <span class="keyword">return</span> mp[S][T];</span><br><span class="line"><span class="type">int</span> res = <span class="number">0</span>, le = __builtin_ctz(S ^ tot);</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> ri = <span class="number">0</span>; ri &lt; n; ++ ri)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span> ((T &gt;&gt; ri &amp; <span class="number">1</span>) || typ[le][ri] == <span class="number">-1</span>) <span class="keyword">continue</span>;</span><br><span class="line"><span class="comment">// std::cout &lt;&lt; S &lt;&lt; &#x27; &#x27; &lt;&lt; T &lt;&lt; &#x27; &#x27; &lt;&lt; (S | (1 &lt;&lt; le)) &lt;&lt; &#x27; &#x27; &lt;&lt; (T | (1 &lt;&lt; ri)) &lt;&lt; &#x27;\n&#x27;;</span></span><br><span class="line">res = (res + <span class="built_in">Dp</span>(S | (<span class="number">1</span> &lt;&lt; le), T | (<span class="number">1</span> &lt;&lt; ri)) * (Mod + <span class="number">1LL</span>) / <span class="number">2</span>) % Mod;</span><br><span class="line"><span class="keyword">auto</span> [u, v] = pr[le][ri];</span><br><span class="line"><span class="keyword">if</span> (u == le || v == ri || (S &gt;&gt; u &amp; <span class="number">1</span>) || (T &gt;&gt; v &amp; <span class="number">1</span>)) <span class="keyword">continue</span>;</span><br><span class="line"><span class="comment">// std::cout &lt;&lt; S &lt;&lt; &#x27; &#x27; &lt;&lt; T &lt;&lt; &#x27; &#x27; &lt;&lt; (S | (1 &lt;&lt; le) | (1 &lt;&lt; u)) &lt;&lt; &#x27; &#x27; &lt;&lt; (T | (1 &lt;&lt; ri) | (1 &lt;&lt; v)) &lt;&lt; &#x27;\n&#x27;;</span></span><br><span class="line"><span class="keyword">if</span> (typ[le][ri] == <span class="number">1</span>)</span><br><span class="line">res = (res + <span class="built_in">Dp</span>(S | (<span class="number">1</span> &lt;&lt; le) | (<span class="number">1</span> &lt;&lt; u), T | (<span class="number">1</span> &lt;&lt; ri) | (<span class="number">1</span> &lt;&lt; v)) * (Mod + <span class="number">1LL</span>) / <span class="number">4</span>) % Mod;</span><br><span class="line"><span class="keyword">if</span> (typ[le][ri] == <span class="number">2</span>)</span><br><span class="line">res = (res + <span class="built_in">Dp</span>(S | (<span class="number">1</span> &lt;&lt; le) | (<span class="number">1</span> &lt;&lt; u), T | (<span class="number">1</span> &lt;&lt; ri) | (<span class="number">1</span> &lt;&lt; v)) * (Mod - (Mod + <span class="number">1LL</span>) / <span class="number">4</span>)) % Mod;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> mp[S][T] = res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 状态压缩 </tag>
+            
+            <tag> DP 及其优化 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>LOJ6179 Pyh 的求和</title>
+      <link href="/2022/08/05/LOJ6179/"/>
+      <url>/2022/08/05/LOJ6179/</url>
+      
+        <content type="html"><![CDATA[<p>题意：求 $\sum_{i = 1} ^ n \sum_{j = 1} ^ m \varphi(ij)\bmod 998244353$。$T(T\leq 10 ^ 5)$ 组数据，$n, m\leq 10 ^ 5$，4s，64MB。</p><span id="more"></span><p>首先一个容易发现的性质是 $\varphi(ij) = \dfrac{\varphi(i) \varphi(j) \gcd(i, j)}{\varphi(\gcd(i, j))}$。考虑每个质因数的贡献即可。</p><p>那么一阵推导（默认 $n\leq m$）：<br>$$<br>\begin{aligned}<br>ans =&amp; \sum_{i = 1} ^ n \sum_{j = 1} ^ m \dfrac{\varphi(i) \varphi(j) \gcd(i, j)}{\varphi(\gcd(i, j))}\\<br>=&amp; \sum_{d = 1} ^ n \dfrac d{\varphi(d)} \sum_{i = 1} ^ {\frac nd} \sum_{j = 1} ^ {\frac md} [\gcd(i, j) = 1] \varphi(id) \varphi(jd)\\<br>=&amp; \sum_{d = 1} ^ n \dfrac d{\varphi(d)} \sum_{i = 1} ^ {\frac nd} \sum_{j = 1} ^ {\frac md} \varphi(id) \varphi(jd) \sum_{k | i, k | j} \mu(k)\\<br>=&amp; \sum_{d = 1} ^ n \dfrac d{\varphi(d)} \sum_{k = 1} ^ {\frac nd} \mu(k) \sum_{i = 1} ^ {\frac n{dk}}\sum_{j = 1} ^ {\frac m{dk}} \varphi(idk) \varphi(jdk)\\<br>=&amp; \sum_{T = 1} ^ n (\sum_{i = 1} ^ {\frac nT} \varphi(iT)) (\sum_{j = 1} ^ {\frac mT} \varphi(jT)) \sum_{d | T} \dfrac {d\mu(\dfrac Td)}{\varphi(d)}<br>\end{aligned}<br>$$<br>容易发现后面的 $\sum_{d | T} \dfrac {d\mu(\dfrac Td)}{\varphi(d)}$ 可以在 $O(n\log n)$ 的时间预处理，如果求出了前面的一坨，容易单次 $O(\sqrt n)$ 整除分块计算。问题在于前面的这两个不是很好和整除分块一起计算。</p><p>考虑有两种处理办法：</p><ol><li>预处理 $f(n, m, T) = \sum_{i = 1} ^ n \sum_{j = 1} ^ m  \varphi(iT) \varphi(jT)$ 并使用前缀和，这样就可以使用整除分块。</li><li>预处理 $g(n, T) = \sum_{i = 1} ^ n f(iT)$，不使用前缀和和整除分块。</li></ol><p>两个可以平衡规划一下，考虑到神秘的空间限制，大概确定一个阈值即可， $\dfrac mT$ 小于他的使用预处理整除分块，否则使用暴力。时间限制比较宽松，只要平衡规划一般能通过。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">1e5</span> + <span class="number">10</span>, B = <span class="number">50</span>, Mod = <span class="number">998244353</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">sieve</span><span class="params">(<span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">phi[<span class="number">1</span>] = mu[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n; ++ i)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span> (!st[i]) prime[++ cnt] = i, phi[i] = i - <span class="number">1</span>, mu[i] = <span class="number">-1</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt;= cnt &amp;&amp; i * prime[j] &lt;= n; ++ j)</span><br><span class="line">&#123;</span><br><span class="line">st[i * prime[j]] = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">if</span> (i % prime[j] == <span class="number">0</span>) &#123;</span><br><span class="line">phi[i * prime[j]] = phi[i] * prime[j];</span><br><span class="line"><span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line">phi[i * prime[j]] = phi[i] * (prime[j] - <span class="number">1</span>);</span><br><span class="line">mu[i * prime[j]] = -mu[i];</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) <span class="built_in">adj</span>(mu[i]), invphi[i] = <span class="built_in">qpow</span>(phi[i]);</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> d = <span class="number">1</span>; d * i &lt;= n; ++ d)</span><br><span class="line">g[i * d] = (g[i * d] + (LL) d * invphi[d] % Mod * mu[i]) % Mod;</span><br><span class="line"><span class="type">int</span> cnt = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> T = <span class="number">1</span>; T &lt;= n; ++ T)</span><br><span class="line">&#123;</span><br><span class="line">f[T].<span class="built_in">push_back</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>, tmp; i * T &lt;= n; ++ i)</span><br><span class="line">f[T].<span class="built_in">push_back</span>(<span class="built_in">adj</span>(tmp = f[T].<span class="built_in">back</span>() + phi[i * T] - Mod));</span><br><span class="line">cnt += f[T].<span class="built_in">size</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> s1 = <span class="number">1</span>; s1 &lt;= B; ++ s1)</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> s2 = <span class="number">1</span>; s2 &lt;= B; ++ s2)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">auto</span> &amp;v = S[s1][s2];</span><br><span class="line">v.<span class="built_in">push_back</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>, ed = std::<span class="built_in">min</span>(n / s1, n / s2); i &lt;= ed; ++ i)</span><br><span class="line">v.<span class="built_in">push_back</span>((v.<span class="built_in">back</span>() + (LL) f[i][s1] * f[i][s2] % Mod * g[i]) % Mod);</span><br><span class="line">cnt += v.<span class="built_in">size</span>();</span><br><span class="line">&#125;</span><br><span class="line">std::cerr &lt;&lt; (cnt * <span class="number">4</span> + std::<span class="built_in">abs</span>(&amp;mem1 - &amp;mem2)) / <span class="number">1048576.</span> &lt;&lt; <span class="string">&quot; MB\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="type">int</span> n, m, res = <span class="number">0</span>;</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>, &amp;n, &amp;m);</span><br><span class="line"><span class="keyword">if</span> (n &gt; m) std::<span class="built_in">swap</span>(n, m);</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= m / B; ++ i)</span><br><span class="line">res = (res + (LL) g[i] * f[i][n / i] % Mod * f[i][m / i]) % Mod;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> l = m / B + <span class="number">1</span>, r, tn, tm; l &lt;= n; l = r + <span class="number">1</span>)</span><br><span class="line">&#123;</span><br><span class="line">r = std::<span class="built_in">min</span>(n / (tn = n / l), m / (tm = m / l));</span><br><span class="line"><span class="built_in">adj</span>(<span class="built_in">adj</span>(res += S[tn][tm][r] - Mod) -= S[tn][tm][l - <span class="number">1</span>]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, res);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="built_in">sieve</span>(<span class="number">1e5</span> + <span class="number">1</span>);</span><br><span class="line"><span class="type">int</span> T;</span><br><span class="line">std::cin &gt;&gt; T;</span><br><span class="line"><span class="keyword">while</span> (T --) <span class="built_in">work</span>();</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 数论 </tag>
+            
+            <tag> 平衡规划 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>51Nod1965 奇怪的式子</title>
       <link href="/2022/07/25/51Nod1965/"/>
       <url>/2022/07/25/51Nod1965/</url>
@@ -14,9 +104,9 @@
       
         <tags>
             
-            <tag> 数论 </tag>
-            
             <tag> Min_25 </tag>
+            
+            <tag> 数论 </tag>
             
         </tags>
       
@@ -35,13 +125,13 @@
       
         <tags>
             
+            <tag> 集合幂级数 </tag>
+            
             <tag> 状态压缩 </tag>
             
             <tag> DP 及其优化 </tag>
             
             <tag> 容斥 </tag>
-            
-            <tag> 集合幂级数 </tag>
             
             <tag> 矩阵树定理 </tag>
             
@@ -129,11 +219,11 @@
       
         <tags>
             
-            <tag> 数论 </tag>
+            <tag> 线段树 </tag>
             
             <tag> 状态压缩 </tag>
             
-            <tag> 线段树 </tag>
+            <tag> 数论 </tag>
             
         </tags>
       
@@ -152,11 +242,11 @@
       
         <tags>
             
+            <tag> Tarjan </tag>
+            
             <tag> 期望 </tag>
             
             <tag> 离散对数 </tag>
-            
-            <tag> Tarjan </tag>
             
         </tags>
       
@@ -217,9 +307,9 @@
       
         <tags>
             
-            <tag> 期望 </tag>
-            
             <tag> 生成函数 </tag>
+            
+            <tag> 期望 </tag>
             
         </tags>
       
@@ -238,9 +328,9 @@
       
         <tags>
             
-            <tag> AtCoder </tag>
-            
             <tag> 做题记录 </tag>
+            
+            <tag> AtCoder </tag>
             
         </tags>
       
@@ -259,15 +349,15 @@
       
         <tags>
             
-            <tag> AtCoder </tag>
+            <tag> 随机化 </tag>
             
             <tag> 构造 </tag>
             
-            <tag> AC 自动机 </tag>
-            
             <tag> 字符串 </tag>
             
-            <tag> 随机化 </tag>
+            <tag> AC 自动机 </tag>
+            
+            <tag> AtCoder </tag>
             
         </tags>
       
@@ -286,9 +376,9 @@
       
         <tags>
             
-            <tag> AtCoder </tag>
-            
             <tag> 做题记录 </tag>
+            
+            <tag> AtCoder </tag>
             
         </tags>
       
@@ -353,11 +443,11 @@
       
         <tags>
             
-            <tag> 数论 </tag>
-            
             <tag> 组合数学 </tag>
             
             <tag> 莫比乌斯反演 </tag>
+            
+            <tag> 数论 </tag>
             
             <tag> 生成函数 </tag>
             
@@ -378,9 +468,9 @@
       
         <tags>
             
-            <tag> 期望 </tag>
-            
             <tag> 线性基 </tag>
+            
+            <tag> 期望 </tag>
             
         </tags>
       
@@ -399,9 +489,9 @@
       
         <tags>
             
-            <tag> 做题记录 </tag>
-            
             <tag> CF </tag>
+            
+            <tag> 做题记录 </tag>
             
         </tags>
       
@@ -481,11 +571,11 @@
             
             <tag> 组合数学 </tag>
             
+            <tag> 矩阵乘法 </tag>
+            
             <tag> 生成函数 </tag>
             
             <tag> 单位根反演 </tag>
-            
-            <tag> 矩阵乘法 </tag>
             
         </tags>
       
@@ -504,9 +594,9 @@
       
         <tags>
             
-            <tag> 数论 </tag>
-            
             <tag> 线段树 </tag>
+            
+            <tag> 数论 </tag>
             
             <tag> 均摊 </tag>
             
@@ -552,9 +642,9 @@
       
         <tags>
             
-            <tag> 做题记录 </tag>
-            
             <tag> CF </tag>
+            
+            <tag> 做题记录 </tag>
             
         </tags>
       
@@ -592,11 +682,11 @@
       
         <tags>
             
+            <tag> CF </tag>
+            
             <tag> 莫比乌斯反演 </tag>
             
             <tag> 虚树 </tag>
-            
-            <tag> CF </tag>
             
         </tags>
       
@@ -615,9 +705,9 @@
       
         <tags>
             
-            <tag> 组合数学 </tag>
-            
             <tag> CF </tag>
+            
+            <tag> 组合数学 </tag>
             
             <tag> prufer 序列 </tag>
             
@@ -701,9 +791,9 @@
       
         <tags>
             
-            <tag> AtCoder </tag>
-            
             <tag> 构造 </tag>
+            
+            <tag> AtCoder </tag>
             
         </tags>
       
@@ -722,13 +812,13 @@
       
         <tags>
             
-            <tag> min-max 容斥 </tag>
-            
-            <tag> AtCoder </tag>
-            
             <tag> DP 及其优化 </tag>
             
             <tag> 期望 </tag>
+            
+            <tag> min-max 容斥 </tag>
+            
+            <tag> AtCoder </tag>
             
         </tags>
       
@@ -749,9 +839,9 @@
             
             <tag> 组合数学 </tag>
             
-            <tag> 生成函数 </tag>
-            
             <tag> 多项式 </tag>
+            
+            <tag> 生成函数 </tag>
             
         </tags>
       
@@ -770,9 +860,9 @@
       
         <tags>
             
-            <tag> 做题记录 </tag>
-            
             <tag> CF </tag>
+            
+            <tag> 做题记录 </tag>
             
         </tags>
       
@@ -791,9 +881,9 @@
       
         <tags>
             
-            <tag> min-max 容斥 </tag>
-            
             <tag> 期望 </tag>
+            
+            <tag> min-max 容斥 </tag>
             
         </tags>
       
@@ -831,9 +921,9 @@
       
         <tags>
             
-            <tag> min-max 容斥 </tag>
-            
             <tag> DP 及其优化 </tag>
+            
+            <tag> min-max 容斥 </tag>
             
         </tags>
       
@@ -892,11 +982,11 @@
             
             <tag> 组合数学 </tag>
             
+            <tag> 高斯消元 </tag>
+            
             <tag> DP 及其优化 </tag>
             
             <tag> 容斥 </tag>
-            
-            <tag> 高斯消元 </tag>
             
             <tag> 数位 DP </tag>
             
@@ -978,9 +1068,9 @@
       
         <tags>
             
-            <tag> 生成函数 </tag>
-            
             <tag> 多项式 </tag>
+            
+            <tag> 生成函数 </tag>
             
             <tag> 二项式反演 </tag>
             
@@ -1003,9 +1093,9 @@
             
             <tag> 组合数学 </tag>
             
-            <tag> 生成函数 </tag>
-            
             <tag> 多项式 </tag>
+            
+            <tag> 生成函数 </tag>
             
             <tag> 分治 </tag>
             
@@ -1026,9 +1116,9 @@
       
         <tags>
             
-            <tag> 生成函数 </tag>
-            
             <tag> 多项式 </tag>
+            
+            <tag> 生成函数 </tag>
             
         </tags>
       
@@ -1049,9 +1139,9 @@
             
             <tag> 多项式 </tag>
             
-            <tag> 单位根反演 </tag>
-            
             <tag> 矩阵乘法 </tag>
+            
+            <tag> 单位根反演 </tag>
             
         </tags>
       
@@ -1198,11 +1288,11 @@
       
         <tags>
             
+            <tag> CF </tag>
+            
             <tag> DP 及其优化 </tag>
             
             <tag> 容斥 </tag>
-            
-            <tag> CF </tag>
             
             <tag> 二项式反演 </tag>
             
@@ -1223,11 +1313,11 @@
       
         <tags>
             
-            <tag> AtCoder </tag>
-            
             <tag> 状态压缩 </tag>
             
             <tag> 容斥 </tag>
+            
+            <tag> AtCoder </tag>
             
         </tags>
       
@@ -1311,9 +1401,9 @@
             
             <tag> 组合数学 </tag>
             
-            <tag> 期望 </tag>
-            
             <tag> 斯特林数 </tag>
+            
+            <tag> 期望 </tag>
             
         </tags>
       
@@ -1353,9 +1443,9 @@
       
         <tags>
             
-            <tag> 矩阵树定理 </tag>
-            
             <tag> 高斯消元 </tag>
+            
+            <tag> 矩阵树定理 </tag>
             
         </tags>
       
@@ -1460,9 +1550,9 @@
       
         <tags>
             
-            <tag> AtCoder </tag>
-            
             <tag> 集合幂级数 </tag>
+            
+            <tag> AtCoder </tag>
             
         </tags>
       
@@ -1481,9 +1571,9 @@
       
         <tags>
             
-            <tag> AtCoder </tag>
-            
             <tag> 做题记录 </tag>
+            
+            <tag> AtCoder </tag>
             
         </tags>
       
@@ -1504,11 +1594,11 @@
             
             <tag> 组合数学 </tag>
             
-            <tag> AtCoder </tag>
+            <tag> 构造 </tag>
             
             <tag> 做题记录 </tag>
             
-            <tag> 构造 </tag>
+            <tag> AtCoder </tag>
             
         </tags>
       
@@ -1527,13 +1617,13 @@
       
         <tags>
             
-            <tag> 状态压缩 </tag>
-            
-            <tag> 做题记录 </tag>
+            <tag> CF </tag>
             
             <tag> 集合幂级数 </tag>
             
-            <tag> CF </tag>
+            <tag> 状态压缩 </tag>
+            
+            <tag> 做题记录 </tag>
             
         </tags>
       
@@ -1552,9 +1642,9 @@
       
         <tags>
             
-            <tag> 做题记录 </tag>
-            
             <tag> CF </tag>
+            
+            <tag> 做题记录 </tag>
             
         </tags>
       
@@ -1573,11 +1663,11 @@
       
         <tags>
             
-            <tag> AtCoder </tag>
-            
             <tag> 状态压缩 </tag>
             
             <tag> DP 及其优化 </tag>
+            
+            <tag> AtCoder </tag>
             
         </tags>
       
@@ -1596,15 +1686,15 @@
       
         <tags>
             
-            <tag> 做题记录 </tag>
-            
-            <tag> 构造 </tag>
+            <tag> CF </tag>
             
             <tag> 集合幂级数 </tag>
             
-            <tag> CF </tag>
+            <tag> 构造 </tag>
             
             <tag> 位运算 </tag>
+            
+            <tag> 做题记录 </tag>
             
         </tags>
       
@@ -1623,9 +1713,9 @@
       
         <tags>
             
-            <tag> 做题记录 </tag>
-            
             <tag> CF </tag>
+            
+            <tag> 做题记录 </tag>
             
         </tags>
       
@@ -1644,11 +1734,11 @@
       
         <tags>
             
+            <tag> 莫比乌斯反演 </tag>
+            
             <tag> 数论 </tag>
             
             <tag> AtCoder </tag>
-            
-            <tag> 莫比乌斯反演 </tag>
             
         </tags>
       
@@ -1667,9 +1757,9 @@
       
         <tags>
             
-            <tag> min-max 容斥 </tag>
-            
             <tag> 组合数学 </tag>
+            
+            <tag> min-max 容斥 </tag>
             
             <tag> AtCoder </tag>
             
@@ -1690,11 +1780,11 @@
       
         <tags>
             
-            <tag> 虚树 </tag>
-            
             <tag> 扫描线 </tag>
             
             <tag> 树状数组 </tag>
+            
+            <tag> 虚树 </tag>
             
         </tags>
       
@@ -1814,11 +1904,11 @@
       
         <tags>
             
-            <tag> 数据结构 </tag>
-            
             <tag> CF </tag>
             
             <tag> 线段树 </tag>
+            
+            <tag> 数据结构 </tag>
             
         </tags>
       
@@ -1837,13 +1927,13 @@
       
         <tags>
             
-            <tag> 数论 </tag>
+            <tag> CF </tag>
             
             <tag> 组合数学 </tag>
             
-            <tag> CF </tag>
-            
             <tag> 狄利克雷卷积 </tag>
+            
+            <tag> 数论 </tag>
             
         </tags>
       
@@ -1862,9 +1952,9 @@
       
         <tags>
             
-            <tag> 图论 </tag>
-            
             <tag> CF </tag>
+            
+            <tag> 图论 </tag>
             
         </tags>
       
@@ -1883,11 +1973,11 @@
       
         <tags>
             
-            <tag> 分治 </tag>
+            <tag> 2-SAT </tag>
             
             <tag> 并查集 </tag>
             
-            <tag> 2-SAT </tag>
+            <tag> 分治 </tag>
             
         </tags>
       
@@ -1957,9 +2047,9 @@
       
         <tags>
             
-            <tag> 做题记录 </tag>
-            
             <tag> CF </tag>
+            
+            <tag> 做题记录 </tag>
             
         </tags>
       
@@ -1978,9 +2068,9 @@
       
         <tags>
             
-            <tag> 做题记录 </tag>
-            
             <tag> CF </tag>
+            
+            <tag> 做题记录 </tag>
             
         </tags>
       
@@ -1999,9 +2089,9 @@
       
         <tags>
             
-            <tag> 数论 </tag>
-            
             <tag> Min_25 </tag>
+            
+            <tag> 数论 </tag>
             
         </tags>
       
@@ -2020,11 +2110,11 @@
       
         <tags>
             
-            <tag> AtCoder </tag>
-            
             <tag> 状态压缩 </tag>
             
             <tag> DP 及其优化 </tag>
+            
+            <tag> AtCoder </tag>
             
             <tag> SG 函数 </tag>
             
@@ -2045,15 +2135,15 @@
       
         <tags>
             
-            <tag> 数据结构 </tag>
+            <tag> CF </tag>
             
             <tag> 分治 </tag>
             
-            <tag> CF </tag>
+            <tag> 点分治和点分树 </tag>
+            
+            <tag> 数据结构 </tag>
             
             <tag> 题解 </tag>
-            
-            <tag> 点分治和点分树 </tag>
             
         </tags>
       
@@ -2072,9 +2162,9 @@
       
         <tags>
             
-            <tag> 题解 </tag>
-            
             <tag> 线段树 </tag>
+            
+            <tag> 题解 </tag>
             
         </tags>
       
@@ -2234,9 +2324,9 @@
       
         <tags>
             
-            <tag> 题解 </tag>
-            
             <tag> 网络流 </tag>
+            
+            <tag> 题解 </tag>
             
         </tags>
       
@@ -2255,9 +2345,9 @@
       
         <tags>
             
-            <tag> SG 函数 </tag>
-            
             <tag> CF </tag>
+            
+            <tag> SG 函数 </tag>
             
             <tag> 题解 </tag>
             
@@ -2299,11 +2389,11 @@
       
         <tags>
             
-            <tag> 数论 </tag>
+            <tag> CF </tag>
             
             <tag> 组合数学 </tag>
             
-            <tag> CF </tag>
+            <tag> 数论 </tag>
             
             <tag> 题解 </tag>
             
@@ -2324,9 +2414,9 @@
       
         <tags>
             
-            <tag> 图论 </tag>
-            
             <tag> CF </tag>
+            
+            <tag> 图论 </tag>
             
             <tag> 题解 </tag>
             
@@ -2540,9 +2630,9 @@
             
             <tag> 图论 </tag>
             
-            <tag> 题解 </tag>
-            
             <tag> 网络流 </tag>
+            
+            <tag> 题解 </tag>
             
         </tags>
       
@@ -2563,9 +2653,9 @@
             
             <tag> 图论 </tag>
             
-            <tag> 题解 </tag>
-            
             <tag> 网络流 </tag>
+            
+            <tag> 题解 </tag>
             
         </tags>
       
@@ -2607,9 +2697,9 @@
             
             <tag> 图论 </tag>
             
-            <tag> 题解 </tag>
-            
             <tag> 网络流 </tag>
+            
+            <tag> 题解 </tag>
             
         </tags>
       
@@ -2628,9 +2718,9 @@
       
         <tags>
             
-            <tag> 图论 </tag>
-            
             <tag> 二分图 </tag>
+            
+            <tag> 图论 </tag>
             
         </tags>
       
@@ -2649,9 +2739,9 @@
       
         <tags>
             
-            <tag> 图论 </tag>
-            
             <tag> 欧拉回路 </tag>
+            
+            <tag> 图论 </tag>
             
         </tags>
       
@@ -2689,9 +2779,9 @@
       
         <tags>
             
-            <tag> 数据结构 </tag>
-            
             <tag> 并查集 </tag>
+            
+            <tag> 数据结构 </tag>
             
         </tags>
       
@@ -2729,9 +2819,9 @@
       
         <tags>
             
-            <tag> 数据结构 </tag>
-            
             <tag> 线段树 </tag>
+            
+            <tag> 数据结构 </tag>
             
         </tags>
       
@@ -2811,9 +2901,9 @@
       
         <tags>
             
-            <tag> AC 自动机 </tag>
-            
             <tag> 字符串 </tag>
+            
+            <tag> AC 自动机 </tag>
             
         </tags>
       
@@ -2853,9 +2943,9 @@
       
         <tags>
             
-            <tag> 数据结构 </tag>
-            
             <tag> 分块 </tag>
+            
+            <tag> 数据结构 </tag>
             
         </tags>
       
@@ -2874,9 +2964,9 @@
       
         <tags>
             
-            <tag> 数据结构 </tag>
-            
             <tag> 莫队 </tag>
+            
+            <tag> 数据结构 </tag>
             
         </tags>
       
@@ -2895,9 +2985,9 @@
       
         <tags>
             
-            <tag> 数据结构 </tag>
-            
             <tag> 树链剖分 </tag>
+            
+            <tag> 数据结构 </tag>
             
         </tags>
       
@@ -2996,9 +3086,9 @@
       
         <tags>
             
-            <tag> 做题记录 </tag>
-            
             <tag> CF </tag>
+            
+            <tag> 做题记录 </tag>
             
         </tags>
       
@@ -3059,11 +3149,11 @@
       
         <tags>
             
-            <tag> 数据结构 </tag>
-            
             <tag> 分治 </tag>
             
             <tag> 点分治和点分树 </tag>
+            
+            <tag> 数据结构 </tag>
             
         </tags>
       
@@ -3101,9 +3191,9 @@
       
         <tags>
             
-            <tag> 数论 </tag>
-            
             <tag> 组合数学 </tag>
+            
+            <tag> 数论 </tag>
             
         </tags>
       
@@ -3122,9 +3212,9 @@
       
         <tags>
             
-            <tag> 数据结构 </tag>
-            
             <tag> 分治 </tag>
+            
+            <tag> 数据结构 </tag>
             
             <tag> CDQ 分治 </tag>
             
@@ -3147,9 +3237,9 @@
       
         <tags>
             
-            <tag> 数据结构 </tag>
-            
             <tag> 分治 </tag>
+            
+            <tag> 数据结构 </tag>
             
             <tag> CDQ 分治 </tag>
             
@@ -3290,9 +3380,9 @@
       
         <tags>
             
-            <tag> DP 及其优化 </tag>
-            
             <tag> 树形 DP </tag>
+            
+            <tag> DP 及其优化 </tag>
             
         </tags>
       
@@ -3416,9 +3506,9 @@
       
         <tags>
             
-            <tag> 数论 </tag>
-            
             <tag> 莫比乌斯反演 </tag>
+            
+            <tag> 数论 </tag>
             
         </tags>
       
@@ -3460,11 +3550,11 @@
       
         <tags>
             
+            <tag> 动态树 </tag>
+            
             <tag> 数据结构 </tag>
             
             <tag> Splay </tag>
-            
-            <tag> 动态树 </tag>
             
         </tags>
       
@@ -3483,9 +3573,9 @@
       
         <tags>
             
-            <tag> 数论 </tag>
-            
             <tag> 多项式 </tag>
+            
+            <tag> 数论 </tag>
             
         </tags>
       
@@ -3504,9 +3594,9 @@
       
         <tags>
             
-            <tag> 数论 </tag>
-            
             <tag> 多项式 </tag>
+            
+            <tag> 数论 </tag>
             
             <tag> 斯特林数 </tag>
             
@@ -3527,9 +3617,9 @@
       
         <tags>
             
-            <tag> 数论 </tag>
-            
             <tag> 多项式 </tag>
+            
+            <tag> 数论 </tag>
             
         </tags>
       

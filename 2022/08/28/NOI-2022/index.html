@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"mydcwfy.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="挂 18pts 送走 Au，rk65 Ag。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NOI2022 游记">
+<meta property="og:url" content="https://mydcwfy.github.io/2022/08/28/NOI-2022/index.html">
+<meta property="og:site_name" content="mydcwfy&#39;s Blog">
+<meta property="og:description" content="挂 18pts 送走 Au，rk65 Ag。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-08-28T10:31:58.000Z">
+<meta property="article:modified_time" content="2022-08-29T13:01:13.219Z">
+<meta property="article:author" content="mydcwfy">
+<meta property="article:tag" content="游记">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://mydcwfy.github.io/2022/08/28/NOI-2022/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>NOI2022 游记 | mydcwfy's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="mydcwfy's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">mydcwfy's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+  <a href="https://github.com/mydcwfy" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2022/08/28/NOI-2022/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="mydcwfy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mydcwfy's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          NOI2022 游记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-08-28 18:31:58" itemprop="dateCreated datePublished" datetime="2022-08-28T18:31:58+08:00">2022-08-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-29 21:01:13" itemprop="dateModified" datetime="2022-08-29T21:01:13+08:00">2022-08-29</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4.8k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>10 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>挂 18pts 送走 Au，rk65 Ag。</p>
+<span id="more"></span>
+
+<p>现在来写，感觉很多有意义的细节已经忘记的差不多了，只能记得一个大概的框架了，所以游记总是看起来干巴巴的。由于我又没有赛时写游记的习惯，看来以后得先记录一点有意义的事情了。</p>
+<p>以 8.23 为 Day 1。</p>
+<h3 id="Day-10（8-12）"><a href="#Day-10（8-12）" class="headerlink" title="Day -10（8.12）"></a>Day -10（8.12）</h3><p>突然听说要提前 7 天到苏州，吓了一跳，赶忙飞去上海然后高铁到昆山。没住在 CCF 建议的酒店，说找一个安静点的地方。熟悉了一下环境，结果碰上了成外的（</p>
+<p>和 CSYZ 一起训练，他们明天才来，所以模拟赛没来，于是可以光明正大的颓，结果被教练评价为“效率怎么这么低下啊”。</p>
+<p>条件还行，手机电脑被收后，晚上看点奇怪的电视剧，不知不觉就睡着了。</p>
+<h3 id="Day-9（8-13）-Day-3（8-19）"><a href="#Day-9（8-13）-Day-3（8-19）" class="headerlink" title="Day -9（8.13）- Day -3（8.19）"></a>Day -9（8.13）- Day -3（8.19）</h3><p>CSYZ 的来了，模拟赛也来了（悲</p>
+<p>天天在酒店里颓，但是还是被强制做模拟赛。结果几场模拟赛一次排名比一次低，是不是 NOI 就要垫底了 /ll</p>
+<p>地方特别偏，想找一点能吃的菜简直不太可能，就连外卖的 5km 以内都没有几家，一周显然就都吃遍了，然后就没得吃了（</p>
+<p>8.14 晚上 AGC 直接自闭，啥题不会，最后在 170 min 的时候终于过了 A /kk，不过排名没变化，还是掉大分。第二天发现自己的 B 和正解一模一样，不知道为什么赛时没过样例呢？当时又把 B 的代码删了，更不知道哪里错了，于是又重码了一遍赛时写的，就过了 /fn</p>
+<p>8.16 晚上 CF Div1，A 一直猜贪心，WA 了两发才发现哪里没对，结果是一个 sb DP，做了半个小时。B 没想到有一个唯一分解（其实推式子的过程中证明到了，但是没写）用了一个奇奇怪怪的东西，写了半个小时多，WA 了两发，终于过了。C 一个一眼题，直接维护所有因数的答案即可，突然感觉过不去，把因数换为质因数就好了，又写了半个小时，罚时一车，不过还是上分了。</p>
+<h3 id="Day-2（8-20）"><a href="#Day-2（8-20）" class="headerlink" title="Day -2（8.20）"></a>Day -2（8.20）</h3><p>进校力！（不过教练因为没报名字上去，进不了 /kk，比较离谱）</p>
+<p>发现是一个 nb 学校，感觉非常宽敞，所有建筑都是西式风格的，在我们那地很少见。被分到了一个两人间的宿舍，居然没有上下铺，一人一弹簧床、一个书桌，独立洗手间、洗漱台，感觉是星级酒店而不是一个学校的宿舍欸。不过听说到这里的学费，实在是震惊到了，但是这学费也值啊，天天住宾馆，实在是条件不错 /se</p>
+<p>由于不认识几个人，跟着多头去逛了一圈，在签名墙上写下了自己的 id（诶话说这么大个签名墙，写个 id 真有人能看到吗），然后就溜回寝室颓了。</p>
+<p>午饭也是全自助，挺好吃的 /se</p>
+<p>一直颓颓颓，无事可干捏。由于我们教练进不来 /ll，只好像探监一样把我们叫过去，问一下近期的情况，自然是应付一下，不过确实也不知道自己状态到底如何，只好开摆。</p>
+<p>晚上颓。</p>
+<h3 id="Day-1（8-21）"><a href="#Day-1（8-21）" class="headerlink" title="Day -1（8.21）"></a>Day -1（8.21）</h3><p>早上去领胸牌，结果要去 4 个地方按顺序排队，第二个位置特别慢，导致那个位置的人特别多，其他位置几乎人都没有，让我清楚的认识到了水桶效应（一开始差点由于人多直接排第二个位置了）。我不清楚为啥不在那里多安排几个人呢？看到几个志愿者议论了半天，结果也没人去帮忙。另外为什么不集中到一个地方直接同意统一领呢？表示问号。不过反正排队也是颓，也没太在意。</p>
+<p>拿到徽章后和多头换了一个，又去领了背包，感觉良好。遇到了 CSYZ 的几个，换了徽章，然后回寝室了。</p>
+<p>据说 ZJ 和 CQ 都在 D4，晚上和 RuSun 去面了 dX 和 feecle6418，结果都只有 1 个徽章了 /kk，不过我们两个还是都给他们了（）</p>
+<p>晚上斗地主 / 看别人斗地主。</p>
+<h3 id="Day-0（8-22）"><a href="#Day-0（8-22）" class="headerlink" title="Day 0（8.22）"></a>Day 0（8.22）</h3><p>下午要笔试了，早上只好开始复习，不过看不进去，因为这个笔试有 whk 的感觉。过了几遍感觉差不多就行了，然后开始颓。</p>
+<p>下午笔试，先发了一个去年 NOIp 的题目，就写了一下练练手，结果发现 T3 还是不会，T4 还是只会暴力。如果叫我现在去考去年的 NOIp，能不能考到我当时的分数还是问题呢 /kk。随便写了 T1 和 T2，幸运的是没怎么调试就对了，本想开始写 T3 的退火，结果发现 14:58 了，遂弃。</p>
+<p>笔试竟然是内网提交答案，和我想象的方式（写成程序提交）不太像，不过这样就不会题号错误，还是不错。结果第五个就不太确定（记不到题目是什么了），中间要好一些，然后 46 47 连着两个全选，47 能不能登陆系统把我给不会了，但是转念一想，不是不能碰键盘吗？不碰键盘怎么登陆？差点就变成 bot  了，哈哈。</p>
+<p>据说以前考完就出成绩了，不过今年的系统考完后 15:31 就关了。那多久出成绩呢？表示问号。</p>
+<p>本想接着写 NOIp T3 的，但是发现旁边的人走了一大半，于是果断弃掉跑路。</p>
+<h3 id="Day-1（8-23）"><a href="#Day-1（8-23）" class="headerlink" title="Day 1（8.23）"></a>Day 1（8.23）</h3><p>早上本身没改原来 7：00 的闹钟，但是同宿舍 CDQZ 的 6：40 就起来了，于是我也起来了（</p>
+<p>先吃饭，后洗漱，虽然有些奇怪，但是教练要求的，不管了。差不多 7：40 进去的，结果只带了一个士力架，感觉亏大了 /ll。不过还发了一些吃的，于是进场了。</p>
+<p>8：00 准时开题，看到 T1 是一个 sb 摩尔投票，因为当时做 CF 好像做到一个，所以记忆比较深刻。感觉 T1 简单，一会来写，又看 T2。T2 的题目很简洁，但是感觉性质很不优美，开始看成了操作一是每次恰好减少两个，发现完全不可做。过了一会发现是至少减少两个，然后发现还是不可做（，于是去看 T3。T3 “这是一道交互题”和 6 页的题面，已经难懂的定义让人想起了 lxl 欸，不过好像是 zx 出的（。看了一圈，大概半个小时才看懂题，发现连 $O(n ^ 2)-O(1)$ 都不会，只会一个链的猫树分治 10pts。不过 T3 一脸不可做，也没人写更多分吧（</p>
+<p>回过头去写 T1，发现需要维护原序列以及摩尔投票的结果，开始觉得只需要线段树合并就可以了，于是写了，发现没法删除最后一个，想了半天发现可以平衡树合并维护序列（我怎么没想到启发式呢？），不需要线段树合并，差点把线段树合并删了，不过还是忍住了放在 backup。果然过了一会写完平衡树合并后才发现没法判断一个数是否真的是绝对众数，于是又想起了线段树（，然后复制过来，前前后后 1.5h 过去了，写了 200 行的代码总算过了大样例。这常数能过就离谱了，不过我当时没想到更好的办法，于是跳了。</p>
+<p>懒得写对拍，9：45 开 T2，我不相信 3h 拿不下 T2，毕竟每年 D1 队线都是 200+。但赛后看来我的思路就是错的，因为我一直想找到一个比较优美的结论来表示。但事实是这个题需要 DP 刻画合法性。赛时想到了 DP，但是发现每个区间的操作次数复杂度上天，于是弃掉了。其实当时如果认真想还是可做的，只不过我被“有一个优美的结论”的思维禁锢住了，没有仔细思考。</p>
+<p>这样前前后后到了 11:40，我连 $k = 0, l_i = r_i$ 都不会做，心里有点慌了，于是写了爆搜 15pts 跳 T3。T3 下发了 grader.o 和 checker.o 是我第一次见识，还是挺 nb 的。能用就是了，主要是没有 checker 源码，不知道为啥错，猫树分治都调了半个多小时，总算调出来了。想了想暴力怎么写，结果搞了很久，想了多个算法，全部假了。</p>
+<p>回过头来看 T2，还是一点不会。遂弃掉，慢悠悠的检查了三个题能不能编译通过，于是罚坐 15min，结束了。</p>
+<p>出来听说估分 125pts 的人很多，但是 125pts 以上的比较少，只要不挂分，应该还是可以翻盘的。不过盘是什么？我也不知道。</p>
+<p>吃了饭睡了午觉过去查成绩，发现没挂，$100 + 15 + 10 = 125$。CSYZ 的似乎都有多多少少的挂分，惨惨。据说队线在 130-140之间，心态稳健，多头 T2 直接场切，我直接 orz。</p>
+<p>下午和 XJ 的学生聊，他 D1 130（不过好像 D2 爆炸了，Ag 走人了，惨），他把题看成了操作区间长度 $\geq 2$，这个比原问题 $\geq 3$ 可做一些，但是他写了很久，直到最后一个小时才发现，然后就寄了。不过至少还是会并能写完 $k = 0, l_i = r_i$ 的部分。他讲了一遍 T3 的暴力，可我还是没怎么听懂（</p>
+<p>晚上讲课大概听懂了 T2，发现是一个神秘 DP 套 DP，瞎搜一下可达的状态救就可以了，T3 神仙数据结构，暴力都好阴间 /kk。回去斗地主。</p>
+<h3 id="Day-2（8-24）"><a href="#Day-2（8-24）" class="headerlink" title="Day 2（8.24）"></a>Day 2（8.24）</h3><p>说好的社会活动呢？</p>
+<p>好像有一个什么猜谜游戏，不过听说比较专业，就没参加。上午无事可干，想看几道题，结果 ABC 都不会（，心态爆炸，于是不看了，开始颓。</p>
+<p>下午开幕式，印象最深的当属 dzd 的讲话和无人机表演。无人机的背景音乐是 AW 的 <code>Hello World</code>，有点寓意阿。</p>
+<p>晚上颓。</p>
+<h3 id="Day-3（8-25）"><a href="#Day-3（8-25）" class="headerlink" title="Day 3（8.25）"></a>Day 3（8.25）</h3><p>其实应该是 D2（</p>
+<p>8：00 开题，一眼觉得 T2 是 Itst 出的（赛后发现他出的是 D2T3），部分分比较良心，争取多拿点（总所周知 D2T2 不可做）。T1 树哈希，题面明摆着不会特意卡，那随便搞搞，感觉比较简单。T3 神仙题，显然不会，但不知道爆搜多少分。</p>
+<p>T1 想了一会可以直接暴力枚举哈希值不同的如何匹配，复杂度上界是 $O(k! \times n)$，看样子可以过，于是直接开写，细节还行，差不多 9：30 过大样例，然后随便造了几组 <code>Yes</code> 的数据（似乎不好写对拍），发现是对的，于是跑路。</p>
+<p>9：45 开 T2，先做 A 发现有一个显然的 $O(n ^ 3)$ DP，想了一想转移方程可以使用单调队列优化到 $O(n ^ 2)$（自始至终没有想过贪心 /kk），先不忙写，又开 B 性质，盲猜一下没填的是不降的，于是又可以 $O(n ^ 2)$ DP，想了一下会证明了，感觉 C 也是这么做的。大概 10：20 开始写，单调队列比较难写，主要是不断平移比较麻烦（赛后发现好像可以记录 0 的个数而不是 1 的个数就不需要平移了 /jy），写了半个多小时才过样例。B 好写一些，发现这个过不了 C，于是摆，然后又胡了个爆搜，应该 56 pts。</p>
+<p>11：45 左右开 T3，$k = 3$ 容易贪心选 2 即可，很好做；$k = 4$ 不太会，又写了个爆搜，想尽奇奇怪怪的方法优化，但是 $n = 50$ 根本过不了，于是期望 27 pts 跑路。感觉这么多分 + D1 的 125 应该够队线了吧，就没有继续想其他部分分了（伏笔）。简单的检查了一下就结束了。</p>
+<p>一出来就听到有人会 T2，难道 D2T2 比 D1T2 简单？表示问号。不过出来就听到 CSYZ 的教练给我们说马上回去，不是还有两天吗？一查，苏州一个无症状感染者，没必要这么紧张呗。不过还是回去把东西收好了。</p>
+<p>下午 2：30 就看到一车人去查分，也去一看，$100 + 48 + 17 = 165$，挂了 18 pts。</p>
+<p>先看 T2，发现是暴力挂了 8pts，反倒是 A、B 两个难写的性质都对了。想起了当时我需要在一段区间的右端点判断一段区间的最小值是否是给定的时候，我为了运行效率，把一个右端点的限制按照左端点排序，然后指针扫过去。结果排序的时候把 $n$ 写成 $m$ 了 /kk，然后暴力挂了一半。当时想过要不要这样，因为数据不好检查写对没有，结果一想应该没问题，就略过了，然后就挂了 /ll</p>
+<p>然后看 T3，发现 $k = 3$ 的点全挂了，10pts，仔细一看，多测不清空，爆零两行泪。怎么过的 $k = 3$ 的大样例呢？小编也觉得很惊讶，但事实就是这样。</p>
+<p>出来几乎没有讨论就出校了，路上和教练讨论了一会。一路上有各种奇奇怪怪的队线，不知道该听谁的。</p>
+<p>似乎确实是一个不完整的 NOI 欸。</p>
+<h3 id="Day-4（8-26）"><a href="#Day-4（8-26）" class="headerlink" title="Day 4（8.26）"></a>Day 4（8.26）</h3><p>出总分和排名了，$100 + 100 + 15 + 10 + 100 + 48 + 17 + 0 = 390$，rk65 Ag。</p>
+<p>回收伏笔，确实当时估计的 $100 + 125 + 183 = 408$ 也可以进队的，不过挂分了。不过确实实力不够呗，这直接导致容错的区间太小了，我一旦任何一个地方挂了，都不可能进队。一旦多会 20pts，这样的话，挂一点分还是可接受的。现在确实一点不能挂，但谁能保证总计 10h 的 NOI 一分不挂呢？显然是一件难事啊。</p>
+<p>没进队有遗憾啊，不然我写这游记的时候心情也就完全不一样了，就可能是 feecle6418 和 dottle 的心情了。不过好像还是可以参加 CTT/se</p>
+<p>接下来的一年，除需要提升实力外，这些挂分我们需要一些总结，比如将可能挂分的方式写在代码里，过完样例后逐一检查。这些问题可能是易避免的，也有可能是难发现的。检查出样例无法检查到的错误可能也是实力的一部分吧！</p>
+<p>来年再战！</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%B8%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 游记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/08/09/CF1707E/" rel="prev" title="CF1707E Replace">
+      <i class="fa fa-chevron-left"></i> CF1707E Replace
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/08/29/TopCoder12004/" rel="next" title="TopCoder12004 SetAndSet">
+      TopCoder12004 SetAndSet <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Day-10%EF%BC%888-12%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">Day -10（8.12）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Day-9%EF%BC%888-13%EF%BC%89-Day-3%EF%BC%888-19%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">Day -9（8.13）- Day -3（8.19）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Day-2%EF%BC%888-20%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">Day -2（8.20）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Day-1%EF%BC%888-21%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">Day -1（8.21）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Day-0%EF%BC%888-22%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">Day 0（8.22）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Day-1%EF%BC%888-23%EF%BC%89"><span class="nav-number">6.</span> <span class="nav-text">Day 1（8.23）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Day-2%EF%BC%888-24%EF%BC%89"><span class="nav-number">7.</span> <span class="nav-text">Day 2（8.24）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Day-3%EF%BC%888-25%EF%BC%89"><span class="nav-number">8.</span> <span class="nav-text">Day 3（8.25）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Day-4%EF%BC%888-26%EF%BC%89"><span class="nav-number">9.</span> <span class="nav-text">Day 4（8.26）</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="mydcwfy"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">mydcwfy</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">181</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">81</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mydcwfy" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mydcwfy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mydcwfy@outlook.com" title="E-Mail → mailto:mydcwfy@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://sighttp.qq.com/msgrd?v=1&uin=2206704749" title="QQ → https:&#x2F;&#x2F;sighttp.qq.com&#x2F;msgrd?v&#x3D;1&amp;uin&#x3D;2206704749" rel="noopener" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.luogu.com.cn/user/342891" title="LuoGu → https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;user&#x2F;342891" rel="noopener" target="_blank"><i class=" fa-fw"></i>LuoGu</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      机房大佬们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.pigaunt.top/" title="https:&#x2F;&#x2F;www.pigaunt.top" rel="noopener" target="_blank">PigAunt</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://hewo233.blog.luogu.org/" title="https:&#x2F;&#x2F;hewo233.blog.luogu.org" rel="noopener" target="_blank">Hewo</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://wiki.pigaunt.top/" title="https:&#x2F;&#x2F;wiki.pigaunt.top" rel="noopener" target="_blank">PekingOpera</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://luckyleaves.github.io/" title="https:&#x2F;&#x2F;luckyleaves.github.io" rel="noopener" target="_blank">lucky叶</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dyd-true.github.io/" title="https:&#x2F;&#x2F;dyd-true.github.io" rel="noopener" target="_blank">Dyd本人</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://evrgardenviolet.github.io/" title="https:&#x2F;&#x2F;evrgardenviolet.github.io" rel="noopener" target="_blank">闲人</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://rusunoi.github.io/" title="https:&#x2F;&#x2F;rusunoi.github.io" rel="noopener" target="_blank">RuSun</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.luogu.com.cn/blog/koshentoP/" title="https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;blog&#x2F;koshentoP&#x2F;" rel="noopener" target="_blank">Tir_JK_LOVER</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/mklzc/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;mklzc&#x2F;" rel="noopener" target="_blank">MLKE</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mydcwfy</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">636k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">23:03</span>
+</div>
+
+<div>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("11/23/2021 00:00:00");
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "The site has running for "+dnum+" days ";
+        document.getElementById("times").innerHTML = hnum + " hours " + mnum + " minutes " + snum + " seconds";
+    }
+setInterval("createtime()",250);
+</script>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '588cb5060d280689f1e5',
+      clientSecret: 'ea06ff31a09d01ce0664577fce9904b86eccd8fc',
+      repo        : 'mydcwfy.github.io',
+      owner       : 'mydcwfy',
+      admin       : ['mydcwfy'],
+      id          : '75a7d83f088f08b2accee1d2028df42a',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

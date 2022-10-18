@@ -4,6 +4,79 @@
   
     
     <entry>
+      <title>ABC273Ex Inv(0,1)ving Insert(1,0)n</title>
+      <link href="/2022/10/18/ABC273H/"/>
+      <url>/2022/10/18/ABC273H/</url>
+      
+        <content type="html"><![CDATA[<p>题意：定义对序列 $A$（$A$ 包含整数二元组）操作一次为如下操作：选定任意两个相邻的二元组 $(a, b)$ 和 $(c, d)$，在他们中间插入 $(a + c, b + d)$。定义一个二元组序列的价值为从 $A = \{(0, 1), (1, 0)\}$ 开始至少要操作多少次才能包含序列中的所有二元组。如果无法的话价值就是 0。现给定一个长度为 $n$ 的二元组序列 $T$，问所有连续子序列的价值和，对 998244353 取模。$n\leq 10 ^ 5$，$a, b\leq 10 ^ 9$。</p><span id="more"></span><p>首先注意到这个的操作方式和 <a href="https://oi-wiki.org/math/number-theory/stern-brocot/#stern-brocot-%E6%A0%91">Stern-Brocot 树</a> 的构造方式是一样的，那么直接在这棵树上做似乎是一个不错的选择。</p><p>那么根据该树的性质，我们容易得到两种情况是无法得到的：</p><ol><li>$\gcd(a, b) \neq 1$</li><li>$a = 0\land b = 0$</li></ol><p>那么我们相当于现在是划分为一段一段的分别做，每一段内都是合法的状态，然后不同段之间的显然贡献都为 0。现在就处理掉了没有贡献的区间。</p><p>现在我们考虑按照该树的构造办法，我们于是可以这么拆贡献：对于该树上的每一个节点 $[\dfrac ab, \dfrac cd]$（可能 $d$ 为 0，不太严谨，就是 $+\infty$ 的意思），我们考虑要生成 $\dfrac {a + c}{b + d}$ 需要被多少个子串所需要。</p><p>一个充要条件是如果一个子串中存在一个 $\dfrac pq$ 满足 $\dfrac ab &lt; \dfrac pq &lt; \dfrac cd$，那么就需要 $\dfrac {a + c}{b + d}$。那么，我们需要统计所有满足分数在 $(\dfrac ab, \dfrac cd)$ 之间的位置。这样的话就是容易容斥计算的。</p><p>这样直接做复杂度是不对的，应为单次统计至少需要 $O(len)$，$len$ 为在这个区间之间的分数个数。首先我们直接考虑分治下去，将 $[\dfrac ab, \dfrac {a + c}{b + d}]$ 和 $[\dfrac {a + c}{b + d}, \dfrac cd]$ 的答案分别算出来，然后可以启发式合并一下，将少的合并到多的上，用 <code>std::set</code> 维护并动态统计答案，假设每次都有分支的话，复杂度就是 $O(n\log ^ 2 n)$ 的。</p><p>然后我们再来处理假设区间内部的所有数都在 $\dfrac {a + c}{b + d}$ 的一边怎么办。一个极端的情况就是 $(10 ^ 9, 1)$，我们不得不递归 $10 ^ 9$ 层才能找到他。这样显然是不好的，于是我们可以考虑二分一个 $k$ 满足不是所有数都在 $\dfrac {a + kc}{b + kd}$（或者是 $\dfrac {ka + c}{kb + d}$，看在哪一边）的一边。注意到我们相当于在树上是一次跳了 $k$ 层，于是最后的答案要 $\times k$。</p><p>于是总复杂度就是 $O(n\log ^ 2 n + n\log a)$，可以通过。实际实现的时候二分的 $k$ 差一两个是没有问题的，效率如何没测试过（<del>因为我的 $k$ 好像就少 1</del>）。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Frac</span> &#123;</span><br><span class="line">LL x, y;</span><br><span class="line"><span class="type">int</span> id;</span><br><span class="line">Frac <span class="keyword">operator</span> +(Frac t) <span class="type">const</span> &#123; <span class="keyword">return</span> &#123;x + t.x, y + t.y&#125;; &#125;</span><br><span class="line"><span class="type">bool</span> <span class="keyword">operator</span> &lt;(Frac t) <span class="type">const</span> &#123; <span class="keyword">return</span> (s128) x * t.y &lt; (s128) y * t.x; &#125;</span><br><span class="line"><span class="type">bool</span> <span class="keyword">operator</span> &gt;(Frac t) <span class="type">const</span> &#123; <span class="keyword">return</span> (s128) x * t.y &gt; (s128) y * t.x; &#125;</span><br><span class="line"><span class="type">bool</span> <span class="keyword">operator</span> ==(Frac t) <span class="type">const</span> &#123; <span class="keyword">return</span> x == t.x &amp;&amp; y == t.y; &#125;</span><br><span class="line">Frac <span class="keyword">operator</span> *(LL t) <span class="type">const</span> &#123; <span class="keyword">return</span> &#123;x * t, y * t&#125;; &#125;</span><br><span class="line">&#125; a[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(<span class="type">int</span> id, <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">auto</span> iter = s[id].<span class="built_in">insert</span>(x).first;</span><br><span class="line"><span class="type">int</span> y = *std::<span class="built_in">prev</span>(iter), z = *std::<span class="built_in">next</span>(iter);</span><br><span class="line">ans[id] = (ans[id] + (LL) (z - x) * (x - y)) % Mod;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">solve</span><span class="params">(<span class="type">int</span> l, <span class="type">int</span> r, Frac lf, Frac rf)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">while</span> (l &lt;= n &amp;&amp; a[l] == lf) l ++;</span><br><span class="line"><span class="keyword">while</span> (r &amp;&amp; a[r] == rf) r --;</span><br><span class="line"><span class="keyword">if</span> (l &gt; r) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> cnt = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">if</span> (a[r] &lt; lf + rf) &#123;</span><br><span class="line"><span class="type">int</span> x = <span class="number">2</span>, y = <span class="number">1e9</span>;</span><br><span class="line"><span class="keyword">while</span> (x &lt; y) &#123;</span><br><span class="line"><span class="type">int</span> mid = (x + y + <span class="number">1</span>) &gt;&gt; <span class="number">1</span>;</span><br><span class="line"><span class="keyword">if</span> (lf * mid + rf &gt; a[r]) x = mid;</span><br><span class="line"><span class="keyword">else</span> y = mid - <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">rf = rf + lf * (x - <span class="number">1</span>), cnt = x;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (a[l] &gt; lf + rf) &#123;</span><br><span class="line"><span class="type">int</span> x = <span class="number">2</span>, y = <span class="number">1e9</span>;</span><br><span class="line"><span class="keyword">while</span> (x &lt; y) &#123;</span><br><span class="line"><span class="type">int</span> mid = (x + y + <span class="number">1</span>) &gt;&gt; <span class="number">1</span>;</span><br><span class="line"><span class="keyword">if</span> (lf + rf * mid &lt; a[l]) x = mid;</span><br><span class="line"><span class="keyword">else</span> y = mid - <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">lf = lf + rf * (x - <span class="number">1</span>), cnt = x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> x = l, y = r + <span class="number">1</span>, mL, mR;</span><br><span class="line"><span class="keyword">while</span> (x &lt; y) &#123;</span><br><span class="line"><span class="type">int</span> mid = (x + y) &gt;&gt; <span class="number">1</span>;</span><br><span class="line"><span class="keyword">if</span> (a[mid] &lt; lf + rf) x = mid + <span class="number">1</span>;</span><br><span class="line"><span class="keyword">else</span> y = mid;</span><br><span class="line">&#125;</span><br><span class="line">mL = x, x = l - <span class="number">1</span>, y = r;</span><br><span class="line"><span class="keyword">while</span> (x &lt; y) &#123;</span><br><span class="line"><span class="type">int</span> mid = (x + y + <span class="number">1</span>) &gt;&gt; <span class="number">1</span>;</span><br><span class="line"><span class="keyword">if</span> (a[mid] &gt; lf + rf) y = mid - <span class="number">1</span>;</span><br><span class="line"><span class="keyword">else</span> x = mid;</span><br><span class="line">&#125;</span><br><span class="line">mR = x;</span><br><span class="line"><span class="comment">// Equal (a + c) / (b + d) range</span></span><br><span class="line"><span class="type">int</span> lc = <span class="built_in">solve</span>(l, mL - <span class="number">1</span>, lf, lf + rf), rc = <span class="built_in">solve</span>(mR + <span class="number">1</span>, r, lf + rf, rf);</span><br><span class="line"><span class="keyword">if</span> (s[lc].<span class="built_in">size</span>() &gt; s[rc].<span class="built_in">size</span>()) std::<span class="built_in">swap</span>(lc, rc);</span><br><span class="line"><span class="keyword">if</span> (rc == <span class="number">1</span>) s[rc = ++ tot] = &#123;<span class="number">0</span>, n + <span class="number">1</span>&#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> t : s[lc])</span><br><span class="line"><span class="keyword">if</span> (t &gt;= <span class="number">1</span> &amp;&amp; t &lt;= n) <span class="built_in">insert</span>(rc, t);</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> t = mL; t &lt;= mR; ++ t) <span class="built_in">insert</span>(rc, a[t].id);</span><br><span class="line">res = (res + (LL) ans[rc] * cnt) % Mod;</span><br><span class="line"><span class="keyword">return</span> rc;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">work</span><span class="params">(std::vector&lt;Frac&gt; vec)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">res = <span class="number">0</span>;</span><br><span class="line">n = vec.<span class="built_in">size</span>();</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; ++ i) a[i + <span class="number">1</span>] = vec[i], a[i + <span class="number">1</span>].id = i + <span class="number">1</span>;</span><br><span class="line">std::<span class="built_in">sort</span>(a + <span class="number">1</span>, a + n + <span class="number">1</span>);</span><br><span class="line">s[<span class="number">1</span>] = &#123;<span class="number">0</span>, n + <span class="number">1</span>&#125;;</span><br><span class="line"><span class="keyword">return</span> <span class="built_in">solve</span>(<span class="number">1</span>, n, &#123;<span class="number">0</span>, <span class="number">1</span>&#125;, &#123;<span class="number">1</span>, <span class="number">0</span>&#125;), res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 分治 </tag>
+            
+            <tag> 启发式合并 </tag>
+            
+            <tag> 二分 </tag>
+            
+            <tag> 复杂度分析 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>CF1515H Phoenix and Bits</title>
+      <link href="/2022/10/15/CF1515H/"/>
+      <url>/2022/10/15/CF1515H/</url>
+      
+        <content type="html"><![CDATA[<p>题意：维护一个集合 $a$，最开始有 $n$ 个元素，有 $m$ 次操作或者询问：</p><ol><li>将 $a_i\in [l, r]$ 的值全部与 $x$。</li><li>将 $a_i\in [l, r]$ 的值全部或 $x$。</li><li>将 $a_i\in [l, r]$ 的值全部异或 $x$。</li><li>询问在 $[l, r]$ 中有多少个不同的 $a_i$。</li></ol><p>$n\leq 2\times 10 ^ 5$，$m\leq 10 ^ 5$，$0\leq a_i &lt; 2 ^ {20}$。</p><span id="more"></span><p>进阶 01 Trie 的模板题。</p><h3 id="寻找一段区间"><a href="#寻找一段区间" class="headerlink" title="寻找一段区间"></a>寻找一段区间</h3><p>类似于 FHQ Treap 的 split 一样，我们考虑在 $[l, r]$ 之间分离出一段 $[x, y]$。此时考虑 $mid$ 在 $[x, y]$ 的位置，向左右递归即可。节点 split 直接新建即可。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">split</span><span class="params">(<span class="type">int</span> u, <span class="type">int</span> &amp;x, <span class="type">int</span> &amp;y, <span class="type">int</span> l, <span class="type">int</span> r, <span class="type">int</span> bit)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">x = y = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> (!u || !tr[u].sz) <span class="keyword">return</span>;</span><br><span class="line"><span class="keyword">if</span> (bit &lt; <span class="number">0</span> || (l == <span class="number">0</span> &amp;&amp; r == <span class="number">2</span> * (<span class="number">1</span> &lt;&lt; bit) - <span class="number">1</span>)) &#123;</span><br><span class="line">x = u;</span><br><span class="line"><span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> mid = <span class="number">1</span> &lt;&lt; bit;</span><br><span class="line"><span class="comment">// std::cout &lt;&lt; u &lt;&lt; &#x27; &#x27; &lt;&lt; l &lt;&lt; &#x27; &#x27; &lt;&lt; r &lt;&lt; &#x27; &#x27; &lt;&lt; bit &lt;&lt; &#x27; &#x27; &lt;&lt; tr[u].sz &lt;&lt; &#x27;\n&#x27;;</span></span><br><span class="line"><span class="built_in">pushdown</span>(u, bit);</span><br><span class="line"><span class="keyword">if</span> (l &gt;= mid)</span><br><span class="line">y = u, <span class="built_in">split</span>(tr[u].s[<span class="number">1</span>], tr[x = ++ tot].s[<span class="number">1</span>], tr[u].s[<span class="number">1</span>], l ^ mid, r ^ mid, bit - <span class="number">1</span>);</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (r &lt; mid)</span><br><span class="line">y = u, <span class="built_in">split</span>(tr[u].s[<span class="number">0</span>], tr[x = ++ tot].s[<span class="number">0</span>], tr[u].s[<span class="number">0</span>], l, r, bit - <span class="number">1</span>);</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line"><span class="comment">// if (l == 0 &amp;&amp; r == mid * 2 - 1) return x = u, void();</span></span><br><span class="line">x = u, y = ++ tot;</span><br><span class="line"><span class="built_in">split</span>(tr[u].s[<span class="number">0</span>], tr[u].s[<span class="number">0</span>], tr[y].s[<span class="number">0</span>], l, mid - <span class="number">1</span>, bit - <span class="number">1</span>);</span><br><span class="line"><span class="built_in">split</span>(tr[u].s[<span class="number">1</span>], tr[u].s[<span class="number">1</span>], tr[y].s[<span class="number">1</span>], <span class="number">0</span>, r ^ mid, bit - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">pushup</span>(x), <span class="built_in">pushup</span>(y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="合并两棵子树"><a href="#合并两棵子树" class="headerlink" title="合并两棵子树"></a>合并两棵子树</h3><p>没什么好讲的，注意到了叶子节点只能保留一个信息即可。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">merge</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y, <span class="type">int</span> bit)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="comment">// std::cout &lt;&lt; &quot;MERGE &quot; &lt;&lt; x &lt;&lt; &#x27; &#x27; &lt;&lt; y &lt;&lt; &#x27; &#x27; &lt;&lt; bit &lt;&lt; &#x27;\n&#x27;;</span></span><br><span class="line"><span class="keyword">if</span> (!x || !tr[x].sz) <span class="keyword">return</span> y;</span><br><span class="line"><span class="keyword">if</span> (!y || !tr[y].sz) <span class="keyword">return</span> x;</span><br><span class="line"><span class="keyword">if</span> (bit &lt; <span class="number">0</span>) &#123;</span><br><span class="line"><span class="comment">// std::cout &lt;&lt; tr[x].val &lt;&lt; &#x27; &#x27; &lt;&lt; tr[y].val &lt;&lt; std::endl;</span></span><br><span class="line"><span class="built_in">assert</span>(!tr[x].sz || !tr[y].sz || tr[x].val == tr[y].val);</span><br><span class="line"><span class="keyword">return</span> tr[x].sz ? x : y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">pushdown</span>(x, bit), <span class="built_in">pushdown</span>(y, bit);</span><br><span class="line">tr[x].s[<span class="number">0</span>] = <span class="built_in">merge</span>(tr[x].s[<span class="number">0</span>], tr[y].s[<span class="number">0</span>], bit - <span class="number">1</span>);</span><br><span class="line">tr[x].s[<span class="number">1</span>] = <span class="built_in">merge</span>(tr[x].s[<span class="number">1</span>], tr[y].s[<span class="number">1</span>], bit - <span class="number">1</span>);</span><br><span class="line"><span class="keyword">return</span> <span class="built_in">pushup</span>(x), x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="对全局-xor"><a href="#对全局-xor" class="headerlink" title="对全局 xor"></a>对全局 xor</h3><p>我们考虑对于一棵子树全部 xor 怎么做。因为我们已经有 <code>split</code> 了，所以这个操作可以支持区间做。</p><p>这个可以使用懒标记实现。因为子树的节点个数并没有发生改变，而只是对于一些节点的左右儿子交换即可。这个节点的所有信息都可以在不递归子树的情况下 $O(1)$ 维护。</p><p>具体有哪些信息呢？我们目前只需要维护左右儿子、懒标记和不同的数的个数，都很简单，就不讲了。</p><h3 id="对全局-or"><a href="#对全局-or" class="headerlink" title="对全局 or"></a>对全局 or</h3><p>全局 or 是不好做的，因为我们可能合并节点之类的。虽然总结点个数是 $O((n + m)\log a)$ 的，但是我们并不好判断一棵子树内部有没有需要合并的节点。</p><p>首先如果全局 or 在一定情况下可以变成全局 xor，这样不会减少节点，所以我们为了保证复杂度，不能递归。容易发现这个的成立条件是在给定 or 的每一位上全局要么全是 1，要么全是 0。我们考虑记录全局的 or $v_1$ 和全局补集的 or $v_2$（将所有数取反的 or），那么判断条件可以写作 $[(v_2\odot x)\odot v_1 = 0]$（$\odot$ 表示与运算）。另外，此时我们相当于要对全局 xor 上 $v_2\odot x$。</p><p>否则的话，我们至少会出现一个节点的合并，这个时候我们再考虑递归。如果当前节点左右儿子都存在，并且我们这一位会 or 上 1，那么我们可以先将左儿子的所有值 xor 上 $2 ^ {bit}$，然后直接将左右儿子都合并到右儿子即可。</p><p>这个时候再反过去在 xor 的时候维护一下 or 和补集的 or，注意到如果 or 和补集的 or 都包含某一位的话，怎么 xor 这一位都是 1。拆位做一下就好了。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">allxor</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> bit, <span class="type">int</span> lt)</span> </span>&#123;</span><br><span class="line"><span class="keyword">if</span> (!x) <span class="keyword">return</span>;</span><br><span class="line"><span class="type">int</span> v = tr[x].val, lv = tr[x].lval;</span><br><span class="line"><span class="keyword">if</span> (lt &gt;&gt; bit &amp; <span class="number">1</span>) std::<span class="built_in">swap</span>(tr[x].s[<span class="number">0</span>], tr[x].s[<span class="number">1</span>]);</span><br><span class="line">tr[x].val = (v ^ lt) | (v &amp; lv &amp; lt);</span><br><span class="line">tr[x].lval = (lv ^ lt) | (v &amp; lv &amp; lt);</span><br><span class="line">tr[x].lt ^= lt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">pushdown</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> bit)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">if</span> (!x || !tr[x].lt || !tr[x].sz) <span class="keyword">return</span>;</span><br><span class="line"><span class="built_in">allxor</span>(tr[x].s[<span class="number">0</span>], bit - <span class="number">1</span>, tr[x].lt), <span class="built_in">allxor</span>(tr[x].s[<span class="number">1</span>], bit - <span class="number">1</span>, tr[x].lt);</span><br><span class="line">tr[x].lt = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">allor</span><span class="params">(<span class="type">int</span> u, <span class="type">int</span> bit, <span class="type">int</span> val)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">if</span> (!u || !tr[u].sz) <span class="keyword">return</span>;</span><br><span class="line"><span class="type">int</span> add = val &amp; tr[u].lval;</span><br><span class="line"><span class="keyword">if</span> (!(add &amp; tr[u].val)) <span class="keyword">return</span> <span class="built_in">allxor</span>(u, bit, add);</span><br><span class="line"><span class="built_in">pushdown</span>(u, bit);</span><br><span class="line"><span class="type">int</span> mid = <span class="number">1</span> &lt;&lt; bit;</span><br><span class="line"><span class="keyword">if</span> (val &amp; mid)</span><br><span class="line"><span class="built_in">allxor</span>(tr[u].s[<span class="number">0</span>], bit - <span class="number">1</span>, mid),</span><br><span class="line">tr[u].s[<span class="number">1</span>] = <span class="built_in">merge</span>(tr[u].s[<span class="number">0</span>], tr[u].s[<span class="number">1</span>], bit - <span class="number">1</span>), tr[u].s[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line"><span class="built_in">allor</span>(tr[u].s[<span class="number">0</span>], bit - <span class="number">1</span>, val), <span class="built_in">allor</span>(tr[u].s[<span class="number">1</span>], bit - <span class="number">1</span>, val);</span><br><span class="line"><span class="built_in">pushup</span>(u);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="对全局-and"><a href="#对全局-and" class="headerlink" title="对全局 and"></a>对全局 and</h3><p>容易发现 $v\odot x = \neg(\neg v |x)$，那么就可以拆分成 or 和 xor 操作。这个就好做了。</p><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>由于一共只有 $O((n + m)\log a)$ 个节点，我们花费 $O(\log a)$ 的时间可以永久删除一个点，所以复杂度时 $O((n + m)\log ^ 2a)$ 的，可以通过。</p><p>由于笔者也是第一次也这种代码，出了很多神秘错误，大概列几点可能常见的：</p><ol><li>计算低位的时候，不管 xor 还是 or 都不能只把 $x$ 的低位传下去，因为需要维护子树的值相关的信息。</li><li>由于 <code>split</code> 时可能出现里面一个数都没有的节点，操作时需要特判一下，比如把所有判断空节点都写成 <code>!tr[u].sz</code>。</li><li>注意 or 判断改为 xor 时的判断条件要准确，因为小样例测不出来。</li></ol><p>只放主函数了，调用的函数上面基本出现了。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">std::cin &gt;&gt; n &gt;&gt; m;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>, x; i &lt;= n; ++ i) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;x), <span class="built_in">insert</span>(x);</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>, typ, l, r, v, x, y; i &lt;= m; ++ i) &#123;</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%d %d %d&quot;</span>, &amp;typ, &amp;l, &amp;r);</span><br><span class="line"><span class="built_in">split</span>(rt, x, y, l, r, <span class="number">19</span>);</span><br><span class="line"><span class="comment">// std::cout &lt;&lt; &quot;RANGE &quot; &lt;&lt; tr[x].sz &lt;&lt; &#x27; &#x27; &lt;&lt; tr[x].val &lt;&lt; &#x27; &#x27; &lt;&lt; tr[x].lval &lt;&lt; &#x27;\n&#x27;;</span></span><br><span class="line"><span class="keyword">if</span> (typ == <span class="number">4</span>) <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, tr[x].sz);</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (typ == <span class="number">3</span>) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;v), <span class="built_in">allxor</span>(x, <span class="number">19</span>, v);</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (typ == <span class="number">2</span>) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;v), <span class="built_in">allor</span>(x, <span class="number">19</span>, v);</span><br><span class="line"><span class="keyword">else</span> <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;v), <span class="built_in">allxor</span>(x, <span class="number">19</span>, U), <span class="built_in">allor</span>(x, <span class="number">19</span>, U ^ v), <span class="built_in">allxor</span>(x, <span class="number">19</span>, U);</span><br><span class="line">rt = <span class="built_in">merge</span>(y, x, <span class="number">19</span>);</span><br><span class="line"><span class="comment">// std::cout &lt;&lt; &quot;ALL &quot; &lt;&lt; tr[rt].sz &lt;&lt; &#x27; &#x27; &lt;&lt; tr[rt].val &lt;&lt; &#x27; &#x27; &lt;&lt; tr[x].lval &lt;&lt; &quot;\n\n&quot;;</span></span><br><span class="line"><span class="comment">// exit(0);</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Trie </tag>
+            
+            <tag> 位运算 </tag>
+            
+            <tag> 复杂度分析 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>LOJ6736 「2020 集训队论文」最小连通块</title>
+      <link href="/2022/10/13/LOJ6736/"/>
+      <url>/2022/10/13/LOJ6736/</url>
+      
+        <content type="html"><![CDATA[<p>题意：<strong>交互题</strong>。给出一棵树的点数 $n$，你每次询问可以给出一个点集 $S$ 和一个点 $x$，可以得到 $x$ 是否在点集 $S$ 的最小连通块中，需要还原出树。$n = 1000$，你最多可以询问 22000 次。求构造方案。</p><span id="more"></span><p>这个题的做法有很多，我们切入一个比较简单并且易懂的角度。</p><p>首先我们考虑如果我们已经知道了这棵树的拓扑序后怎么做。注意此时我们需要定义一个根，然后每条边从儿子指向父亲。简单来说就是父亲的拓扑序在儿子的后面。</p><p>注意到我们在拓扑序上枚举到了 $x$，我们求它的所有后代。容易发现它的所有后代都是在它前面的，并且除了 $x$ 的儿子以外，其他的点都已经被这种方式覆盖过了。这给我们一个区分儿子和后代的办法：拿到所有的后代后，直接在拓扑序中把这些点删除，这样后面就不会再遍历到这些点了。那么我们就可以保证，现在拿到的所有的点都满足是 $x$ 的儿子。这样做下去，容易发现询问复杂度是 $O(n\log n)$ 的，因为遍历到一个点就会把他删除，遍历到点的过程可以二分查找前半段是否存在 $x$ 的后代，所以就是 $O(n\log n)$ 的。</p><p>那么现在问题就转化成了求树的拓扑序。假设我们当前 $S$ 集合里面的点都没有放进拓扑序，我们要把 $x$ 子树内全部放进去。做法比较神秘，我们考虑找到一个 $S$ 内部并且在 $x$ 子树内部的点 $y$，然后先将 $y$ 子树内部的点放进拓扑序（注意到 $y$ 子树内部的点一定在 $x$ 前面），$S$ 集合对应更新。我们这样做的话，显然是一定会把 $x$ 子树内部的所有点全部都放进拓扑序。最后放 $x$，这样的话就可以完成构造拓扑序。</p><p>考虑分析一下上述算法的复杂度。注意到每一个 $x$ 都只会被遍历一次（不挂其子树内是什么），找到一个 $x$ 的后代的过程同样可以二分，于是询问复杂度也是 $O(n\log n)$ 的。</p><p>综上，我们可以在询问复杂度 $O(n\log n)$ 的时间内完成，时间复杂度可以较容易地做到 $O(n ^ 2)$。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">del</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; (<span class="type">int</span>) s.<span class="built_in">size</span>(); ++ i)</span><br><span class="line">        <span class="keyword">if</span> (s[i] == x) <span class="keyword">return</span> s.<span class="built_in">erase</span>(s.<span class="built_in">begin</span>() + i), <span class="built_in">void</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">query</span><span class="params">(std::vector&lt;<span class="type">int</span>&gt; s, <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    s.<span class="built_in">push_back</span>(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">ask</span>(s, x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">(<span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">del</span>(x);</span><br><span class="line">    <span class="keyword">while</span> (s.<span class="built_in">size</span>() &amp;&amp; <span class="built_in">query</span>(s, x))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> l = <span class="number">1</span>, r = s.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">while</span> (l &lt; r) &#123;</span><br><span class="line">            <span class="type">int</span> mid = (l + r) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">query</span>(&#123;s.<span class="built_in">data</span>(), s.<span class="built_in">data</span>() + mid&#125;, x)) r = mid;</span><br><span class="line">            <span class="keyword">else</span> l = mid + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> y = s[l - <span class="number">1</span>];</span><br><span class="line">        <span class="built_in">solve</span>(y);</span><br><span class="line">    &#125;</span><br><span class="line">    ord.<span class="built_in">push_back</span>(x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">std::vector&lt;std::pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;&gt; <span class="built_in">work</span>(<span class="type">int</span> n)</span><br><span class="line">&#123;</span><br><span class="line">    std::vector&lt;std::pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;&gt; res;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; ++ i) s.<span class="built_in">push_back</span>(i + <span class="number">1</span>);</span><br><span class="line">    <span class="built_in">solve</span>(<span class="number">1</span>);</span><br><span class="line">    std::vector&lt;<span class="type">int</span>&gt; vec;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>, x; i &lt; n; ++ i)</span><br><span class="line">    &#123;</span><br><span class="line">        x = ord[i];</span><br><span class="line">        <span class="keyword">while</span> (vec.<span class="built_in">size</span>() &amp;&amp; <span class="built_in">query</span>(vec, x)) &#123;</span><br><span class="line">            <span class="type">int</span> l = <span class="number">1</span>, r = vec.<span class="built_in">size</span>();</span><br><span class="line">            <span class="keyword">while</span> (l &lt; r) &#123;</span><br><span class="line">                <span class="type">int</span> mid = (l + r) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">if</span> (<span class="built_in">query</span>(&#123;vec.<span class="built_in">data</span>(), vec.<span class="built_in">data</span>() + mid&#125;, x)) r = mid;</span><br><span class="line">                <span class="keyword">else</span> l = mid + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// std::cout &lt;&lt; &quot;Find &quot; &lt;&lt; x &lt;&lt; &#x27; &#x27; &lt;&lt; vec[l - 1] &lt;&lt; &#x27;\n&#x27;;</span></span><br><span class="line">            res.<span class="built_in">push_back</span>(&#123;x, vec[l - <span class="number">1</span>]&#125;), vec.<span class="built_in">erase</span>(vec.<span class="built_in">begin</span>() + l - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        vec.<span class="built_in">push_back</span>(x);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// std::cout &lt;&lt; res.size() &lt;&lt; &#x27; &#x27; &lt;&lt; ord.size() &lt;&lt; &#x27;\n&#x27;;</span></span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 构造 </tag>
+            
+            <tag> 交互 </tag>
+            
+            <tag> 二分 </tag>
+            
+            <tag> 复杂度分析 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>ARC150D Removing Gacha</title>
       <link href="/2022/10/12/ARC150D/"/>
       <url>/2022/10/12/ARC150D/</url>
@@ -102,9 +175,9 @@
             
             <tag> 平衡规划 </tag>
             
-            <tag> Min_25 筛 </tag>
-            
             <tag> 复杂度分析 </tag>
+            
+            <tag> Min_25 筛 </tag>
             
         </tags>
       
@@ -417,9 +490,9 @@
       
         <tags>
             
-            <tag> 莫比乌斯反演 </tag>
-            
             <tag> 数论 </tag>
+            
+            <tag> 莫比乌斯反演 </tag>
             
         </tags>
       
@@ -463,9 +536,9 @@
       
         <tags>
             
-            <tag> 树相关 </tag>
-            
             <tag> DP 及其优化 </tag>
+            
+            <tag> 树相关 </tag>
             
             <tag> 容斥 </tag>
             
@@ -490,9 +563,9 @@
             
             <tag> 构造 </tag>
             
-            <tag> 树相关 </tag>
-            
             <tag> DP 及其优化 </tag>
+            
+            <tag> 树相关 </tag>
             
         </tags>
       
@@ -511,9 +584,9 @@
       
         <tags>
             
-            <tag> 状态压缩 </tag>
-            
             <tag> DP 及其优化 </tag>
+            
+            <tag> 状态压缩 </tag>
             
         </tags>
       
@@ -553,9 +626,9 @@
       
         <tags>
             
-            <tag> Min_25 </tag>
-            
             <tag> 数论 </tag>
+            
+            <tag> Min_25 </tag>
             
         </tags>
       
@@ -576,9 +649,9 @@
             
             <tag> 集合幂级数 </tag>
             
-            <tag> 状态压缩 </tag>
-            
             <tag> DP 及其优化 </tag>
+            
+            <tag> 状态压缩 </tag>
             
             <tag> 容斥 </tag>
             
@@ -647,9 +720,9 @@
       
         <tags>
             
-            <tag> 状态压缩 </tag>
-            
             <tag> DP 及其优化 </tag>
+            
+            <tag> 状态压缩 </tag>
             
         </tags>
       
@@ -670,9 +743,9 @@
             
             <tag> 线段树 </tag>
             
-            <tag> 状态压缩 </tag>
-            
             <tag> 数论 </tag>
+            
+            <tag> 状态压缩 </tag>
             
         </tags>
       
@@ -894,9 +967,9 @@
             
             <tag> 组合数学 </tag>
             
-            <tag> 莫比乌斯反演 </tag>
-            
             <tag> 数论 </tag>
+            
+            <tag> 莫比乌斯反演 </tag>
             
             <tag> 生成函数 </tag>
             
@@ -1047,7 +1120,7 @@
             
             <tag> 数论 </tag>
             
-            <tag> 均摊 </tag>
+            <tag> 复杂度分析 </tag>
             
         </tags>
       
@@ -1265,9 +1338,9 @@
             
             <tag> 期望 </tag>
             
-            <tag> min-max 容斥 </tag>
-            
             <tag> AtCoder </tag>
+            
+            <tag> min-max 容斥 </tag>
             
         </tags>
       
@@ -1431,9 +1504,9 @@
             
             <tag> 组合数学 </tag>
             
-            <tag> 高斯消元 </tag>
-            
             <tag> DP 及其优化 </tag>
+            
+            <tag> 高斯消元 </tag>
             
             <tag> 容斥 </tag>
             
@@ -2112,9 +2185,9 @@
       
         <tags>
             
-            <tag> 状态压缩 </tag>
-            
             <tag> DP 及其优化 </tag>
+            
+            <tag> 状态压缩 </tag>
             
             <tag> AtCoder </tag>
             
@@ -2183,9 +2256,9 @@
       
         <tags>
             
-            <tag> 莫比乌斯反演 </tag>
-            
             <tag> 数论 </tag>
+            
+            <tag> 莫比乌斯反演 </tag>
             
             <tag> AtCoder </tag>
             
@@ -2208,9 +2281,9 @@
             
             <tag> 组合数学 </tag>
             
-            <tag> min-max 容斥 </tag>
-            
             <tag> AtCoder </tag>
+            
+            <tag> min-max 容斥 </tag>
             
         </tags>
       
@@ -2538,9 +2611,9 @@
       
         <tags>
             
-            <tag> Min_25 </tag>
-            
             <tag> 数论 </tag>
+            
+            <tag> Min_25 </tag>
             
         </tags>
       
@@ -2559,9 +2632,9 @@
       
         <tags>
             
-            <tag> 状态压缩 </tag>
-            
             <tag> DP 及其优化 </tag>
+            
+            <tag> 状态压缩 </tag>
             
             <tag> AtCoder </tag>
             
@@ -3787,9 +3860,9 @@
       
         <tags>
             
-            <tag> 状态压缩 </tag>
-            
             <tag> DP 及其优化 </tag>
+            
+            <tag> 状态压缩 </tag>
             
         </tags>
       
@@ -3955,9 +4028,9 @@
       
         <tags>
             
-            <tag> 莫比乌斯反演 </tag>
-            
             <tag> 数论 </tag>
+            
+            <tag> 莫比乌斯反演 </tag>
             
         </tags>
       

@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"mydcwfy.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="题意：有 $n$ 个人发了 $m$ 条消息，消息分为“xxx 楼下”“xxx 楼上”和学术消息。你需要合理安排这 $m$ 条消息的顺序，使得符合实际条件的楼上、楼下型消息尽量多，需要给出构造。保证每个人至少发了一条学术消息。$n\leq m\leq 77777$，$\sum m\leq 2.5\times 10 ^ 5$。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LOJ3702 「联合省选 2022」学术社区">
+<meta property="og:url" content="https://mydcwfy.github.io/2022/12/28/LOJ3702/index.html">
+<meta property="og:site_name" content="mydcwfy&#39;s Blog">
+<meta property="og:description" content="题意：有 $n$ 个人发了 $m$ 条消息，消息分为“xxx 楼下”“xxx 楼上”和学术消息。你需要合理安排这 $m$ 条消息的顺序，使得符合实际条件的楼上、楼下型消息尽量多，需要给出构造。保证每个人至少发了一条学术消息。$n\leq m\leq 77777$，$\sum m\leq 2.5\times 10 ^ 5$。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-12-28T12:38:21.000Z">
+<meta property="article:modified_time" content="2022-12-28T23:36:16.103Z">
+<meta property="article:author" content="mydcwfy">
+<meta property="article:tag" content="欧拉回路">
+<meta property="article:tag" content="网络流">
+<meta property="article:tag" content="图论">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://mydcwfy.github.io/2022/12/28/LOJ3702/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>LOJ3702 「联合省选 2022」学术社区 | mydcwfy's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="mydcwfy's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">mydcwfy's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+  <a href="https://github.com/mydcwfy" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mydcwfy.github.io/2022/12/28/LOJ3702/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="mydcwfy">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mydcwfy's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          LOJ3702 「联合省选 2022」学术社区
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-12-28 20:38:21" itemprop="dateCreated datePublished" datetime="2022-12-28T20:38:21+08:00">2022-12-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-12-29 07:36:16" itemprop="dateModified" datetime="2022-12-29T07:36:16+08:00">2022-12-29</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4.9k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>11 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>题意：有 $n$ 个人发了 $m$ 条消息，消息分为“xxx 楼下”“xxx 楼上”和学术消息。你需要合理安排这 $m$ 条消息的顺序，使得符合实际条件的楼上、楼下型消息尽量多，需要给出构造。保证每个人至少发了一条学术消息。$n\leq m\leq 77777$，$\sum m\leq 2.5\times 10 ^ 5$。</p>
+<span id="more"></span>
+
+<p>本题特殊性质有较强的提示性，我们根据特殊性质来解题。</p>
+<ol>
+<li>特殊性质 A：不会存在楼上型消息。</li>
+<li>特殊性质 B：保证存在一种顺序使得每一条楼上、楼下型消息都符合实际。</li>
+<li>特殊性质 C：保证不同时存在“A 说在 B 楼下”和“B 说在 A 楼上”。</li>
+</ol>
+<h3 id="特殊性质-ABC"><a href="#特殊性质-ABC" class="headerlink" title="特殊性质 ABC"></a>特殊性质 ABC</h3><p>考虑我们如果有一条 “A 在 B 楼下”的消息，我们 <strong>从 B 向 A</strong> 连一条边，那么现在一条完整的链就是从一条学术消息开始经过楼下型消息转移，最后在任意点停下。如果我们建立虚拟节点 T，任意一条学术消息我们都从 T 向这个点连边，这样的话就是从 T 开始到任意点结束的路径。</p>
+<p>由于保证每条楼下型消息都符合实际，说明每个点的入度一定不小于出度，否则有些出边一定不能从 T 开始。对于多出来的，我们可以考虑链覆盖相关的算法欧拉回路，那么我们把一个点的（入度减去出度）条边从这个点引向 T，那么我们就从 T 开始求出欧拉回路即可。建的多出来的边不考虑就好了。</p>
+<h3 id="特殊性质-AC"><a href="#特殊性质-AC" class="headerlink" title="特殊性质 AC"></a>特殊性质 AC</h3><p>现在去掉了保证符合实际的条件该怎么办？</p>
+<p>现在相当于问题在于每个点的入度可能小于出度，这个时候我们将 T 向这个点连（出度减去入度）条边即可。注意每个点如果入度小于出度，那么答案应该减去（出度减去入度）。换言之，答案应该加上 $\min(\text{indeg} (x), \text{outdeg} (x))$。</p>
+<h3 id="特殊性质-BC"><a href="#特殊性质-BC" class="headerlink" title="特殊性质 BC"></a>特殊性质 BC</h3><p>现在开始有楼上型消息了，我们怎么建图？</p>
+<p>首先一个问题是楼上和楼下型消息其实不同点很多的，主要就在于其实两种的发出人并不相同。</p>
+<p>我们可以考虑这样建图：建立 $G_1, G_2$，每个点在 $G_1, G_2$ 中都对应一个点，如果形如“A 在 B 楼上”就在 $G_1$ 中从 A 向 B 连边，形如“A 在 B 楼下”就在 $G_2$ 中从 B 向 A 连边，如果是学术消息就从 $G_1$ 对应点连向 $G_2$。</p>
+<p>容易发现在特殊性质 C 范围下，一条完整链条形如任意楼上型消息链 - 学术消息 - 任意楼下型消息链。这个在建图中对应着一条从 $G_1$ 中点连到 $G_2$ 中点的一条链。那么既然每条都符合实际，那么说明 $G_1$ 中出度不小于入度，$G_2$ 中入度不小于出度。类似于上面的建图，我们从虚拟节点 $T$ 向 $G_1$ 中的点连边，从 $G_2$ 中的点向 T 连边，这样的话我们寻找欧拉回路，减去没有实际存在的边，就可以得到构造方案了。</p>
+<h3 id="特殊性质-C"><a href="#特殊性质-C" class="headerlink" title="特殊性质 C"></a>特殊性质 C</h3><p>现在没有了 $G_1$ 出度不小于入度，$G_2$ 入度不小于出度，这个该怎么办呢？</p>
+<p>注意到如果我们直接按照 特殊性质 AC 的计算的话，答案一定有一个下界 $\sum \min(\text{indeg}(x), \text{outdeg}(x))$。但是注意到我们有些并没有用到，我们可不可以合适的调整一下呢？</p>
+<p>调整的方法显然是我们把一条原来是一条楼上或者楼下型消息改为学术消息。以一条楼上型消息为例，“A 在 B 楼上”的消息原来是 $G_1$ 中 A 向 B 连边，现在是 $G_1$ 中 A 向 $G_2$ 中 A 连边。原来 B 的出度过大，减少 1 不会影响答案，而 $G_2$ 中 A 的出度过小的话，增加 1 就会使得答案 +1。那么这样更改的话就是有效的。</p>
+<p>我们可以通过一个网络流模型来刻画：如果 $G_1$ 中出度小于入度，就从 S 向该点连容量为 $\text{indeg}(x) - \text{outdeg}(x)$ 的边。向上面一样刻画两两之间的边，$G_2$ 中如果入度小于出度，就向 T 连容量为 $\text{outdeg}(x) - \text{indeg}(x)$。这样跑出来的网络流就是答案的增加量。</p>
+<p>然后考虑怎么构造。其实是好构造的，我们对于每条边，找到其在网络流中对应的边，如果流过了，说明这条消息变成了学术消息，否则没有。向上面那样建图，存在出入度差异就用虚拟节点平衡，从虚拟节点开始欧拉回路就可以找到一个合法的构造了。</p>
+<h3 id="无特殊性质"><a href="#无特殊性质" class="headerlink" title="无特殊性质"></a>无特殊性质</h3><p>这个相较于特殊性质 C 来说多了一个中间环节：可能直接是楼上型消息链 - 楼下型消息链。注意到这两条消息放在一起是好的，所以我们直接放在一起。比如是”A 在 B 楼上“和”B 在 A 楼下“两个消息，我们直接从 $G_1$ 中的 A 向 $G_2$ 中的 B 连边即可。同样参与出入度的统计，注意这样直接答案 +2，因为原来这个是一条学术消息，我们没有计算其答案，现在就需要直接 +2。这个等价于二分图匹配，使用 dinic 可以做到复杂度 $O(m\sqrt m)$，可以通过。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>写起来细节还行，主要是没有特殊性质的话，找到对应的楼上楼下型消息比较麻烦（没有保证任意两条消息不同），然后就是没有特殊性质的话，一条欧拉回路上的边可能实际代表两条边，所以需要压缩一下。然后对于 $\text{indeg}$ 和 $\text{outdeg}$ 的处理可能细节稍多，可以参考一下代码。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> &amp;i = h[x], v, j; ~i;) &#123;</span><br><span class="line">		v = e[i], j = i;</span><br><span class="line">		i = ne[i];</span><br><span class="line">		<span class="built_in">dfs</span>(v);</span><br><span class="line">		seq[++ etot] = w[j];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	std::cin &gt;&gt; n &gt;&gt; m;</span><br><span class="line">	std::map&lt;std::string, <span class="type">int</span>&gt; gid;</span><br><span class="line">	std::map&lt;std::pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;, <span class="type">int</span>&gt; alledg;</span><br><span class="line">	<span class="built_in">clear</span>();</span><br><span class="line">	std::string s1, s2, s3;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) std::cin &gt;&gt; s1, gid[s1] = i;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= m; ++ i)</span><br><span class="line">	&#123;</span><br><span class="line">		std::cin &gt;&gt; s1 &gt;&gt; s2 &gt;&gt; s3;</span><br><span class="line">		<span class="keyword">if</span> ((s3 == <span class="string">&quot;louxia&quot;</span> || s3 == <span class="string">&quot;loushang&quot;</span>) &amp;&amp; gid.<span class="built_in">count</span>(s2))</span><br><span class="line">			mg[++ tot] = &#123;gid[s1], gid[s2], s3 == <span class="string">&quot;louxia&quot;</span>, i&#125;;</span><br><span class="line">		<span class="keyword">else</span> xs[gid[s1]].<span class="built_in">push_back</span>(i);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= tot; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (!mg[i].typ) alledg[&#123;mg[i].i1, mg[i].i2&#125;] ++;</span><br><span class="line">	<span class="type">int</span> tmptot = <span class="number">0</span>, res = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = tot; i; -- i) &#123;</span><br><span class="line">		<span class="keyword">if</span> (!mg[i].typ) <span class="keyword">continue</span>;</span><br><span class="line">		<span class="type">int</span> &amp;x = alledg[&#123;mg[i].i2, mg[i].i1&#125;];</span><br><span class="line">		<span class="keyword">if</span> (!x) nw[++ tmptot] = mg[i];</span><br><span class="line">		<span class="keyword">else</span> x --, res += <span class="number">2</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	std::map&lt;std::pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;, std::vector&lt;<span class="type">int</span>&gt;&gt; predg;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= tot; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (mg[i].typ) predg[&#123;mg[i].i2, mg[i].i1&#125;].<span class="built_in">push_back</span>(i);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= tot; ++ i) &#123;</span><br><span class="line">		<span class="keyword">if</span> (mg[i].typ) <span class="keyword">continue</span>;</span><br><span class="line">		<span class="keyword">auto</span> &amp;v = predg[&#123;mg[i].i1, mg[i].i2&#125;];</span><br><span class="line">		<span class="keyword">if</span> (v.<span class="built_in">empty</span>()) nw[++ tmptot] = mg[i];</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="built_in">add</span>(mg[i].i1, mg[i].i2 + n, (LL) mg[i].id * m + mg[v.<span class="built_in">back</span>()].id);</span><br><span class="line">			outdeg[mg[i].i1] ++, indeg[mg[i].i2 + n] ++, v.<span class="built_in">pop_back</span>();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= tmptot; ++ i) mg[i] = nw[i];</span><br><span class="line">	tot = tmptot;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= tot; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (mg[i].typ) outdeg[mg[i].i2 + n] ++, indeg[mg[i].i1 + n] ++;</span><br><span class="line">		<span class="keyword">else</span> outdeg[mg[i].i1] ++, indeg[mg[i].i2] ++;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line">		outdeg[i] += xs[i].<span class="built_in">size</span>(), indeg[i + n] += xs[i].<span class="built_in">size</span>();</span><br><span class="line">	G.S = <span class="number">2</span> * n + <span class="number">1</span>, G.T = <span class="number">2</span> * n + <span class="number">2</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (indeg[i] &gt; outdeg[i]) G.<span class="built_in">add</span>(G.S, i, indeg[i] - outdeg[i]);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = n + <span class="number">1</span>; i &lt;= <span class="number">2</span> * n; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (indeg[i] &lt; outdeg[i]) G.<span class="built_in">add</span>(i, G.T, outdeg[i] - indeg[i]);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">2</span> * n; ++ i) res += std::<span class="built_in">min</span>(indeg[i], outdeg[i]);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= tot; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (mg[i].typ) eid[i] = G.idx, G.<span class="built_in">add</span>(mg[i].i1, mg[i].i2 + n, <span class="number">1</span>);</span><br><span class="line">		<span class="keyword">else</span> eid[i] = G.idx, G.<span class="built_in">add</span>(mg[i].i2, mg[i].i1 + n, <span class="number">1</span>);</span><br><span class="line">	G.<span class="built_in">dinic</span>();</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">2</span> * n; ++ i) indeg[i] = outdeg[i] = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= tot; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (!G.w[eid[i]]) res ++, <span class="built_in">add</span>(mg[i].i1, mg[i].i1 + n, mg[i].id);</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (mg[i].typ) <span class="built_in">add</span>(mg[i].i2 + n, mg[i].i1 + n, mg[i].id);</span><br><span class="line">		<span class="keyword">else</span> <span class="built_in">add</span>(mg[i].i1, mg[i].i2, mg[i].id);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> id : xs[i]) <span class="built_in">add</span>(i, i + n, id);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> x = <span class="number">1</span>; x &lt;= <span class="number">2</span> * n; ++ x)</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = h[x]; ~i; i = ne[i]) outdeg[x] ++, indeg[e[i]] ++;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">2</span> * n; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (indeg[i] &lt; outdeg[i]) &#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt;= outdeg[i] - indeg[i]; ++ j) <span class="built_in">add</span>(<span class="number">2</span> * n + <span class="number">1</span>, i, <span class="number">0</span>);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt;= indeg[i] - outdeg[i]; ++ j) <span class="built_in">add</span>(i, <span class="number">2</span> * n + <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="built_in">dfs</span>(<span class="number">2</span> * n + <span class="number">1</span>);</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = etot; i; -- i) &#123;</span><br><span class="line">		<span class="keyword">if</span> (!seq[i]) <span class="keyword">continue</span>;</span><br><span class="line">		<span class="keyword">if</span> (seq[i] &lt;= m) std::cout &lt;&lt; seq[i] &lt;&lt; <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">		<span class="keyword">else</span> std::cout &lt;&lt; (seq[i] - <span class="number">1</span>) / m &lt;&lt; <span class="string">&#x27; &#x27;</span> &lt;&lt; (seq[i] - <span class="number">1</span>) % m + <span class="number">1</span> &lt;&lt; <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	std::cout &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E6%AC%A7%E6%8B%89%E5%9B%9E%E8%B7%AF/" rel="tag"><i class="fa fa-tag"></i> 欧拉回路</a>
+              <a href="/tags/%E7%BD%91%E7%BB%9C%E6%B5%81/" rel="tag"><i class="fa fa-tag"></i> 网络流</a>
+              <a href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag"><i class="fa fa-tag"></i> 图论</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/12/28/2022-provincal-selection-sol/" rel="prev" title="2022 联合省选 全题解">
+      <i class="fa fa-chevron-left"></i> 2022 联合省选 全题解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/12/29/LOJ3704/" rel="next" title="LOJ3704 「联合省选 2022」序列变换">
+      LOJ3704 「联合省选 2022」序列变换 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E6%80%A7%E8%B4%A8-ABC"><span class="nav-number">1.</span> <span class="nav-text">特殊性质 ABC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E6%80%A7%E8%B4%A8-AC"><span class="nav-number">2.</span> <span class="nav-text">特殊性质 AC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E6%80%A7%E8%B4%A8-BC"><span class="nav-number">3.</span> <span class="nav-text">特殊性质 BC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E6%80%A7%E8%B4%A8-C"><span class="nav-number">4.</span> <span class="nav-text">特殊性质 C</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E7%89%B9%E6%AE%8A%E6%80%A7%E8%B4%A8"><span class="nav-number">5.</span> <span class="nav-text">无特殊性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">6.</span> <span class="nav-text">实现</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="mydcwfy"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">mydcwfy</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">89</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mydcwfy" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mydcwfy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mydcwfy@outlook.com" title="E-Mail → mailto:mydcwfy@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://sighttp.qq.com/msgrd?v=1&uin=2206704749" title="QQ → https:&#x2F;&#x2F;sighttp.qq.com&#x2F;msgrd?v&#x3D;1&amp;uin&#x3D;2206704749" rel="noopener" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.luogu.com.cn/user/342891" title="LuoGu → https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;user&#x2F;342891" rel="noopener" target="_blank"><i class=" fa-fw"></i>LuoGu</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      机房大佬们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.pigaunt.top/" title="https:&#x2F;&#x2F;www.pigaunt.top" rel="noopener" target="_blank">PigAunt</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://hewo233.blog.luogu.org/" title="https:&#x2F;&#x2F;hewo233.blog.luogu.org" rel="noopener" target="_blank">Hewo</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://wiki.pigaunt.top/" title="https:&#x2F;&#x2F;wiki.pigaunt.top" rel="noopener" target="_blank">PekingOpera</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://luckyleaves.github.io/" title="https:&#x2F;&#x2F;luckyleaves.github.io" rel="noopener" target="_blank">lucky叶</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dyd-true.github.io/" title="https:&#x2F;&#x2F;dyd-true.github.io" rel="noopener" target="_blank">Dyd本人</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://evrgardenviolet.github.io/" title="https:&#x2F;&#x2F;evrgardenviolet.github.io" rel="noopener" target="_blank">闲人</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://rusunoi.github.io/" title="https:&#x2F;&#x2F;rusunoi.github.io" rel="noopener" target="_blank">RuSun</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.luogu.com.cn/blog/koshentoP/" title="https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;blog&#x2F;koshentoP&#x2F;" rel="noopener" target="_blank">Tir_JK_LOVER</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/mklzc/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;mklzc&#x2F;" rel="noopener" target="_blank">MLKE</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mydcwfy</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">Symbols count total: </span>
+    <span title="Symbols count total">710k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    <span title="Reading time total">25:43</span>
+</div>
+
+<div>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("11/23/2021 00:00:00");
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "The site has running for "+dnum+" days ";
+        document.getElementById("times").innerHTML = hnum + " hours " + mnum + " minutes " + snum + " seconds";
+    }
+setInterval("createtime()",250);
+</script>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '/mathjax/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="/gitalk/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('/gitalk/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '588cb5060d280689f1e5',
+      clientSecret: 'ea06ff31a09d01ce0664577fce9904b86eccd8fc',
+      repo        : 'mydcwfy.github.io',
+      owner       : 'mydcwfy',
+      admin       : ['mydcwfy'],
+      id          : '2fec5c75f43d7c8ef20b4e38e57e64b5',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

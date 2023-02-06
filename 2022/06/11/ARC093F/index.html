@@ -252,12 +252,10 @@
       
         <p>经典容斥。</p>
 <span id="more"></span>
-
 <p>题意：有 $2 ^ n$ 个选手进行淘汰赛，比赛时编号小的会获胜，但是当 1 号选手遇到给定 $m$ 位选手中的任意一个，他将会输掉比赛。问怎样合理的安排顺序，使得 1 号选手能获胜。$n, m\leq 16$。</p>
 <p>首先 1 号选手的位置在 $[1, 2 ^ n]$ 中任意位置是一样的，所以最后答案乘上 $2 ^ n$。</p>
 <p>然后其实很多的排法，我们只关心其中 $n$ 棵子树的最小值即可，并不关心是如何排布的。如下图，我们只需要关心蓝色子树的最小值即可。</p>
 <img src="/2022/06/11/ARC093F/1.png" class="">
-
 <p>考虑容斥，题目要求这些子树的最小值中不能出现 $m$ 个数中的一个，那么考虑钦定其中 $k$ 个子树最小值是 $m$ 个数当中的，贡献乘上 $(-1) ^ k$。</p>
 <p>如果我们要钦定大小为 $sz$ 的子树的最小值为 $v$，注意钦定的时候我们剩下的 $sz - 1$ 个都要严格大于 $v$。</p>
 <p>注意如果我们乱序加入 $v$ 的话，我们其实是并不知道大于 $v$ 的有多少个。类似于 <a href="/2022/05/30/LOJ3119">LOJ3119 随机正方体</a> 的方式，我们倒序枚举 $v$ 加入，这样枚举到 $v$ 的时候，前面所有钦定的一定都是大于 $v$ 的，就避免了大于 $v$ 的个数不确定的情况。随便状态压缩一下，记录哪些 $sz$ 已经钦定了最小值即可，转移时乘一下组合数，最后注意排列顺序即可。时间复杂度 $O(mn2 ^ n)$。</p>
@@ -364,7 +362,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -453,7 +451,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -463,13 +461,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

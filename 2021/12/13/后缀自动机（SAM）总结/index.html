@@ -253,7 +253,6 @@
       
         <p>自认为写得还行。</p>
 <span id="more"></span>
-
 <h3 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h3><p>本文不比前面的学习笔记 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/mydcwfy-342891/suffix-automation">后缀自动机笔记</a>，这篇文章大概能保证你能理解。</p>
 <p>本文同样不会给出证明，但是会亲近读者，尽可能让读者看懂。</p>
 <p>图片建议新标签页打开看一下。因为用的是 Luogu，github 上会挂。</p>
@@ -265,26 +264,24 @@
 <p>首先，我们定义，$\text{endpos}$ 相同的作为一个等价类，可以看做同一个状态，对应在 SAM 中是同一个结点。</p>
 <p>比如，我们还是来看一个实例 $\texttt{abcbc}$：</p>
 <ul>
-<li>${\texttt{abcbc},\texttt{bcbc},\texttt{cbc} }$ 的 $\text{endpos}$ 都是 ${5}$。</li>
-<li>${\texttt{bc},\texttt{c} }$ 的 $\text{endpos}$ 都是 ${3,5}$。</li>
+<li>$\{\texttt{abcbc},\texttt{bcbc},\texttt{cbc} \}$ 的 $\text{endpos}$ 都是 $\{5\}$。</li>
+<li>$\{\texttt{bc},\texttt{c} \}$ 的 $\text{endpos}$ 都是 $\{3,5\}$。</li>
 </ul>
 <p>当然没有列举完，读者可以自己推一下（？</p>
 <p>可以发现，$\text{endpos}$ 有一个性质，就是如果 $\text{endpos}$ 相同的，一定是长度递减的字符串。</p>
 <p>还是看上面的实例：</p>
 <ul>
-<li>${\texttt{abcbc},\texttt{bcbc},\texttt{cbc} }$ 是长度递减的字符串，且后面一个是前面一个的后缀。</li>
-<li>${\texttt{bc},\texttt{c} }$ 是长度递减的字符串，且后面一个是前面一个的后缀。</li>
+<li>$\{\texttt{abcbc},\texttt{bcbc},\texttt{cbc} \}$ 是长度递减的字符串，且后面一个是前面一个的后缀。</li>
+<li>$\{\texttt{bc},\texttt{c} \}$ 是长度递减的字符串，且后面一个是前面一个的后缀。</li>
 </ul>
 <p>现在，大概理解了 $\text{endpos}$ 的基本性质了吧。</p>
 <h3 id="3-SAM-的构造"><a href="#3-SAM-的构造" class="headerlink" title="3. SAM 的构造"></a>3. SAM 的构造</h3><p>这里我们先贴代码。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Node</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> len, fa;</span><br><span class="line">    <span class="type">int</span> ch[<span class="number">26</span>];</span><br><span class="line">&#125;tr[N];</span><br><span class="line"><span class="type">int</span> len = <span class="number">1</span>, tot = <span class="number">1</span>;</span><br><span class="line"><span class="type">char</span> str[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">extend</span><span class="params">(<span class="type">int</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> p = last;<span class="type">int</span> np = ++ tot;</span><br><span class="line">	f[tot] = <span class="number">1</span>;</span><br><span class="line">	tr[np].len = tr[p].len + <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (; p &amp;&amp; !tr[p].ch[c]; p = tr[p].fa) tr[p].ch[c] = np;</span><br><span class="line">	last = tot;</span><br><span class="line">	<span class="keyword">if</span> (!p) tr[np].fa = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="type">int</span> q = tr[p].ch[c];</span><br><span class="line">		<span class="keyword">if</span> (tr[q].len == tr[p].len + <span class="number">1</span>) tr[np].fa = q;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="type">int</span> nq = ++ tot;</span><br><span class="line">			tr[nq] = tr[q], tr[nq].len = tr[p].len + <span class="number">1</span>;</span><br><span class="line">			tr[q].fa = tr[np].fa = nq;</span><br><span class="line">			<span class="keyword">for</span> (; p &amp;&amp; tr[p].ch[c] == q; p = tr[p].fa) tr[p].ch[c] = nq;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>主函数调用的时候，直接 <code>for (int i = 1; str[i]; ++ i) extend(str[i] - &#39;a&#39;);</code> （这里假设只有小写字母）。</p>
 <p><del>可以先背代码，再看下面的讲解</del>。</p>
 <p>下面一点一点的讲解：</p>
 <hr>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Node</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> len, fa;</span><br><span class="line">    <span class="type">int</span> ch[<span class="number">26</span>];</span><br><span class="line">&#125;tr[N];</span><br></pre></td></tr></table></figure>
-
 <p>说明一下每一个变量的含义：</p>
 <p><code>tr[N]</code>：前面所讲的 $\text{endpos}$ 相同的子串将会被放入同一个结点，也就是说这些子串遍历时会走到这个结点停止。</p>
 <p><code>ch[26]</code>：指所有的结点的转移。</p>
@@ -292,14 +289,14 @@
 <p><code>fa</code>：可以看做 <code>fail</code>，也就是匹配失败的时候会走到哪个结点（现在大概用不到，有点像 KMP）。</p>
 <p><strong>性质</strong>：$fa$ 指向的结点的最长长度就是当前结点所代表的子串的最短长度减 1。</p>
 <p>还是拿 $\texttt{abcbc}$ 来说：</p>
-<p>${\texttt{abcbc},\texttt{bcbc},\texttt{cbc} }$ 的最短长度是 3，那么这个结点的 $fa$ 是 $\texttt{bc}$ 所在的结点， 长度为 2。</p>
+<p>$\{\texttt{abcbc},\texttt{bcbc},\texttt{cbc} \}$ 的最短长度是 3，那么这个结点的 $fa$ 是 $\texttt{bc}$ 所在的结点， 长度为 2。</p>
 <p>这里有一些重要，请务必理解。（其实认真读一下上面的定义就可以了）</p>
 <p>然后，还有一个<strong>重要的性质</strong>：如果当前所代表的最长子串是 $s$，那么按照 $fa$ 一直跳的话，所有遍历到的结点所代表的子串一定都是 $s$ 的后缀，且 $s$ 的后缀一定都被遍历到。</p>
-<p>拿 ${\texttt{abcbc},\texttt{bcbc},\texttt{cbc} }$ 为例：这个结点的 $fa$ 会指向 $\texttt{bc}$ 所在的结点，然后 ${\texttt{bc},\texttt{c}}$ 是一个结点，然后 $fa$ 是 $\varnothing$。可以发现，整个遍历到的是 ${\texttt{abcbc,bcbc,cbc,bc,c},\varnothing }$，恰好是 $\texttt{abcbc}$ 的后缀的所有。 </p>
+<p>拿 $\{\texttt{abcbc},\texttt{bcbc},\texttt{cbc} \}$ 为例：这个结点的 $fa$ 会指向 $\texttt{bc}$ 所在的结点，然后 $\{\texttt{bc},\texttt{c}\}$ 是一个结点，然后 $fa$ 是 $\varnothing$。可以发现，整个遍历到的是 $\{\texttt{abcbc,bcbc,cbc,bc,c},\varnothing \}$，恰好是 $\texttt{abcbc}$ 的后缀的所有。 </p>
 <hr>
 <p><code>last = tot = 1</code>：这里表示开始已经有了一个节点，我们定义最开始结点的 $fa$ 是 0，长度也是 0。</p>
 <hr>
-<p><code>int p = last, np = ++ tot; ...; last = tot; </code>：$p$ 表示前面的结点，$np$ 表示当前的结点，处理完当前结点的时候要将 $last$ 更新。</p>
+<p><code>int p = last, np = ++ tot; ...; last = tot;</code>：$p$ 表示前面的结点，$np$ 表示当前的结点，处理完当前结点的时候要将 $last$ 更新。</p>
 <hr>
 <p><code>for (; p &amp;&amp; !tr[p].ch[c]; p = tr[p].fa) tr[p].ch[c] = np;</code></p>
 <p>根据刚才的性质：</p>
@@ -314,13 +311,12 @@
 <p><code>if (!p) tr[np].fa = 1;</code>：这个说明程序退出循环是因为 $p=0$，所以说明 $last$ 结点所代表的最长子串，也就是原串（每一次扩展时 $last$ 都赋值给了最新的那个，也就是最长的那个），原串的所有后缀都加了当前字符 $c$，然后到了 $np$ 这个结点。</p>
 <p>所以，$np$ 所代表的子串的长度一定从 $1$ 到最长长度。</p>
 <p>比如，原来的串是 $\texttt{abc}$，加上了 $\texttt{d}$，那么 $\texttt{abc},\texttt{bc},\texttt{c},\varnothing$ 都会加上 $d$ 这个字符。</p>
-<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/u717hbc3.png"></p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/u717hbc3.png" alt=""></p>
 <p>（黑色边代表 $ch[]$，绿色边代表 $fa$）</p>
 <p>前面没有理解可以看一下这个图。</p>
 <p>那么，$np$ 的 $fa$ 就是长度为 $0$ 的串在的结点，也就是 $1$。</p>
 <hr>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> q = tr[p].ch[c];</span><br><span class="line"><span class="keyword">if</span> (tr[q].len == tr[p].len + <span class="number">1</span>) tr[np].fa = q;</span><br></pre></td></tr></table></figure>
-
 <p>这里就有些难理解了，我们首先填一下前面的坑。</p>
 <p>因为 $p$ 既可以转移到 $q$，也可以转移到 $np$，那么可以得到结论：$p$ 转移的 $ch[c]$ 有两个出现。</p>
 <p>这里我们用一下前面的例子，在前面的基础 $\texttt{ab}$ 加上 $\texttt{b}$。</p>
@@ -329,23 +325,22 @@
 <p>我们首先记录下 $ch[c]$ 的位置 $q$。</p>
 <p>首先，为什么 <code>tr[q].len = tr[p].len + 1</code> 与 <code>tr[q].len != tr[p].len + 1</code> 是不同的呢？</p>
 <p>画一个图。</p>
-<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/eolba4ep.png"></p>
-<p>根据前面所讲，$\texttt{b}$ 的 $\text{endpos}$ 是 ${2,3}$，不同于原来 3 号结点的 $\text{endpos}$。</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/eolba4ep.png" alt=""></p>
+<p>根据前面所讲，$\texttt{b}$ 的 $\text{endpos}$ 是 $\{2,3\}$，不同于原来 3 号结点的 $\text{endpos}$。</p>
 <p>但是，这里判断的 <code>tr[q].len = tr[p].len + 1</code> 是什么意思呢？</p>
 <p>前面讲到，$len$ 的意思是一个结点所代表的子串的最长长度。</p>
 <p>如果 <code>tr[q].len == tr[p].len + 1</code> 的话，那么这里只有长度为 $tr[q].len$ 的一个子串！</p>
 <p>所以我们可以直接将这个结点的 $\text{endpos}$ 改为新的子串。</p>
-<p>比如说，前面的 $q=3$ 的 $\text{endpos}$ 为 2，但是又添加了 $b$ 这个字符，我们就将 $q=3$ 的 $\text{endpos}$ 直接改为 ${2,3}$ 就可以了。</p>
-<p>很明显，3 号结点所代表的子串仍然是 ${\texttt{ab},\texttt{b}}$，然后 $np=4$ 所代表的子串是 ${\texttt{abb}}$，比较明显，4 的 $fa$ 是 3。</p>
+<p>比如说，前面的 $q=3$ 的 $\text{endpos}$ 为 2，但是又添加了 $b$ 这个字符，我们就将 $q=3$ 的 $\text{endpos}$ 直接改为 $\{2,3\}$ 就可以了。</p>
+<p>很明显，3 号结点所代表的子串仍然是 $\{\texttt{ab},\texttt{b}\}$，然后 $np=4$ 所代表的子串是 $\{\texttt{abb}\}$，比较明显，4 的 $fa$ 是 3。</p>
 <hr>
 <p>（你以为完了？还多着呢</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> nq = ++ tot;</span><br><span class="line">tr[nq] = tr[q], tr[nq].len = tr[p].len + <span class="number">1</span>;</span><br><span class="line">tr[q].fa = tr[np].fa = nq;</span><br><span class="line"><span class="keyword">for</span> (; p &amp;&amp; tr[p].ch[c] == q; p = tr[p].fa) tr[p].ch[c] = nq;</span><br></pre></td></tr></table></figure>
-
 <p>这里是前面情况的相反情况，也就是 <code>tr[q].len != tr[p].len + 1</code>。</p>
 <p>那么，我们这里就需要将 $q$ 结点拆为两个结点。</p>
 <p>其中一个仍然是 $q$，另一个是 $nq$，也就是新建结点。</p>
 <p>我们再画一个图，建的是 $\texttt{abcb}$ 的后缀自动机。</p>
-<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/hib4zlyo.png"></p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/hib4zlyo.png" alt=""></p>
 <p><code>tr[nq] = tr[q]</code>：这一个比较简单，因为就是复制过来即可。</p>
 <p><code>tr[nq].len = tr[p].len + 1</code>：这里是指将 $q$ 的长度为 $tr[p].len+1$ 的子串。</p>
 <p><code>tr[q].fa = tr[np].fa = nq</code>：首先，我们从例子中学习。</p>
@@ -471,7 +466,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -560,7 +555,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -570,13 +565,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

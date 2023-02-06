@@ -237,7 +237,7 @@
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>4 mins.</span>
+              <span>3 mins.</span>
             </span>
 
         </div>
@@ -251,21 +251,22 @@
       
         <p>题意：问点数为 $n$ 的本质不同无向图个数。$n\leq 60$，对 997 取模。</p>
 <span id="more"></span>
-
 <p>本质不同，显然是群论知识了。</p>
 <p>有没有可以使用 2 种颜色来表示，现在就相当于是无向完全图个数计数。</p>
 <p>容易发现一共有 $n!$ 种不同的点置换。现在考虑对于每种不同的置换求不动点的个数。</p>
 <p>对于一个置换长度为 $k$ 内部的循环，有 $\lfloor\dfrac k2\rfloor$ 种不同的等价类，画画图就知道了。</p>
 <p>对于两个长度为 $k_1, k_2$ 的点置换之间的边，我们可以一直转的话，可以得到下面这种情况：</p>
 <img src="/2022/07/20/BZOJ1488/sample.png" class="">
-
 <p>容易发现这样中间的 6 条边都是一个等价类。该图比较特殊，如果画一些 $k_1 = 4, k_2 = 6$ 之类的情况的话会发现有 $\gcd(k_1, k_2)$ 个等价类。</p>
-<p>这样算下来一共等价类的个数为：<br>$$<br>\sum_k \lfloor\dfrac k2\rfloor + \sum_{k_1} \sum_{k_2} \gcd(k_1, k_2)<br>$$<br>注意上面的 $k_1, k_2$ 不能来自同一个置换。</p>
+<p>这样算下来一共等价类的个数为：</p>
+<script type="math/tex; mode=display">
+\sum_k \lfloor\dfrac k2\rfloor + \sum_{k_1} \sum_{k_2} \gcd(k_1, k_2)</script><p>注意上面的 $k_1, k_2$ 不能来自同一个置换。</p>
 <p>这样直接计算是 $O(n!)$ 的，无法接受。</p>
 <p>注意到我们只需要找到每一个循环的长度即可，然后考虑如果我们只枚举所有循环的长度如何计算。这样其实是整数划分的个数，大概为 $O(\dfrac{10 ^ {\sqrt n}}{n})$，可以接受。</p>
-<p>如果我们已经定义了每一个长度为 $b_i$，每一个长度的循环个数为 $c_i$，那么首先每一个置换是一个圆排列，所以需要除以 $b_i$，然后不同长度的可以任意变换，需要除以 $c_i!$，那么整个的答案就是：<br>$$<br>\dfrac 1{n!} \sum_{b_1, b_2, \dots} \dfrac{n!}{\prod b_i \prod c_i!}<br>$$<br>$n!$ 可以消去，直接计算即可。时间复杂度 $O(\dfrac{10 ^ {\sqrt n}}{n}\mathrm{poly} n)$，可以通过。</p>
+<p>如果我们已经定义了每一个长度为 $b_i$，每一个长度的循环个数为 $c_i$，那么首先每一个置换是一个圆排列，所以需要除以 $b_i$，然后不同长度的可以任意变换，需要除以 $c_i!$，那么整个的答案就是：</p>
+<script type="math/tex; mode=display">
+\dfrac 1{n!} \sum_{b_1, b_2, \dots} \dfrac{n!}{\prod b_i \prod c_i!}</script><p>$n!$ 可以消去，直接计算即可。时间复杂度 $O(\dfrac{10 ^ {\sqrt n}}{n}\mathrm{poly} n)$，可以通过。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// puts(&quot;One Division&quot;);</span></span><br><span class="line">	<span class="comment">// for (int i = 1; i &lt;= tot; ++ i) printf(&quot;%d cnt = %d\n&quot;, p[i], cnt[i]);</span></span><br><span class="line">	<span class="type">int</span> k = <span class="number">0</span>, ans;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= tot; ++ i)</span><br><span class="line">		k += p[i] / <span class="number">2</span> * cnt[i] + p[i] * cnt[i] * (cnt[i] - <span class="number">1</span>) / <span class="number">2</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= tot; ++ i)</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = i + <span class="number">1</span>; j &lt;= tot; ++ j)</span><br><span class="line">			k += g[p[i]][p[j]] * cnt[i] * cnt[j];</span><br><span class="line">	ans = <span class="built_in">qpow</span>(<span class="number">2</span>, k);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= tot; ++ i)</span><br><span class="line">		ans = (LL) ans * <span class="built_in">qpow</span>(p[i], Mod - <span class="number">1</span> - cnt[i]) % Mod * infact[cnt[i]] % Mod;</span><br><span class="line">	<span class="comment">// std::cout &lt;&lt; ans &lt;&lt; &#x27;\n&#x27;;</span></span><br><span class="line">	<span class="built_in">adj</span>(res += ans - Mod);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> ls, <span class="type">int</span> rem)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (rem == <span class="number">0</span>) <span class="keyword">return</span> <span class="built_in">solve</span>();</span><br><span class="line">	++ tot;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = ls + <span class="number">1</span>; i &lt;= rem; ++ i)</span><br><span class="line">		<span class="keyword">for</span> (p[tot] = i, cnt[tot] = <span class="number">1</span>; cnt[tot] * i &lt;= rem; ++ cnt[tot])</span><br><span class="line">			<span class="built_in">dfs</span>(i, rem - i * cnt[tot]);</span><br><span class="line">	-- tot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">init</span>();</span><br><span class="line">	std::cin &gt;&gt; n;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= n; ++ i)</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt;= n; ++ j)</span><br><span class="line">			g[i][j] = <span class="built_in">Gcd</span>(i, j);</span><br><span class="line">	<span class="built_in">dfs</span>(<span class="number">0</span>, n);</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
     </div>
 
@@ -367,7 +368,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -456,7 +457,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -466,13 +467,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

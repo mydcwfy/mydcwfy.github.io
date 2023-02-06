@@ -243,7 +243,6 @@
       
         <p>题意：有一个字符集为 <code>A, C, G, T</code> 的字符串 $S$，问有多少个长度为 $n$ 的字符串 $T$ 满足 $\mathrm{LCS}(S, T) = i$。你需要输出所有 $i\in [0, |S|]$ 的答案。$|S|\leq 15$，$n\leq 1000$。</p>
 <span id="more"></span>
-
 <p>DP of DP 模板题。</p>
 <p>首先考虑如果我们已经知道了 $T$，怎么计算 $\mathrm{LCS}(S, T)$。DP 过程不再赘述，这个 DP 过程结果可以由 $|S|$ 个数来代表，分别为每一个前缀和 $T$ 的 $\mathrm{LCS}$。</p>
 <p>注意到一旦我们知道了这 $|S|$ 个数，前面的 $T$ 如何我们其实是不关心的。也就是说，我们可以把这 $|S|$ 个数变成状态，然后枚举 $T$ 的下一个字符，直接转移就可以做完。</p>
@@ -350,7 +349,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -439,7 +438,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -449,13 +448,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

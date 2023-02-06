@@ -243,7 +243,6 @@
       
         <p>题意：给定一个长度为 $2n$ 的序列，其中 $[1, n]$ 各出现 2 次，对序列一直操作直到不再变化：从前向后操作每一个数，如果这个数不为 0 并且在其后面存在一个和其相等的数，则将这个数减 1。可以证明最后存在 $n$ 个数不为 0。先给出这 $n$ 个位置，求有多少个序列满足操作后剩这些位置。$n\leq 600$。</p>
 <span id="more"></span>
-
 <p>这个的性质并不是很优美，我们考虑直接暴力 DP。</p>
 <p>把这个序列 reverse 一下。</p>
 <p>记 $f(i, j)$ 表示处理了前 $i$ 个，且前面 $[1, j]$ 在操作后已经存在的方案数（暗示 $j + 1$ 操作后不会存在）。注意到我们无法对 $[j + 2, n]$ 的出现情况压进状态，所以我们考虑如果出现了 $[j + 2, n]$ 的数，我们先视而不见，后面需要用到的时候再将其加入，因为他还用不到。</p>
@@ -253,8 +252,10 @@
 <li>这个数最后剩的不是 $j + 1$。按照前面的理论，我们先不计算他的贡献。</li>
 <li>最后剩的是 $j + 1$。假设现在变成了 $[1, j + k]$，那么 $[j + 2, j + k]$ 的所有数都需要在前面完成，并且 $i$ 位置最后必须剩 $j + 1$。注意到我们需要从剩下的 $c - j - 1$ 个数中选取 $k - 1$ 个数，并且让他最后覆盖 $[j + 2, j + k]$。容易发现这个式子只与 $k - 1$ 有关，假设为 $add_{k - 1, k - 1}$。剩下的 $i$ 位置，只能填 $[j + 1, k]$ 的数，我们可以从剩下的 $2k - (k - 1) = k + 1$ 个数中选择。于是可以得到转移方程为：</li>
 </ol>
-<p>$$<br>dp_{i - 1, j}\times \binom{c - j - 1}{k - 1} add_{k - 1, k - 1}(k + 1) \to dp_{i, j + k}<br>$$</p>
-<p>最后一个问题就是如何计算 $add_{k, k}$。首先发现这个等价于计算 $k$ 个数，任意满足 $\in [i, k]$ 的数都 $\geq k - i + 1$，也就是满足 $[1, i]$ 的数都 $\leq i$。注意到一个数只能选择两次，考虑直接 DP。$add_{i, j}(j\leq i)$ 表示选择了 $[1, i]$ 的数，并且选了 $j$ 个的序列数。枚举 $i$ 是选择了 0、1、2 个容易得到转移方程：<br>$$<br>add_{i, j} = add_{i - 1, j} + 2j\times add_{i - 1, j - 1} + j(j - 1)\times add_{i - 1, j - 2}<br>$$<br>该部分复杂度 $O(n ^ 2)$。</p>
+<script type="math/tex; mode=display">
+dp_{i - 1, j}\times \binom{c - j - 1}{k - 1} add_{k - 1, k - 1}(k + 1) \to dp_{i, j + k}</script><p>最后一个问题就是如何计算 $add_{k, k}$。首先发现这个等价于计算 $k$ 个数，任意满足 $\in [i, k]$ 的数都 $\geq k - i + 1$，也就是满足 $[1, i]$ 的数都 $\leq i$。注意到一个数只能选择两次，考虑直接 DP。$add_{i, j}(j\leq i)$ 表示选择了 $[1, i]$ 的数，并且选了 $j$ 个的序列数。枚举 $i$ 是选择了 0、1、2 个容易得到转移方程：</p>
+<script type="math/tex; mode=display">
+add_{i, j} = add_{i - 1, j} + 2j\times add_{i - 1, j - 1} + j(j - 1)\times add_{i - 1, j - 2}</script><p>该部分复杂度 $O(n ^ 2)$。</p>
 <p>主 DP 复杂度 $O(n ^ 3)$，总复杂度即为 $O(n ^ 3)$。注意我们开始把任意两个相同的数当作不同了，于是需要除以 $2 ^ n$。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">init</span>();</span><br><span class="line">	std::cin &gt;&gt; n;</span><br><span class="line">	<span class="type">int</span> x, cnt = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;x), key[<span class="number">2</span> * n - x + <span class="number">1</span>] = <span class="literal">true</span>;</span><br><span class="line">	add[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = add[i][<span class="number">0</span>] = <span class="number">1</span>; j &lt;= i; ++ j) &#123;</span><br><span class="line">			add[i][j] = (add[i - <span class="number">1</span>][j] + add[i - <span class="number">1</span>][j - <span class="number">1</span>] * <span class="number">2LL</span> * j) % Mod;</span><br><span class="line">			<span class="keyword">if</span> (j &gt; <span class="number">1</span>) add[i][j] = (add[i][j] + add[i - <span class="number">1</span>][j - <span class="number">2</span>] * (j - <span class="number">1LL</span>) * j) % Mod;</span><br><span class="line">		&#125;</span><br><span class="line">	f[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">2</span> * n; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (key[i]) &#123;</span><br><span class="line">			++ cnt;</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; cnt; ++ j) <span class="keyword">if</span> (f[i - <span class="number">1</span>][j])</span><br><span class="line">				<span class="keyword">for</span> (<span class="type">int</span> nxt = <span class="number">1</span>; nxt + j &lt;= cnt; ++ nxt)</span><br><span class="line">					f[i][j + nxt] = (f[i][j + nxt] + (LL) f[i - <span class="number">1</span>][j] * C[cnt - j - <span class="number">1</span>][nxt - <span class="number">1</span>] % Mod</span><br><span class="line">						* add[nxt - <span class="number">1</span>][nxt - <span class="number">1</span>] % Mod * (nxt + <span class="number">1</span>)) % Mod;</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; cnt; ++ j)</span><br><span class="line">				<span class="built_in">adj</span>(f[i][j] += f[i - <span class="number">1</span>][j] - Mod);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt;= cnt; ++ j)</span><br><span class="line">				f[i][j] = (LL) f[i - <span class="number">1</span>][j] * (j - (i - <span class="number">1</span> - cnt)) % Mod;</span><br><span class="line">		&#125;</span><br><span class="line">	std::cout &lt;&lt; (LL) f[<span class="number">2</span> * n][n] * <span class="built_in">qpow</span>(<span class="number">2</span>, Mod - <span class="number">1</span> - n) % Mod &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
@@ -357,7 +358,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -446,7 +447,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -456,13 +457,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

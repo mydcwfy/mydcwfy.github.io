@@ -1,4 +1,4 @@
-<h1 id="Gitalk"><a href="#Gitalk" class="headerlink" title="Gitalk"></a>Gitalk</h1><p><a href="https://www.npmjs.com/package/gitalk"><img src="https://img.shields.io/npm/v/gitalk.svg?style=flat-square" alt="NPM"></a><br><a href="https://cdnjs.com/libraries/gitalk"><img src="https://img.shields.io/cdnjs/v/gitalk.svg?style=flat-square" alt="CDNJS"></a><br><a href="https://www.jsdelivr.com/package/npm/gitalk"><img src="https://data.jsdelivr.com/v1/package/npm/gitalk/badge" alt="jsdelivr"></a><br><a href="https://david-dm.org/gitalk/gitalk"><img src="https://david-dm.org/gitalk/gitalk.svg?style=flat-square" alt="david-dm"></a><br><a href="https://travis-ci.org/gitalk/gitalk"><img src="https://img.shields.io/travis/gitalk/gitalk/master.svg?style=flat-square" alt="travis"></a><br><a href="https://coveralls.io/github/gitalk/gitalk"><img src="https://img.shields.io/coveralls/gitalk/gitalk/master.svg?style=flat-square" alt="coveralls"></a><br><a href="https://unpkg.com/gitalk/dist/gitalk.min.js"><img src="https://img.badgesize.io/https://unpkg.com/gitalk/dist/gitalk.min.js?compression=gzip&style=flat-square" alt="gzip-size"></a></p>
+<h1 id="Gitalk"><a href="#Gitalk" class="headerlink" title="Gitalk"></a>Gitalk</h1><p><a href="https://www.npmjs.com/package/gitalk"><img src="https://img.shields.io/npm/v/gitalk.svg?style=flat-square" alt="NPM"></a><br><a href="https://cdnjs.com/libraries/gitalk"><img src="https://img.shields.io/cdnjs/v/gitalk.svg?style=flat-square" alt="CDNJS"></a><br><a href="https://www.jsdelivr.com/package/npm/gitalk"><img src="https://data.jsdelivr.com/v1/package/npm/gitalk/badge" alt="jsdelivr"></a><br><a href="https://david-dm.org/gitalk/gitalk"><img src="https://david-dm.org/gitalk/gitalk.svg?style=flat-square" alt="david-dm"></a><br><a href="https://travis-ci.org/gitalk/gitalk"><img src="https://img.shields.io/travis/gitalk/gitalk/master.svg?style=flat-square" alt="travis"></a><br><a href="https://coveralls.io/github/gitalk/gitalk"><img src="https://img.shields.io/coveralls/gitalk/gitalk/master.svg?style=flat-square" alt="coveralls"></a><br><a href="https://unpkg.com/gitalk/dist/gitalk.min.js"><img src="https://img.badgesize.io/https://unpkg.com/gitalk/dist/gitalk.min.js?compression=gzip&amp;style=flat-square" alt="gzip-size"></a></p>
 <p>Gitalk is a modern comment component based on GitHub Issue and Preact.</p>
 <h2 id="Features"><a href="#Features" class="headerlink" title="Features"></a>Features</h2><ul>
 <li>Authentication with github account</li>
@@ -8,12 +8,12 @@
 <li>Facebook-like distraction free mode (Can be enabled via the <code>distractionFreeMode</code> option)</li>
 <li>Hotkey submit comment (cmd|ctrl + enter)</li>
 </ul>
-<p><a href="https://github.com/gitalk/gitalk/blob/master/readme-cn.md">中文说明</a><br><a href="https://gitalk.github.io/">Demo</a></p>
+<p><a href="https://github.com/gitalk/gitalk/blob/master/readme-cn.md">中文说明</a><br><a href="https://gitalk.github.io">Demo</a></p>
 <h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><p>Two ways.</p>
 <ul>
 <li>links</li>
 </ul>
-<pre><code class="html">  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css&quot;&gt;
+<pre><code class="lang-html">  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css&quot;&gt;
   &lt;script src=&quot;https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js&quot;&gt;&lt;/script&gt;
 
   &lt;!-- or --&gt;
@@ -24,19 +24,19 @@
 <ul>
 <li>npm install</li>
 </ul>
-<pre><code class="sh">npm i --save gitalk
+<pre><code class="lang-sh">npm i --save gitalk
 </code></pre>
-<pre><code class="js">import &#39;gitalk/dist/gitalk.css&#39;
+<pre><code class="lang-js">import &#39;gitalk/dist/gitalk.css&#39;
 import Gitalk from &#39;gitalk&#39;
 </code></pre>
 <h2 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h2><p>Firstly, you need choose a public github repository (existed or create a new one) for store comments,</p>
 <p>Then create A <strong>GitHub Application</strong> if you don’t have one, <a href="https://github.com/settings/applications/new">Click here to register</a> a new one.<br><strong>Note:</strong> You must specify the website domain url in the <code>Authorization callback URL</code> field.</p>
 <p>Lastly, you can choose how to apply to the page as below:</p>
 <h3 id="Method-One"><a href="#Method-One" class="headerlink" title="Method One"></a>Method One</h3><p>Add a container to your page:</p>
-<pre><code class="html">&lt;div id=&quot;gitalk-container&quot;&gt;&lt;/div&gt;
+<pre><code class="lang-html">&lt;div id=&quot;gitalk-container&quot;&gt;&lt;/div&gt;
 </code></pre>
 <p>Then use the Javascript code below to generate the gitalk plugin:</p>
-<pre><code class="js">const gitalk = new Gitalk({
+<pre><code class="lang-js">const gitalk = new Gitalk({
   clientID: &#39;GitHub Application Client ID&#39;,
   clientSecret: &#39;GitHub Application Client Secret&#39;,
   repo: &#39;GitHub repo&#39;,      // The repository of store comments,
@@ -49,10 +49,10 @@ import Gitalk from &#39;gitalk&#39;
 gitalk.render(&#39;gitalk-container&#39;)
 </code></pre>
 <h3 id="Method-Two-Use-in-React"><a href="#Method-Two-Use-in-React" class="headerlink" title="Method Two: Use in React"></a>Method Two: Use in React</h3><p>Import the Gitalk with</p>
-<pre><code class="jsx">import GitalkComponent from &quot;gitalk/dist/gitalk-component&quot;;
+<pre><code class="lang-jsx">import GitalkComponent from &quot;gitalk/dist/gitalk-component&quot;;
 </code></pre>
 <p>And use the component like</p>
-<pre><code class="jsx">&lt;GitalkComponent options={{
+<pre><code class="lang-jsx">&lt;GitalkComponent options={{
   clientID: &quot;...&quot;,
   // ...
   // options below
@@ -120,7 +120,7 @@ gitalk.render(&#39;gitalk-container&#39;)
 </li>
 <li><p><strong>flipMoveOptions</strong> <code>Object</code></p>
 <p>Default:</p>
-<pre><code class="js">  {
+<pre><code class="lang-js">  {
     staggerDelayBy: 150,
     appearAnimation: &#39;accordionVertical&#39;,
     enterAnimation: &#39;accordionVertical&#39;,
@@ -151,6 +151,6 @@ gitalk.render(&#39;gitalk-container&#39;)
 </ol>
 <h2 id="Similar-Projects"><a href="#Similar-Projects" class="headerlink" title="Similar Projects"></a>Similar Projects</h2><ul>
 <li><a href="https://github.com/imsun/gitment">gitment</a></li>
-<li><a href="https://vssue.js.org/">vssue</a></li>
+<li><a href="https://vssue.js.org">vssue</a></li>
 </ul>
 <h2 id="LICENSE"><a href="#LICENSE" class="headerlink" title="LICENSE"></a>LICENSE</h2><p>MIT</p>

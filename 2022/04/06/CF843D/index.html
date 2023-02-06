@@ -28,7 +28,7 @@
 <meta property="og:description" content="Dijkstra 的好题。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-04-06T13:50:25.000Z">
-<meta property="article:modified_time" content="2022-04-09T03:44:30.220Z">
+<meta property="article:modified_time" content="2023-02-06T13:14:46.043Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="CF">
 <meta property="article:tag" content="图论">
@@ -219,7 +219,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-04-09 11:44:30" itemprop="dateModified" datetime="2022-04-09T11:44:30+08:00">2022-04-09</time>
+                <time title="Modified: 2023-02-06 21:14:46" itemprop="dateModified" datetime="2023-02-06T21:14:46+08:00">2023-02-06</time>
               </span>
 
           <br>
@@ -249,7 +249,6 @@
       
         <p>Dijkstra 的好题。</p>
 <span id="more"></span>
-
 <p>题意：给定一张图，可能询问某点到 1 的最短距离或是给 $c$ 条边的边权加 1。$n, m\leq 10 ^ 5, q\leq 2000, \sum c\leq 10 ^ 6$。</p>
 <p>直接考虑朴素的 Dijkstra，每次我们加边的时候，都暴力重构长度。时间复杂度 $O(mq\log n)$，很卡。<del>标算都卡的很，这还能过？</del></p>
 <p>另一种方法是用 SPFA 代替，时间复杂度 $O(kmq)$，<del>好像被构造卡了</del>。</p>
@@ -268,9 +267,6 @@
 <p>但是在一般的认知中，是没有办法求最短路的增量的。可以考虑类似 Johnson 全源最短路的做法，我们设置一条边的新权值为 $e(u, v)’ = e(u, v) + dis(u) - dis(v)$。类似 Johnson 的证明，我们三角不等式易得边权仍然是非负的。而我们走到一个点的时候，他的势能加上他的新图上的距离就是原图上的最短路。而新图的距离是好求的，于是我们可以得到单次 $O(m + W) = O(m)$ 的做法了。总时间复杂度 $O(m\log m + mq)$（开始必须跑一遍 Dijkstra</p>
 <p>注意仍然比较卡常，注意实现细节的错误可能导致 TLE。放一个代码。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">std::queue&lt;<span class="type">int</span>&gt; q[N];</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">bfs</span><span class="params">(<span class="type">int</span> Lim = n - <span class="number">1</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= Lim; ++ i)</span><br><span class="line">		<span class="keyword">while</span> (!q[i].<span class="built_in">empty</span>()) q[i].<span class="built_in">pop</span>();</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) now[i] = n;</span><br><span class="line">	q[<span class="number">0</span>].<span class="built_in">push</span>(<span class="number">1</span>), now[<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">	<span class="type">int</span> mx = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> l = <span class="number">0</span>, x; l &lt;= mx; ++ l)</span><br><span class="line">		<span class="keyword">while</span> (!q[l].<span class="built_in">empty</span>()) &#123;</span><br><span class="line">			x = q[l].<span class="built_in">front</span>();</span><br><span class="line">			q[l].<span class="built_in">pop</span>();</span><br><span class="line">			<span class="keyword">if</span> (now[x] &lt; l) <span class="keyword">continue</span>;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">auto</span> &amp;[i, v] : g[x])</span><br><span class="line">				<span class="keyword">if</span> (<span class="built_in">chkmin</span>(now[v], <span class="built_in">int</span>(now[x] + w[i] + d[x] - d[e[i]])) &amp;&amp; now[v] &lt;= Lim)</span><br><span class="line">					q[now[v]].<span class="built_in">push</span>(v), <span class="built_in">chkmax</span>(mx, now[v]);</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (d[i] &lt; (INF &gt;&gt; <span class="number">1</span>)) d[i] += now[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
 
     </div>
 
@@ -372,7 +368,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -461,7 +457,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -471,13 +467,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

@@ -28,7 +28,7 @@
 <meta property="og:description" content="使劲反演、生成函数，数学功底似乎得有比较高的要求。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-05-27T11:41:27.000Z">
-<meta property="article:modified_time" content="2022-05-27T14:00:05.274Z">
+<meta property="article:modified_time" content="2023-02-06T13:13:15.288Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="容斥">
 <meta property="article:tag" content="生成函数">
@@ -212,10 +212,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-05-27 19:41:27 / Modified: 22:00:05" itemprop="dateCreated datePublished" datetime="2022-05-27T19:41:27+08:00">2022-05-27</time>
+              <time title="Created: 2022-05-27 19:41:27" itemprop="dateCreated datePublished" datetime="2022-05-27T19:41:27+08:00">2022-05-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-02-06 21:13:15" itemprop="dateModified" datetime="2023-02-06T21:13:15+08:00">2023-02-06</time>
+              </span>
 
           <br>
             <span class="post-meta-item" title="Symbols count in article">
@@ -223,7 +229,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>2k</span>
+              <span>1.9k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -244,19 +250,36 @@
       
         <p>使劲反演、生成函数，数学功底似乎得有比较高的要求。</p>
 <span id="more"></span>
-
 <p>题意：有 $n$ 对 CP，任意做 $n$ 排双人座，求恰好有 $k$ 对 CP 坐在一排的方案数。$T(T\leq 2\times 10 ^ 5)$ 组数据，$n\in [1, 5\times 10 ^ 6]$，$ k\in [0, n]$。</p>
 <p><strong>看到恰好，显然容斥</strong>。</p>
 <p>这里可以用到二项式反演，具体地，我们考虑 $f(k)$ 表示恰好 $k$ 对 CP 坐在一排，$g(k)$ 表示<strong>钦定</strong> $k$ 对 CP 坐在一排。</p>
 <p>$g(k)$ 是好求的，显然就是 $\displaystyle \binom nk ^ 2k!2 ^ k(2(n - k))!$，分别是选 CP，选座位，任意排列 CP，CP 位置交换，剩下的人随便坐。</p>
-<p>由二项式反演可得：<br>$$<br>f(k) = \sum_{i = k} (-1) ^ {i - k} \binom ik g(k)<br>$$<br>直接暴力计算，可以做到 $O(n)$ 的时间复杂度，可以通过未通过加强版。</p>
+<p>由二项式反演可得：</p>
+<script type="math/tex; mode=display">
+f(k) = \sum_{i = k} (-1) ^ {i - k} \binom ik g(k)</script><p>直接暴力计算，可以做到 $O(n)$ 的时间复杂度，可以通过未通过加强版。</p>
 <p>另外，我们可以先选 $k$ 对，然后用 $h(n)$ 表示没有一对 CP 坐在一起的方案数。</p>
-<p>那么答案可以写作：<br>$$<br>ans = \binom nk ^ 2 k! 2 ^ k h(n - k)<br>$$<br>前面的可以 $O(\log k)$ 回答，主要是后面的看能不能做到 $O(n)$ 递推。</p>
-<p>容易得到 $h(n)$ 的表达式为：<br>$$<br>h(n) = \sum_{i = 0} ^ n (-1) ^ i \binom ni ^ 2 i! 2 ^ i (2(n - i))!<br>$$<br>容易化为卷积形式，做到 $O(n\log n)$ 的复杂度：<br>$$<br>h(n) = n! ^ 2 \sum_{i = 0} ^ n \dfrac{(-2) ^ i}{i!} \dfrac{(2(n - i))!}{(n - i)! ^ 2}<br>$$<br>就是 $h_1(x) = \sum_{n = 0}\dfrac{(-2) ^ i}{i!}x ^ i, h_2(x) = \sum_{n = 0} \dfrac{(2n)!}{n! ^ 2}x ^ i$ 的卷积。</p>
-<p>显然需要 $O(n)$ 递推，考虑求出 $h_1(x) \times h_2(x)$ 的生成函数。<br>$$<br>\begin{aligned}<br>h_1(x) &amp;= \sum_{i = 0}\dfrac{(-2) ^ i}{i!} x^i = e ^ {-2x}\\<br>h_2(x) &amp;= \sum_{i = 0}\dfrac{2i!}{i! ^ 2} x ^ i = \sum_{i = 0} \binom{2i}i x ^ i<br>\end{aligned}<br>$$<br>下面的式子可以化为 $\dfrac1{\sqrt {1 - 4x}}$，这里就不再详细展开。</p>
+<p>那么答案可以写作：</p>
+<script type="math/tex; mode=display">
+ans = \binom nk ^ 2 k! 2 ^ k h(n - k)</script><p>前面的可以 $O(\log k)$ 回答，主要是后面的看能不能做到 $O(n)$ 递推。</p>
+<p>容易得到 $h(n)$ 的表达式为：</p>
+<script type="math/tex; mode=display">
+h(n) = \sum_{i = 0} ^ n (-1) ^ i \binom ni ^ 2 i! 2 ^ i (2(n - i))!</script><p>容易化为卷积形式，做到 $O(n\log n)$ 的复杂度：</p>
+<script type="math/tex; mode=display">
+h(n) = n! ^ 2 \sum_{i = 0} ^ n \dfrac{(-2) ^ i}{i!} \dfrac{(2(n - i))!}{(n - i)! ^ 2}</script><p>就是 $h_1(x) = \sum_{n = 0}\dfrac{(-2) ^ i}{i!}x ^ i, h_2(x) = \sum_{n = 0} \dfrac{(2n)!}{n! ^ 2}x ^ i$ 的卷积。</p>
+<p>显然需要 $O(n)$ 递推，考虑求出 $h_1(x) \times h_2(x)$ 的生成函数。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+h_1(x) &= \sum_{i = 0}\dfrac{(-2) ^ i}{i!} x^i = e ^ {-2x}\\
+h_2(x) &= \sum_{i = 0}\dfrac{2i!}{i! ^ 2} x ^ i = \sum_{i = 0} \binom{2i}i x ^ i
+\end{aligned}</script><p>下面的式子可以化为 $\dfrac1{\sqrt {1 - 4x}}$，这里就不再详细展开。</p>
 <p>那么就得到 $h(x) = h_1(x) \times h_2(x) = \dfrac{e ^ {-2x}}{\sqrt{1 - 4x}}$（先不考虑前面的 $n! ^ 2$）</p>
 <p>考虑求导，那么就是 $h’(x) = \dfrac{8x\times e ^ {-2x}}{(1-4x) ^ {\frac 32}} = \dfrac{8x}{1 - 4x}h(x)$。</p>
-<p>提取两边的 $[x ^ n]$，容易得到：<br>$$<br>\begin{aligned}<br>[x ^ n]F’(x) - 4[x ^ {n - 1}]F’(x) &amp;= 8[x ^ {n - 1}]F(x)\\<br>(n + 1)f_{n + 1} - 4nf_n &amp;= 8f_{n - 1}<br>\end{aligned}<br>$$<br>按照此递推即可，时间复杂度  $O(n + T\log k)$。</p>
+<p>提取两边的 $[x ^ n]$，容易得到：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+[x ^ n]F'(x) - 4[x ^ {n - 1}]F'(x) &= 8[x ^ {n - 1}]F(x)\\
+(n + 1)f_{n + 1} - 4nf_n &= 8f_{n - 1}
+\end{aligned}</script><p>按照此递推即可，时间复杂度  $O(n + T\log k)$。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	fact[<span class="number">0</span>] = infact[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; N; ++ i) fact[i] = (LL) fact[i - <span class="number">1</span>] * i % Mod;</span><br><span class="line">	infact[N - <span class="number">1</span>] = <span class="built_in">qpow</span>(fact[N - <span class="number">1</span>]);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = N - <span class="number">2</span>; i; -- i) infact[i] = (LL) infact[i + <span class="number">1</span>] * (i + <span class="number">1</span>) % Mod;</span><br><span class="line">	inv[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">2</span>; i &lt; N; ++ i) inv[i] = (LL) (Mod - Mod / i) * inv[Mod % i] % Mod;</span><br><span class="line">	f[<span class="number">0</span>] = <span class="number">1</span>, f[<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; N - <span class="number">1</span>; ++ i)</span><br><span class="line">		f[i + <span class="number">1</span>] = (<span class="number">4LL</span> * i * f[i] + <span class="number">8LL</span> * f[i - <span class="number">1</span>]) % Mod * inv[i + <span class="number">1</span>] % Mod;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">C</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> m)</span> </span>&#123; <span class="keyword">return</span> (LL) fact[n] * infact[m] % Mod * infact[n - m] % Mod; &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">init</span>();</span><br><span class="line">	<span class="type">int</span> n, k, T;</span><br><span class="line">	std::cin &gt;&gt; T;</span><br><span class="line">	<span class="keyword">while</span> (T --)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>, &amp;n, &amp;k);</span><br><span class="line">		<span class="type">int</span> res = (LL) <span class="built_in">qpow</span>(<span class="built_in">C</span>(n, k), <span class="number">2</span>) * fact[k] % Mod</span><br><span class="line">			* <span class="built_in">qpow</span>(<span class="number">2</span>, k) % Mod * f[n - k] % Mod * <span class="built_in">qpow</span>(fact[n - k], <span class="number">2</span>) % Mod;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, res);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
@@ -360,7 +383,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -449,7 +472,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -459,13 +482,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

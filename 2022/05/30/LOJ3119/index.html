@@ -28,7 +28,7 @@
 <meta property="og:description" content="神仙的二项式反演，中间推导有点麻烦。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-05-30T08:53:23.000Z">
-<meta property="article:modified_time" content="2022-05-30T11:00:08.758Z">
+<meta property="article:modified_time" content="2023-02-06T13:14:45.943Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="组合数学">
 <meta property="article:tag" content="二项式反演">
@@ -211,10 +211,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-05-30 16:53:23 / Modified: 19:00:08" itemprop="dateCreated datePublished" datetime="2022-05-30T16:53:23+08:00">2022-05-30</time>
+              <time title="Created: 2022-05-30 16:53:23" itemprop="dateCreated datePublished" datetime="2022-05-30T16:53:23+08:00">2022-05-30</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-02-06 21:14:45" itemprop="dateModified" datetime="2023-02-06T21:14:45+08:00">2023-02-06</time>
+              </span>
 
           <br>
             <span class="post-meta-item" title="Symbols count in article">
@@ -243,15 +249,24 @@
       
         <p>神仙的二项式反演，中间推导有点麻烦。</p>
 <span id="more"></span>
-
 <p>题意：随机在三维 $n\times m \times l$ 的立方体中，每个格子随机放入 $1\sim n\times m\times l$ 使得每个数恰好出现一次。若三维坐标中至少有一个和当前坐标相同的坐标所填的数中，没有比当前数大的数，则称当前坐标是一个极大值。求恰好有 $k$ 个极大值的概率。$T(T\leq 10)$ 组数据，$n, m, l\leq 5\times 10 ^ 6, k\leq 100$。</p>
 <p>首先声明，$k\leq 100$ 似乎没起到作用……</p>
-<p><strong>看到恰好，果断二项式反演</strong>，下面 $f(k)$ 表示钦定 $k$ 个极大值的方案数。显然 $k$ 不能超过 $\min\{n, m, l\}$，令其为 $lim$。则答案为：<br>$$<br>ans = \sum_{i = k} ^ {lim} (-1) ^ {i - k} \binom ik f(i)<br>$$<br>下面考虑如何计算 $f(k)$。</p>
+<p><strong>看到恰好，果断二项式反演</strong>，下面 $f(k)$ 表示钦定 $k$ 个极大值的方案数。显然 $k$ 不能超过 $\min\{n, m, l\}$，令其为 $lim$。则答案为：</p>
+<script type="math/tex; mode=display">
+ans = \sum_{i = k} ^ {lim} (-1) ^ {i - k} \binom ik f(i)</script><p>下面考虑如何计算 $f(k)$。</p>
 <p>首先我们需要三维都选出 $k$ 个坐标，贡献就是 $n ^ {\underline k}m ^ {\underline k}l ^ {\underline k}$（注意是有序的）。与极大值无关的地方随便填，设为 $a_k = (n - k)(m - k)(l - k)$，为 $(nml) ^ {\underline {a_k}}$。</p>
 <p>然后现在顺序这些都不需要考虑，我们现在只需要填入 $k$ 个最大值。</p>
 <p>如果我们先填入 $k$ 个极大值中最大的那一个，填的时候我们将前 $k - 1$ 个所覆盖的（指至少有一维坐标相同）的先不管。这启示我们可以递推下去，假设这个函数为 $g(k)$。</p>
-<p>我们填的时候，有影响的位置就应该是 $a_{k - 1} - a_k$，然后我们需要在 $nml - a_k - 1$ 个数（没有这个极大值，因为他一定选最大的那一个）中随意选出 $a_{k - 1} - a_k - 1$ 个数，然后除了极大值的位置固定以外，其他的又随意填，贡献就是：<br>$$<br>\binom{nml - a_k - 1}{a_{k - 1} - a_k - 1}(a_{k - 1} - a_k - 1)!<br>$$<br>通过这个，我们很容易从 $g(k - 1)$ 转移到 $g(k)$，而转移系数就是上面那个式子。</p>
-<p>接下来就是把上面的式子一通合并（防止重名，题目中的 $k$ 更换为 $st$）：<br>$$<br>\begin{aligned}<br>ans =&amp; \dfrac 1{nml!}\sum_{k = st} ^ {lim} (-1) ^ {k - st} \binom k{st} n ^ {\underline k}m ^ {\underline k} l ^ {\underline k} nml ^ {\underline{a_k}} g(k)\\<br>=&amp; \dfrac 1{nml!}\sum_{k = st} ^ {lim} (-1) ^ {k - st} \binom k{st} n ^ {\underline k}m ^ {\underline k} l ^ {\underline k} nml ^ {\underline{a_k}} \prod_{i = 1} ^ k \dfrac{(nml - a_k - 1)!} {(nml - a_{k - 1})!} \\<br>=&amp; \sum_{k = st} ^ {lim} (-1) ^ {k - st} \binom k{st} n ^ {\underline k} m ^ {\underline k} l ^ {\underline k} \prod_{i = 1} ^ k \dfrac{1}{(nml - a_k)!}<br>\end{aligned}<br>$$<br>这样我们线性预处理前缀逆元即可 $O(n)$ 计算。</p>
+<p>我们填的时候，有影响的位置就应该是 $a_{k - 1} - a_k$，然后我们需要在 $nml - a_k - 1$ 个数（没有这个极大值，因为他一定选最大的那一个）中随意选出 $a_{k - 1} - a_k - 1$ 个数，然后除了极大值的位置固定以外，其他的又随意填，贡献就是：</p>
+<script type="math/tex; mode=display">
+\binom{nml - a_k - 1}{a_{k - 1} - a_k - 1}(a_{k - 1} - a_k - 1)!</script><p>通过这个，我们很容易从 $g(k - 1)$ 转移到 $g(k)$，而转移系数就是上面那个式子。</p>
+<p>接下来就是把上面的式子一通合并（防止重名，题目中的 $k$ 更换为 $st$）：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+ans =& \dfrac 1{nml!}\sum_{k = st} ^ {lim} (-1) ^ {k - st} \binom k{st} n ^ {\underline k}m ^ {\underline k} l ^ {\underline k} nml ^ {\underline{a_k}} g(k)\\
+=& \dfrac 1{nml!}\sum_{k = st} ^ {lim} (-1) ^ {k - st} \binom k{st} n ^ {\underline k}m ^ {\underline k} l ^ {\underline k} nml ^ {\underline{a_k}} \prod_{i = 1} ^ k \dfrac{(nml - a_k - 1)!} {(nml - a_{k - 1})!} \\
+=& \sum_{k = st} ^ {lim} (-1) ^ {k - st} \binom k{st} n ^ {\underline k} m ^ {\underline k} l ^ {\underline k} \prod_{i = 1} ^ k \dfrac{1}{(nml - a_k)!}
+\end{aligned}</script><p>这样我们线性预处理前缀逆元即可 $O(n)$ 计算。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	std::cin &gt;&gt; n &gt;&gt; m &gt;&gt; l &gt;&gt; k, lim = std::<span class="built_in">min</span>(&#123;n, m, l&#125;);</span><br><span class="line">	<span class="keyword">if</span> (k &gt; lim) <span class="keyword">return</span> <span class="built_in">void</span>(<span class="built_in">puts</span>(<span class="string">&quot;0&quot;</span>));</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= lim; ++ i)</span><br><span class="line">		<span class="built_in">adj</span>(r[i] = (LL) n * m % Mod * l % Mod - (LL) (n - i) * (m - i) % Mod * (l - i) % Mod);</span><br><span class="line">	<span class="type">int</span> tot = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= lim; ++ i) tot = (LL) tot * r[i] % Mod;</span><br><span class="line">	tot = <span class="built_in">qpow</span>(tot), pre[lim] = tot;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = lim - <span class="number">1</span>; i; -- i) pre[i] = (LL) pre[i + <span class="number">1</span>] * r[i + <span class="number">1</span>] % Mod;</span><br><span class="line">	<span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = k, op = <span class="number">1</span>; i &lt;= lim; ++ i, op = Mod - op)</span><br><span class="line">		res = (res + (LL) op * <span class="built_in">C</span>(n, i) % Mod * <span class="built_in">C</span>(m, i) % Mod * <span class="built_in">C</span>(l, i)</span><br><span class="line">			% Mod * <span class="built_in">qpow</span>(fact[i], <span class="number">3</span>) % Mod * pre[i] % Mod * <span class="built_in">C</span>(i, k)) % Mod;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, res);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
@@ -354,7 +369,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -443,7 +458,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -453,13 +468,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

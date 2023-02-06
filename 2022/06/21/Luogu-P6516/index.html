@@ -245,7 +245,6 @@
       
         <p>模板一点的生成函数题目。</p>
 <span id="more"></span>
-
 <p>题意：给定 $n$ 个点到 1 的距离，问有多少边数为 $m$ 的无向图满足该限制。边权均为 1，设 $cnt_i$ 表示距离为 $i$ 的点数，则 $n\leq 10 ^ 5$，$m\leq 2\times 10 ^ 5$，$\sum_i cnt_icnt_{i - 1}\leq 2\times 10 ^ 5$，3s，保证至少有一组解。</p>
 <p>首先，我们容易发现，按照 $dis$ 分层后，只可能在相邻层和同层直接连边，不可能跨层连边。现在分别求他们的生成函数。</p>
 <p>首先考虑邻层的生成函数。对于一个点来说，他可以任意向前一层的点连边，但是不能不连边（不然没法保证距离），于是单个点的生成函数为 $(1 + x) ^ {cnt_{i - 1}} - 1$，然后有 $cnt_i$ 个，于是为 $((1 + x) ^ {cnt_{i - 1}} - 1) ^ {cnt_i}$。由于题目保证了 $\sum_i cnt_icnt_{i - 1}\leq 2\times 10 ^ 5$，所以该算法可以直接分治 NTT 计算，时间复杂度 $O(m\log ^ 2 m)$。</p>
@@ -355,7 +354,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -444,7 +443,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -454,13 +453,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

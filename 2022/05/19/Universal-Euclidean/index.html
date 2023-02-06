@@ -251,22 +251,21 @@
       
         <p>经典的下取整求和，一般不能使用数论分块等（因为被除数不固定）。</p>
 <span id="more"></span>
-
 <p>使用类欧几里得的模板题吧（为什么不讲类欧呢？因为感觉没什么用……）。</p>
-<h3 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h3><p>题意：求<br>$$<br>\sum_{i = 0} ^ n \left\lfloor\dfrac{ai + b}c \right\rfloor<br>$$<br>$T \leq 10 ^ 5, a, b, c, n\leq 10 ^ 9, c\not= 0$。</p>
+<h3 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h3><p>题意：求</p>
+<script type="math/tex; mode=display">
+\sum_{i = 0} ^ n \left\lfloor\dfrac{ai + b}c \right\rfloor</script><p>$T \leq 10 ^ 5, a, b, c, n\leq 10 ^ 9, c\not= 0$。</p>
 <p>看到如此庞大的数据范围，大概率是对数做法了。</p>
 <p>将其放在坐标系下，我们可以看作 $y = \dfrac{ax + b}c$，定义这个直线生成的字符串为：越过一个 $x$ 整点，则加一个 <code>R</code>，越过一个 $y$ 整点，则加一个 <code>U</code>，遇到同时的整点先 <code>U</code> 后 <code>R</code>。容易发现这样下去答案一定只和这个字符串有关。</p>
 <p>比如对于这个，我们计算答案，即为：遇到 <code>U</code> 则 <code>cnt ++</code>，遇到 <code>R</code> 就 <code>res += cnt</code>。</p>
 <p>考虑合并两个已经计算好的答案，我们尝试使用一个结构体维护，容易发现答案需要和前面的 <code>U</code> $cntu$，后面 <code>R</code> 的个数 $cntr$，前后的答案，那么我们可以合并这两个的答案。具体可以写作：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Node <span class="keyword">operator</span> *(Node a, Node b)</span><br><span class="line">&#123;</span><br><span class="line">	Node res;</span><br><span class="line">	<span class="built_in">adj</span>(res.u = a.u + b.u - Mod), <span class="built_in">adj</span>(res.r = a.r + b.r - Mod);</span><br><span class="line">	res.ans = (a.ans + b.ans + <span class="built_in">LL</span>(a.u) * b.r) % Mod;</span><br><span class="line">	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>那么我们现在需要做的事情就是将整个序列拆开，最后合并答案。首先我们定义最开始单次向右 <code>R</code> 的结构体 <code>fr</code> 和单次向上 <code>U</code> 的结构体 <code>fu</code>，这样就可以最后合并得到答案。</p>
 <p>令最开始的答案为 <code>f(a, b, c, n, fu, fr)</code>，其中 <code>fu</code> 表示向上走一步所乘的结构体，<code>fr</code> 表示向右走一步要成的结构体。注意这里可能不再是开始递归进入的 <code>fu, fr</code></p>
 <p>首先我们考虑第一种情况 $a\geq c$，于是可以将 $a\geq c$ 的变为 $a &lt; c$，具体的，每次 <code>R</code> 前面相当于多加入了 $\left\lfloor\dfrac ac \right\rfloor$ 个 <code>U</code>，那么我们可以直接写作 <code>f(a % c, b, c, n, fu, qpow(fu, a / c) * fr)</code>，<code>qpow</code> 表示快速幂。</p>
 <p>那么现在我们需要考虑的就是 $a &lt; c$ 的情况。一个初步的想法是我们现在 $y = \dfrac{ax + b}c$ 的斜率是小于 1 的，我们可以将 $x, y$ 交换一下，将 <code>fu, fr</code> 交换一下，这样就可以将斜率变为大于 1 的情况，从而可以继续递归。</p>
 <p>我们显然可以变形为 $x = \dfrac{cy - b}{a}$（为了清楚，这里只是对式子进行了变形，没有把 $x, y$ 交换）。但是我们需要注意有 <code>U</code> 和 <code>R</code> 的优先级的问题。比如下图：</p>
 <img src="/2022/05/19/Universal-Euclidean/%E7%BF%BB%E8%BD%AC%E5%9B%BE1.png" class="">
-
 <p>原来的线经过了 $(1, 1)$，是先 <code>U</code> 后 <code>R</code>，但是翻转之后，变成了先 <code>R</code> 后 <code>U</code>，所以我们需要将这条线向右平移 $\dfrac 1a$ 个单位，这样就是先 <code>U</code> 后 <code>R</code>，对应上了原来的字符串。</p>
 <p>于是我们现在需要计算的就是 $x = \dfrac{cy - b - 1}a$ 的答案。注意我们现在这个的定义域是 $(0, n]$，即我们需要计算最开始的 <code>fu</code> 贡献，但不计算最开始 <code>fr</code> 的贡献。所以可以得到 $b$ 是属于 $[0, c - 1]$ 的。</p>
 <p>回到上面那张图，我们发现 $(0, 1]$ 的部分的答案是不完整的，我们不能直接扔给下一个算，那么前面所经过的 $\left\lfloor\dfrac{c - b - 1} a \right\rfloor$ 个 <code>fu</code> 是需要提前乘入的，另外还有一个 <code>fr</code>。</p>
@@ -274,18 +273,17 @@
 <p>最后我们需要考虑 $y &gt; m, x\leq n$，这样我们转化一下就是 $x\in (\left\lfloor\dfrac{cm - b - 1}a \right\rfloor, n]$，容易发现我们需要乘上 <code>qpow(fu, n - (c * m - b - 1) / a)</code>。</p>
 <p>那么我们就可以得到最后的 <code>AsGcd</code> 代码为：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Node <span class="title">AsGcd</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b, <span class="type">int</span> c, <span class="type">int</span> n, Node fu, Node fr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	b %= c;</span><br><span class="line">	<span class="keyword">if</span> (a &gt;= c) <span class="keyword">return</span> <span class="built_in">AsGcd</span>(a % c, b, c, n, fu, <span class="built_in">qpow</span>(fu, a / c) * fr);</span><br><span class="line">	LL m = (<span class="built_in">LL</span>(a) * n + b) / c;<span class="comment">// y = (cx - b - 1) / a</span></span><br><span class="line">	<span class="keyword">if</span> (m == <span class="number">0</span>) <span class="keyword">return</span> <span class="built_in">qpow</span>(fr, n);<span class="comment">// all is fr</span></span><br><span class="line">	std::<span class="built_in">swap</span>(fu, fr);</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">qpow</span>(fu, (c - b - <span class="number">1</span>) / a) * fr <span class="comment">// solving x in [0, 1]</span></span><br><span class="line">	* <span class="built_in">AsGcd</span>(c, c - b - <span class="number">1</span>, a, m - <span class="number">1</span>, fu, fr) <span class="comment">// solving x in (1, m]</span></span><br><span class="line">	* <span class="built_in">qpow</span>(fu, n - (c * m - b - <span class="number">1</span>) / a) <span class="comment">// solving x in [m, m + 1), notice that y_max = n</span></span><br><span class="line">	;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>类似欧几里得算法，得到时间复杂度 $O(\log(a + c))$，不过常数比较大。</p>
 <p>最后递归的时候，注意到 0 是被包含进入答案的，所以递归前，我们要先乘上 <code>qpow(fu, b / c) * fr</code>。</p>
-<h3 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h3><p>给定 $a, b, c, l$ 和 $n\times n$ 的矩阵 $A, B$，求：<br>$$<br>\sum_{i = 1} ^ l A ^ {i} B ^ {\lfloor\frac{ai + b}{c} \rfloor}<br>$$<br>$a, b, c, \lfloor\dfrac{al + b}{c}\rfloor\leq 10 ^ {18}$。</p>
+<h3 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h3><p>给定 $a, b, c, l$ 和 $n\times n$ 的矩阵 $A, B$，求：</p>
+<script type="math/tex; mode=display">
+\sum_{i = 1} ^ l A ^ {i} B ^ {\lfloor\frac{ai + b}{c} \rfloor}</script><p>$a, b, c, \lfloor\dfrac{al + b}{c}\rfloor\leq 10 ^ {18}$。</p>
 <p>通过这个题，我们就可以看出万能欧几里得的优势：只需要将上面的模板记住（或手推），然后处理一下信息的合并即可。这相对于类欧几里得优化了许多，思维量减小了不少。</p>
 <p>看这个题，如果我们需要合并两个已经计算好的信息，我们需要维护 $A ^ x$，这就是后面的答案需要乘在前面的；然后还需要维护 $B ^ {\lfloor\frac {ax + b}c \rfloor}$，这个需要乘在答案的中间，这和乘在最后没有区别。</p>
 <p>于是我们需要维护三个信息，而这三个信息是可以用 $O(n ^ 3)$ 时间合并的。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Node</span> &#123;</span><br><span class="line">	Matrix cntx, cnty, ans;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Node <span class="keyword">operator</span> *(Node a, Node b)</span><br><span class="line">&#123;</span><br><span class="line">	a.ans += a.cntx * b.ans * a.cnty;</span><br><span class="line">	a.cnty = a.cnty * b.cnty, a.cntx = a.cntx * b.cntx;</span><br><span class="line">	<span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>这样我们套用前面的计算方法<del>直接复制</del>，得到这份代码：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Node <span class="title">AsGcd</span><span class="params">(LL a, LL b, LL c, LL n, Node fu, Node fr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	b %= c;</span><br><span class="line">	<span class="keyword">if</span> (a &gt;= c) <span class="keyword">return</span> <span class="built_in">AsGcd</span>(a % c, b, c, n, fu, <span class="built_in">qpow</span>(fu, a / c) * fr);</span><br><span class="line">	LL m = ((s128) a * n + b) / c;</span><br><span class="line">	<span class="keyword">if</span> (m == <span class="number">0</span>) <span class="keyword">return</span> <span class="built_in">qpow</span>(fr, n);</span><br><span class="line">	std::<span class="built_in">swap</span>(fu, fr);</span><br><span class="line">	<span class="keyword">auto</span> ret = <span class="built_in">qpow</span>(fu, (c - b - <span class="number">1</span>) / a) * fr * <span class="built_in">AsGcd</span>(c, c - b - <span class="number">1</span>, a, m - <span class="number">1</span>, fu, fr)</span><br><span class="line">		* <span class="built_in">qpow</span>(fu, n - ((s128) c * m - b - <span class="number">1</span>) / a);</span><br><span class="line">	<span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>最后我们需要考虑的就是一个 <code>U</code> 和一个 <code>R</code> 分别产生什么影响。</p>
 <p>一个 <code>U</code> 会使得 <code>cnty ++</code>，而 $cntx$ 不变；一个 <code>R</code> 会使得 <code>cntx ++</code>，<code>ans += cntx</code>，$cnty$ 不变。而一个单位元就是 <code>cntx = cnty = 0</code>（注意我这里是使用 $A, B$ 的多少次方表示的，所以 <code>cntx = 0</code> 表示的是单位矩阵，以此类推）。</p>
 <p>那么 <code>fu = &#123;I, B, 0&#125;, fr = &#123;A, I, A&#125;</code> 表示 <code>U</code> 和 <code>R</code> 分别带来的影响。</p>
@@ -393,7 +391,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -482,7 +480,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -492,13 +490,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

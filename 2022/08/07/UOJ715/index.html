@@ -251,7 +251,6 @@
       
         <p>题意：给定一棵 $n$ 个点的以 1 为根的树和一个删除序列，每次删除一个 $[2, n]$ 之类的点，当对于任意一个删除的点都有其所有子树的点都被删除时，答案加上删除点的连通块个数。一棵树的价值为最后删除完的答案。动态修改树，删除一条边，加上一条边，保证还是树。实时维护答案。$n, q\leq 5\times 10 ^ 5$。</p>
 <span id="more"></span>
-
 <p><strong>诈骗结论：树的连通块个数是点数减去边数</strong>。容易发现这个结论是显然的，不过在统计连通块个数的时候非常有用。</p>
 <p>容易发现这个条件其实就是删除的点的连通块个数恰好为 1。考虑对时间轴维护连通块个数，然后对于所有未删点的连通块个数为 1 的时间点，维护删除的点的连通块个数并求和。容易发现这个在树动态的时候也很好维护，直接区间加减即可。</p>
 <p>最后一个问题就是如何维护连通块个数为 1 的时间点的删除点的连通块个数和。容易发现连通块个数最少是 1，于是可以用线段树维护区间的最小值和最小值对应位置的权值和。注意因为要区间加权值，还需要维护区间最小值个数。</p>
@@ -359,7 +358,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -448,7 +447,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -458,13 +457,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

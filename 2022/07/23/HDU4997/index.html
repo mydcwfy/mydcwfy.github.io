@@ -246,9 +246,10 @@
       
         <p>题意：给定一个 $n$ 个点 $m$ 条边的无向图，问有多少个 $m$ 条边组成的集合使得只有这些边存在让 $n$ 个点构成一个边双连通分量。$n\leq 10$，对 $10 ^ 9 + 7$ 取模。</p>
 <span id="more"></span>
-
 <p>其实这个很难计数，因为我们不好实时判断一个边双联通分量是否存在。考虑对其进行容斥。</p>
-<p>首先考虑一个简单的问题：让 $n$ 个点构成连通图的方案数。这个可以通过状态压缩 + 容斥解决，对于每一个集合 $S$，记连通图方案数为 $g(S)$，枚举编号最小的那个点（其实哪个点都行）所在的集合，然后就可以得到以下式子：<br>$$<br>g(S) = f(S) - \sum_{T\subsetneq S, id\in T} g(T) * f(S / T)<br>$$<br>$f(S)$ 代表任意连边的方案数，即为 $\displaystyle 2 ^ {\sum[(u, v)\in E\land u\in S\land v\in S]}$。</p>
+<p>首先考虑一个简单的问题：让 $n$ 个点构成连通图的方案数。这个可以通过状态压缩 + 容斥解决，对于每一个集合 $S$，记连通图方案数为 $g(S)$，枚举编号最小的那个点（其实哪个点都行）所在的集合，然后就可以得到以下式子：</p>
+<script type="math/tex; mode=display">
+g(S) = f(S) - \sum_{T\subsetneq S, id\in T} g(T) * f(S / T)</script><p>$f(S)$ 代表任意连边的方案数，即为 $\displaystyle 2 ^ {\sum[(u, v)\in E\land u\in S\land v\in S]}$。</p>
 <p>这样我们可以在 $O(3 ^ n)$ 时间内求出所有的 $g(S)$，还是可以接受的。</p>
 <p>然后我们类似于上面这种方法，计算 $h(S)$，表示 $S$ 集合内部组成一个双连通分量的方案数。</p>
 <p>我们直接模仿上面的方法，枚举 $T$ 为最小编号所在集合，然后其他的只需要满足是连通图就可以了。但是这会带来一个问题，就是 $T$ 和 $S/T$ 之间的连边不好确定，因为需要保证 $T$ 和 $S / T$ 联通，但是 $T$ 不会和 $S / T$ 中的任何部分组成边双连通。</p>
@@ -358,7 +359,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -447,7 +448,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -457,13 +458,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

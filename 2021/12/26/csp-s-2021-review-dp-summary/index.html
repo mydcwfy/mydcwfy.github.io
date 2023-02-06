@@ -243,7 +243,6 @@
       
         <p>CSP-S 2021 前写的。</p>
 <span id="more"></span>
-
 <h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>这个是为了复习前面的提高组的知识，所以可能不会复习提高组之外的知识。</p>
 <p>没有具体的大纲，<del>大纲又没有写清楚</del>，所以只能看着办吧。</p>
 <blockquote>
@@ -304,22 +303,21 @@
 <p>（因为我还没做，所以后面在更新</p>
 <h3 id="6）数位-DP"><a href="#6）数位-DP" class="headerlink" title="6）数位 DP"></a>6）数位 DP</h3><p>这种题目其实都有一定的套路，认真看了我的代码的同学应该都有印象。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">dp</span><span class="params">(<span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!n) <span class="keyword">return</span> <span class="comment">/*0 / 1*/</span>;</span><br><span class="line">    vector &lt;<span class="type">int</span>&gt; nums;</span><br><span class="line">    <span class="keyword">while</span> (n) nums.<span class="built_in">push_back</span>(n % <span class="number">10</span>), n /= <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = nums.<span class="built_in">size</span>() - <span class="number">1</span>; ~i; -- i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> &amp;x = nums[i];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; x; ++ j) <span class="comment">/*do with j*/</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>就是这样一个套路，也没有多么难。</p>
 <p>推荐一个题：<a target="_blank" rel="noopener" href="https://loj.ac/p/10168">LOJ 10168 恨 7 不成妻</a></p>
 <h3 id="7）各种优化"><a href="#7）各种优化" class="headerlink" title="7）各种优化"></a>7）各种优化</h3><p>核心思想就是 <strong>排除无用状态</strong>。</p>
 <h4 id="a-单调队列"><a href="#a-单调队列" class="headerlink" title="a. 单调队列"></a>a. 单调队列</h4><p>这个就是一个简单的道理：如果 a 比 b 差，但是 a 会比 b 先弹出决策选择区（就是 a 可选的时候 b 都可以选），那么 a 就永远没有用。</p>
 <p>比如说这个题：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5665">CSP-S2019 T5</a></p>
 <p>这个题就是一个典型的单调队列优化 DP <del>（外带卡时空</del></p>
-<p>这个的转移方程大概是这样：<br>$$<br>f_i=\max_{suf_j\leq s_i-s_j}(f_j+(s_i-s_j)^2)<br>$$</p>
-<p>$$<br>suf_i=s_i-s_j<br>$$</p>
-<p>其中，$suf_i$ 中用到的 $j$ 是 $f_i$ 转移用到的 $j$，表示最后一段的长度。</p>
+<p>这个的转移方程大概是这样：</p>
+<script type="math/tex; mode=display">
+f_i=\max_{suf_j\leq s_i-s_j}(f_j+(s_i-s_j)^2)</script><script type="math/tex; mode=display">
+suf_i=s_i-s_j</script><p>其中，$suf_i$ 中用到的 $j$ 是 $f_i$ 转移用到的 $j$，表示最后一段的长度。</p>
 <p>首先，很明显 $j$ 越靠后答案一定更优，因为最后一段越小，肯定限制就越小，分的段数就越多，答案就越小。</p>
 <p>但是，转移的条件是 $suf_j+s_j\leq s_i$。</p>
 <p>所以如果 $suf_j+s_j\geq suf_k+s_k$ 并且 $j&lt;k$，那么 $j$ 就没有用了。</p>
 <p>代码大概就长这样：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">while</span> (hh &lt; tt &amp;&amp; a[q[hh + <span class="number">1</span>]] + suf[q[hh + <span class="number">1</span>]] &lt;= a[i])<span class="comment">//breakpoint</span></span><br><span class="line">        hh ++;</span><br><span class="line">    f[i] = f[q[hh]] + (B)(a[i] - a[q[hh]]) * (a[i] - a[q[hh]]);</span><br><span class="line">    suf[i] = a[i] - a[q[hh]];</span><br><span class="line">    <span class="keyword">while</span> (hh &lt; tt &amp;&amp; a[q[tt]] + suf[q[tt]] &gt; a[i] + suf[i]) tt --;</span><br><span class="line">    q[++ tt] = i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>其中，<code>breakpoint</code> 所代表的意思，就是要找到最后一个满足 $suf_j+s_j\leq s_i$ （往后越优）。</p>
 <h4 id="b-数据结构优化"><a href="#b-数据结构优化" class="headerlink" title="b. 数据结构优化"></a>b. 数据结构优化</h4><p>这个最简单的应用就是这个：</p>
 <blockquote>
@@ -433,7 +431,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -522,7 +520,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -532,13 +530,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

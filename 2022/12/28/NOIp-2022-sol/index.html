@@ -242,7 +242,6 @@
       
         <p>总算有时间来补 NOIp 了。</p>
 <span id="more"></span>
-
 <h3 id="T1"><a href="#T1" class="headerlink" title="T1"></a>T1</h3><p>题意：给定一个 $n\times m$ 的 01 矩阵，问有多少个 1 组成的 <code>C</code> 和 <code>F</code> 图案，对 998244353 取模。$n, m\leq 1000$，$T(T\leq 5)$ 组数据。</p>
 <p><code>C</code> 和 <code>F</code> 是类似的，这里我们只讨论 <code>F</code> 的做法。</p>
 <p>注意到考虑枚举极长的竖段，加上两段向右的 1 连续段。可以先求出每个点向右最长的 1 连续段长度，然后在极长连续段上枚举下面横线的位置，动态维护上面所有向右 1 连续段长度和即可 $O(1)$ 计算。</p>
@@ -263,7 +262,7 @@
 <li>区间 $b$ 加一个数</li>
 <li>区间内部每个位置 $c$ 加上当前位置的 $a\times b$</li>
 </ol>
-<p>改题的时候比较偷懒，就使用的是矩阵维护，具体来说，需要维护区间长度，区间 $a$ 和，区间 $b$ 和，当前区间 $a\times b$ 和，历史区间 $a\times b$ 和 5 个变量。3 种操作都是好用矩阵维护的，不过比较卡常，可能需要一定技巧才能通过，具体可以看 <a target="_blank" rel="noopener" href="https://loj.ac/s/1659366%E3%80%82">https://loj.ac/s/1659366。</a></p>
+<p>改题的时候比较偷懒，就使用的是矩阵维护，具体来说，需要维护区间长度，区间 $a$ 和，区间 $b$ 和，当前区间 $a\times b$ 和，历史区间 $a\times b$ 和 5 个变量。3 种操作都是好用矩阵维护的，不过比较卡常，可能需要一定技巧才能通过，具体可以看 <a target="_blank" rel="noopener" href="https://loj.ac/s/1659366。">https://loj.ac/s/1659366。</a></p>
 
     </div>
 
@@ -365,7 +364,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -454,7 +453,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -464,13 +463,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

@@ -242,7 +242,6 @@
       
         <p>极为简单的交互题目。</p>
 <span id="more"></span>
-
 <h2 id="1-题意"><a href="#1-题意" class="headerlink" title="1. 题意"></a>1. 题意</h2><p>你站在一个格子，你可以移动到相邻的格子（如果相邻的格子不是障碍物的话）。</p>
 <p>现在你需要回答走能走到的格子有哪些。</p>
 <h2 id="2-关于交互题"><a href="#2-关于交互题" class="headerlink" title="2. 关于交互题"></a>2. 关于交互题</h2><p>请确保你知道交互题的评测方式与做法。</p>
@@ -255,7 +254,6 @@
 <p>所以，我们采用 dfs 进行搜索，并时刻记录有没有被访问。</p>
 <p>由于每一个格子访问次数是常数，所以复杂度为 $O(n^2)$。</p>
 <h2 id="4-AC-代码"><a href="#4-AC-代码" class="headerlink" title="4.AC 代码"></a>4.AC 代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PII pair<span class="string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> mp make_pair</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> get(i,j) (i-1)*n+j-1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> check(i,j) (i&gt;1&amp;&amp;j&gt;1&amp;&amp;i&lt;n&amp;&amp;j&lt;n&amp;&amp;m[i][j]==-1)</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">bool</span> vis[<span class="number">705</span>][<span class="number">705</span>];</span><br><span class="line"><span class="type">int</span> dx[<span class="number">4</span>]=&#123;<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">-1</span>&#125;,dy[<span class="number">4</span>]=&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">-1</span>,<span class="number">0</span>&#125;,n,m[<span class="number">705</span>][<span class="number">705</span>];</span><br><span class="line"><span class="type">char</span> op[<span class="number">4</span>]=&#123;<span class="string">&#x27;S&#x27;</span>,<span class="string">&#x27;D&#x27;</span>,<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;W&#x27;</span>&#125;;</span><br><span class="line">string ans;</span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="function"><span class="type">bool</span> <span class="title">move_to</span><span class="params">(<span class="type">char</span> position)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">4</span>;++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">check</span>(x+dx[i],y+dy[i]))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">move_to</span>(op[i])) m[x+dx[i]][y+dy[i]]=<span class="number">0</span>,<span class="built_in">dfs</span>(x+dx[i],y+dy[i]),<span class="built_in">move_to</span>(op[<span class="number">3</span>-i]);</span><br><span class="line">            <span class="keyword">else</span> m[x+dx[i]][y+dy[i]]=<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="function">string <span class="title">find_out_map</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y,<span class="type">int</span> N)</span></span>&#123;</span><br><span class="line">    ans=<span class="string">&quot;&quot;</span>;n=N;</span><br><span class="line">    <span class="built_in">memset</span>(m,<span class="number">-1</span>,<span class="keyword">sizeof</span> m);</span><br><span class="line">    <span class="built_in">dfs</span>(x,y);</span><br><span class="line">    ans=<span class="string">&quot;&quot;</span>;m[x][y]=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>;j&lt;=n;++j)</span><br><span class="line">            <span class="keyword">if</span> (m[i][j]==<span class="number">0</span>) ans+=<span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">            <span class="keyword">else</span> ans+=<span class="string">&#x27;1&#x27;</span>;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="5-半个交互库"><a href="#5-半个交互库" class="headerlink" title="5. 半个交互库"></a>5. 半个交互库</h2><p>我自己做的时候，由于没有交互库，无法得知自己是否正确。</p>
 <p>自己手写的代码，算半个交互库，希望对你有所帮助。</p>
 <p>（同时是本题的非交互写法）。</p>
@@ -362,7 +360,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -451,7 +449,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -461,13 +459,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

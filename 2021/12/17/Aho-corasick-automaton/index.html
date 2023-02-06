@@ -245,7 +245,6 @@
       
         <p>字符串中相对比较难的知识点。</p>
 <span id="more"></span>
-
 <h2 id="AC自动机"><a href="#AC自动机" class="headerlink" title="AC自动机"></a>AC自动机</h2><h3 id="1-前置知识"><a href="#1-前置知识" class="headerlink" title="1. 前置知识"></a>1. 前置知识</h3><p>Trie &amp; KMP.</p>
 <p><a href="https://mydcwfy.github.io/2021/12/17/KMP-algorithm/#more">KMP位置</a></p>
 <p>但是，没看懂 KMP 不代表看不懂本博客。</p>
@@ -259,7 +258,7 @@
 <p>然后模仿 KMP,一直向前 fail，直到当前的儿子节点与该节点所代表的相同。</p>
 <p>我们搜索时，也和 KMP 相似，如果匹配失败，就一直 fail 直到可以。</p>
 <p>举个例子。</p>
-<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/vdyn9ho3.png"></p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/vdyn9ho3.png" alt=""></p>
 <p>首先，根的所有儿子的 $fail$ 都是指向根节点（没有可以和他匹配的了）。</p>
 <p>对于其他节点 $u$，我们首先跳到父亲 $fa$。</p>
 <p>以 $fa$ 为节点的字符串已经处理好了 $fail$，我们一直往上跳 $fail$，$fa$ 的后缀一定是包含当前节点。</p>
@@ -276,7 +275,6 @@
 <p><a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/1284/">题目传送门 AcWing</a></p>
 <p>模板题。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N=<span class="number">1e6</span>+<span class="number">10</span>,M=<span class="number">5e6</span>+<span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> tr[N][<span class="number">26</span>],ne[N],tot,cnt[N];</span><br><span class="line"><span class="type">int</span> q[N];</span><br><span class="line"><span class="type">char</span> str[M];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> u=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>;str[i];++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> t=str[i]-<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">        <span class="keyword">if</span> (!tr[u][t]) tr[u][t]=++tot;</span><br><span class="line">        u=tr[u][t];</span><br><span class="line">    &#125;</span><br><span class="line">    cnt[u]++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">build</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> hh=<span class="number">0</span>,tt=<span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">26</span>;++i)</span><br><span class="line">        <span class="keyword">if</span> (tr[<span class="number">0</span>][i]) q[++tt]=tr[<span class="number">0</span>][i];</span><br><span class="line">    <span class="keyword">while</span> (hh&lt;=tt)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> x=q[hh++];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> h=<span class="number">0</span>;h&lt;<span class="number">26</span>;++h)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">int</span> &amp;t=tr[x][h];</span><br><span class="line">            <span class="keyword">if</span> (!t) t=tr[ne[x]][h];</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                ne[t]=tr[ne[x]][h];</span><br><span class="line">                q[++tt]=t;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">Calcans</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>,j=<span class="number">0</span>;str[i];++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> t=str[i]-<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">        j=tr[j][t];</span><br><span class="line">        <span class="type">int</span> p=j;</span><br><span class="line">        <span class="keyword">while</span> (p&amp;&amp;~cnt[p])</span><br><span class="line">        &#123;</span><br><span class="line">            ans+=cnt[p];</span><br><span class="line">            cnt[p]=<span class="number">-1</span>;</span><br><span class="line">            p=ne[p];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    <span class="keyword">while</span> (n--)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>,str);</span><br><span class="line">        <span class="built_in">insert</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">build</span>();</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>,str);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,<span class="built_in">Calcans</span>());</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h4 id="T2：-TJOI2013-单词"><a href="#T2：-TJOI2013-单词" class="headerlink" title="T2：[TJOI2013]单词"></a>T2：[TJOI2013]单词</h4><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3966">题目传送门 Luogu</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/1287/">题目传送门 AcWing</a></p>
 <p>这道题略有不同，需要我们首先统计每一个节点属于那些字符串，然后使用 ne 的转移，就可以统计了。</p>
@@ -383,7 +381,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -472,7 +470,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -482,13 +480,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

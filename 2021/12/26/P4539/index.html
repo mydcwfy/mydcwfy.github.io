@@ -223,7 +223,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>1.1k</span>
+              <span>1k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -244,25 +244,26 @@
       
         <p>一个区间 DP 的较为简单的题目。</p>
 <span id="more"></span>
-
 <h2 id="1-题意"><a href="#1-题意" class="headerlink" title="1. 题意"></a>1. 题意</h2><ul>
 <li>要求构造一个大小为 $n$ 的二叉树，按照中序遍历标号为 $1\sim n$，然后给定每个编号的频率 $f_i$，并且给定常数 $k,c$ 为实数，请最小化（设根节点深度为 1）：</li>
 </ul>
-<p>$$<br>\sum_{i=1}^nf_i\times(k\times dep_i+c)<br>$$</p>
-<ul>
+<script type="math/tex; mode=display">
+\sum_{i=1}^nf_i\times(k\times dep_i+c)</script><ul>
 <li>$n\leq30,\sum f_i=1,0&lt;k,c\leq100$</li>
 </ul>
-<h2 id="2-思路"><a href="#2-思路" class="headerlink" title="2. 思路"></a>2. 思路</h2><p>其实可能很多同学<del>（其实就是我）</del>都会想到 <code>Huffman Tree</code>，它是基于一个贪心的想法，但是我们可以比较一下两个的式子。<br>$$<br>\sum_{i=1}^nf_i\times dep_i<br>$$</p>
-<p>$$<br>\sum_{i=1}f_i\times(k\times dep_i+c)<br>$$</p>
-<p>这两个其实是有一定区别的。</p>
+<h2 id="2-思路"><a href="#2-思路" class="headerlink" title="2. 思路"></a>2. 思路</h2><p>其实可能很多同学<del>（其实就是我）</del>都会想到 <code>Huffman Tree</code>，它是基于一个贪心的想法，但是我们可以比较一下两个的式子。</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^nf_i\times dep_i</script><script type="math/tex; mode=display">
+\sum_{i=1}f_i\times(k\times dep_i+c)</script><p>这两个其实是有一定区别的。</p>
 <p>本题中，不同节点是一定会出现祖先关系，并且只有 $n$ 个节点。但是 <code>Huffman Tree</code> 却要求给定的 $n$ 个节点不能出现祖先关系，构造出来后，也会超过 $n$ 个节点。</p>
 <p>那本题怎么做呢？</p>
 <p>首先，我们可以发现一个性质：假设当前子树覆盖的区间为 $[l,r]$，根节点为 $t$，那么左边的子树覆盖的区间为 $[l,t-1]$，右边的子树为 $[t+1,r]$。</p>
 <p>这就是一个典型的区间 DP 了。</p>
 <p>当我们要计算 $dp(l,r)$ 的时候，我们直接枚举根节点 $t$，然后递归计算 $dp(l,t-1)$ 和 $dp(t+1,r)$，然后我们将左右子树直接接在 $t$ 这个节点上。</p>
 <p>怎么计算贡献呢？其实很简单，我们左右的子树的深度都要加一，对于整个的贡献就是 $k\times (s(r)-s(l-1)-f(t))$，其中 $s(i)=\sum_{j=1}^if(j)$。</p>
-<p>再加上 $t$ 的贡献，那么，我们就可以得到式子：<br>$$<br>dp(l,r)=\min_{t\in[l,r]}{dp(l,t-1)+dp(t+1,r)+k\times(s(r)-s(l-1))+c\times f(t) }<br>$$</p>
-<p>时间复杂度为 $O(n^3)$，轻松通过。</p>
+<p>再加上 $t$ 的贡献，那么，我们就可以得到式子：</p>
+<script type="math/tex; mode=display">
+dp(l,r)=\min_{t\in[l,r]}\{dp(l,t-1)+dp(t+1,r)+k\times(s(r)-s(l-1))+c\times f(t) \}</script><p>时间复杂度为 $O(n^3)$，轻松通过。</p>
 <h2 id="3-代码"><a href="#3-代码" class="headerlink" title="3. 代码"></a>3. 代码</h2><p>采用的递归式写法。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">double</span> <span class="title">solve</span><span class="params">(<span class="type">int</span> l, <span class="type">int</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (l &gt; r) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">if</span> (l == r) <span class="keyword">return</span> (k + c) * fru[l];</span><br><span class="line">	<span class="type">double</span> &amp;v = f[l][r];</span><br><span class="line">	<span class="keyword">if</span> (v &gt;= <span class="number">0</span>) <span class="keyword">return</span> v;</span><br><span class="line">	v = INF;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> mid = l; mid &lt;= r; ++ mid)</span><br><span class="line">		v = <span class="built_in">min</span>(v, <span class="built_in">solve</span>(l, mid - <span class="number">1</span>) + k * (s[r] - s[l - <span class="number">1</span>]) + c * fru[mid] + <span class="built_in">solve</span>(mid + <span class="number">1</span>, r));</span><br><span class="line">	<span class="keyword">return</span> v;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -368,7 +369,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -457,7 +458,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -467,13 +468,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

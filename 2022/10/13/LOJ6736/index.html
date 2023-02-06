@@ -245,7 +245,6 @@
       
         <p>题意：<strong>交互题</strong>。给出一棵树的点数 $n$，你每次询问可以给出一个点集 $S$ 和一个点 $x$，可以得到 $x$ 是否在点集 $S$ 的最小连通块中，需要还原出树。$n = 1000$，你最多可以询问 22000 次。求构造方案。</p>
 <span id="more"></span>
-
 <p>这个题的做法有很多，我们切入一个比较简单并且易懂的角度。</p>
 <p>首先我们考虑如果我们已经知道了这棵树的拓扑序后怎么做。注意此时我们需要定义一个根，然后每条边从儿子指向父亲。简单来说就是父亲的拓扑序在儿子的后面。</p>
 <p>注意到我们在拓扑序上枚举到了 $x$，我们求它的所有后代。容易发现它的所有后代都是在它前面的，并且除了 $x$ 的儿子以外，其他的点都已经被这种方式覆盖过了。这给我们一个区分儿子和后代的办法：拿到所有的后代后，直接在拓扑序中把这些点删除，这样后面就不会再遍历到这些点了。那么我们就可以保证，现在拿到的所有的点都满足是 $x$ 的儿子。这样做下去，容易发现询问复杂度是 $O(n\log n)$ 的，因为遍历到一个点就会把他删除，遍历到点的过程可以二分查找前半段是否存在 $x$ 的后代，所以就是 $O(n\log n)$ 的。</p>
@@ -253,7 +252,6 @@
 <p>考虑分析一下上述算法的复杂度。注意到每一个 $x$ 都只会被遍历一次（不挂其子树内是什么），找到一个 $x$ 的后代的过程同样可以二分，于是询问复杂度也是 $O(n\log n)$ 的。</p>
 <p>综上，我们可以在询问复杂度 $O(n\log n)$ 的时间内完成，时间复杂度可以较容易地做到 $O(n ^ 2)$。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">del</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; (<span class="type">int</span>) s.<span class="built_in">size</span>(); ++ i)</span><br><span class="line">        <span class="keyword">if</span> (s[i] == x) <span class="keyword">return</span> s.<span class="built_in">erase</span>(s.<span class="built_in">begin</span>() + i), <span class="built_in">void</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">query</span><span class="params">(std::vector&lt;<span class="type">int</span>&gt; s, <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    s.<span class="built_in">push_back</span>(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">ask</span>(s, x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">(<span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">del</span>(x);</span><br><span class="line">    <span class="keyword">while</span> (s.<span class="built_in">size</span>() &amp;&amp; <span class="built_in">query</span>(s, x))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> l = <span class="number">1</span>, r = s.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">while</span> (l &lt; r) &#123;</span><br><span class="line">            <span class="type">int</span> mid = (l + r) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">query</span>(&#123;s.<span class="built_in">data</span>(), s.<span class="built_in">data</span>() + mid&#125;, x)) r = mid;</span><br><span class="line">            <span class="keyword">else</span> l = mid + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> y = s[l - <span class="number">1</span>];</span><br><span class="line">        <span class="built_in">solve</span>(y);</span><br><span class="line">    &#125;</span><br><span class="line">    ord.<span class="built_in">push_back</span>(x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">std::vector&lt;std::pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;&gt; <span class="built_in">work</span>(<span class="type">int</span> n)</span><br><span class="line">&#123;</span><br><span class="line">    std::vector&lt;std::pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;&gt; res;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; ++ i) s.<span class="built_in">push_back</span>(i + <span class="number">1</span>);</span><br><span class="line">    <span class="built_in">solve</span>(<span class="number">1</span>);</span><br><span class="line">    std::vector&lt;<span class="type">int</span>&gt; vec;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>, x; i &lt; n; ++ i)</span><br><span class="line">    &#123;</span><br><span class="line">        x = ord[i];</span><br><span class="line">        <span class="keyword">while</span> (vec.<span class="built_in">size</span>() &amp;&amp; <span class="built_in">query</span>(vec, x)) &#123;</span><br><span class="line">            <span class="type">int</span> l = <span class="number">1</span>, r = vec.<span class="built_in">size</span>();</span><br><span class="line">            <span class="keyword">while</span> (l &lt; r) &#123;</span><br><span class="line">                <span class="type">int</span> mid = (l + r) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">if</span> (<span class="built_in">query</span>(&#123;vec.<span class="built_in">data</span>(), vec.<span class="built_in">data</span>() + mid&#125;, x)) r = mid;</span><br><span class="line">                <span class="keyword">else</span> l = mid + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// std::cout &lt;&lt; &quot;Find &quot; &lt;&lt; x &lt;&lt; &#x27; &#x27; &lt;&lt; vec[l - 1] &lt;&lt; &#x27;\n&#x27;;</span></span><br><span class="line">            res.<span class="built_in">push_back</span>(&#123;x, vec[l - <span class="number">1</span>]&#125;), vec.<span class="built_in">erase</span>(vec.<span class="built_in">begin</span>() + l - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        vec.<span class="built_in">push_back</span>(x);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// std::cout &lt;&lt; res.size() &lt;&lt; &#x27; &#x27; &lt;&lt; ord.size() &lt;&lt; &#x27;\n&#x27;;</span></span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
     </div>
 
@@ -357,7 +355,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -446,7 +444,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -456,13 +454,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

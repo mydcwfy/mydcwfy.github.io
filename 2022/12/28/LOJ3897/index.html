@@ -242,7 +242,6 @@
       
         <p>题意：有 $m$ 张卡牌分为 $k$ 种，每种都是偶数张，你需要顺次把 $m$ 张放进 $n$ 个栈，如果存在一个栈相邻两个种类相同，那么立刻消去。同时你可以选择两个栈，他们的底部卡牌种类需要相同，然后消去这两张卡牌。要求放完 $m$ 张卡牌过后 $n$ 个栈都是空的。请给出一个构造方案。$m\leq 2\times 10 ^ 6$，$n\leq 300$，$k = 2n - 2$ 或者 $k = 2n - 1$。</p>
 <span id="more"></span>
-
 <p>首先考虑 $k = 2n - 2$ 的做法。容易发现我们只需要空出一个栈，剩下的每个栈都放不同种类的卡牌，新来一张如果是对应卡牌是在底部的话就放在空栈，在顶部的话就直接可以消去。容易发现这样是一定能消完的。</p>
 <p>现在考虑多一种怎么做。首先一个关键点是我们还是得留出一个空栈，否则底部的 $n - 1$ 种都没法消。那么现在问题在于这 $n - 1$ 个栈已经放了 $2n - 2$ 种类，并且又来了一种新的。</p>
 <p>首先如果他的下一张卡牌是在底部的话，我们直接在这个栈上面放上一个新来的，然后把底部消去即可。同时如果下一张卡牌也是新来的种类的话，我们直接把这两张都放在空栈即可消去。</p>
@@ -354,7 +353,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -443,7 +442,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -453,13 +452,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

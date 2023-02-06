@@ -248,7 +248,6 @@
       
         <p>有趣的倍增 ST 表题目。</p>
 <span id="more"></span>
-
 <p>题意：有一个 $n$ 位数，$m$ 个限制表示 $[l_1, r_1]$ 和 $[l_2, r_2]$ 子区间是相同的。问有多少个 $n$ 位数满足这一条件。$n, m\leq 10 ^ 5$。</p>
 <p>容易得到区间相同是由可合并性的，考虑将这个区间划分成 $O(\log n)$ 个区间来分别拆开做。但是一个很神秘的问题是我们如果使用线段树的话，两个算然都是 $O(\log n)$ 个区间，但是他们的个数、形态不完全相同，所以不能使用线段树。</p>
 <p>怎么办呢？直接考虑对每一个位置建 $O(\log n)$ 个节点，表示 $[pos, pos + 2 ^ k - 1]$ 区间，这样我们就可以直接合并这两个区间就可以了。不考虑并查集的复杂度，那么就是 $O(m\log n)$。</p>
@@ -355,7 +354,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -444,7 +443,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -454,13 +453,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

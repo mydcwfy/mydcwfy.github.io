@@ -242,12 +242,10 @@
       
         <p>题意：给定 $n$ 个数，要求把他们分成红蓝两组，要求都不为空，使得红组的 AND 和蓝组的 AND 相同，求划分方案。$n\leq 50, a &lt; 2 ^ {20}$。</p>
 <span id="more"></span>
-
 <p>容易发现不管怎么 DP 都是至少 $O(a ^ 2n)$ 的，不可接受。</p>
 <p>考虑朴素容斥，假设某一位不相同，那么所有该位为 1 的数都应该在同一组，容斥这一位不相同，那么将所有该位为 1 的数同并查集合并，然后最后看有几组，答案就是 $2 ^ {cnt} - 2$。</p>
 <p>注意如果一个位置一个该位为 1 的数都没有，那么不能对该位进行容斥。用个 dfs 搜一搜即可。复杂度 $O(na)$。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SetAndSet</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="type">int</span> n;</span><br><span class="line">	std::vector&lt;<span class="type">int</span>&gt; f;</span><br><span class="line">	std::vector&lt;<span class="type">int</span>&gt; all[<span class="number">20</span>];</span><br><span class="line">	LL res;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="type">int</span> <span class="title">find</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123; <span class="keyword">return</span> x == f[x] ? x : f[x] = <span class="built_in">find</span>(f[x]); &#125;</span><br><span class="line">	<span class="function"><span class="type">bool</span> <span class="title">merge</span><span class="params">(<span class="type">int</span> u, <span class="type">int</span> v)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="built_in">find</span>(u) == <span class="built_in">find</span>(v)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">		<span class="keyword">return</span> f[<span class="built_in">find</span>(v)] = <span class="built_in">find</span>(u), <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> bit, <span class="type">int</span> op)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (bit == <span class="number">20</span>) &#123;</span><br><span class="line">			<span class="type">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; ++ i) cnt += f[i] == i;</span><br><span class="line">			res += op * ((<span class="number">1LL</span> &lt;&lt; cnt) - <span class="number">2</span>);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">dfs</span>(bit + <span class="number">1</span>, op);</span><br><span class="line">		<span class="keyword">if</span> (all[bit].<span class="built_in">size</span>()) &#123;</span><br><span class="line">			<span class="keyword">auto</span> bac = f;</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; (<span class="type">int</span>) all[bit].<span class="built_in">size</span>(); ++ i)</span><br><span class="line">				<span class="built_in">merge</span>(all[bit][i], all[bit][<span class="number">0</span>]);</span><br><span class="line">			<span class="built_in">dfs</span>(bit + <span class="number">1</span>, -op);</span><br><span class="line">			f = bac;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function">LL <span class="title">countandset</span><span class="params">(std::vector&lt;<span class="type">int</span>&gt; a)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		n = a.<span class="built_in">size</span>(), res = <span class="number">0</span>;</span><br><span class="line">		f.<span class="built_in">resize</span>(n);</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; ++ i) f[i] = i;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> bit = <span class="number">0</span>; bit &lt; <span class="number">20</span>; ++ bit)</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; ++ i)</span><br><span class="line">				<span class="keyword">if</span> (!(a[i] &gt;&gt; bit &amp; <span class="number">1</span>)) all[bit].<span class="built_in">push_back</span>(i);</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">dfs</span>(<span class="number">0</span>, <span class="number">1</span>), res;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
 
     </div>
 
@@ -348,7 +346,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -437,7 +435,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -447,13 +445,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

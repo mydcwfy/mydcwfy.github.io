@@ -244,7 +244,6 @@
       
         <p>题意过于神秘，就没有简述了。</p>
 <span id="more"></span>
-
 <p>首先考虑如何判断 $a_i$ 能否表示 $a_j$。如果 $a_i$ 是 $q(p = q ^ k)$ 的话，那么容易发现不超过 $k$ 次幂就一定会变成 0，这样直接暴力查表即可，时间复杂度 $O(n\log n)$ 或者 $O(n\log ^ 2n)$。否则的话，一定可以发现 $a_i$ 可以在原根下有离散对数，这样是否有次幂就可以看作是否在模意义下有倍数，即是否存在一个 $t$ 满足 $t\times \ln a_i\equiv \ln a_j\pmod {\varphi(p)}$。这个的检验显然就是判断 $\gcd(\ln a_j, \varphi(p))$ 是否整除 $\ln a_i$。</p>
 <p>求原根时间复杂度不计，求离散对数时间复杂度 $O(n\sqrt p)$，两两判断是 $O(n ^ 2\log n)$ 的，不过 $\log$ 是 $\gcd$ 的，比较小，可以接受。</p>
 <p>接下来考虑如何计算至少需要的次数。如果我们把 $a_i\to a_j$ 的有向边表示 $a_i$ 能表示 $a_j$ 的话，那么相当于是统计入度为 0 的点的个数。一个显然的结论是这个图是一个传递闭包，因为 $a_i\to a_j$，$a_j\to a_k$，那么 $a_i$ 一定能表示 $a_k$。</p>
@@ -352,7 +351,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -441,7 +440,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -451,13 +450,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

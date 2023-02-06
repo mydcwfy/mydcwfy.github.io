@@ -247,7 +247,6 @@
       
         <p>同步发表于 P5236 题解。</p>
 <span id="more"></span>
-
 <h2 id="0-前置知识"><a href="#0-前置知识" class="headerlink" title="0. 前置知识"></a>0. 前置知识</h2><p>本蒟蒻也是最近学习这个 <del>巨毒瘤</del> 的算法，好多地方也是一头雾水，仔细想了几个晚自习后，有些恍然大悟，于是写了这篇题解。</p>
 <p>需要的东西：Tarjan（似乎没有具体的模板）。</p>
 <p>就是一个求边强连通分量的算法，一会我们要利用它并改进为我们所用。</p>
@@ -264,7 +263,7 @@
 <p>但是，环内的边和点间的距离就没法统计了。</p>
 <p>我们假设任意一个点为根，那么一定会有一个点距离根节点最近。</p>
 <p>来看一个图（ <del>盗的例题的图</del> ）</p>
-<p><img src="https://cdn.luogu.com.cn/upload/pic/52854.png"></p>
+<p><img src="https://cdn.luogu.com.cn/upload/pic/52854.png" alt=""></p>
 <p>假设七号点为根，那么，对于 “1-2-3-4” 的环，三号点距离根节点最近。</p>
 <p>我们设最近的点具有 “A” 性质。</p>
 <p>下面，我们证明一个东西：环内的点到根节点一定经过环内具有 “A” 性质的点。</p>
@@ -280,21 +279,20 @@
 <p>对于环内的节点，我们可以新建一个方点，向 “A” 的点连接一条权值为 0 的边，在从新点到其他点连接原来应有的权值。</p>
 <p>现在，我们判断是不是原来的边，只需判断是不是有新建的点即可。</p>
 <p>举个例子，上面的仙人掌建为圆方树（7 号是根节点）是：</p>
-<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/lhd1whrx.png"></p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/lhd1whrx.png" alt=""></p>
 <h2 id="2-Tarjan-算法及变形"><a href="#2-Tarjan-算法及变形" class="headerlink" title="2. Tarjan 算法及变形"></a>2. Tarjan 算法及变形</h2><p>我们刚才讨论的范围，是在能求简单环的基础上，现在，我们的问题是，如何才能找到所有的简单环？</p>
 <p>可能大家都会想到，直接用 Tarjan 算法，就可以去求了。</p>
 <p>但是，有一个问题：Tarjan 求的是边双联通分量，即去掉任意一条边后，原图仍然联通，那么，原图的 “123456”6 个点，满足该要求，但他们并不属于同一个简单环，怎么办呢？</p>
 <p>于是，需要我们改进该算法。</p>
 <p>首先，我们回顾一下原算法。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//来自本人缩点模板题</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Tarjan</span><span class="params">(<span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	dfn[x]=low[x]=++tot;</span><br><span class="line">	st[++top]=x, ins[x]=<span class="literal">true</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i=h[x];~i;i=ne[i])</span><br><span class="line">    	<span class="keyword">if</span> (!dfn[e[i]])</span><br><span class="line">    	&#123;</span><br><span class="line">    		<span class="built_in">Tarjan</span>(e[i]);</span><br><span class="line">			low[x]=<span class="built_in">min</span>(low[x],low[e[i]]);</span><br><span class="line">    	&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (ins[e[i]]) low[x] = <span class="built_in">min</span>(low[x], dfn[e[i]]);</span><br><span class="line">	<span class="keyword">if</span> (low[x]!=dfn[x]) <span class="keyword">return</span>;</span><br><span class="line">	cnt++;<span class="type">int</span> now;</span><br><span class="line">	<span class="keyword">do</span>&#123;</span><br><span class="line">		now=st[top--];</span><br><span class="line">		ins[now]=<span class="number">0</span>; </span><br><span class="line">		bel[now]=cnt;</span><br><span class="line">	&#125;<span class="keyword">while</span> (now!=x);</span><br><span class="line">	<span class="keyword">return</span> ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>原算法中，只要还在栈中，我们都将所有归为一个边双联通分量。</p>
 <p>但是，现在，如果我们还遇到这种情况的话，就应该一个一个的处理为一个一个的简单环，而不是揉在一起。</p>
 <p>所以，当我们遇到 $low[e[i]]&lt;dfn[x]$ 的时候，我们直接倒回去，就可以倒推出一整个环的情况了。</p>
 <p>请注意，此时 $x$ 也为其中的点。</p>
 <p>具体来说，我们遇到这种情况时，直接 $\operatorname{build-round-square}(x,e[i],w)$，表示从 $e[i]$ 倒推，直到 $x$ 为 “A” 点，其中 $(x,e[i])$ 的权值为 $w$。</p>
 <p>具体来说，我们遇到了这样的情况：</p>
-<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/vuo9hei8.png"></p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/vuo9hei8.png" alt=""></p>
 <p><del>（好像少标了一条边的权值）</del></p>
 <p>我们知道，Tarjan 算法建了一棵搜索树，在树上进行计算。</p>
 <p>如图，黑边就是搜索树的边，而红边就是非树边。</p>
@@ -306,7 +304,6 @@
 <p>如果你对传参有不理解，看一下代码就知道了。</p>
 <p>于是，我们就可以得到这样的代码：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> h[],<span class="type">int</span> a,<span class="type">int</span> b,<span class="type">int</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    e[idx]=b,ne[idx]=h[a],w[idx]=c,h[a]=idx++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">build_round_square</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y,<span class="type">int</span> w)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> sum=w;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i=y;i!=x;i=fa[i])</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// cout&lt;&lt;i&lt;&lt;&#x27; &#x27;;</span></span><br><span class="line">        s[i]=sum;</span><br><span class="line">        sum+=fw[i];</span><br><span class="line">    &#125;</span><br><span class="line">    stot[x]=s[x]=sum;</span><br><span class="line">    <span class="built_in">add</span>(h2,x,++square_node,<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i=y;i!=x;i=fa[i])</span><br><span class="line">    &#123;</span><br><span class="line">        stot[i]=sum;</span><br><span class="line">        <span class="built_in">add</span>(h2,square_node,i,<span class="built_in">min</span>(s[i],stot[i]-s[i]));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">tarjan</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> from)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    dfn[x]=low[x]=++tot;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i=h1[x],j;~i;i=ne[i])</span><br><span class="line">        <span class="keyword">if</span> (!dfn[j=e[i]])</span><br><span class="line">        &#123;</span><br><span class="line">            fa[j]=x,fw[j]=w[i];</span><br><span class="line">            <span class="built_in">tarjan</span>(j,i);</span><br><span class="line">            low[x]=<span class="built_in">min</span>(low[x],low[j]);</span><br><span class="line">            <span class="keyword">if</span> (low[j]&gt;dfn[x]) <span class="built_in">add</span>(h2,x,j,w[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (i!=(from^<span class="number">1</span>)) low[x]=<span class="built_in">min</span>(low[x],dfn[e[i]]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i=h1[x],j;~i;i=ne[i])</span><br><span class="line">        <span class="keyword">if</span> (dfn[j=e[i]]&gt;dfn[x]&amp;&amp;fa[j]!=x)</span><br><span class="line">            <span class="built_in">build_round_square</span>(x,j,w[i]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="3-回归本题"><a href="#3-回归本题" class="headerlink" title="3. 回归本题"></a>3. 回归本题</h2><h4 id="1）题意"><a href="#1）题意" class="headerlink" title="1）题意"></a>1）题意</h4><ol>
 <li>给定一个仙人掌图，有 $Q$ 次询问，询问 $u$ 和 $v$ 之间的最短路。</li>
 <li>$n,q\leq10^4,m\leq2*10^4,w\leq10^5$。</li>
@@ -434,7 +431,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -523,7 +520,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -533,13 +530,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

@@ -245,7 +245,6 @@
       
         <p>题意：给定 $n$ 个数的序列，每次询问一段区间的乘积是不是立方数。$n, q\leq 2\times 10 ^ 5$，$A_i\leq 10 ^ 6$，3s。</p>
 <span id="more"></span>
-
 <p>注意到我们显然需要对每一个质因数都判断一次，看这段区间有多少个该质因子，观察次幂是否是 3 的倍数即可。但是怎么都不好做，大概都是带根号的平衡做法了。</p>
 <p>瓶颈仍然在于我们如何对每个质因子都需要判一边，很浪费时间。于是<strong>考虑 Hash</strong>，我们令一个质因子是 $[0, 2]$ 的任意一个数，然后让和 $\bmod 3$ 的余数看是不是 0。如果不是 0 的话显然答案是 NO。</p>
 <p>注意到一个 NO 在单次判断中被判成 YES 的概率大概是 $\dfrac 13$，于是我们可以考虑判断 $10\sim 15$ 次，这样准确的概率已经极高了。这样就可以通过了，但是可能需要卡常。</p>
@@ -253,7 +252,6 @@
 <p>于是直接按照这个写，大概分解一下质因数就好了。时间复杂度 $O(n\sqrt n + TQ)$，$T$ 表示判断次数，可以通过。</p>
 <p>场上想的降智办法是找到一个数满足 $x ^ 3\equiv 1\pmod p$，然后对于每一个质因数，任取 $x$ 的几次方作为随机权值，这样的话区间乘积如果不是 1 的话，这个询问是 NO。容易发现其实是一样的。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function"><span class="type">static</span> std::mt19937 <span class="title">rnd</span><span class="params">(std::random_device&#123;&#125;())</span></span>;</span><br><span class="line">	<span class="type">int</span> mul = ((<span class="type">int</span>) <span class="number">1e9</span> + <span class="number">8</span>) / <span class="number">3</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>, t; i &lt; cnt; ++ i) &#123;</span><br><span class="line">		<span class="keyword">while</span> (std::__gcd(t = <span class="built_in">rnd</span>() % (Mod - <span class="number">1</span>), Mod - <span class="number">1</span>) != <span class="number">1</span>);</span><br><span class="line">		rv[i] = <span class="built_in">qpow</span>(<span class="number">13</span>, (LL) mul * t % (Mod - <span class="number">1</span>));</span><br><span class="line">	&#125;</span><br><span class="line">	pre[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>, x, p, id; i &lt;= n; ++ i)</span><br><span class="line">	&#123;</span><br><span class="line">		x = a[i], pre[i] = pre[i - <span class="number">1</span>];</span><br><span class="line">		<span class="keyword">while</span> (x ^ <span class="number">1</span>) &#123;</span><br><span class="line">			p = mxp[x];</span><br><span class="line">			id = std::<span class="built_in">lower_bound</span>(prime, prime + cnt, p) - prime;</span><br><span class="line">			<span class="keyword">while</span> (x % p == <span class="number">0</span>) pre[i] = (LL) pre[i] * rv[id] % Mod, x /= p;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= Q; ++ i)</span><br><span class="line">		res[i] &amp;= (LL) pre[q[i].r] * <span class="built_in">qpow</span>(pre[q[i].l - <span class="number">1</span>]) % Mod == <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">sieve</span>();</span><br><span class="line">	std::cin &gt;&gt; n &gt;&gt; Q;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, a + i);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= Q; ++ i) res[i] = <span class="literal">true</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= Q; ++ i) <span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>, &amp;q[i].l, &amp;q[i].r);</span><br><span class="line">	<span class="type">int</span> T = <span class="number">20</span>;</span><br><span class="line">	<span class="keyword">while</span> (T --) <span class="built_in">work</span>();</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= Q; ++ i) <span class="built_in">puts</span>(res[i] ? <span class="string">&quot;Yes&quot;</span> : <span class="string">&quot;No&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
     </div>
 
@@ -357,7 +355,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -446,7 +444,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -456,13 +454,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

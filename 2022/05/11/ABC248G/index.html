@@ -244,11 +244,9 @@
       
         <p>有趣的反演（？）题目，欧拉函数基础变化。</p>
 <span id="more"></span>
-
 <p>题意：给定一棵带点权树，定义一条路径的权值为覆盖点的数目乘以所有数的 $\gcd$，求所有路径（不含单点路径）的和。$n\leq 10 ^ 5, 1\leq a_i\leq n$。</p>
 <h3 id="做法-1（赛时做法）"><a href="#做法-1（赛时做法）" class="headerlink" title="做法 1（赛时做法）"></a>做法 1（赛时做法）</h3><p>考虑枚举 $d$，使得所有数都是 $d$ 的倍数，对所有连通块进行遍历，可以得到所有路径覆盖点的个数和。$\gcd$ 为 $d$ 的答案即为 $d | \gcd$ 的答案减去所有 $\gcd = 2d, 3d, \dots$ 的答案，倒序扫即可。时间复杂度 $O(nD + n\ln n)$，$D$ 表示 $n$ 以内最大因数个数。统计连通块的个数可以树形 DP 一下即可。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (a[x] % d) <span class="keyword">return</span>;</span><br><span class="line">	sz[x] = dis[x] = <span class="number">1</span>, vis[x] = <span class="literal">true</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> v : g[x])</span><br><span class="line">		<span class="keyword">if</span> (!(a[v] % d) &amp;&amp; !vis[v]) &#123;</span><br><span class="line">			<span class="built_in">dfs</span>(v);</span><br><span class="line">			ans[d] = (ans[d] + (LL) dis[v] * sz[x] + (LL) dis[x] * sz[v]) % Mod;</span><br><span class="line">			<span class="built_in">adj</span>(dis[x] += dis[v] - Mod), <span class="built_in">adj</span>(dis[x] += sz[v] - Mod), sz[x] += sz[v];</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>, x = a[i]; j &lt;= x / j; ++ j) &#123;</span><br><span class="line">			<span class="keyword">if</span> (x % j) <span class="keyword">continue</span>;</span><br><span class="line">			bs[j].<span class="built_in">push_back</span>(i);</span><br><span class="line">			<span class="keyword">if</span> (j * j != x) bs[x / j].<span class="built_in">push_back</span>(i);</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">for</span> (d = <span class="number">1</span>; d &lt; N; ++ d)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> x : bs[d])</span><br><span class="line">			<span class="keyword">if</span> (!vis[x]) <span class="built_in">dfs</span>(x);</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> x : bs[d]) vis[x] = <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = N - <span class="number">1</span>; i; -- i)</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">2</span>; j * i &lt; N; ++ j) <span class="built_in">adj</span>(ans[i] -= ans[i * j]);</span><br><span class="line">    <span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; N; ++ i) res = (res + (LL) i * ans[i]) % Mod;</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; std::endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="做法-2（欧拉函数）"><a href="#做法-2（欧拉函数）" class="headerlink" title="做法 2（欧拉函数）"></a>做法 2（欧拉函数）</h3><p>考虑一件事情：$\sum_{d | n} \varphi(d) = n$，具体证明可以拆质数算。那么当贡献为 $n$ 时，我们只需要计算 $\sum_{d | n} \varphi(d)$ 即可。</p>
 <p>向上面一样，我们直接计算 $d | \gcd$ 的路径点数之和，最后乘上 $\varphi(d)$ 即可。时间复杂度 $O(nD)$。</p>
 <p>代码和上面差不多，不给了。</p>
@@ -355,7 +353,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -444,7 +442,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -454,13 +452,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

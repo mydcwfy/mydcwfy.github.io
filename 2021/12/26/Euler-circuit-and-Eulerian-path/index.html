@@ -245,7 +245,6 @@
       
         <p>代码简单。</p>
 <span id="more"></span>
-
 <h3 id="1-定义"><a href="#1-定义" class="headerlink" title="1.定义"></a>1.定义</h3><p>即”一笔画“问题，从一个点出发，能不重复地走过所有边，则称该路径为欧拉路径。</p>
 <p>如果能走回原点，则该路径为欧拉回路。</p>
 <p>注意，点是可以多次经过的，只要不重复走边即可。</p>
@@ -264,7 +263,6 @@
 <p>那么，我们怎样将所有的边接为一个大环呢？</p>
 <p>我们模拟栈的回溯过程，将第二个环嵌在第一个环中间。</p>
 <img src="/2021/12/26/Euler-circuit-and-Eulerian-path/%E6%AC%A7%E6%8B%89%E5%9B%9E%E8%B7%AF%E4%BE%8B%E5%9B%BE.png" class="">
-
 <p>这个会按照 红-绿 的颜色进行递归的，然后按照这个倒序的话，我们就可以找到这个欧拉回路，也就是这个 红-绿 路径。</p>
 <p>栈的模拟十分简单，回溯的时候直接将这条边入栈，最后倒序输出就可以了。</p>
 <p>但是，这样的时间复杂度是 $O(nm)$（虽然和 spfa 差不多），我们很多时候需要优化，变为严格 $O(n+m)$。</p>
@@ -374,7 +372,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -463,7 +461,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -473,13 +471,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

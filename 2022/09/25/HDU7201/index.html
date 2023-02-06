@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"mydcwfy.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="题意：求 $$\sum_{i &#x3D; 1} ^ n \sum_{j &#x3D; 1} ^ n H(ij) [\gcd(i, j) &#x3D; 1]$$其中 $H(x)$ 表示 $x$ 所有质因子的乘积（去重后）。$n\leq 10 ^ 9$，$T(T\leq 5)$ 组数据，满足 $\sum n\leq 2\times 10 ^ 9$。20s。">
+  <meta name="description" content="题意：求  \sum_{i &#x3D; 1} ^ n \sum_{j &#x3D; 1} ^ n H(ij) [\gcd(i, j) &#x3D; 1]其中 $H(x)$ 表示 $x$ 所有质因子的乘积（去重后）。$n\leq 10 ^ 9$，$T(T\leq 5)$ 组数据，满足 $\sum n\leq 2\times 10 ^ 9$。20s。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HDU7201 Yet Another Easy Function Sum Problem">
 <meta property="og:url" content="https://mydcwfy.github.io/2022/09/25/HDU7201/index.html">
 <meta property="og:site_name" content="mydcwfy&#39;s Blog">
-<meta property="og:description" content="题意：求 $$\sum_{i &#x3D; 1} ^ n \sum_{j &#x3D; 1} ^ n H(ij) [\gcd(i, j) &#x3D; 1]$$其中 $H(x)$ 表示 $x$ 所有质因子的乘积（去重后）。$n\leq 10 ^ 9$，$T(T\leq 5)$ 组数据，满足 $\sum n\leq 2\times 10 ^ 9$。20s。">
+<meta property="og:description" content="题意：求  \sum_{i &#x3D; 1} ^ n \sum_{j &#x3D; 1} ^ n H(ij) [\gcd(i, j) &#x3D; 1]其中 $H(x)$ 表示 $x$ 所有质因子的乘积（去重后）。$n\leq 10 ^ 9$，$T(T\leq 5)$ 组数据，满足 $\sum n\leq 2\times 10 ^ 9$。20s。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-09-25T11:42:31.000Z">
-<meta property="article:modified_time" content="2022-09-25T13:02:26.324Z">
+<meta property="article:modified_time" content="2023-02-06T13:13:15.495Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="数论">
 <meta property="article:tag" content="复杂度分析">
@@ -213,10 +213,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-09-25 19:42:31 / Modified: 21:02:26" itemprop="dateCreated datePublished" datetime="2022-09-25T19:42:31+08:00">2022-09-25</time>
+              <time title="Created: 2022-09-25 19:42:31" itemprop="dateCreated datePublished" datetime="2022-09-25T19:42:31+08:00">2022-09-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-02-06 21:13:15" itemprop="dateModified" datetime="2023-02-06T21:13:15+08:00">2023-02-06</time>
+              </span>
 
           <br>
             <span class="post-meta-item" title="Symbols count in article">
@@ -224,7 +230,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>6.4k</span>
+              <span>6.3k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -244,18 +250,45 @@
 
       
         <p>题意：求</p>
-<p>$$<br>\sum_{i = 1} ^ n \sum_{j = 1} ^ n H(ij) [\gcd(i, j) = 1]<br>$$<br>其中 $H(x)$ 表示 $x$ 所有质因子的乘积（去重后）。$n\leq 10 ^ 9$，$T(T\leq 5)$ 组数据，满足 $\sum n\leq 2\times 10 ^ 9$。20s。</p>
+<script type="math/tex; mode=display">
+\sum_{i = 1} ^ n \sum_{j = 1} ^ n H(ij) [\gcd(i, j) = 1]</script><p>其中 $H(x)$ 表示 $x$ 所有质因子的乘积（去重后）。$n\leq 10 ^ 9$，$T(T\leq 5)$ 组数据，满足 $\sum n\leq 2\times 10 ^ 9$。20s。</p>
 <span id="more"></span>
-
-<p>类似 $\varphi$ 的，我们有一个这样的结论：<br>$$<br>H(ij) = \dfrac {H(i) H(j)}{H(\gcd(i, j))}<br>$$<br>对每个质因数分开看就好了。</p>
-<p>首先看到 $\gcd$ 套路反演一下（所有除法默认下取整）：<br>$$<br>\begin{aligned}<br>&amp; \sum_{i = 1} ^ n \sum_{j = 1} ^ n H(ij) [\gcd(i, j) = 1] \\<br>=&amp; \sum_{i = 1} ^ n \sum_{j = 1} ^ n H(i)H(j) \sum_{d | i, d | j} \mu(d)\\<br>=&amp; \sum_{d = 1} ^ n \mu(d)(\sum_{i = 1} ^ {\frac nd} H(id)) ^ 2<br>\end{aligned}<br>$$<br>这个看样子就不能很好做，至少都得枚举 $d$，这样就不可能低于 $O(n)$。考虑对 $d$ 分治，钦定阈值 $B$，$d\leq B$ 就暴力枚举，否则我们换另外的方法。</p>
+<p>类似 $\varphi$ 的，我们有一个这样的结论：</p>
+<script type="math/tex; mode=display">
+H(ij) = \dfrac {H(i) H(j)}{H(\gcd(i, j))}</script><p>对每个质因数分开看就好了。</p>
+<p>首先看到 $\gcd$ 套路反演一下（所有除法默认下取整）：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+& \sum_{i = 1} ^ n \sum_{j = 1} ^ n H(ij) [\gcd(i, j) = 1] \\
+=& \sum_{i = 1} ^ n \sum_{j = 1} ^ n H(i)H(j) \sum_{d | i, d | j} \mu(d)\\
+=& \sum_{d = 1} ^ n \mu(d)(\sum_{i = 1} ^ {\frac nd} H(id)) ^ 2
+\end{aligned}</script><p>这个看样子就不能很好做，至少都得枚举 $d$，这样就不可能低于 $O(n)$。考虑对 $d$ 分治，钦定阈值 $B$，$d\leq B$ 就暴力枚举，否则我们换另外的方法。</p>
 <h3 id="1-d-leq-B"><a href="#1-d-leq-B" class="headerlink" title="1. $d\leq B$"></a>1. $d\leq B$</h3><p>记 $F_1(n, d) = \sum_{i = 1} ^ n H(id)$，那么原式就可以表示成 $\sum_{d = 1} ^ B \mu(d)F_1 ^ 2(\dfrac nd, d)$。考虑如何计算 $F_1(n, d)$。</p>
-<p>注意到有一个 $H(id)$ 很烦，使用上面的套路，我们开始展开：<br>$$<br>\begin{aligned}<br>F_1(n, d) =&amp; \sum_{i = 1} ^ n H(id)\\<br>=&amp; \sum_{k | d} \sum_{i = 1} ^ n [\gcd(i, d) = k] \dfrac {H(i)H(d)}{H(k)}\\<br>=&amp; \sum_{k | d} \dfrac 1{H(k)} \sum_{i = 1} ^ {\frac nk} [\gcd(i, \dfrac dk) = 1] H(ik)H(d)\\<br>=&amp; \sum_{k | d} \dfrac 1{H(k)}\sum_{i = 1} ^ {\frac nk} H(ik)H(d) \sum_{t | i, tk | d} \mu(t)\\<br>=&amp; \sum_{T | d}(\sum_{k | T} \dfrac {\mu(\frac Tk)}{H(k)}) (\sum_{i = 1} ^ {\frac nT} H(iT))\\<br>=&amp; \sum_{T | d} H_1(T) F_1(\dfrac nT, T)<br>\end{aligned}<br>$$<br>这里令 $H_1 = H \times \mu$，表示狄利克雷卷积。容易发现这是一个简单的递归函数，直接递归并记忆化即可。</p>
+<p>注意到有一个 $H(id)$ 很烦，使用上面的套路，我们开始展开：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+F_1(n, d) =& \sum_{i = 1} ^ n H(id)\\
+=& \sum_{k | d} \sum_{i = 1} ^ n [\gcd(i, d) = k] \dfrac {H(i)H(d)}{H(k)}\\
+=& \sum_{k | d} \dfrac 1{H(k)} \sum_{i = 1} ^ {\frac nk} [\gcd(i, \dfrac dk) = 1] H(ik)H(d)\\
+=& \sum_{k | d} \dfrac 1{H(k)}\sum_{i = 1} ^ {\frac nk} H(ik)H(d) \sum_{t | i, tk | d} \mu(t)\\
+=& \sum_{T | d}(\sum_{k | T} \dfrac {\mu(\frac Tk)}{H(k)}) (\sum_{i = 1} ^ {\frac nT} H(iT))\\
+=& \sum_{T | d} H_1(T) F_1(\dfrac nT, T)
+\end{aligned}</script><p>这里令 $H_1 = H \times \mu$，表示狄利克雷卷积。容易发现这是一个简单的递归函数，直接递归并记忆化即可。</p>
 <p>注意边界是 $n = 0$（答案显然是 0）或者是 $d = 1$，此时我们相当于是求 $\sum_{i = 1} ^ n H(i)$。这个东西直接使用 Min_25 筛去处理，时间复杂度 $O(\dfrac {n ^ {\frac 34}}{\log n})$。</p>
 <p>不考虑 Min_25 筛的复杂度，我们考虑所有可能的 $F_1(n, d)$ 和可能的转移数。容易发现一个 $F_1(n, d)$ 可能的转移数为 $O(\sigma(d))$。对于从外部调用的 $F_1(n, d)$，就是 $O(\sum_{i = 1} ^ B \sigma(i)) = O(B\log B)$。对于自调用的的 $F_1(m, t)$，一定满足 $m = \dfrac n{t ^ 2x}$，因为前面一个假设不来自外部调用的话，那么上一级的 $d$ 需要满足 $t|d$，我们可以分析得到 $O(\sum_{d = 1} ^ B \dfrac{\sqrt n}d) = O(\sqrt n\log n)$。类似的分析转移数可以得到 $O(\sqrt n\log ^ 2 n)$。总复杂度 $O(B\log n + \sqrt n\log ^ 2n)$，后半部分不管了（</p>
 <h3 id="2-d-gt-B"><a href="#2-d-gt-B" class="headerlink" title="2. $d &gt; B$"></a>2. $d &gt; B$</h3><p>再看 $d$ 显然是不明智的选择，我们考虑把平方看作枚举 $i, j$，计算 $\sum_{d = 1} [id\leq n\land jd\leq n]H(id)H(jd)$。令 $G(m, i, j) = \sum_{d = 1} ^ m \mu(d) H(id)H(jd)$。那么就可以得到原式为：</p>
-<p>$$<br>\sum_{i = 1} ^ {\frac nB} \sum_{j = 1} ^ {\frac nB} (G(\dfrac n{\max(i, j)}, i, j) - G(B, i, j))<br>$$<br>考虑如何计算 $G(m, i, j)$。仍然套路展开 $H(id)$ 和 $H(jd)$，大力计算：<br>$$<br>\begin{aligned}<br>&amp; \sum_{d = 1} ^ m \mu(d) H(id) H(jd)\\<br>=&amp; H(i)H(j)\sum_{d = 1} ^ m \mu(d) H ^ 2(d) \sum_{k_1 | i} [\gcd(i, d) = k_1] \sum_{k_2 | j} [\gcd(j, d) = k_2] \dfrac 1{H(k_1)H(k_2)}\\<br>=&amp; H(i) H(j) \sum_{k_1 | i} \sum_{k_2 | j} \dfrac 1{H(k_1)H(k_2)} \sum_{d = 1} ^ {\frac mk} \mu(dk) H ^ 2(dk) [\gcd(\dfrac i{k_1}, d) = 1][\gcd(\dfrac i{k_2}, d) = 1]\\<br>=&amp; H(i) H(j) \sum_{k_1 | i} \sum_{k_2 | j} \dfrac 1{H(k_1) H(k_2)} \sum_{d = 1} ^ {\frac mk} \mu(dk) H ^ 2(dk) \sum_{t_1 | d, t_1k_1 | i} \mu(t_1) \sum_{t_2 | d, t_2k_2 | j} \mu(t_2) \\<br>=&amp; H(i)H(j) \sum_{T_1 | i} \sum_{T_2 | j} (\sum_{k_1 | T_1} \dfrac {\mu(\frac {T_1}{k_1})}{H(k_1)})(\sum_{k_2 | T_2} \dfrac {\mu(\frac {T_2}{k_2})}{H(k_2)}) \sum_{d = 1} ^ {\frac mT} \mu(dT) H ^ 2(dT)<br>\end{aligned}<br>$$</p>
-<p>上述式子中，$T = \text{lcm} (T_1, T_2)$，$k = \text{lcm} (k_1, k_2)$，最后一个仍然很难算，我们考虑再设一个函数 $F_2$ 来表示。令 $F_2(n, d)$ 为 $\sum_{i = 1} ^ n \mu(di) H ^ 2(di)$。这个和 $F_1$ 是比较类似的，我们就不做每一步的推导了，直接给结论：<br>$$<br>F_2(n, d) = \mu(d) H ^ 2(T) \sum_{T | d} \mu(k) F_2(\dfrac nT, T)<br>$$<br>同样，$F_2$ 的复杂度和 $F_1$ 分析的类似。不是很会分析了 /kk，据说是 $\tilde O(\dfrac {n}{\sqrt B})$。</p>
+<script type="math/tex; mode=display">
+\sum_{i = 1} ^ {\frac nB} \sum_{j = 1} ^ {\frac nB} (G(\dfrac n{\max(i, j)}, i, j) - G(B, i, j))</script><p>考虑如何计算 $G(m, i, j)$。仍然套路展开 $H(id)$ 和 $H(jd)$，大力计算：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+& \sum_{d = 1} ^ m \mu(d) H(id) H(jd)\\
+=& H(i)H(j)\sum_{d = 1} ^ m \mu(d) H ^ 2(d) \sum_{k_1 | i} [\gcd(i, d) = k_1] \sum_{k_2 | j} [\gcd(j, d) = k_2] \dfrac 1{H(k_1)H(k_2)}\\
+=& H(i) H(j) \sum_{k_1 | i} \sum_{k_2 | j} \dfrac 1{H(k_1)H(k_2)} \sum_{d = 1} ^ {\frac mk} \mu(dk) H ^ 2(dk) [\gcd(\dfrac i{k_1}, d) = 1][\gcd(\dfrac i{k_2}, d) = 1]\\
+=& H(i) H(j) \sum_{k_1 | i} \sum_{k_2 | j} \dfrac 1{H(k_1) H(k_2)} \sum_{d = 1} ^ {\frac mk} \mu(dk) H ^ 2(dk) \sum_{t_1 | d, t_1k_1 | i} \mu(t_1) \sum_{t_2 | d, t_2k_2 | j} \mu(t_2) \\
+=& H(i)H(j) \sum_{T_1 | i} \sum_{T_2 | j} (\sum_{k_1 | T_1} \dfrac {\mu(\frac {T_1}{k_1})}{H(k_1)})(\sum_{k_2 | T_2} \dfrac {\mu(\frac {T_2}{k_2})}{H(k_2)}) \sum_{d = 1} ^ {\frac mT} \mu(dT) H ^ 2(dT)
+\end{aligned}</script><p>上述式子中，$T = \text{lcm} (T_1, T_2)$，$k = \text{lcm} (k_1, k_2)$，最后一个仍然很难算，我们考虑再设一个函数 $F_2$ 来表示。令 $F_2(n, d)$ 为 $\sum_{i = 1} ^ n \mu(di) H ^ 2(di)$。这个和 $F_1$ 是比较类似的，我们就不做每一步的推导了，直接给结论：</p>
+<script type="math/tex; mode=display">
+F_2(n, d) = \mu(d) H ^ 2(T) \sum_{T | d} \mu(k) F_2(\dfrac nT, T)</script><p>同样，$F_2$ 的复杂度和 $F_1$ 分析的类似。不是很会分析了 /kk，据说是 $\tilde O(\dfrac {n}{\sqrt B})$。</p>
 <h3 id="平衡规划与代码"><a href="#平衡规划与代码" class="headerlink" title="平衡规划与代码"></a>平衡规划与代码</h3><p>两边平衡一下，取 $B = n ^ {\frac 23}$，可以得到复杂度约为 $O(\dfrac {n ^ {\frac 34}}{\log n} + n ^ {\frac 23} \log n)$。卡卡常大概就可以过了（？）。</p>
 <p>说几点代码细节：</p>
 <ol>
@@ -367,7 +400,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -456,7 +489,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -466,13 +499,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

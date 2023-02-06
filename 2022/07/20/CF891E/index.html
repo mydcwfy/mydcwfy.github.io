@@ -28,7 +28,7 @@
 <meta property="og:description" content="题意：给定长度为 $n$ 序列 $a$，每次随机选择 $i\in [1, n]$，将 $r$ 加上 $\prod_{j\ne i} a_j$，然后让 $a_i$ 减 1。问 $k$ 次操作后，$r$ 的期望。$n\leq 5000$，$k\leq 10 ^ 9$，对 $10 ^ 9 + 7$ 取模。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-07-20T12:33:15.000Z">
-<meta property="article:modified_time" content="2022-07-20T12:52:55.550Z">
+<meta property="article:modified_time" content="2023-02-06T13:13:15.937Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="生成函数">
 <meta property="article:tag" content="期望">
@@ -211,10 +211,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-07-20 20:33:15 / Modified: 20:52:55" itemprop="dateCreated datePublished" datetime="2022-07-20T20:33:15+08:00">2022-07-20</time>
+              <time title="Created: 2022-07-20 20:33:15" itemprop="dateCreated datePublished" datetime="2022-07-20T20:33:15+08:00">2022-07-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-02-06 21:13:15" itemprop="dateModified" datetime="2023-02-06T21:13:15+08:00">2023-02-06</time>
+              </span>
 
           <br>
             <span class="post-meta-item" title="Symbols count in article">
@@ -243,16 +249,29 @@
       
         <p>题意：给定长度为 $n$ 序列 $a$，每次随机选择 $i\in [1, n]$，将 $r$ 加上 $\prod_{j\ne i} a_j$，然后让 $a_i$ 减 1。问 $k$ 次操作后，$r$ 的期望。$n\leq 5000$，$k\leq 10 ^ 9$，对 $10 ^ 9 + 7$ 取模。</p>
 <span id="more"></span>
-
-<p>首先给出一个结论：<br>$$<br>r = \prod_{i = 1} ^ n a_i - \prod_{i = 1} ^ n a_i’<br>$$<br>表示前后 $a_i$ 乘积的变化量。这个可以通过分每一步看来得到，既然单步是正确的，那么合并起来也是正确的。</p>
+<p>首先给出一个结论：</p>
+<script type="math/tex; mode=display">
+r = \prod_{i = 1} ^ n a_i - \prod_{i = 1} ^ n a_i'</script><p>表示前后 $a_i$ 乘积的变化量。这个可以通过分每一步看来得到，既然单步是正确的，那么合并起来也是正确的。</p>
 <p>现在显然是求变化后的期望。</p>
 <p>考虑使用 EGF 计算每一步改变的哪一个位置，然后合并。单个的 EGF 可以写作：$\sum_{i = 0} \dfrac{x ^ i}{i!} (a - i)$。</p>
-<p>那么最后变化后的期望就是：<br>$$<br>\dfrac{k!}{n ^ k} [x ^ k] \prod_{i = 1} ^ n \sum_{j = 0} \dfrac{x ^ j}{j!}(a_j - x)<br>$$<br>不是封闭形式不好计算，考虑对每一个 $\sum_{i = 0} \dfrac{x ^ i} {i!} (a - i)$ 变换来尝试得到封闭形式：<br>$$<br>\begin{aligned}<br>&amp; \sum_{j = 0} \dfrac{x ^ j}{j!} (a - j)\\<br>=&amp; \sum_{j = 0} \dfrac{x ^ ja}{j!} - \sum_{j = 0} \dfrac{x ^ jj}{j!}\\<br>=&amp; ae ^ x - \sum_{j = 1} \dfrac{xx ^ {j - 1}}{(j - 1!)}\\<br>=&amp; (a - x) e ^ x<br>\end{aligned}<br>$$<br>这样就变成的封闭形式。</p>
-<p>乘起来可以得到：<br>$$<br>\dfrac{k!}{n ^ k} [x ^ k] e ^ {nx} \prod_{i = 1} ^ n (a_i - x)<br>$$<br>后面这个式子可以 $O(n\log ^ 2 n)$ 计算，但是直接 $O(n ^ 2)$ DP 计算每一位也不是不行。</p>
-<p>下面对后面是贡献 $x ^ t$ 时 $x ^ k$ 的系数计算：<br>$$<br>\dfrac{k!}{n ^ k} \times \dfrac{c_t n ^ {k - t}}{(k - t)!}<br>$$<br>虽然 $k$ 很大，但是 $t$ 不大，这些都可以约到 $t$ 项，而且不同的 $t$ 可以递推计算，所以这不是难事，可以在 $O(n)$ 或者 $O(n\log k)$ 的时间内求出所有 $t\in [0, n]$ 的贡献。</p>
+<p>那么最后变化后的期望就是：</p>
+<script type="math/tex; mode=display">
+\dfrac{k!}{n ^ k} [x ^ k] \prod_{i = 1} ^ n \sum_{j = 0} \dfrac{x ^ j}{j!}(a_j - x)</script><p>不是封闭形式不好计算，考虑对每一个 $\sum_{i = 0} \dfrac{x ^ i} {i!} (a - i)$ 变换来尝试得到封闭形式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+& \sum_{j = 0} \dfrac{x ^ j}{j!} (a - j)\\
+=& \sum_{j = 0} \dfrac{x ^ ja}{j!} - \sum_{j = 0} \dfrac{x ^ jj}{j!}\\
+=& ae ^ x - \sum_{j = 1} \dfrac{xx ^ {j - 1}}{(j - 1!)}\\
+=& (a - x) e ^ x
+\end{aligned}</script><p>这样就变成的封闭形式。</p>
+<p>乘起来可以得到：</p>
+<script type="math/tex; mode=display">
+\dfrac{k!}{n ^ k} [x ^ k] e ^ {nx} \prod_{i = 1} ^ n (a_i - x)</script><p>后面这个式子可以 $O(n\log ^ 2 n)$ 计算，但是直接 $O(n ^ 2)$ DP 计算每一位也不是不行。</p>
+<p>下面对后面是贡献 $x ^ t$ 时 $x ^ k$ 的系数计算：</p>
+<script type="math/tex; mode=display">
+\dfrac{k!}{n ^ k} \times \dfrac{c_t n ^ {k - t}}{(k - t)!}</script><p>虽然 $k$ 很大，但是 $t$ 不大，这些都可以约到 $t$ 项，而且不同的 $t$ 可以递推计算，所以这不是难事，可以在 $O(n)$ 或者 $O(n\log k)$ 的时间内求出所有 $t\in [0, n]$ 的贡献。</p>
 <p>总时间复杂度 $O(n ^ 2)$，<del>狗都不写 MTT</del>。注意代码中的 <code>f[t]</code> 求的是 $n - t$ 的系数。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	std::cin &gt;&gt; n &gt;&gt; k;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) std::cin &gt;&gt; a[i];</span><br><span class="line">	f[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = i - <span class="number">1</span>; ~j; -- j)</span><br><span class="line">			f[j + <span class="number">1</span>] = (f[j + <span class="number">1</span>] + (LL) f[j] * a[i]) % Mod;</span><br><span class="line"> </span><br><span class="line">	<span class="type">int</span> res = <span class="number">0</span>, cur = k;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n &amp;&amp; i &lt;= k; ++ i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (!(i &amp; <span class="number">1</span>))</span><br><span class="line">			res = (res + (LL) (Mod - cur) * <span class="built_in">qpow</span>(n, k - i) % Mod * f[n - i]) % Mod;</span><br><span class="line">		<span class="keyword">else</span> res = (res + (LL) cur * <span class="built_in">qpow</span>(n, k - i) % Mod * f[n - i]) % Mod;</span><br><span class="line">		cur = (LL) cur * (k - i) % Mod;</span><br><span class="line">	&#125;</span><br><span class="line">	res = (LL) res * <span class="built_in">qpow</span>(n, Mod - <span class="number">1</span> - k) % Mod;</span><br><span class="line">	<span class="comment">// adj(res = f[n] - res);</span></span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
     </div>
 
@@ -354,7 +373,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -443,7 +462,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -453,13 +472,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

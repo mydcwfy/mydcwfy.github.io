@@ -247,7 +247,6 @@
       
         <p><strong>update: 2021-4-12 9:58 增加最小割的内容</strong></p>
 <span id="more"></span>
-
 <p><del>从我P5192的题解摘过来的</del></p>
 <h2 id="1-网络流"><a href="#1-网络流" class="headerlink" title="1. 网络流"></a>1. 网络流</h2><p>通俗的讲，网络流就是一个水系，有源点（水库， S ）和汇点（大海， T ），中间有很多节点，中间的节点不储存流，作为一个中转站。</p>
 <p>每一条边有一个容量（河道宽度），也有一个流量。显然流量小于等于容量。</p>
@@ -275,17 +274,17 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">queue &lt;<span class="type">int</span>&gt; q;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">bfs</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(d,<span class="number">-1</span>,<span class="keyword">sizeof</span> d);</span><br><span class="line">    <span class="keyword">while</span> (q.<span class="built_in">size</span>()) q.<span class="built_in">pop</span>();</span><br><span class="line">    q.<span class="built_in">push</span>(S);</span><br><span class="line">    d[S]=<span class="number">0</span>;cur[S]=h[S];<span class="comment">//cur 是指当前到的出边</span></span><br><span class="line">    <span class="keyword">while</span> (q.<span class="built_in">size</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> t=q.<span class="built_in">front</span>();q.<span class="built_in">pop</span>();</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i=h[t];i!=<span class="number">-1</span>;i=ne[i])</span><br><span class="line">        &#123;</span><br><span class="line">			<span class="keyword">if</span> (d[e[i]]==<span class="number">-1</span>&amp;&amp;w[i])</span><br><span class="line">			&#123;</span><br><span class="line">				d[e[i]]=d[t]+<span class="number">1</span>;</span><br><span class="line">				cur[e[i]]=h[e[i]];</span><br><span class="line">				<span class="keyword">if</span> (e[i]==T) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">				q.<span class="built_in">push</span>(e[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">find</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> lim)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (u==T) <span class="keyword">return</span> lim;</span><br><span class="line">    <span class="type">int</span> flow=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i=cur[u];i!=<span class="number">-1</span>&amp;&amp;flow&lt;lim;i=ne[i])</span><br><span class="line">    &#123;<span class="comment">//没有剩余流量就直接退出</span></span><br><span class="line">        cur[u]=i;<span class="comment">// 当前弧优化，下一次从这一条边出发</span></span><br><span class="line">        <span class="keyword">if</span> (d[e[i]]==d[u]+<span class="number">1</span>&amp;&amp;w[i])</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">int</span> t=<span class="built_in">find</span>(e[i],<span class="built_in">min</span>(w[i],lim-flow));</span><br><span class="line">            <span class="keyword">if</span> (t!=<span class="number">0</span>) d[e[i]]=<span class="number">-1</span>;</span><br><span class="line">            <span class="comment">// 没有路径，就不再访问，赋值为-1</span></span><br><span class="line">            w[i]-=t,w[i^<span class="number">1</span>]+=t,flow+=t;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> flow;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">dinic</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> r=<span class="number">0</span>,flow=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">bfs</span>())</span><br><span class="line">        <span class="keyword">while</span> (flow=<span class="built_in">find</span>(S,INF)) r+=flow;</span><br><span class="line">    <span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="4-最小割"><a href="#4-最小割" class="headerlink" title="4. 最小割"></a>4. 最小割</h2><h3 id="1）-定义"><a href="#1）-定义" class="headerlink" title="1） 定义"></a>1） 定义</h3><p>如果沿着剩余容量大于0的边，无法从 s 到 t，那么这个残余网络就被称为割。</p>
 <p>令 s 能搜到的点集合为 S，其余点的集合为 T。</p>
-<p>割的容量定义为<br>$$c=\sum_ {u\in S,v \in T}{c(u,v)}$$</p>
-<p>割的流量定义为<br>$$flow=\sum_ {u\in S,v\in T}{f(u,v)}-<br>\sum_ {u\in T,v\in S}{f(u,v)}$$</p>
-<p>最小割是指容量最小的割。</p>
+<p>割的容量定义为</p>
+<script type="math/tex; mode=display">c=\sum_ {u\in S,v \in T}{c(u,v)}</script><p>割的流量定义为</p>
+<script type="math/tex; mode=display">flow=\sum_ {u\in S,v\in T}{f(u,v)}-
+\sum_ {u\in T,v\in S}{f(u,v)}</script><p>最小割是指容量最小的割。</p>
 <h3 id="2）-最大流最小割定理"><a href="#2）-最大流最小割定理" class="headerlink" title="2） 最大流最小割定理"></a>2） 最大流最小割定理</h3><p>当下面条件满足之一时，均满足：</p>
 <ol>
 <li><p>f 是最大流</p>
 </li>
 <li><p>不存在从 s 到 t 的路径（沿着剩余容量大于0的边）</p>
 </li>
-<li><p>存在一个割，使 $c(S,T)=f(s,t)$</p>
-</li>
+<li>存在一个割，使 $c(S,T)=f(s,t)$</li>
 </ol>
 <h4 id="证明："><a href="#证明：" class="headerlink" title="证明："></a>证明：</h4><p>我们只要证出有1能得到2，有2能得到3，有3能得到1，原命题成立</p>
 <h4 id="a-1推2"><a href="#a-1推2" class="headerlink" title="a.1推2"></a>a.1推2</h4><p>显然，如果2不满足的话，1一定不满足</p>
@@ -404,7 +403,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -493,7 +492,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -503,13 +502,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

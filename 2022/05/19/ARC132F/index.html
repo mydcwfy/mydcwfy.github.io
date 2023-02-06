@@ -243,7 +243,6 @@
       
         <p>扩展了集合幂级数的定义，比较有借鉴性。</p>
 <span id="more"></span>
-
 <p>题意：三个人玩 $k$ 次石头剪刀布，两个人会分别从自己的策略集合中随机选取一个然后按照选的策略出 $k$ 次（每个策略都是长度为 $k$ 的字符串，代表每次出的是什么）。第一个人策略集合大小为 $n$，第二个人策略集合大小为 $m$。第三个人想知道，对于 $3 ^ k$ 种他出的策略，计算他 $k$ 次中至少有一次成为唯一赢家的概率。$k\leq 12, n, m\leq 3 ^ k$，5s。</p>
 <p>容易发现我们当且仅当第一个人和第二个人出的一样，第三个人出的可以赢他们的情况才可能计入答案。</p>
 <p>我们考虑<strong>构造另外一种状态</strong>，记作 0，表示这个人可以随意出。容易发现这个状态是包含 1、2、3 的状态的（分别对应石头剪刀布），那么如果我们使用类似集合幂级数的思想前缀和的话，我们就要将对应 1、2、3 的数贡献到对应位为 0 的数。</p>
@@ -357,7 +356,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -446,7 +445,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -456,13 +455,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

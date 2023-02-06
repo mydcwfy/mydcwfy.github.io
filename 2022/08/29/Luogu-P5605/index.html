@@ -250,7 +250,6 @@
       
         <p>题意：给定模数 $m$ 和 $T$ 次询问，每次询问给定 $x, y$，问是否 $z$ 满足存在 $x ^ z\equiv y\pmod m$。$m\leq 10 ^ {18}, T\leq 2\times 10 ^ 4$，保证 $m$ 是奇质数的次幂，$\gcd(x, m) = \gcd(y, m) = 1$，3s。</p>
 <span id="more"></span>
-
 <p>首先考虑如何判断。仍然使用原根，令 $x = g ^ a$，$y = g ^ b$，那么就是问是否存在 $z$ 满足 $az\equiv b\pmod {\varphi(m)}$。那么显然合法的条件是 $b\bmod \gcd(a, \varphi(m)) = 0$。这样你就可以在单次 $O(\sqrt m)$ 的时间（？）求出，容易发现显然寄了。</p>
 <p>注意到我们其实并不需要知道 $a, b$，我们其实只需要知道 $\gcd(a, \varphi(m))$ 和 $\gcd(b, \varphi(m))$ 即可。这个和什么有关呢？注意到 $x ^ {\frac m{\gcd(a, \varphi(m))}}$ 一定是 1，而且是最小的循环节。这样就是阶啊！显然我们需要使得 $\gcd(b, \varphi(m)) \bmod \gcd(a, \varphi(m)) = 0$，那么就是 $\dfrac m{\gcd(a, \varphi(m))} \bmod \dfrac m{\gcd(b, \varphi(m))} = 0$，也就是 $y$ 的阶整除 $x$ 的阶即可，记作 $\text{ord}(y) | \text{ord}(x)$。</p>
 <p>现在问题转化为求阶了。一个显然的办法是枚举所有因数，看是否满足条件。这之前需要我们算出 $\varphi(m)$ 和他的分解。这个都需要使用 Pollard-Rho 算法，单次求解还是问题不大。然后枚举所有因数，复杂度为 $O(T\omega(n)\log n)$（检验需要快速幂），无法通过。</p>
@@ -357,7 +356,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -446,7 +445,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -456,13 +455,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

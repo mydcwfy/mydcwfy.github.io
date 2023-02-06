@@ -250,7 +250,6 @@
       
         <p>分治的妙妙题。</p>
 <span id="more"></span>
-
 <h2 id="1-题意"><a href="#1-题意" class="headerlink" title="1. 题意"></a>1. 题意</h2><p>给定 $m$ 个双向的 2-SAT 限制（即 $u_i$ 选了 $x_i$ 则 $v_i$ 要选 $y_i$，同样 $v_i$ 选了 $y_i$ 则 $u_i$ 要选$x_i$），$q$ 次询问 $[l, r]$ 最少能划分成多少段有解的 2-SAT 限制。</p>
 <p>$n\leq 10 ^ 5, m\leq 6\times 10 ^ 5, q\leq 10 ^ 6$，时限 2.5 s。</p>
 <h2 id="2-思路"><a href="#2-思路" class="headerlink" title="2. 思路"></a>2. 思路</h2><p>首先考虑如何判定 2-SAT 限制是否有解，发现这个 Tarjan 实质是在求联通分量（因为有双向边，联通分量一定是强连通分量）。</p>
@@ -261,11 +260,10 @@
 <p>类似于决策单调性的求法，我们考虑二分，<code>solve(l, r, sl, sr)</code> 表示处理 $[l, r]$ 之间的$f(i)$，已知答案区间为 $[sl, sr]$。直接计算 $f(mid)$，然后向下递归即可。</p>
 <p>如何计算 $f(mid)$，如果我们暴力向右扩展的话，其实复杂度是错误的。回顾决策单调性的写法与时间复杂度的证明，我们取的时候，必须只能在 $[sl, sr]$ 之间计算，也就是说，我们的时间复杂度应只与 $sr - sl$ 有关。但是这个题，我们发现，如果 $mid &lt; sl$，即使我们知道答案不会出现在这一段区间，我们还是得扫一遍，为后面判断做铺垫，而这造成了错误，使得复杂度不对。如何处理他呢？</p>
 <p>感觉上，这个东西应该是留给上一层计算才对，于是我们强制要求<strong>在 $[r + 1, sl - 1]$ 之间的限制已经被加入并查集了</strong>。这样才能保证我们计算的时候，不会进入多余的无用的计算。递归结束时显然要撤回，所以用可撤销并查集，预处理时间复杂度 $O(m\log m\log n)$，总时间复杂度为 $O(m\log m\log n + q\log n)$。至于为什么不将 $[mid, sl - 1]$ 或是 $[l, sl - 1]$ 加入并查集，是因为这不是 $[l, r]$ 所有节点所必需的，所以先不管。具体在实现部分讲。</p>
-<h2 id="3-实现"><a href="#3-实现" class="headerlink" title="3. 实现"></a>3. 实现</h2><p>这个题由于要保证 $[r + 1, sl - 1]$ 的在进入该层前已经加入了并查集了，所以我们注意我们如果要计算 $f(mid)$，要先将 $[mid, \min{r, sl - 1}]$ 的加入，然后再从 $sl$ 向右扫。如果要向左区间递归，那么 $[mid, sl - 1]$ 的保留（因为向 $[l, mid - 1]$ 递归），所以我们要将第一次加入的边保留。而向右区间，则是 $[r, f(mid) - 1]$，这个直接实现即可。</p>
+<h2 id="3-实现"><a href="#3-实现" class="headerlink" title="3. 实现"></a>3. 实现</h2><p>这个题由于要保证 $[r + 1, sl - 1]$ 的在进入该层前已经加入了并查集了，所以我们注意我们如果要计算 $f(mid)$，要先将 $[mid, \min\{r, sl - 1\}]$ 的加入，然后再从 $sl$ 向右扫。如果要向左区间递归，那么 $[mid, sl - 1]$ 的保留（因为向 $[l, mid - 1]$ 递归），所以我们要将第一次加入的边保留。而向右区间，则是 $[r, f(mid) - 1]$，这个直接实现即可。</p>
 <p>考虑复杂度，同整体二分，$O(m\log m)$，加上可撤销并查集，$O(m\log m\log n)$，可以通过。</p>
 <p>注意可能前面上层的就已经不合法了，所以要将前面是否合法并向下递归。还要注意判断自相矛盾的情况。可能比较难写，放一个二分的代码。（到底是什么二分 / 分治呢？</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">DSU</span> &#123;  &#125; dsu ;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">check</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123; <span class="keyword">return</span> dsu.<span class="built_in">find</span>(x) != dsu.<span class="built_in">find</span>(x ^ <span class="number">1</span>); &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">(<span class="type">int</span> l, <span class="type">int</span> r, <span class="type">int</span> sl, <span class="type">int</span> sr, <span class="type">bool</span> frm)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// printf(&quot;Solve [%d, %d] : [%d, %d]\n&quot;, l, r, sl, sr);</span></span><br><span class="line">	<span class="keyword">if</span> (l &gt; r) <span class="keyword">return</span>;</span><br><span class="line">	<span class="keyword">if</span> (sl == sr) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = l; i &lt;= r; ++ i) f[i] = sl;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> mid = (l + r) &gt;&gt; <span class="number">1</span>, now = frm, st = dsu.top;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = mid; i &lt;= r &amp;&amp; i &lt; sl; ++ i) &#123;</span><br><span class="line">		dsu.<span class="built_in">merge</span>(opt[i].first, opt[i].second);</span><br><span class="line">		dsu.<span class="built_in">merge</span>(opt[i].first ^ <span class="number">1</span>, opt[i].second ^ <span class="number">1</span>);</span><br><span class="line">		now &amp;= <span class="built_in">check</span>(opt[i].first);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> bac = dsu.top, ls = now;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = std::<span class="built_in">max</span>(sl, mid); i &lt;= sr; ++ i) &#123;</span><br><span class="line">		dsu.<span class="built_in">merge</span>(opt[i].first, opt[i].second);</span><br><span class="line">		dsu.<span class="built_in">merge</span>(opt[i].first ^ <span class="number">1</span>, opt[i].second ^ <span class="number">1</span>);</span><br><span class="line">		now &amp;= <span class="built_in">check</span>(opt[i].first);</span><br><span class="line">		<span class="keyword">if</span> (!now) &#123;</span><br><span class="line">			f[mid] = i;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (now) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = mid; i &lt;= r; ++ i) f[i] = m + <span class="number">1</span>;</span><br><span class="line">		dsu.<span class="built_in">back</span>(bac);</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">solve</span>(l, mid - <span class="number">1</span>, sl, sr, ls), dsu.<span class="built_in">back</span>(st);</span><br><span class="line">	&#125;</span><br><span class="line">	dsu.<span class="built_in">back</span>(bac), <span class="built_in">solve</span>(l, mid - <span class="number">1</span>, sl, f[mid], ls);</span><br><span class="line">	dsu.<span class="built_in">back</span>(st), now = frm;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = std::<span class="built_in">max</span>(sl, r + <span class="number">1</span>); i &lt; f[mid]; ++ i) &#123;</span><br><span class="line">		dsu.<span class="built_in">merge</span>(opt[i].first, opt[i].second);</span><br><span class="line">		dsu.<span class="built_in">merge</span>(opt[i].first ^ <span class="number">1</span>, opt[i].second ^ <span class="number">1</span>);</span><br><span class="line">		now &amp;= <span class="built_in">check</span>(opt[i].first);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">solve</span>(mid + <span class="number">1</span>, r, f[mid], sr, now), dsu.<span class="built_in">back</span>(st);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">solve</span>(<span class="number">1</span>, m, <span class="number">1</span>, m + <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
     </div>
 
@@ -369,7 +367,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -458,7 +456,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -468,13 +466,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

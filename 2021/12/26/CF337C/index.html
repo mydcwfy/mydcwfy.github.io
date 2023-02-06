@@ -245,7 +245,6 @@
       
         <p>还是比较好想的，感觉难度应该在黄至绿之间。</p>
 <span id="more"></span>
-
 <p>话说这道题怎么没人做啊……</p>
 <p>如果有没有考虑到的，请轻喷作者 qwq</p>
 <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><ul>
@@ -260,12 +259,11 @@
 <p>第二种情况就是不得不要翻倍。</p>
 <p>考虑第二个样例：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">input:</span><br><span class="line">5 4 2</span><br><span class="line">output:</span><br><span class="line">6</span><br></pre></td></tr></table></figure>
-
 <p>我们发现，不论怎么放错误的那个，一定都会有 $2$ 个会相连。（三个相连可以拆分为 $2+1$</p>
 <p>那么，让相连的放在哪呢？</p>
 <p>如果放在后面的话，一定会使答案变大，所以肯定放在最前面，让翻倍的尽量少。</p>
 <p>所以，就可以构造成这样了：</p>
-<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/ha2e8qfg.png"></p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/ha2e8qfg.png" alt=""></p>
 <p>注意到，前面会有 $n-(n-m)\cdot k$ 个连续的绿色。</p>
 <p>按照这样计算即可.</p>
 <p>假设前面有 $t$ 个连续的 $k$ 个绿色，前面的绿色的贡献就是 $k\cdot2^t+k\cdot2^{t-1}+…+k\cdot2$，注意最后未满 $k$ 个的由于没有特殊贡献，可以放到后面计算，为 $m-t\cdot k$。</p>
@@ -373,7 +371,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -462,7 +460,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -472,13 +470,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

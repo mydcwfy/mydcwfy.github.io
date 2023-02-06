@@ -224,14 +224,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>2.5k</span>
+              <span>904</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>5 mins.</span>
+              <span>2 mins.</span>
             </span>
 
         </div>
@@ -245,7 +245,6 @@
       
         <p>同步发表于 P3755 题解。</p>
 <span id="more"></span>
-
 <h2 id="0-前置知识-amp-废话"><a href="#0-前置知识-amp-废话" class="headerlink" title="0. 前置知识 &amp; 废话"></a>0. 前置知识 &amp; 废话</h2><p>本蒟蒻最近学习 CDQ 分治，看到该题，虽然想起了扫描线等方法，但为了训练 CDQ 分治，还是自然写一篇题解。</p>
 <p>本文是使用的三维偏序，如果不懂的话，可以A <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3810">这道题</a>，想更多了解 CDQ 分治的，<del>一波广告</del> <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/mydcwfy-342891/cdq-fen-zhi">我的 Blog</a>。</p>
 <h2 id="1-关于-CDQ-分治"><a href="#1-关于-CDQ-分治" class="headerlink" title="1. 关于 CDQ 分治"></a>1. 关于 CDQ 分治</h2><p>CDQ 分治是一个离线分治算法，用于解决三维的问题。</p>
@@ -259,12 +258,16 @@
 <p>CDQ 分治的关键就在于构造一个三维偏序问题。</p>
 <p>注意，有的题解使用的是二维偏序问题，我这里为了更加与模板吻合，构造了第三维，使用标准的三维偏序。</p>
 <p>首先，我们可以将其转化为一个二维前缀和的问题，即 $ans=\operatorname{sum}(x_2,y_2)-\operatorname{sum}(x_1-1,y_2)-\operatorname{sum}(x_2,y_1-1)+\operatorname {sum}(x_1-1,y_1-1)$（就是一个容斥原理）。</p>
-<p>于是，问题就是求<br>$$<br>\operatorname{sum}(x_t,y_t)=\sum_{x\leq x_t,y\leq y_t}{a[x][y]}<br>$$<br>第一和第二维很简单，直接是 $x$ 和 $y$。</p>
+<p>于是，问题就是求</p>
+<script type="math/tex; mode=display">
+\operatorname{sum}(x_t,y_t)=\sum_{x\leq x_t,y\leq y_t}{a[x][y]}</script><p>第一和第二维很简单，直接是 $x$ 和 $y$。</p>
 <p>怎样求第三维呢？</p>
 <p>可以发现，我们要构造为 $z&lt;z_t$，又因为 CDQ 分治是离线，询问和答案在一起。</p>
 <p>于是，我们可以用一个 $z$ 来标记是询问还是原来的点。</p>
 <p>我们要加答案的是原来的点，而不是询问，所以我们将原来的点记为 0，询问记为 1。</p>
-<p>那么，我们现在求的是：<br>$$<br>\operatorname{sum}(x_t,y_t,z_t)=\sum_{x\leq x_t,y\leq y_t,z&lt;z_t}{a[x][y]}<br>$$<br>于是就是一个标准的偏序问题了！</p>
+<p>那么，我们现在求的是：</p>
+<script type="math/tex; mode=display">
+\operatorname{sum}(x_t,y_t,z_t)=\sum_{x\leq x_t,y\leq y_t,z<z_t}{a[x][y]}</script><p>于是就是一个标准的偏序问题了！</p>
 <h2 id="3-关于-Code"><a href="#3-关于-Code" class="headerlink" title="3. 关于 Code"></a>3. 关于 Code</h2><ol>
 <li>我们需要使用 long long，因为很可能炸 int。</li>
 <li>实际使用 $z$ 的时候，我们其实不需完全使用原来的三维偏序，其实可以将 $z=0$ 时加入总和即可。</li>
@@ -375,7 +378,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -464,7 +467,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -474,13 +477,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

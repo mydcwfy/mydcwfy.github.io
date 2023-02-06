@@ -244,7 +244,6 @@
       
         <p>题意：给定一个长度为 $n$ 的序列 $a$，修改为区间乘 $x$，询问为求 $\varphi(\prod_{i = l} ^ r a_i)$。$n\leq 4\times 10 ^ 5$，$q\leq 2\times 10 ^ 5$，$a_i, x\leq 300$。</p>
 <span id="more"></span>
-
 <p>首先考虑 $\varphi(n) = n\prod_p \dfrac{p - 1}p$，那么我们现在就相当于是需要知道所有数有没有每一个质数。我们发现 300 以内的数只有 62 个，这给了我们一定的启发。</p>
 <p>首先线段树维护区间乘积肯定是必需的，另外，我们定义一个状态 $s$，表示包含了 $s$ 内的质数。容易发现这个修改时很好做的，也就是说我们只需要根据 $s$ 内部的状态乘上对应的 $\dfrac{p - 1}p$ 即可。</p>
 <p>时间复杂度 $O(q\log n + (n + q)\dfrac{a}{\ln a})$，可以通过。</p>
@@ -350,7 +349,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -439,7 +438,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -449,13 +448,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

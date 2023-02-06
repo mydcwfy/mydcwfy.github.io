@@ -244,10 +244,8 @@
       
         <p>题意：给定一个长度为 $2n$ 的合法括号序列，每个左括号有一个权值，每次你可以把 $p(A)(B)q$ 改成 $p(A()B)q$ 的形式，代价为 $(A)$ 的第一个左括号乘 $x$ 加上 $(B)$ 的第一个左括号乘 $y$（$A, B$ 必须是合法括号序列，$p, q$ 无限制），或者任意交换相邻的合法括号序列，不需要代价。问最少需要多少代价才能使得括号序列不包含 $()()$ 的结构。$n\leq 4\times 10 ^ 5$，$0\leq x, y\leq 1$，$a_i\leq 10 ^ 7$。</p>
 <span id="more"></span>
-
 <p>考虑我们用括号树来刻画这个变换。首先将括号转成树的方法是一对括号代表一个节点，然后内部的都是在他子树内部的。那么我们可以用图表示这个变化过程：</p>
 <img src="/2022/12/29/LOJ3704/%E8%BD%AC%E6%8D%A2.png" class="">
-
 <p>由图可以看出我们相当于用 A 把 B push 到了下一层，实际上其他的都没有变化。由于我们最后需要把整棵树变成一条链，所以其实中间的父子关系其实是没有关系的，我们只关心每个点所在的层数。</p>
 <h3 id="x-0，y-0"><a href="#x-0，y-0" class="headerlink" title="x = 0，y = 0"></a>x = 0，y = 0</h3><p>答案显然为 0。</p>
 <h3 id="x-0，y-1"><a href="#x-0，y-1" class="headerlink" title="x = 0，y = 1"></a>x = 0，y = 1</h3><p>这个相当于我们需要计算 B 的贡献，那么显然我们需要把最大的留在本层，这样代价尽量小。用一个 <code>std::multiset</code> 暴力维护即可做到 $O(n\log n)$。</p>
@@ -278,7 +276,10 @@
     <a href="/2022/12/28/LOJ3702/" rel="prev" title="LOJ3702 「联合省选 2022」学术社区">
       <i class="fa fa-chevron-left"></i> LOJ3702 「联合省选 2022」学术社区
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2023/02/06/CF1326F2/" rel="next" title="CF1326F2 Wise Men">
+      CF1326F2 Wise Men <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -354,7 +355,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -443,7 +444,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -453,13 +454,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

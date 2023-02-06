@@ -28,7 +28,7 @@
 <meta property="og:description" content="比较难推式子，对斯特林数和组合数的应用要求比较高。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-06-02T07:37:52.000Z">
-<meta property="article:modified_time" content="2022-06-03T03:11:10.374Z">
+<meta property="article:modified_time" content="2023-02-06T13:13:15.288Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="组合数学">
 <meta property="article:tag" content="斯特林数">
@@ -220,7 +220,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-06-03 11:11:10" itemprop="dateModified" datetime="2022-06-03T11:11:10+08:00">2022-06-03</time>
+                <time title="Modified: 2023-02-06 21:13:15" itemprop="dateModified" datetime="2023-02-06T21:13:15+08:00">2023-02-06</time>
               </span>
 
           <br>
@@ -229,14 +229,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>4.4k</span>
+              <span>4.3k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>10 mins.</span>
+              <span>9 mins.</span>
             </span>
 
         </div>
@@ -250,19 +250,66 @@
       
         <p>比较难推式子，对斯特林数和组合数的应用要求比较高。</p>
 <span id="more"></span>
-
 <p>题意：$m$ 张牌中有一张王牌，重排 $n$ 次，求第一张是王牌的次数 $k$ 次方的期望对 998244353 取模的结果。$k\leq 10 ^ 7, n, m\leq 998244353$。</p>
 <p>容易发现单次第一张是王牌的期望显然为 $\dfrac 1m$，令其为 $p$。</p>
-<p>则答案可以写作：<br>$$<br>\sum_{i = 0} ^ n \binom ni p ^ i(1 - p) ^ {n - i} i ^ k<br>$$<br>看到 $i ^ k$，考虑使用第二类斯特林数展开，让 $k$ 下来：<br>$$<br>m ^ n =  \sum_{i = 0} ^ m \binom mi {n\brace i}i!<br>$$</p>
-<p>$$<br>\begin{aligned}<br>ans =&amp; \sum_{i = 1} ^ n \binom ni p ^ i (1 - p) ^ {n - i} i ^ k\\<br>=&amp; \sum_{i = 1} ^ n \binom ni p ^ i (1 - p) ^ {n - i} \sum_{j = 0} ^ i \binom ij j!{k\brace j}\\<br>=&amp; \sum_{i = 1} ^ n p ^ i (1 - p) ^ {n - i} \sum_{j = 0} ^ i \dfrac{n!}{(n - i)!(i - j)!}{k\brace j}\\<br>=&amp; n!\sum_{j = 0} ^ n {k\brace j} \sum_{i = j} ^ n \dfrac{p ^ i (1 - p) ^ {n - i}}{(n - i)!(i - j)!}<br>\end{aligned}<br>$$</p>
-<p>考虑后面的一坨东西，我们看看能变成什么（此时 $j$ 为常量，我们写为 $a$）：<br>$$<br>\begin{aligned}<br>&amp;\sum_{i = a} ^ n \dfrac{p ^ i (1 - p) ^ {n - i}}{(n - i)!(i - a)!}\\<br>=&amp; \dfrac{1}{(n - a)!} \sum_{i = a} ^ n p ^ i (1 - p) ^ {n - i} \binom{n - a}{i - a}\\<br>=&amp; \dfrac{p ^ a}{(n - a)!}<br>\end{aligned}<br>$$<br>这个式子就比较简洁了，我们带入原来的式子就是：<br>$$<br>ans = n!\sum_{j = 0} ^ n {k\brace j} \dfrac{p ^ j}{(n - j)!}<br>$$<br>其实现在完全可以做到 $O(k\log k)$（循环上界肯定不超过 $k$，否则为 0），良心（？）的出题人也给了一定的部分分。但是肯定跑不过 $10 ^ 7$，考虑是否做到线性递推。</p>
-<p>容易发现 $\displaystyle {k\brace j}$ 一定是需要 $O(n\log n)$ 的，所以考虑将其砍掉。第二类斯特林数的表达方式可以用二项式反演得到，为：<br>$$<br>{n\brace m} = \dfrac{1}{m!}\sum_{i = 0} ^ m(-1) ^ {m - i} \binom mi i ^ n<br>$$<br>但是注意这是在 $n\geq m$ 的情况下成立的，而我们枚举的 $\sum_{j = 0} ^ n {k\brace j}$ 可能是不满足的，所以我们分类讨论。</p>
-<p>先讨论难一点的，就是 $n &gt; k$ 的情况，这样枚举上界就变为了 $k$。<br>$$<br>\begin{aligned}<br>ans =&amp; n!\sum_{j = 0} ^ k {k\brace j} \dfrac{p ^ j}{(n - j)!}\\<br>=&amp; n!\sum_{i = 0} ^ k \dfrac{p ^ i}{i!(n - i)!} \sum_{j = 0} ^ i \binom ij (-1) ^ {i - j} j ^ k \\<br>=&amp; \sum_{i = 0} ^ k p ^ i \binom ni\sum_{j = 0} ^ i\binom ij (-1) ^ {i - j} j ^ k\\<br>=&amp; \sum_{i = 0} ^ k p ^ i \sum_{j = 0} ^ i (-1) ^ {i - j} j ^ k \dfrac{n!}{(n - i)!j!(i - j)!}\\<br>=&amp; \sum_{j = 0} ^ k \binom nj (-1) ^ j j ^ k \sum_{i = j} ^ k (-p) ^ i \binom {n - j}{i - j}\\<br>=&amp; \sum_{j = 0} ^ k \binom nj j ^ k p ^ j\sum_{i = 0} ^ {k - j} (-p) ^ i \binom {n - j}i<br>\end{aligned}<br>$$<br>推到这里，似乎我们的式子已经比较简洁了，但是后面的一坨没法使用二项式定理（上界不同），我们陷入了死胡同。</p>
-<p>对后面这个式子硬上，考虑裂项组合数递推，设 $\displaystyle S(t) = \sum_{i = 0} ^ {k - t} (-p) ^ j\binom{n - t}{i}$。考虑大力变形：<br>$$<br>\begin{aligned}<br>S(t) =&amp; \sum_{i = 0} ^ {k - t} (-p) ^ i \binom{n - j}{i}\\<br>=&amp; \sum_{i = 0} ^ {k - t} (-p) ^ i (\binom{n - j - 1}{i - 1} + \binom{n - j - 1}{i})\\<br>=&amp; (-p)\sum_{i = 1} ^ {k - t}(-p) ^ {i - 1}\binom{n - j - 1}{i - 1} + \sum_{i = 0} ^ {k - t} (-p) ^ i\binom{n - j - 1}{i} \\<br>S(t - 1)=&amp; \sum_{i = 0} ^ {k - t - 1} (-p) ^ i \binom{n - j - 1}{i}\\<br>S(t) =&amp; (-p)S(t + 1) + (-p) ^ {k - t} \binom{n - t - 1}{k - t} + S(t + 1)\\<br>S(t)=&amp; (1 - p) S(t + 1) + (-p) ^ {k - t} \binom{n - t - 1}{k - t}<br>\end{aligned}<br>$$<br>边界显然为 $S(k) = 1$，倒序递推即可。注意 $\binom{n - t - 1}{k - t}$ 无法计算，我们可以变形：<br>$$<br>\binom{n - t - 1}{k - t} = \dfrac{(n - t - 1) ^ {\underline{k - t}}}{(k - t)!} = \dfrac{(n - k) ^ {\overline {k - t}}}{(k - t)!}<br>$$<br>同时计算 $S(t)$ 和上升幂并预处理 $p ^ k$，可以做到线性。</p>
-<p>现在回来，答案可以表示为：<br>$$<br>ans = \sum_{j = 0} ^ k \binom nj j ^ k p ^ i S(j)<br>$$<br>维护 $n ^ \underline{j}$，即可边计算答案边计算下降幂。至此，我们解决了 $n &gt; k$ 的情况，复杂度 $O(k)$。</p>
-<p>下面我们计算 $n\leq k$ 的情况。<br>$$<br>\begin{aligned}<br>ans =&amp; n!\sum_{j = 0} ^ n {k\brace j} \dfrac{p ^ j}{(n - j)!}\\<br>=&amp; n!\sum_{j = 0} ^ n \dfrac{p ^ j}{(n - j)!j!} \sum_{i = 0} ^ j \binom ji(-1) ^ {i - j} i ^ k \\<br>=&amp; \sum_{j = 0} ^ n p ^ j\binom nj\sum_{i = 0} ^ j \binom ji (-1) ^ {i - j} i ^ k\\<br>=&amp; \sum_{i = 0} ^ n (-1) ^ i \binom ni \sum_{j = i} ^ n \binom{n - i}{j - i}(-p) ^ j i ^ k\\<br>=&amp; \sum_{i = 0} ^ n p ^ ii ^ k\binom ni \sum_{j = i} ^ n \binom{n - i}{j - i} (-p) ^ {j - i}\\<br>=&amp; \sum_{i = 0} ^ n p ^ ii ^ k \binom ni (1 - p) ^ {n - i}<br>\end{aligned}<br>$$<br>还是可以做到线性，可以直接计算 $\binom ni$，复杂度 $O(k)$。</p>
+<p>则答案可以写作：</p>
+<script type="math/tex; mode=display">
+\sum_{i = 0} ^ n \binom ni p ^ i(1 - p) ^ {n - i} i ^ k</script><p>看到 $i ^ k$，考虑使用第二类斯特林数展开，让 $k$ 下来：</p>
+<script type="math/tex; mode=display">
+m ^ n =  \sum_{i = 0} ^ m \binom mi {n\brace i}i!</script><script type="math/tex; mode=display">
+\begin{aligned}
+ans =& \sum_{i = 1} ^ n \binom ni p ^ i (1 - p) ^ {n - i} i ^ k\\
+=& \sum_{i = 1} ^ n \binom ni p ^ i (1 - p) ^ {n - i} \sum_{j = 0} ^ i \binom ij j!{k\brace j}\\
+=& \sum_{i = 1} ^ n p ^ i (1 - p) ^ {n - i} \sum_{j = 0} ^ i \dfrac{n!}{(n - i)!(i - j)!}{k\brace j}\\
+=& n!\sum_{j = 0} ^ n {k\brace j} \sum_{i = j} ^ n \dfrac{p ^ i (1 - p) ^ {n - i}}{(n - i)!(i - j)!}
+\end{aligned}</script><p>考虑后面的一坨东西，我们看看能变成什么（此时 $j$ 为常量，我们写为 $a$）：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\sum_{i = a} ^ n \dfrac{p ^ i (1 - p) ^ {n - i}}{(n - i)!(i - a)!}\\
+=& \dfrac{1}{(n - a)!} \sum_{i = a} ^ n p ^ i (1 - p) ^ {n - i} \binom{n - a}{i - a}\\
+=& \dfrac{p ^ a}{(n - a)!}
+\end{aligned}</script><p>这个式子就比较简洁了，我们带入原来的式子就是：</p>
+<script type="math/tex; mode=display">
+ans = n!\sum_{j = 0} ^ n {k\brace j} \dfrac{p ^ j}{(n - j)!}</script><p>其实现在完全可以做到 $O(k\log k)$（循环上界肯定不超过 $k$，否则为 0），良心（？）的出题人也给了一定的部分分。但是肯定跑不过 $10 ^ 7$，考虑是否做到线性递推。</p>
+<p>容易发现 $\displaystyle {k\brace j}$ 一定是需要 $O(n\log n)$ 的，所以考虑将其砍掉。第二类斯特林数的表达方式可以用二项式反演得到，为：</p>
+<script type="math/tex; mode=display">
+{n\brace m} = \dfrac{1}{m!}\sum_{i = 0} ^ m(-1) ^ {m - i} \binom mi i ^ n</script><p>但是注意这是在 $n\geq m$ 的情况下成立的，而我们枚举的 $\sum_{j = 0} ^ n {k\brace j}$ 可能是不满足的，所以我们分类讨论。</p>
+<p>先讨论难一点的，就是 $n &gt; k$ 的情况，这样枚举上界就变为了 $k$。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+ans =& n!\sum_{j = 0} ^ k {k\brace j} \dfrac{p ^ j}{(n - j)!}\\
+=& n!\sum_{i = 0} ^ k \dfrac{p ^ i}{i!(n - i)!} \sum_{j = 0} ^ i \binom ij (-1) ^ {i - j} j ^ k \\
+=& \sum_{i = 0} ^ k p ^ i \binom ni\sum_{j = 0} ^ i\binom ij (-1) ^ {i - j} j ^ k\\
+=& \sum_{i = 0} ^ k p ^ i \sum_{j = 0} ^ i (-1) ^ {i - j} j ^ k \dfrac{n!}{(n - i)!j!(i - j)!}\\
+=& \sum_{j = 0} ^ k \binom nj (-1) ^ j j ^ k \sum_{i = j} ^ k (-p) ^ i \binom {n - j}{i - j}\\
+=& \sum_{j = 0} ^ k \binom nj j ^ k p ^ j\sum_{i = 0} ^ {k - j} (-p) ^ i \binom {n - j}i
+\end{aligned}</script><p>推到这里，似乎我们的式子已经比较简洁了，但是后面的一坨没法使用二项式定理（上界不同），我们陷入了死胡同。</p>
+<p>对后面这个式子硬上，考虑裂项组合数递推，设 $\displaystyle S(t) = \sum_{i = 0} ^ {k - t} (-p) ^ j\binom{n - t}{i}$。考虑大力变形：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+S(t) =& \sum_{i = 0} ^ {k - t} (-p) ^ i \binom{n - j}{i}\\
+=& \sum_{i = 0} ^ {k - t} (-p) ^ i (\binom{n - j - 1}{i - 1} + \binom{n - j - 1}{i})\\
+=& (-p)\sum_{i = 1} ^ {k - t}(-p) ^ {i - 1}\binom{n - j - 1}{i - 1} + \sum_{i = 0} ^ {k - t} (-p) ^ i\binom{n - j - 1}{i} \\
+S(t - 1)=& \sum_{i = 0} ^ {k - t - 1} (-p) ^ i \binom{n - j - 1}{i}\\
+S(t) =& (-p)S(t + 1) + (-p) ^ {k - t} \binom{n - t - 1}{k - t} + S(t + 1)\\
+S(t)=& (1 - p) S(t + 1) + (-p) ^ {k - t} \binom{n - t - 1}{k - t}
+\end{aligned}</script><p>边界显然为 $S(k) = 1$，倒序递推即可。注意 $\binom{n - t - 1}{k - t}$ 无法计算，我们可以变形：</p>
+<script type="math/tex; mode=display">
+\binom{n - t - 1}{k - t} = \dfrac{(n - t - 1) ^ {\underline{k - t}}}{(k - t)!} = \dfrac{(n - k) ^ {\overline {k - t}}}{(k - t)!}</script><p>同时计算 $S(t)$ 和上升幂并预处理 $p ^ k$，可以做到线性。</p>
+<p>现在回来，答案可以表示为：</p>
+<script type="math/tex; mode=display">
+ans = \sum_{j = 0} ^ k \binom nj j ^ k p ^ i S(j)</script><p>维护 $n ^ \underline{j}$，即可边计算答案边计算下降幂。至此，我们解决了 $n &gt; k$ 的情况，复杂度 $O(k)$。</p>
+<p>下面我们计算 $n\leq k$ 的情况。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+ans =& n!\sum_{j = 0} ^ n {k\brace j} \dfrac{p ^ j}{(n - j)!}\\
+=& n!\sum_{j = 0} ^ n \dfrac{p ^ j}{(n - j)!j!} \sum_{i = 0} ^ j \binom ji(-1) ^ {i - j} i ^ k \\
+=& \sum_{j = 0} ^ n p ^ j\binom nj\sum_{i = 0} ^ j \binom ji (-1) ^ {i - j} i ^ k\\
+=& \sum_{i = 0} ^ n (-1) ^ i \binom ni \sum_{j = i} ^ n \binom{n - i}{j - i}(-p) ^ j i ^ k\\
+=& \sum_{i = 0} ^ n p ^ ii ^ k\binom ni \sum_{j = i} ^ n \binom{n - i}{j - i} (-p) ^ {j - i}\\
+=& \sum_{i = 0} ^ n p ^ ii ^ k \binom ni (1 - p) ^ {n - i}
+\end{aligned}</script><p>还是可以做到线性，可以直接计算 $\binom ni$，复杂度 $O(k)$。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	fact[<span class="number">0</span>] = infact[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; N; ++ i) fact[i] = (LL) fact[i - <span class="number">1</span>] * i % Mod;</span><br><span class="line">	infact[N - <span class="number">1</span>] = <span class="built_in">qpow</span>(fact[N - <span class="number">1</span>]);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = N - <span class="number">2</span>; i; -- i) infact[i] = (LL) infact[i + <span class="number">1</span>] * (i + <span class="number">1</span>) % Mod;</span><br><span class="line">	</span><br><span class="line">	pk[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">2</span>; i &lt; N; ++ i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (!st[i]) prime[cnt ++] = i, pk[i] = <span class="built_in">qpow</span>(i, k);</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; cnt &amp;&amp; i * prime[j] &lt; N; ++ j)</span><br><span class="line">		&#123;</span><br><span class="line">			st[i * prime[j]] = <span class="literal">true</span>, pk[i * prime[j]] = (LL) pk[i] * pk[prime[j]] % Mod;</span><br><span class="line">			<span class="keyword">if</span> (i % prime[j] == <span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	pw[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; N; ++ i) pw[i] = (LL) pw[i - <span class="number">1</span>] * p % Mod;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">C</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> m)</span> </span>&#123; <span class="keyword">return</span> (LL) fact[n] * infact[m] % Mod * infact[n - m] % Mod; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> NLarge &#123;</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="type">int</span> up = <span class="number">1</span>;</span><br><span class="line">		s[k] = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> t = k - <span class="number">1</span>; t; -- t)</span><br><span class="line">		&#123;</span><br><span class="line">			up = (LL) up * (n - t - <span class="number">1</span>) % Mod;</span><br><span class="line">			s[t] = (LL) (Mod + <span class="number">1</span> - p) * s[t + <span class="number">1</span>] % Mod;</span><br><span class="line">			<span class="keyword">if</span> ((t ^ k) &amp; <span class="number">1</span>) <span class="built_in">adj</span>(s[t] -= (LL) up * infact[k - t] % Mod * pw[k - t] % Mod);</span><br><span class="line">			<span class="keyword">else</span> s[t] = (s[t] + (LL) up * infact[k - t] % Mod * pw[k - t]) % Mod;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="type">int</span> dn = <span class="number">1</span>, res = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt;= k; ++ j)</span><br><span class="line">		&#123;</span><br><span class="line">			dn = (LL) dn * (n - j + <span class="number">1</span>) % Mod;</span><br><span class="line">			res = (res + (LL) dn * infact[j] % Mod * pk[j] % Mod * pw[j] % Mod * s[j]) % Mod;</span><br><span class="line">		&#125;</span><br><span class="line">		std::cout &lt;&lt; res &lt;&lt; std::endl;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> NSmall &#123;</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="type">int</span> res = <span class="number">0</span>, cur = <span class="built_in">qpow</span>(Mod + <span class="number">1</span> - p, n), inv = <span class="built_in">qpow</span>(Mod + <span class="number">1</span> - p);</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line">		&#123;</span><br><span class="line">			cur = (LL) cur * inv % Mod;</span><br><span class="line">			res = (res + (LL) pw[i] * pk[i] % Mod * <span class="built_in">C</span>(n, i) % Mod * cur) % Mod;</span><br><span class="line">		&#125;</span><br><span class="line">		std::cout &lt;&lt; res &lt;&lt; std::endl;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	std::cin &gt;&gt; n &gt;&gt; p &gt;&gt; k, p = <span class="built_in">qpow</span>(p);</span><br><span class="line">	<span class="built_in">init</span>();</span><br><span class="line">	<span class="keyword">if</span> (n &gt; k) NLarge::<span class="built_in">solve</span>();</span><br><span class="line">	<span class="keyword">else</span> NSmall::<span class="built_in">solve</span>();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
     </div>
 
@@ -365,7 +412,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -454,7 +501,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -464,13 +511,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

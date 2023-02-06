@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"mydcwfy.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="二维平面上有 $n$ 个红点和 $n$ 个蓝点，每个点有一个权值 $vr_i&#x2F;vb_i$，$q$ 次询问，每次给定 $L, R$，求满足 $[xr_i&lt;L] &#x3D; [xb_j &gt; R]$ 并且 $[yr_i &lt; yb_j]$ 的 $(i, j)$ 中 $vr_i + vb_j$ 的最大值。$n\leq 10 ^ 5$，$q\leq 5\times 10 ^ 5$。">
+  <meta name="description" content="二维平面上有 $n$ 个红点和 $n$ 个蓝点，每个点有一个权值 $vr_i&#x2F;vb_i$，$q$ 次询问，每次给定 $L, R$，求满足 $[xr_i R]$ 并且 $[yr_i &lt; yb_j]$ 的 $(i, j)$ 中 $vr_i + vb_j$ 的最大值。$n\leq 10 ^ 5$，$q\leq 5\times 10 ^ 5$。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CF102586L Yosupo&#39;s Algorithm">
 <meta property="og:url" content="https://mydcwfy.github.io/2022/08/09/CF102586L/index.html">
 <meta property="og:site_name" content="mydcwfy&#39;s Blog">
-<meta property="og:description" content="二维平面上有 $n$ 个红点和 $n$ 个蓝点，每个点有一个权值 $vr_i&#x2F;vb_i$，$q$ 次询问，每次给定 $L, R$，求满足 $[xr_i&lt;L] &#x3D; [xb_j &gt; R]$ 并且 $[yr_i &lt; yb_j]$ 的 $(i, j)$ 中 $vr_i + vb_j$ 的最大值。$n\leq 10 ^ 5$，$q\leq 5\times 10 ^ 5$。">
+<meta property="og:description" content="二维平面上有 $n$ 个红点和 $n$ 个蓝点，每个点有一个权值 $vr_i&#x2F;vb_i$，$q$ 次询问，每次给定 $L, R$，求满足 $[xr_i R]$ 并且 $[yr_i &lt; yb_j]$ 的 $(i, j)$ 中 $vr_i + vb_j$ 的最大值。$n\leq 10 ^ 5$，$q\leq 5\times 10 ^ 5$。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-08-09T00:11:27.000Z">
 <meta property="article:modified_time" content="2022-08-09T10:41:15.266Z">
@@ -223,7 +223,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>3.6k</span>
+              <span>3.5k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -242,9 +242,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>二维平面上有 $n$ 个红点和 $n$ 个蓝点，每个点有一个权值 $vr_i/vb_i$，$q$ 次询问，每次给定 $L, R$，求满足 $[xr_i&lt;L] = [xb_j &gt; R]$ 并且 $[yr_i &lt; yb_j]$ 的 $(i, j)$ 中 $vr_i + vb_j$ 的最大值。$n\leq 10 ^ 5$，$q\leq 5\times 10 ^ 5$。</p>
+        <p>二维平面上有 $n$ 个红点和 $n$ 个蓝点，每个点有一个权值 $vr_i/vb_i$，$q$ 次询问，每次给定 $L, R$，求满足 $[xr_i<L] = [xb_j > R]$ 并且 $[yr_i &lt; yb_j]$ 的 $(i, j)$ 中 $vr_i + vb_j$ 的最大值。$n\leq 10 ^ 5$，$q\leq 5\times 10 ^ 5$。</p>
 <span id="more"></span>
-
 <p>对于这种 $yr_i &lt; yb_j$ 限制比较明显的，可以考虑<strong>一维分治，一维扫描线</strong>计算二维符合情况的答案。</p>
 <p>首先容易发现 $y$ 的用处就是比较 $yr_i$ 和 $yb_j$，于是考虑对 $y$ 分治。假设当前 $y$ 的区间是 $[l, r]$，我们强制要求 $yr_i\leq mid$，$yb_i &gt; mid$，然后向两边递归即可。容易发现如果我们可以做到线性扫所有 $yr_i$ 和 $yb_j$，那么时间复杂度就是正确的 $O(n\log n)$，那么得到的二元组也是 $O(n\log n)$ 的。</p>
 <p>现在问题在于如何线性得到所有可能是最优解的方案。一个可以发现的贪心思想是我们一定会选择满足 $yr_i\leq mid$ 中权值最大的点和 $yb_j &gt; mid$ 中权值最大的点。容易发现如果两个都没有被选择的话，我们一定可以替换一个变成这两个点中的一个。这样我们只需要把两边最大的点选进去即可。这样备选的二元组是 $O(n\log n)$ 组。</p>
@@ -351,7 +350,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -440,7 +439,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -450,13 +449,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

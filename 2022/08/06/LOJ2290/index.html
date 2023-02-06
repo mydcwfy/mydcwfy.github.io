@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"mydcwfy.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="题意：给定左右各 $n$ 个点的二分图和 $m$ 种边，每一种边有三种情况：  这种边只有一条，有 $50\%$ 的概率出现。 这种边有两条，同时出现或者不出现，概率均为 $50\%$。 这种边有两条，分别出现，概率均为 $50\%$。  求完美匹配的期望数量，对 $10 ^ 9 + 7$ 取模。$n\leq 15$。">
+  <meta name="description" content="题意：给定左右各 $n$ 个点的二分图和 $m$ 种边，每一种边有三种情况：  这种边只有一条，有 $50\\%$ 的概率出现。 这种边有两条，同时出现或者不出现，概率均为 $50\\%$。 这种边有两条，分别出现，概率均为 $50\\%$。  求完美匹配的期望数量，对 $10 ^ 9 + 7$ 取模。$n\leq 15$。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LOJ2290 [THUWC2017]随机二分图">
 <meta property="og:url" content="https://mydcwfy.github.io/2022/08/06/LOJ2290/index.html">
 <meta property="og:site_name" content="mydcwfy&#39;s Blog">
-<meta property="og:description" content="题意：给定左右各 $n$ 个点的二分图和 $m$ 种边，每一种边有三种情况：  这种边只有一条，有 $50\%$ 的概率出现。 这种边有两条，同时出现或者不出现，概率均为 $50\%$。 这种边有两条，分别出现，概率均为 $50\%$。  求完美匹配的期望数量，对 $10 ^ 9 + 7$ 取模。$n\leq 15$。">
+<meta property="og:description" content="题意：给定左右各 $n$ 个点的二分图和 $m$ 种边，每一种边有三种情况：  这种边只有一条，有 $50\\%$ 的概率出现。 这种边有两条，同时出现或者不出现，概率均为 $50\\%$。 这种边有两条，分别出现，概率均为 $50\\%$。  求完美匹配的期望数量，对 $10 ^ 9 + 7$ 取模。$n\leq 15$。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-08-05T23:35:47.000Z">
 <meta property="article:modified_time" content="2022-08-07T06:26:05.831Z">
@@ -249,17 +249,16 @@
       
         <p>题意：给定左右各 $n$ 个点的二分图和 $m$ 种边，每一种边有三种情况：</p>
 <ol>
-<li>这种边只有一条，有 $50\%$ 的概率出现。</li>
-<li>这种边有两条，同时出现或者不出现，概率均为 $50\%$。</li>
-<li>这种边有两条，分别出现，概率均为 $50\%$。</li>
+<li>这种边只有一条，有 $50\\%$ 的概率出现。</li>
+<li>这种边有两条，同时出现或者不出现，概率均为 $50\\%$。</li>
+<li>这种边有两条，分别出现，概率均为 $50\\%$。</li>
 </ol>
 <p>求完美匹配的期望数量，对 $10 ^ 9 + 7$ 取模。$n\leq 15$。</p>
 <span id="more"></span>
-
 <p>首先考虑拆期望贡献，变为每一种完美匹配的出现概率之和。</p>
 <p>我们直接考虑 DP，记 $f(S, T)$ 表示左边已选集合为 $S$，右边已选集合为 $T$ 的时候的期望数量。枚举不在 $S$ 中的最小元素和谁匹配即可，如果出现 2、3 类边，直接暴力转移。复杂度 $O(2 ^ {2n})$，实际由于 $S$ 的情况很少，可以通过。</p>
 <p>这个做法看似很对，但是在处理 2 和 3 类边的时候会出现一些问题。具体的，虽然我们可能同时出现了两条边，但是在最后的完美匹配中的边可能只有一条，这样的话这种方法就不太可行。</p>
-<p>我们容易发现如果我们只考虑两条边中的一条，他的出现概率就是 $50\%$，只不过会在两条边同时出现的时候出现一些问题。我们先不管这个条件，按照 1 类边的表针任意选择两条边，这样在不选边和选一条边都是正确的。唯一不正确的就是当两条边同时存在时，这个概率并不是 $25 \%$。2 类边是 $50\%$ 的概率，所以我们钦定强制选这两条边，并钦定同时出现的概率为 $25\%$。3 类边同理。</p>
+<p>我们容易发现如果我们只考虑两条边中的一条，他的出现概率就是 $50\\%$，只不过会在两条边同时出现的时候出现一些问题。我们先不管这个条件，按照 1 类边的表针任意选择两条边，这样在不选边和选一条边都是正确的。唯一不正确的就是当两条边同时存在时，这个概率并不是 $25 \\%$。2 类边是 $50\\%$ 的概率，所以我们钦定强制选这两条边，并钦定同时出现的概率为 $25\\%$。3 类边同理。</p>
 <p>这样我们可以在 $O(2 ^ {2n})$ 的时间内解决该问题，用记忆化搜索可以通过。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">Dp</span><span class="params">(<span class="type">int</span> S, <span class="type">int</span> T)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (S == tot &amp;&amp; T == tot) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span> (mp[S].<span class="built_in">count</span>(T)) <span class="keyword">return</span> mp[S][T];</span><br><span class="line">	<span class="type">int</span> res = <span class="number">0</span>, le = __builtin_ctz(S ^ tot);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> ri = <span class="number">0</span>; ri &lt; n; ++ ri)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> ((T &gt;&gt; ri &amp; <span class="number">1</span>) || typ[le][ri] == <span class="number">-1</span>) <span class="keyword">continue</span>;</span><br><span class="line">		<span class="comment">// std::cout &lt;&lt; S &lt;&lt; &#x27; &#x27; &lt;&lt; T &lt;&lt; &#x27; &#x27; &lt;&lt; (S | (1 &lt;&lt; le)) &lt;&lt; &#x27; &#x27; &lt;&lt; (T | (1 &lt;&lt; ri)) &lt;&lt; &#x27;\n&#x27;;</span></span><br><span class="line">		res = (res + <span class="built_in">Dp</span>(S | (<span class="number">1</span> &lt;&lt; le), T | (<span class="number">1</span> &lt;&lt; ri)) * (Mod + <span class="number">1LL</span>) / <span class="number">2</span>) % Mod;</span><br><span class="line">		<span class="keyword">auto</span> [u, v] = pr[le][ri];</span><br><span class="line">		<span class="keyword">if</span> (u == le || v == ri || (S &gt;&gt; u &amp; <span class="number">1</span>) || (T &gt;&gt; v &amp; <span class="number">1</span>)) <span class="keyword">continue</span>;</span><br><span class="line">		<span class="comment">// std::cout &lt;&lt; S &lt;&lt; &#x27; &#x27; &lt;&lt; T &lt;&lt; &#x27; &#x27; &lt;&lt; (S | (1 &lt;&lt; le) | (1 &lt;&lt; u)) &lt;&lt; &#x27; &#x27; &lt;&lt; (T | (1 &lt;&lt; ri) | (1 &lt;&lt; v)) &lt;&lt; &#x27;\n&#x27;;</span></span><br><span class="line">		<span class="keyword">if</span> (typ[le][ri] == <span class="number">1</span>)</span><br><span class="line">			res = (res + <span class="built_in">Dp</span>(S | (<span class="number">1</span> &lt;&lt; le) | (<span class="number">1</span> &lt;&lt; u), T | (<span class="number">1</span> &lt;&lt; ri) | (<span class="number">1</span> &lt;&lt; v)) * (Mod + <span class="number">1LL</span>) / <span class="number">4</span>) % Mod;</span><br><span class="line">		<span class="keyword">if</span> (typ[le][ri] == <span class="number">2</span>)</span><br><span class="line">			res = (res + <span class="built_in">Dp</span>(S | (<span class="number">1</span> &lt;&lt; le) | (<span class="number">1</span> &lt;&lt; u), T | (<span class="number">1</span> &lt;&lt; ri) | (<span class="number">1</span> &lt;&lt; v)) * (Mod - (Mod + <span class="number">1LL</span>) / <span class="number">4</span>)) % Mod;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> mp[S][T] = res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
@@ -362,7 +361,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -451,7 +450,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -461,13 +460,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

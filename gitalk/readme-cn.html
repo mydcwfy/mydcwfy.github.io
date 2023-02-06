@@ -1,4 +1,4 @@
-<h1 id="Gitalk"><a href="#Gitalk" class="headerlink" title="Gitalk"></a>Gitalk</h1><p><a href="https://www.npmjs.com/package/gitalk"><img src="https://img.shields.io/npm/v/gitalk.svg?style=flat-square" alt="NPM"></a><br><a href="https://cdnjs.com/libraries/gitalk"><img src="https://img.shields.io/cdnjs/v/gitalk.svg?style=flat-square" alt="CDNJS"></a><br><a href="https://www.jsdelivr.com/package/npm/gitalk"><img src="https://data.jsdelivr.com/v1/package/npm/gitalk/badge" alt="jsdelivr"></a><br><a href="https://david-dm.org/gitalk/gitalk"><img src="https://david-dm.org/gitalk/gitalk.svg?style=flat-square" alt="david-dm"></a><br><a href="https://travis-ci.org/gitalk/gitalk"><img src="https://img.shields.io/travis/gitalk/gitalk/master.svg?style=flat-square" alt="travis"></a><br><a href="https://coveralls.io/github/gitalk/gitalk"><img src="https://img.shields.io/coveralls/gitalk/gitalk/master.svg?style=flat-square" alt="coveralls"></a><br><a href="https://unpkg.com/gitalk/dist/gitalk.min.js"><img src="https://img.badgesize.io/https://unpkg.com/gitalk/dist/gitalk.min.js?compression=gzip&style=flat-square" alt="gzip-size"></a></p>
+<h1 id="Gitalk"><a href="#Gitalk" class="headerlink" title="Gitalk"></a>Gitalk</h1><p><a href="https://www.npmjs.com/package/gitalk"><img src="https://img.shields.io/npm/v/gitalk.svg?style=flat-square" alt="NPM"></a><br><a href="https://cdnjs.com/libraries/gitalk"><img src="https://img.shields.io/cdnjs/v/gitalk.svg?style=flat-square" alt="CDNJS"></a><br><a href="https://www.jsdelivr.com/package/npm/gitalk"><img src="https://data.jsdelivr.com/v1/package/npm/gitalk/badge" alt="jsdelivr"></a><br><a href="https://david-dm.org/gitalk/gitalk"><img src="https://david-dm.org/gitalk/gitalk.svg?style=flat-square" alt="david-dm"></a><br><a href="https://travis-ci.org/gitalk/gitalk"><img src="https://img.shields.io/travis/gitalk/gitalk/master.svg?style=flat-square" alt="travis"></a><br><a href="https://coveralls.io/github/gitalk/gitalk"><img src="https://img.shields.io/coveralls/gitalk/gitalk/master.svg?style=flat-square" alt="coveralls"></a><br><a href="https://unpkg.com/gitalk/dist/gitalk.min.js"><img src="https://img.badgesize.io/https://unpkg.com/gitalk/dist/gitalk.min.js?compression=gzip&amp;style=flat-square" alt="gzip-size"></a></p>
 <p>Gitalk 是一个基于 GitHub Issue 和 Preact 开发的评论插件。</p>
 <h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><ul>
 <li>使用 GitHub 登录</li>
@@ -7,12 +7,12 @@
 <li>无干扰模式（设置 distractionFreeMode 为 true 开启）</li>
 <li>快捷键提交评论 （cmd|ctrl + enter）</li>
 </ul>
-<p><a href="https://github.com/gitalk/gitalk/blob/master/readme.md">Readme</a><br><a href="https://gitalk.github.io/">在线示例</a></p>
+<p><a href="https://github.com/gitalk/gitalk/blob/master/readme.md">Readme</a><br><a href="https://gitalk.github.io">在线示例</a></p>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>两种方式</p>
 <ul>
 <li>直接引入</li>
 </ul>
-<pre><code class="html">  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css&quot;&gt;
+<pre><code class="lang-html">  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css&quot;&gt;
   &lt;script src=&quot;https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js&quot;&gt;&lt;/script&gt;
 
   &lt;!-- or --&gt;
@@ -23,19 +23,19 @@
 <ul>
 <li>npm 安装</li>
 </ul>
-<pre><code class="sh">npm i --save gitalk
+<pre><code class="lang-sh">npm i --save gitalk
 </code></pre>
-<pre><code class="js">import &#39;gitalk/dist/gitalk.css&#39;
+<pre><code class="lang-js">import &#39;gitalk/dist/gitalk.css&#39;
 import Gitalk from &#39;gitalk&#39;
 </code></pre>
 <h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>首先，您需要选择一个公共github存储库（已存在或创建一个新的github存储库）用于存储评论，</p>
 <p>然后需要创建 <strong>GitHub Application</strong>，如果没有 <a href="https://github.com/settings/applications/new">点击这里申请</a>，<code>Authorization callback URL</code> 填写当前使用插件页面的域名。</p>
 <p>最后, 您可以选择如下的其中一种方式应用到页面：</p>
 <h3 id="方式1"><a href="#方式1" class="headerlink" title="方式1"></a>方式1</h3><p>添加一个容器：</p>
-<pre><code class="html">&lt;div id=&quot;gitalk-container&quot;&gt;&lt;/div&gt;
+<pre><code class="lang-html">&lt;div id=&quot;gitalk-container&quot;&gt;&lt;/div&gt;
 </code></pre>
 <p>用下面的 Javascript 代码来生成 gitalk 插件：</p>
-<pre><code class="js">var gitalk = new Gitalk({
+<pre><code class="lang-js">var gitalk = new Gitalk({
   clientID: &#39;GitHub Application Client ID&#39;,
   clientSecret: &#39;GitHub Application Client Secret&#39;,
   repo: &#39;GitHub repo&#39;,
@@ -48,10 +48,10 @@ import Gitalk from &#39;gitalk&#39;
 gitalk.render(&#39;gitalk-container&#39;)
 </code></pre>
 <h3 id="方式2：在React使用"><a href="#方式2：在React使用" class="headerlink" title="方式2：在React使用"></a>方式2：在React使用</h3><p>使用以下代码引入Gitalk组件</p>
-<pre><code class="jsx">import GitalkComponent from &quot;gitalk/dist/gitalk-component&quot;;
+<pre><code class="lang-jsx">import GitalkComponent from &quot;gitalk/dist/gitalk-component&quot;;
 </code></pre>
 <p>按以下方式在React中使用Gitalk组件</p>
-<pre><code class="jsx">&lt;GitalkComponent options={{
+<pre><code class="lang-jsx">&lt;GitalkComponent options={{
   clientID: &quot;...&quot;,
   // ...
   // 设置项
@@ -119,7 +119,7 @@ gitalk.render(&#39;gitalk-container&#39;)
 </li>
 <li><p><strong>flipMoveOptions</strong> <code>Object</code> </p>
 <p>Default:</p>
-<pre><code class="js">  {
+<pre><code class="lang-js">  {
     staggerDelayBy: 150,
     appearAnimation: &#39;accordionVertical&#39;,
     enterAnimation: &#39;accordionVertical&#39;,

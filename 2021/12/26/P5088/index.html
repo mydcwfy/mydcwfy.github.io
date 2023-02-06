@@ -223,7 +223,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>816</span>
+              <span>804</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -244,27 +244,30 @@
       
         <p>杂题，没有什么说的。</p>
 <span id="more"></span>
-
 <h2 id="1-题意"><a href="#1-题意" class="headerlink" title="1. 题意"></a>1. 题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5088">原题面</a></p>
 <p>抽象一下题意：</p>
-<p>求 $k1,k2$，使得：<br>$$<br>k1\times N:k2\times M=A:B<br>$$<br>（先使 $\gcd(A,B)=1$</p>
+<p>求 $k1,k2$，使得：</p>
+<script type="math/tex; mode=display">
+k1\times N:k2\times M=A:B</script><p>（先使 $\gcd(A,B)=1$</p>
 <p>然后，题目要求的就是 $k1+k2-2$ 的最小值。</p>
 <p>对应到原题意是什么呢？</p>
 <p>我们假设有无穷多个这样的 $N\times M$ 的矩形，然后我们不反射，直接穿过，直到碰到交界的点为止。</p>
 <img src="/2021/12/26/P5088/P5088.png" class="">
-
 <p>蓝线是原来的反射路径，但是我们可以通过一系列的翻折，使得路径变为绿线。</p>
 <p>变为绿线，其实已经简洁了许多。</p>
 <p>我们假设横向的有 $k1$ 个 $N$，纵向的有 $k2$ 个 $M$，那么最后 $\zeta$ 的对边是 $k2\times M$，邻边是 $k1\times N$。</p>
-<p>于是，我们可以得到：<br>$$<br>\cot\zeta=\dfrac{k1\times N}{k2\times M}=\dfrac{A}{B}<br>$$<br>也就是上面的式子了。</p>
+<p>于是，我们可以得到：</p>
+<script type="math/tex; mode=display">
+\cot\zeta=\dfrac{k1\times N}{k2\times M}=\dfrac{A}{B}</script><p>也就是上面的式子了。</p>
 <p>至于反射了多少次，其实就是穿过边界了多少次。</p>
 <p><del>大眼观察法</del>易得 $ans=k1+k2-2$。</p>
 <p>问题转化为怎样求 $k1,k2$。</p>
 <p>首先，可以得到一个解：$k1=A\times M,k2=B\times N$。</p>
 <p>然后，我们可以同时除以一个数 $x$。</p>
 <p>那么需要满足：$x|A\times M,x|B\times N$。（不然的话，$k1,k2$ 无法整除 $x$，就不是整数了）。</p>
-<p>综上，我们其实就可以总结出这道题的答案了：<br>$$<br>ans=\dfrac{A\times M+B\times N}{\gcd(A\times M,B\times N)}<br>$$</p>
-<h2 id="2-代码"><a href="#2-代码" class="headerlink" title="2. 代码"></a>2. 代码</h2><p>数据水了一点，没有卡掉 <code>long long</code>。</p>
+<p>综上，我们其实就可以总结出这道题的答案了：</p>
+<script type="math/tex; mode=display">
+ans=\dfrac{A\times M+B\times N}{\gcd(A\times M,B\times N)}</script><h2 id="2-代码"><a href="#2-代码" class="headerlink" title="2. 代码"></a>2. 代码</h2><p>数据水了一点，没有卡掉 <code>long long</code>。</p>
 <p>唯一注意的是 $A=0$ 或 $B=0$ 的情况。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">read</span>(n, m, a, b);</span><br><span class="line">	<span class="keyword">if</span> (a == <span class="number">0</span> || b == <span class="number">0</span>) <span class="keyword">return</span> <span class="built_in">puts</span>(<span class="string">&quot;0&quot;</span>), <span class="number">0</span>;</span><br><span class="line">	ll g = <span class="built_in">Gcd</span>(a, b);</span><br><span class="line">	a /= g, b /= g;</span><br><span class="line">	ll x = <span class="built_in">Gcd</span>(a * m, b * n);</span><br><span class="line">	<span class="built_in">write</span>(a * m / x + b * n / x - <span class="number">2</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -368,7 +371,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -457,7 +460,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -467,13 +470,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

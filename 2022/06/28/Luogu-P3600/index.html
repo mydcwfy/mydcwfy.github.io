@@ -28,7 +28,7 @@
 <meta property="og:description" content="一个 min-max 容斥题目。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-06-28T00:38:24.000Z">
-<meta property="article:modified_time" content="2022-06-28T00:58:40.168Z">
+<meta property="article:modified_time" content="2023-02-06T13:14:45.943Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="期望">
 <meta property="article:tag" content="min-max 容斥">
@@ -211,10 +211,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-06-28 08:38:24 / Modified: 08:58:40" itemprop="dateCreated datePublished" datetime="2022-06-28T08:38:24+08:00">2022-06-28</time>
+              <time title="Created: 2022-06-28 08:38:24" itemprop="dateCreated datePublished" datetime="2022-06-28T08:38:24+08:00">2022-06-28</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-02-06 21:14:45" itemprop="dateModified" datetime="2023-02-06T21:14:45+08:00">2023-02-06</time>
+              </span>
 
           <br>
             <span class="post-meta-item" title="Symbols count in article">
@@ -243,20 +249,22 @@
       
         <p>一个 min-max 容斥题目。</p>
 <span id="more"></span>
-
 <p>题意：给定 $m$ 个区间 $[l_i, r_i]$，每次得到的权值为所有区间最小值的最大值，该序列 $n$ 个数均在 $[1, x]$ 内均匀随机，求期望权值的大小。$n, m, x\leq 2000$。</p>
 <p>最小值的最大值显然不可做，考虑 min-max 容斥，将其转化为最小值的最小值。</p>
-<p>那么式子可以写成：<br>$$<br>\sum_{S\subseteq \{1, 2, \cdots, m\}, S\not= \varnothing } (-1) ^ {|S| - 1}\min_{i\in S} \{ \min_{j = l_i} ^ {r_i } a_j \}<br>$$<br>注意到后面的式子仅与区间的并的长度有关，考虑将区间并的长度压进状态 DP 计算。</p>
+<p>那么式子可以写成：</p>
+<script type="math/tex; mode=display">
+\sum_{S\subseteq \{1, 2, \cdots, m\}, S\not= \varnothing } (-1) ^ {|S| - 1}\min_{i\in S} \{ \min_{j = l_i} ^ {r_i } a_j \}</script><p>注意到后面的式子仅与区间的并的长度有关，考虑将区间并的长度压进状态 DP 计算。</p>
 <p>首先有一些区间是没有意义的，就是包含其他区间的区间，可以先排除掉。这样保证了所有区间按 $r$ 排序后 $l$ 也是递增的。</p>
 <p>考虑 DP，设 $f(i, j)$ 表示最后一个位置是 $i$，且当前区间并的长度为 $j$ 的方案数。注意我们需要把 $(-1) ^ {|S| - 1}$ 的系数也带上。</p>
-<p>考虑加入一个区间，那么我们需要计算的就是 $f(r_i, j)$，可以直接暴力计算：<br>$$<br>f(r_i, j) = \sum_{t = 1} ^ {l_i - 1} f(t, j - len) + \sum_{t = l_i} ^ {r_i - 1} f(t, j - r_i + t)<br>$$<br>这样计算时间复杂度为 $O(n ^ 2 m)$，无法通过，考虑使用前缀和优化。</p>
+<p>考虑加入一个区间，那么我们需要计算的就是 $f(r_i, j)$，可以直接暴力计算：</p>
+<script type="math/tex; mode=display">
+f(r_i, j) = \sum_{t = 1} ^ {l_i - 1} f(t, j - len) + \sum_{t = l_i} ^ {r_i - 1} f(t, j - r_i + t)</script><p>这样计算时间复杂度为 $O(n ^ 2 m)$，无法通过，考虑使用前缀和优化。</p>
 <p>前面一半很好前缀和，注意到后半部分他的 $t - j$ 一定的话，那么贡献到的位置也是一定的，因为区间并的变化量是 $r - t$。</p>
 <p>那么，我们可以通过 $O(nm)$ 的时间计算 $f(i, j)$，前缀和一下即可得到区间并长度为 $j$ 的方案数（带系数）。</p>
 <p>剩下的过程，我们发现 $x$ 很小，我们需要计算区间并长度为 $j$ 时最小值为 $x$ 的概率。考虑差分，计算最小值 $\leq x$ 的概率减去 $\leq x - 1$ 的概率即可。计算 $\leq x$ 的概率可以通过对立面（所有数都大于 $x$）来计算。后半部分时间复杂度 $O(nx)$。</p>
 <p>于是我们在 $O(nm + nx)$ 的时间完成，可以通过。</p>
 <p><strong>注意求哪些区间没有覆盖其他区间的时候，相等的区间不能全部删去！</strong></p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	std::cin &gt;&gt; n &gt;&gt; x &gt;&gt; m;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= m; ++ i) <span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>, &amp;a[i].l, &amp;a[i].r);</span><br><span class="line">	std::<span class="built_in">sort</span>(a + <span class="number">1</span>, a + m + <span class="number">1</span>, [&amp;](Interval &amp;v1, Interval &amp;v2) &#123; <span class="keyword">return</span> v1.r &lt; v2.r; &#125;);</span><br><span class="line">	<span class="type">int</span> top = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= m; ++ i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="type">bool</span> flag = <span class="literal">true</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt;= m &amp;&amp; flag; ++ j)</span><br><span class="line">			flag &amp;= !(a[i].r &gt;= a[j].r &amp;&amp; a[i].l &lt;= a[j].l) || (a[i].l == a[j].l &amp;&amp; a[i].r == a[j].r);</span><br><span class="line">		<span class="keyword">if</span> (flag) tmp[++ top] = a[i];</span><br><span class="line">	&#125;</span><br><span class="line">	std::<span class="built_in">swap</span>(a, tmp), m = top;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= m; ++ i) g[a[i].r].<span class="built_in">push_back</span>(i);</span><br><span class="line">	f[<span class="number">0</span>][<span class="number">0</span>] = pre1[<span class="number">0</span>][<span class="number">0</span>] = pre2[<span class="number">0</span>][<span class="number">0</span>] = Mod - <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> r = <span class="number">1</span>; r &lt;= n; ++ r)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> id : g[r])</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="type">int</span> l = a[id].l;</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> len = r - l + <span class="number">1</span>, ls = r - l + <span class="number">1</span>; len &lt;= r; ++ len)</span><br><span class="line">				f[r][len] = (f[r][len] - (LL) pre1[l - <span class="number">1</span>][len - ls] - (pre2[r - <span class="number">1</span>][r - len] - pre2[l - <span class="number">1</span>][r - len]) - f[r][len] + <span class="number">4LL</span> * Mod) % Mod;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> len = <span class="number">0</span>; len &lt;= r; ++ len)</span><br><span class="line">			<span class="built_in">adj</span>(pre1[r][len] = pre1[r - <span class="number">1</span>][len] + f[r][len] - Mod),</span><br><span class="line">			<span class="built_in">adj</span>(pre2[r][r - len] = pre2[r - <span class="number">1</span>][r - len] + f[r][len] - Mod);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> val = <span class="number">1</span>; val &lt;= x; ++ val)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="type">int</span> ak = <span class="built_in">qpow</span>(x) * (LL) (x - val) % Mod, p = ak, &amp;cur = pro[val];</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt;= n; ++ j, p = (LL) p * ak % Mod)</span><br><span class="line">			cur = (cur + (LL) p * pre1[n][j]) % Mod;</span><br><span class="line">		<span class="built_in">adj</span>(cur = <span class="number">1</span> - cur);</span><br><span class="line">		<span class="comment">// std::cout &lt;&lt; val &lt;&lt; &#x27; &#x27; &lt;&lt; cur &lt;&lt; &#x27;\n&#x27;;</span></span><br><span class="line">		<span class="built_in">adj</span>(cur -= pro[val - <span class="number">1</span>]), res = (res + (LL) cur * val) % Mod;</span><br><span class="line">		<span class="comment">// std::cout &lt;&lt; val &lt;&lt; &#x27; &#x27; &lt;&lt; cur &lt;&lt; &#x27;\n&#x27;;</span></span><br><span class="line">		<span class="built_in">adj</span>(cur += pro[val - <span class="number">1</span>] - Mod);</span><br><span class="line">	&#125;</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
     </div>
 
@@ -358,7 +366,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -447,7 +455,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -457,13 +465,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

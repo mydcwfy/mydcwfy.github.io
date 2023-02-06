@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://mydcwfy.github.io/2021/12/11/FFT-%E8%AF%A6%E8%A7%A3/FFT.png">
 <meta property="article:published_time" content="2021-12-11T08:26:24.000Z">
-<meta property="article:modified_time" content="2022-01-19T03:33:37.095Z">
+<meta property="article:modified_time" content="2023-02-06T13:13:15.495Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="多项式">
 <meta property="article:tag" content="数论">
@@ -221,7 +221,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-01-19 11:33:37" itemprop="dateModified" datetime="2022-01-19T11:33:37+08:00">2022-01-19</time>
+                <time title="Modified: 2023-02-06 21:13:15" itemprop="dateModified" datetime="2023-02-06T21:13:15+08:00">2023-02-06</time>
               </span>
 
           <br>
@@ -251,7 +251,6 @@
       
         <p><strong>前方高能！</strong></p>
 <span id="more"></span>
-
 <h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>本节是数学之中算非常难的模板题了。</p>
 <p>注意，如果有没学过的知识点，请记住结论即可，不必深挖使自己绕晕。</p>
 <h2 id="1-解决问题"><a href="#1-解决问题" class="headerlink" title="1. 解决问题"></a>1. 解决问题</h2><p>求两个高次多项式的乘积。</p>
@@ -293,36 +292,53 @@
 <p>$A_2(x)=a_1+a_3x+a_5x^2+…+a_{n-1}x^{\frac{n}{2}-1}$。</p>
 <p>所以，我们惊喜地发现：$A(x)=A_1( x^2)+xA_2(x^2)$！</p>
 <p>然后我们将 $\omega_n^k$ 代入，得到：</p>
-<p>如果 $k\in[0,\dfrac{n}{2}-1]$，原式可以写成：<br>$$<br>\begin{aligned}<br>A(\omega_n^k)=A_1(\omega_n^{2k})+\omega_n^kA_2(\omega_n^{2k})<br>\\=A_1(\omega_{\frac{n}{2}}^k)+\omega_n^kA_2(\omega_{\frac{n}{2}}^k)<br>\end{aligned}<br>$$<br>如果 $k\in[\dfrac{n}{2},n-1]$，原式可以写成：<br>$$<br>A(\omega_n^k)=A_1(\omega_n^{2k})+\omega_n^kA_2(\omega_n^{2k})\\=A_1(\omega_n^{2k-n})-\omega_n^{k-\frac{n}{2}}A_2(\omega_n^{2k-n})<br>$$</p>
-<p>这样，我们就可以在 $O(n\log n)$ 的时间内从系数表示转换到点值表示。</p>
+<p>如果 $k\in[0,\dfrac{n}{2}-1]$，原式可以写成：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+A(\omega_n^k)=A_1(\omega_n^{2k})+\omega_n^kA_2(\omega_n^{2k})
+\\=A_1(\omega_{\frac{n}{2}}^k)+\omega_n^kA_2(\omega_{\frac{n}{2}}^k)
+\end{aligned}</script><p>如果 $k\in[\dfrac{n}{2},n-1]$，原式可以写成：</p>
+<script type="math/tex; mode=display">
+A(\omega_n^k)=A_1(\omega_n^{2k})+\omega_n^kA_2(\omega_n^{2k})\\=A_1(\omega_n^{2k-n})-\omega_n^{k-\frac{n}{2}}A_2(\omega_n^{2k-n})</script><p>这样，我们就可以在 $O(n\log n)$ 的时间内从系数表示转换到点值表示。</p>
 <p>下面，我们进行逆变化：从点值表示转换到系数表示。</p>
 <p>假设最终的答案为 $A(x)=c_0+c_1x+…+ c_{n-1}x^{n-1}$。</p>
-<p><strong>结论：</strong><br>$$<br>c_k=\dfrac{\sum_{i=0}^{n-1}y_i(\omega_n^{-k})^i}{n}<br>$$<br>其中，$y_i$ 表示最终得到的纵坐标。</p>
+<p><strong>结论：</strong></p>
+<script type="math/tex; mode=display">
+c_k=\dfrac{\sum_{i=0}^{n-1}y_i(\omega_n^{-k})^i}{n}</script><p>其中，$y_i$ 表示最终得到的纵坐标。</p>
 <p>首先，我们假设该结论成立。</p>
 <p>再定义 $B(x)=y_0+y_1x+y_2x^2+…+y_{n-1}x^ {n-1}$。</p>
 <p>不难发现 $c_i=B(\omega_n^{-i})$。</p>
 <p>所以，我们相当于把 $B$ 从系数表示法转换为点值表示法，就在做一次前面的即可。</p>
 <p>可以发现（？），有一个负号不影响答案。</p>
 <p>好，下面我们来证明该结论。</p>
-<p><strong>证明：（从结论反推）</strong><br>$$<br>n*c_k=\sum_{i=0}^{n-1}y_i(\omega_{n}^ {-k})^i\\=\sum_{i=0}^{n-1}(\sum_{j= 0}^{n-1}c_j(\omega_{n}^{i})^j)(\omega _{n}^{-k})^i<br>$$</p>
-<p>$$<br>\begin{aligned}<br>=\sum_{i=0}^{n-1}\sum_{j=0}^{n-1}c_j (\omega_{n}^{i})^j(\omega_{n}^{-k})^i<br>\\=\sum_{i=0}^{n-1}\sum_{j=0}^{n-1} c_j(\omega_{n}^{j-k})^i<br>\end{aligned}<br>$$</p>
-<p>$$<br>=\sum_{j=0}^{n-1}c_j(\sum_{i=0}^{n-1} (\omega_{n}^{j-k})^i)<br>$$</p>
-<p>在最里面的括号 $(\omega_{n}^{j-k})^i$，$j,k$ 都是常量，$i$ 是变量，所以我们可以再构造 $D(x)=\sum <em>{i=0}^{n-1}x^i$，原式就可以化成：<br>$$<br>=\sum</em>{j=0}^{n-1}c_j*D(\omega_{n}^{j-k})<br>$$<br>接着，我们讨论 $D(\omega_{n}^{x})$ 的取值：</p>
+<p><strong>证明：（从结论反推）</strong></p>
+<script type="math/tex; mode=display">
+n*c_k=\sum_{i=0}^{n-1}y_i(\omega_{n}^ {-k})^i\\=\sum_{i=0}^{n-1}(\sum_{j= 0}^{n-1}c_j(\omega_{n}^{i})^j)(\omega _{n}^{-k})^i</script><script type="math/tex; mode=display">
+\begin{aligned}
+=\sum_{i=0}^{n-1}\sum_{j=0}^{n-1}c_j (\omega_{n}^{i})^j(\omega_{n}^{-k})^i 
+\\=\sum_{i=0}^{n-1}\sum_{j=0}^{n-1} c_j(\omega_{n}^{j-k})^i
+\end{aligned}</script><script type="math/tex; mode=display">
+=\sum_{j=0}^{n-1}c_j(\sum_{i=0}^{n-1} (\omega_{n}^{j-k})^i)</script><p>在最里面的括号 $(\omega_{n}^{j-k})^i$，$j,k$ 都是常量，$i$ 是变量，所以我们可以再构造 $D(x)=\sum _{i=0}^{n-1}x^i$，原式就可以化成：</p>
+<script type="math/tex; mode=display">
+=\sum_{j=0}^{n-1}c_j*D(\omega_{n}^{j-k})</script><p>接着，我们讨论 $D(\omega_{n}^{x})$ 的取值：</p>
 <p>$x\not=0$：，首先，$D(\omega_{n}^{x})= \omega_{n}^{0}+\omega_{n}^{x}+ \omega_{n}^{2x}+…+\omega_{n} ^{(n-1)x}$。</p>
 <p>其次，$\omega_{n}^{x}D( \omega_{n}^{x})=\omega_{n}^{x}+ \omega_{n}^{2x}+…+\omega_{n} ^{(n-1)x}+(\omega_{n}^{nx}=0)$。</p>
 <p>发现，这两项相等。</p>
 <p>于是，$(\omega_{n}^{x}-1)D(\omega_{n}^{x})=0$，又 $x\not=0$，所以 $\omega_{n}^{x}\not=1$，于是 $D(\omega_{n}^{x})=0$。</p>
 <p>$x=0$：$D(\omega_{n}^{x})=D(1)=n$。</p>
 <p>所以，当 $j\not=k$ 时，原式为 $0$。</p>
-<p>带入原式，便可以得到：<br>$$<br>=nc_k<br>$$<br><strong>证毕。</strong></p>
+<p>带入原式，便可以得到：</p>
+<script type="math/tex; mode=display">
+=nc_k</script><p><strong>证毕。</strong></p>
 <p>现在，我们讨论的是怎样求出 $n$ 次单位根对应的点值。</p>
-<p>首先，有前面推导的式子：<br>$$<br>A(\omega_{n}^{k})=A_1(\omega_{\frac{n}{2}}^{k})+\omega_{n}^{k}A_2(\omega <em>{\frac{n}{2}}^{k})\\A(\omega</em>{n}^{ k+\frac{n}{2}})=A_1(\omega_{\frac{n} {2}}^{k})-\omega_{n}^{k}A_2(\omega _{\frac{n}{2}}^{k})<br>$$<br>在实践中，递归的常数较大，我们使用迭代。</p>
+<p>首先，有前面推导的式子：</p>
+<script type="math/tex; mode=display">
+A(\omega_{n}^{k})=A_1(\omega_{\frac{n}{2}}^{k})+\omega_{n}^{k}A_2(\omega _{\frac{n}{2}}^{k})\\A(\omega_{n}^{ k+\frac{n}{2}})=A_1(\omega_{\frac{n} {2}}^{k})-\omega_{n}^{k}A_2(\omega _{\frac{n}{2}}^{k})</script><p>在实践中，递归的常数较大，我们使用迭代。</p>
 <p>首先，我们发现，如果 $i\leq\dfrac{n}{2}$，就可以得到 $a_i=b_i+\omega_{n}^ic_i$，如果 $i&gt;\dfrac{n}{2}$，就可以得到 $a_i= b_i-\omega_{n}^{i-\frac{n}{2}}c_i$，其中 $b_i,c_i$ 分别表示左边和右边求出来的系数，分别对应偶数求出来的点值和奇数次方求出来的点值。</p>
 <p>我们每一次求点值时，会递归并将偶数次项的放前面，将奇数次项的放后面，然后计算出前后的 $n$ 次方根的数值，然后将答案合并即可。</p>
 <p>来看一张图。</p>
 <p>（红色 $a$ 表示系数的长度，蓝色 $b$ 表示已经求出的点值的合并，黑色表示点值的转移）</p>
 <img src="/2021/12/11/FFT-%E8%AF%A6%E8%A7%A3/FFT.png" class="">
-
 <p>首先，我们要预处理第一层，即 $b$ 的最上面一层。</p>
 <p>我们找一下规律：第零个 $0$，第一个 $4$，……</p>
 <p>可以发现，答案求出的就是二进制的翻转，这个例子中是指三位的异或。</p>
@@ -443,7 +459,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -532,7 +548,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -542,13 +558,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

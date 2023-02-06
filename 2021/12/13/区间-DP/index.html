@@ -249,7 +249,6 @@
       
         <p>比较灵活的一种 DP，复杂度比较高。</p>
 <span id="more"></span>
-
 <h2 id="区间-DP"><a href="#区间-DP" class="headerlink" title="区间 DP"></a>区间 DP</h2><h3 id="1-分类"><a href="#1-分类" class="headerlink" title="1. 分类"></a>1. 分类</h3><ol>
 <li>环形 DP 转线性 DP</li>
 <li>记录方案数</li>
@@ -258,7 +257,7 @@
 </ol>
 <h3 id="2-例题"><a href="#2-例题" class="headerlink" title="2. 例题"></a>2. 例题</h3><h4 id="T1：-NOI1995-石子合并"><a href="#T1：-NOI1995-石子合并" class="headerlink" title="T1：[NOI1995] 石子合并"></a>T1：[NOI1995] 石子合并</h4><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1880">题目传送门 Luogu</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/284/">题目传送门 AcWing</a></p>
-<p>是一个模板题，大致思路是 $f[i][j]= \max(f[i][k]+f[k+1][j])+a[l][r](i\leq k&lt;j)$。</p>
+<p>是一个模板题，大致思路是 $f[i][j]= \max(f[i][k]+f[k+1][j])+a[l]<a href="i\leq k&lt;j">r</a>$。</p>
 <p>时间复杂度 $O(n^3)$。</p>
 <p>不详细讲了。</p>
 <h4 id="T2：环形石子合并"><a href="#T2：环形石子合并" class="headerlink" title="T2：环形石子合并"></a>T2：环形石子合并</h4><p><a target="_blank" rel="noopener" href="https://acwing.com/problem/content/1070/">题目传送门 AcWing</a></p>
@@ -275,11 +274,8 @@
 <p>可能很多同学都会想到贪心，但是是有问题的。</p>
 <p>其实还是一个区间 DP，和上一题没有大区别。</p>
 <p>考虑边界问题，有一些不同。</p>
-<p>$f[i][j]=\max(f[i][k]+f[k][j]+a[i]*a[k]*a[j])i&lt;k&lt;j$。</p>
+<p>$f[i][j]=\max(f[i][k]+f[k][j]+a[i]<em>a[k]</em>a[j])i&lt;k&lt;j$。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N=<span class="number">205</span>;</span><br><span class="line"><span class="type">int</span> a[N],f[N][N],n;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,a+i);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i) a[i+n]=a[i];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> len=<span class="number">1</span>;len&lt;=<span class="number">2</span>*n;++len)</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>;i&lt;=<span class="number">2</span>*n-len+<span class="number">1</span>;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">int</span> j=i+len<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">if</span> (len==<span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                f[i][j]=<span class="number">0</span>;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> k=i+<span class="number">1</span>;k&lt;j;++k)</span><br><span class="line">                f[i][j]=<span class="built_in">max</span>(f[i][j],f[i][k]+f[k][j]+a[i]*a[k]*a[j]);</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="type">int</span> res=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i) res=<span class="built_in">max</span>(res,f[i][i+n]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,res);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
 <h4 id="T4：凸多边形的划分"><a href="#T4：凸多边形的划分" class="headerlink" title="T4：凸多边形的划分"></a>T4：凸多边形的划分</h4><p><a target="_blank" rel="noopener" href="https://loj.ac/p/10149">题目传送门 LOJ</a></p>
 <p>看似无从下手。</p>
 <p>现在，我们先考虑对于一条边，我们必须找到一个点来使这条边构成一个三角形。</p>
@@ -295,15 +291,13 @@
 <p>$f[i,j]=\max(f[i][k-1]\times f[k+1][j]+a[k])(i&lt;k&lt;j)$。</p>
 <p>同时，我们要记录答案的来源。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">long</span> <span class="type">long</span> ll;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N=<span class="number">35</span>;</span><br><span class="line">ll f[N][N];</span><br><span class="line"><span class="type">int</span> n,g[N][N],a[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">print</span><span class="params">(<span class="type">int</span> l,<span class="type">int</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (l&gt;r) <span class="keyword">return</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,g[l][r]);</span><br><span class="line">    <span class="keyword">if</span> (l==r) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span> (l!=g[l][r]) <span class="built_in">print</span>(l,g[l][r]<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">if</span> (r!=g[l][r]) <span class="built_in">print</span>(g[l][r]+<span class="number">1</span>,r);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i) <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;a[i]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> len=<span class="number">1</span>;len&lt;=n;++len)</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> l=<span class="number">1</span>;l&lt;=n-len+<span class="number">1</span>;++l)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">int</span> r=l+len<span class="number">-1</span>;</span><br><span class="line">            ll &amp;val=f[l][r];</span><br><span class="line">            <span class="keyword">if</span> (l==r)</span><br><span class="line">            &#123;</span><br><span class="line">                val=a[l];</span><br><span class="line">                g[l][r]=l;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (f[l+<span class="number">1</span>][r]+a[l]&gt;=f[l][r<span class="number">-1</span>]+a[r])</span><br><span class="line">            &#123;</span><br><span class="line">                val=f[l+<span class="number">1</span>][r]+a[l];</span><br><span class="line">                g[l][r]=l;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                val=f[l][r<span class="number">-1</span>]+a[r];</span><br><span class="line">                g[l][r]=r;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> k=l+<span class="number">1</span>;k&lt;r;++k)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (val&lt;f[l][k<span class="number">-1</span>]*f[k+<span class="number">1</span>][r]+a[k])</span><br><span class="line">                &#123;</span><br><span class="line">                    val=f[l][k<span class="number">-1</span>]*f[k+<span class="number">1</span>][r]+a[k];</span><br><span class="line">                    g[l][r]=k;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>,f[<span class="number">1</span>][n]);</span><br><span class="line">    <span class="built_in">print</span>(<span class="number">1</span>,n);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
 <h4 id="T6：-NOI1999-棋盘分割"><a href="#T6：-NOI1999-棋盘分割" class="headerlink" title="T6：[NOI1999] 棋盘分割"></a>T6：[NOI1999] 棋盘分割</h4><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5752">题目传送门 Luogu</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/323/">题目传送门 AcWing</a></p>
-<p>首先一阵推导：<br>$$<br>ans^2=\dfrac{\sum_{i=1}^{n}(x_i -\overline x)}{n}\ =\dfrac1n(\sum_{i=1}^n(x_i^2-2x_i\overline x+\overline x^2))<br>$$</p>
-<p>$$<br>=\dfrac1n(\sum_{i=1}^nx_i^2-2\overline x\sum_{i=1}^nx_i+n \overline x^2)<br>$$</p>
-<p>$$<br>=\dfrac {\sum_{i=1}^nx_i^2}n-\overline x^2<br>$$</p>
-<p>于是，我们就是要使  $\sum_{i=1}^nx_i^2$ 最小。</p>
+<p>首先一阵推导： </p>
+<script type="math/tex; mode=display">
+ans^2=\dfrac{\sum_{i=1}^{n}(x_i -\overline x)}{n}\\ =\dfrac1n(\sum_{i=1}^n(x_i^2-2x_i\overline x+\overline x^2))</script><script type="math/tex; mode=display">
+=\dfrac1n(\sum_{i=1}^nx_i^2-2\overline x\sum_{i=1}^nx_i+n \overline x^2)</script><script type="math/tex; mode=display">
+=\dfrac {\sum_{i=1}^nx_i^2}n-\overline x^2</script><p>于是，我们就是要使  $\sum_{i=1}^nx_i^2$ 最小。</p>
 <p>首先，分为横切和纵切。</p>
 <p>然后，我们还要看是哪一边继续切割，就递归统计答案。</p>
 <p>对于另一边，我们可以使用二维前缀和快速计算。</p>
@@ -410,7 +404,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -499,7 +493,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -509,13 +503,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

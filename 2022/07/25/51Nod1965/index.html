@@ -28,7 +28,7 @@
 <meta property="og:description" content="题意：求 $\prod_{i &#x3D; 1} ^ n \sigma_0(i) ^ {i + \mu(i)}$。$n\leq 10 ^ {11}$，对 $10 ^ {12} + 39$ 取模，$T(T\leq 3)$ 组数据，15s。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-07-25T06:36:33.000Z">
-<meta property="article:modified_time" content="2022-07-25T08:26:22.148Z">
+<meta property="article:modified_time" content="2023-02-06T13:13:15.495Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="数论">
 <meta property="article:tag" content="Min_25">
@@ -211,10 +211,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-07-25 14:36:33 / Modified: 16:26:22" itemprop="dateCreated datePublished" datetime="2022-07-25T14:36:33+08:00">2022-07-25</time>
+              <time title="Created: 2022-07-25 14:36:33" itemprop="dateCreated datePublished" datetime="2022-07-25T14:36:33+08:00">2022-07-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-02-06 21:13:15" itemprop="dateModified" datetime="2023-02-06T21:13:15+08:00">2023-02-06</time>
+              </span>
 
           <br>
             <span class="post-meta-item" title="Symbols count in article">
@@ -222,7 +228,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>8.4k</span>
+              <span>8.3k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -243,15 +249,26 @@
       
         <p>题意：求 $\prod_{i = 1} ^ n \sigma_0(i) ^ {i + \mu(i)}$。$n\leq 10 ^ {11}$，对 $10 ^ {12} + 39$ 取模，$T(T\leq 3)$ 组数据，15s。</p>
 <span id="more"></span>
-
 <p><a href="/2022/02/13/Min-25-Sieve/">前置知识</a>，即使会也可以看看里面的一些定义，下文会用到~</p>
 <p>离谱模数 + 奇怪卡常题，不过 Min_25 的应用是非常不错的。</p>
 <p>首先我们容易发现 $i + \mu(i)$ 似乎没有任何性质，考虑拆开计算。那么分别计算 $\sigma_0(i) ^ i$ 和 $\sigma_0(i) ^ {\mu(i)}$。</p>
 <h3 id="1-正常的-Min-25-筛"><a href="#1-正常的-Min-25-筛" class="headerlink" title="1. 正常的 Min_25 筛"></a>1. 正常的 Min_25 筛</h3><hr>
-<h4 id="第一部分"><a href="#第一部分" class="headerlink" title="第一部分"></a>第一部分</h4><p>直接考虑 Min_25 筛，考虑计算 $\prod\sigma_0(i) ^ i$。假设我们已经知道了一些 $x$ 的 $\prod \sigma_0(x) ^ x$，考虑怎样在这些数上所有乘 $p$（$p$ 是一个质数，$s$ 和 $p$ 都互质）。直接推式子：<br>$$<br>\begin{aligned}<br>&amp;\prod \sigma_0(p\times x) ^ {p\times x}\\<br>=&amp; \prod \sigma_0(p) ^ {p\times x} \times \prod \sigma_0(x) ^ {p\times x}\\<br>=&amp; (\sigma_0(p) ^ p) ^ {\sum x} \times (\prod \sigma_0(x) ^ x) ^ p<br>\end{aligned}<br>$$<br>容易发现我们还需要计算 $\sum x$，这个在 Min_25 递归过程中很容易计算。$p$ 也可以换成 $p ^ k$，和上面的推导是相同的，可以直接使用。</p>
+<h4 id="第一部分"><a href="#第一部分" class="headerlink" title="第一部分"></a>第一部分</h4><p>直接考虑 Min_25 筛，考虑计算 $\prod\sigma_0(i) ^ i$。假设我们已经知道了一些 $x$ 的 $\prod \sigma_0(x) ^ x$，考虑怎样在这些数上所有乘 $p$（$p$ 是一个质数，$s$ 和 $p$ 都互质）。直接推式子：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\prod \sigma_0(p\times x) ^ {p\times x}\\
+=& \prod \sigma_0(p) ^ {p\times x} \times \prod \sigma_0(x) ^ {p\times x}\\
+=& (\sigma_0(p) ^ p) ^ {\sum x} \times (\prod \sigma_0(x) ^ x) ^ p
+\end{aligned}</script><p>容易发现我们还需要计算 $\sum x$，这个在 Min_25 递归过程中很容易计算。$p$ 也可以换成 $p ^ k$，和上面的推导是相同的，可以直接使用。</p>
 <h4 id="第二部分"><a href="#第二部分" class="headerlink" title="第二部分"></a>第二部分</h4><p>下面考虑 $\prod\sigma_0(i) ^ {\mu(i)}$。首先一个比较重要的性质为我们只需要管 $p_1p_2 \dots p_k$ 类似的数，因为 $\mu(i)$ 为 0 的话就没有贡献。而写成这样，我们又可以表示 $\sigma_0(i)$ 为 $2 ^ {d(i)}$，其中 $d(i)$ 表示 $i$ 的质因子个数。那么只需要计算 $\sum d(i)\mu(i)$ 即可。</p>
 <p>还是考虑 Min_25 筛的递归过程，我们只需要枚举次幂 $k = 1$ 即可。继续计算时，还是会遇到类似合并两个答案的问题。</p>
-<p>假设前面我们已经算好了一些 $\sum d(x) \mu(x)$，现在考虑对这些所有数乘上一个 $p$。还是直接推式子：<br>$$<br>\begin{aligned}<br>&amp;\sum d(x\times p)\mu(x\times p)\\<br>=&amp; \sum (d(x) + 1)(-\mu(x))\\<br>=&amp; -\sum d(x)\mu(x) - \sum \mu(x)<br>\end{aligned}<br>$$<br>递归的过程需要同时计算 $\mu(x)$，这个是容易的。</p>
+<p>假设前面我们已经算好了一些 $\sum d(x) \mu(x)$，现在考虑对这些所有数乘上一个 $p$。还是直接推式子：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\sum d(x\times p)\mu(x\times p)\\
+=& \sum (d(x) + 1)(-\mu(x))\\
+=& -\sum d(x)\mu(x) - \sum \mu(x)
+\end{aligned}</script><p>递归的过程需要同时计算 $\mu(x)$，这个是容易的。</p>
 <hr>
 <p>那么我们就得到了一个使用递归 Min_25 筛的做法。</p>
 <details>
@@ -270,13 +287,31 @@
 <p>还是类似于 Min_25 筛的定义，设 $S(n, i)$ 为所有满足 $\mathrm{lpf}(x) &gt; p_i\lor i\in P$ 的数的 $\sum d(x)\mu(x)$ 的和，其中 $\mathrm{lpf}(x)$ 表示 $x$ 的最小质因子，$p_i$ 是第 $i$ 个质数，$P$ 是质数集合。</p>
 <p>考虑直接迭代求 $G(n, i)$。和 Min_25 筛第一部分不同的地方在于，我们现在求的是 $G(n, 0)$ 而不是 $G(n, k)$（保证 $p_k &gt; \sqrt n$），所以我们应该倒序枚举 $i$。</p>
 <p>注意到我们迭代的时候也用到了 $\sum \mu(i)$，设 $H(n, k)$ 为满足条件的 $\mu(x)$ 的和。</p>
-<p>大力推式子，可以得到：<br>$$<br>\begin{aligned}<br>G(n, i - 1) =&amp; G(n, i) - (G(\dfrac n{p_i}, i) + i) - (H(\dfrac n{p_i}, i) + i)\\<br>H(n, i - 1) =&amp; H(n, i) - (H(\dfrac n{p_i}, i) + i)<br>\end{aligned}<br>$$<br>$+i$ 的原因是我们要把 $p_{1\dots i}$ 的贡献除去，每个的 $d(i)\mu(i)$ 和 $\mu(i)$ 都是 -1，所以减掉贡献应该 $+i$。</p>
+<p>大力推式子，可以得到：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+G(n, i - 1) =& G(n, i) - (G(\dfrac n{p_i}, i) + i) - (H(\dfrac n{p_i}, i) + i)\\
+H(n, i - 1) =& H(n, i) - (H(\dfrac n{p_i}, i) + i)
+\end{aligned}</script><p>$+i$ 的原因是我们要把 $p_{1\dots i}$ 的贡献除去，每个的 $d(i)\mu(i)$ 和 $\mu(i)$ 都是 -1，所以减掉贡献应该 $+i$。</p>
 <p>那么按照这个式子计算，最后 $G(n, 0)$ 就是答案。这个计算过程类似于 Min_25 第一步，并不需要滚动数组。</p>
 <h4 id="第一部分-1"><a href="#第一部分-1" class="headerlink" title="第一部分"></a>第一部分</h4><p>那么再来看第一部分。这个就和上面那一个优化思路就不同了，因为枚举的 $p$ 的次幂不一定是 1 了。</p>
-<p>从朴素的方向出发，我们考虑计算每一个质因子的贡献。大力推式子：<br>$$<br>\begin{aligned}<br>\prod_{i = 1} ^ n \sigma_0(i) ^ i =&amp; \prod_{p\in P} \prod_{k} (k + 1) ^ {\sum_{i = 1} ^ n [p ^ k \mid i\land p ^ {k + 1}\nmid i] i}<br>\end{aligned}<br>$$<br>指数上的一坨我们展开一下：<br>$$<br>\begin{aligned}<br>&amp;\sum_{i = 1} ^ n [p ^ k \mid i \land p ^ {k + 1} \nmid i]\\<br>=&amp; \sum_{i = 1} ^ n [p ^ k | i]i - \sum_{i = 1} ^ n [p ^ {k + 1} | i] i\\<br>=&amp; p ^ k \sum_{i = 1} ^ {\frac n{p ^ k}}i - p ^ {k + 1} \sum_{i = 1} ^ {\frac n{p ^ {k + 1}}} i\\<br>=&amp; p ^ k \mathrm{sum}(\dfrac n{p ^ k}) - p ^ {k + 1} \mathrm{sum} (\dfrac n{p ^ {k + 1}})<br>\end{aligned}<br>$$<br>其中 $\mathrm{sum}(x)$ 表示 $\sum_{i = 1} ^ x i$，为 $\dfrac {x\times (x + 1)}2$。</p>
+<p>从朴素的方向出发，我们考虑计算每一个质因子的贡献。大力推式子：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\prod_{i = 1} ^ n \sigma_0(i) ^ i =& \prod_{p\in P} \prod_{k} (k + 1) ^ {\sum_{i = 1} ^ n [p ^ k \mid i\land p ^ {k + 1}\nmid i] i}
+\end{aligned}</script><p>指数上的一坨我们展开一下：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\sum_{i = 1} ^ n [p ^ k \mid i \land p ^ {k + 1} \nmid i]\\
+=& \sum_{i = 1} ^ n [p ^ k | i]i - \sum_{i = 1} ^ n [p ^ {k + 1} | i] i\\
+=& p ^ k \sum_{i = 1} ^ {\frac n{p ^ k}}i - p ^ {k + 1} \sum_{i = 1} ^ {\frac n{p ^ {k + 1}}} i\\
+=& p ^ k \mathrm{sum}(\dfrac n{p ^ k}) - p ^ {k + 1} \mathrm{sum} (\dfrac n{p ^ {k + 1}})
+\end{aligned}</script><p>其中 $\mathrm{sum}(x)$ 表示 $\sum_{i = 1} ^ x i$，为 $\dfrac {x\times (x + 1)}2$。</p>
 <p>这么多 $(p, k)$ 并不好计算，但是注意到 $p &gt; \sqrt n$ 的时候，$k = 1$，似乎是一个不错的办法。</p>
 <p>首先计算 $p\leq \sqrt n$。直接暴力计算即可，时间复杂度并不高，反正很快。</p>
-<p>下面来看 $p &gt; \sqrt n$ 的情况。注意到 $k = 1$ 的情况是很好表示的，我们可以马上写出式子：<br>$$<br>\prod_{p\in P\land p &gt; \sqrt n} 2 ^ {p \times \mathrm{sum}(\lfloor \frac np\rfloor )}<br>$$<br>注意到我们需要对 $\dfrac np$ 进行整除分块，然后需要求出区间素数的和。这个是直接使用 Min_25 第一部分就可以很快得到的（类似 区间素数问题），那么我们也可以只通过迭代计算第一部分的答案了。</p>
+<p>下面来看 $p &gt; \sqrt n$ 的情况。注意到 $k = 1$ 的情况是很好表示的，我们可以马上写出式子：</p>
+<script type="math/tex; mode=display">
+\prod_{p\in P\land p > \sqrt n} 2 ^ {p \times \mathrm{sum}(\lfloor \frac np\rfloor )}</script><p>注意到我们需要对 $\dfrac np$ 进行整除分块，然后需要求出区间素数的和。这个是直接使用 Min_25 第一部分就可以很快得到的（类似 区间素数问题），那么我们也可以只通过迭代计算第一部分的答案了。</p>
 <hr>
 <p>通过对 Min_25 的改造，对式子的推导，我们最终还是通过简单的 Min_25 第一部分的迭代就可以计算这个答案了。时间复杂度不太会算，据说都是 $O(n ^ {\frac 34})$ 的。新算法能在 3s 左右得到 $10 ^ {11}$ 的答案的，可见还是比递归写法快不少的。</p>
 <p>代码实现方面，注意是 $\bmod P$ 还是 $\bmod \varphi(P)$ 是需要注意的。好像不能使用 <code>__int128_t</code>，那就写 <code>long double</code> 乘法罢。</p>
@@ -382,7 +417,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -471,7 +506,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -481,13 +516,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

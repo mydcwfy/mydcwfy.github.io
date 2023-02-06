@@ -28,7 +28,7 @@
 <meta property="og:description" content="题意：有 $n$ 个计数器，每个计数器有一个上界 $a_i$，每次操作会将一个计数器清 0，然后将其他计数器 +1。问期望多少步每个计数器都达到上界。保证 $0 &#x3D; a_1 \leq a_2 \leq \dots\leq a_n\leq 10 ^ {18}$，$a_n &gt; 0$，$n\leq 2\times 10 ^ 5$，答案对 998244353 取模。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-09-29T03:17:11.000Z">
-<meta property="article:modified_time" content="2022-10-02T02:23:43.448Z">
+<meta property="article:modified_time" content="2023-02-06T13:13:15.495Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="期望">
 <meta name="twitter:card" content="summary">
@@ -218,7 +218,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-10-02 10:23:43" itemprop="dateModified" datetime="2022-10-02T10:23:43+08:00">2022-10-02</time>
+                <time title="Modified: 2023-02-06 21:13:15" itemprop="dateModified" datetime="2023-02-06T21:13:15+08:00">2023-02-06</time>
               </span>
 
           <br>
@@ -248,7 +248,6 @@
       
         <p>题意：有 $n$ 个计数器，每个计数器有一个上界 $a_i$，每次操作会将一个计数器清 0，然后将其他计数器 +1。问期望多少步每个计数器都达到上界。保证 $0 = a_1 \leq a_2 \leq \dots\leq a_n\leq 10 ^ {18}$，$a_n &gt; 0$，$n\leq 2\times 10 ^ 5$，答案对 998244353 取模。</p>
 <span id="more"></span>
-
 <p>好神的期望题。</p>
 <p>首先 $n$ 个状态显然是不好计数的，我们考虑用一个状态描述。记 $k$ 为 $\max_{i = 1} ^ n(a_i - c_i)$，$c_i$ 表示当前的计数器的数。记录 $f_k$ 表示从状态 $k$ 期望的步数结束。容易发现 $f_0 = 0$。</p>
 <p>考虑设一个 $r$ 为最大的满足 $a_r &lt; k\leq a_{r + 1}$ 的阈值，我们考虑分析两种情况：</p>
@@ -256,12 +255,26 @@
 <li>选中清空的 $i$ 满足 $i\leq r$。这时不管清空的是哪一个，我们都容易得到新的状态是 $k - 1$。</li>
 <li>选中清空的 $i$ 满足 $i &gt; r$。这是清空哪一个，$k$ 就会变成哪一个计数器的值。所以就会变成 $a_i$。</li>
 </ol>
-<p>那么据此我们可以得到：<br>$$<br>f_k = \dfrac rn f_{k - 1} + \dfrac 1n \sum_{i = r + 1} ^ n f_{a_i} + 1<br>$$<br>注意到转移方向不确定，我们考虑变化一下，这样 $f_{k - 1}$ 在一边了。</p>
+<p>那么据此我们可以得到：</p>
+<script type="math/tex; mode=display">
+f_k = \dfrac rn f_{k - 1} + \dfrac 1n \sum_{i = r + 1} ^ n f_{a_i} + 1</script><p>注意到转移方向不确定，我们考虑变化一下，这样 $f_{k - 1}$ 在一边了。</p>
 <p>但是我们又注意到一个问题，就是我们知道的不是最大的那一个，而是最小的那一个（$f_0 = 0$）。</p>
 <p>考虑转化定义，设 $g_k$ 表示开始期望多少能走到状态 $k$。容易发现 $f_k + g_k = f_{a_n}$。那么我们现在已经知道了 $g_{a_n} = 0$，我们需要找到 $g_0$。</p>
-<p>直接暴力带入上面的式子：<br>$$<br>\begin{aligned}<br>f_{a_n} - g_{k} =&amp;\dfrac rn(f_{a_n} - g_{k - 1}) + \dfrac 1n \sum_{i = r + 1} ^ n (f_{a_n} - g_{a_i}) + 1\\<br>g_k =&amp; \dfrac rn g_{k - 1} + \dfrac 1n \sum_{i = r + 1} ^ n g_{a_i} - 1\\<br>g_{k - 1} =&amp; \dfrac nr g_k - \dfrac 1r \sum_{i = r + 1} ^ n g_{a_i} + \dfrac nr<br>\end{aligned}<br>$$</p>
-<p>得到这样的式子过后，我们可以得到一个 $O(a\log a)$ 的做法。但是仍然不够优秀，我们考虑优化。</p>
-<p>容易发现在 $k\in (a_r, a_{r + 1}]$ 的转移都是相同的，因为 $r$ 不变。我们考虑从这里入手。我们记 $suf_r = \sum_{i = r} ^ n g_{a_i}$，有：<br>$$<br>\begin{aligned}<br>g_{k - 1} =&amp; \dfrac nr g_k - \dfrac {suf_{r + 1}}r + \dfrac nr\<br>g_{k - 1} - \dfrac {suf_{r + 1}}{n - r} + \dfrac n{n - r} =&amp; \dfrac nr(g_k - \dfrac {suf_{r + 1}}{n - r} + \dfrac n{n - r})<br>\end{aligned}<br>$$<br>注意到我们把两边的形式化为相同过后，直接快速幂，这个可以省去中间的状态，直接通过 $g_{a_{r + 1}}$ 得到 $g_{a_r}$。<br>$$<br>g_{a_r} + \dfrac {n - suf_{r + 1}}{n - r} = \left(\dfrac nr \right) ^ {a_{r + 1} - a_r} (g_{a_{r + 1}} + \dfrac {n - suf_{r + 1}}{n - r})<br>$$<br>直接计算可以得到 $O(n\log a)$，可以通过。</p>
+<p>直接暴力带入上面的式子：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+f_{a_n} - g_{k} =&\dfrac rn(f_{a_n} - g_{k - 1}) + \dfrac 1n \sum_{i = r + 1} ^ n (f_{a_n} - g_{a_i}) + 1\\
+g_k =& \dfrac rn g_{k - 1} + \dfrac 1n \sum_{i = r + 1} ^ n g_{a_i} - 1\\
+g_{k - 1} =& \dfrac nr g_k - \dfrac 1r \sum_{i = r + 1} ^ n g_{a_i} + \dfrac nr
+\end{aligned}</script><p>得到这样的式子过后，我们可以得到一个 $O(a\log a)$ 的做法。但是仍然不够优秀，我们考虑优化。</p>
+<p>容易发现在 $k\in (a_r, a_{r + 1}]$ 的转移都是相同的，因为 $r$ 不变。我们考虑从这里入手。我们记 $suf_r = \sum_{i = r} ^ n g_{a_i}$，有：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+g_{k - 1} =& \dfrac nr g_k - \dfrac {suf_{r + 1}}r + \dfrac nr\\
+g_{k - 1} - \dfrac {suf_{r + 1}}{n - r} + \dfrac n{n - r} =& \dfrac nr(g_k - \dfrac {suf_{r + 1}}{n - r} + \dfrac n{n - r})
+\end{aligned}</script><p>注意到我们把两边的形式化为相同过后，直接快速幂，这个可以省去中间的状态，直接通过 $g_{a_{r + 1}}$ 得到 $g_{a_r}$。</p>
+<script type="math/tex; mode=display">
+g_{a_r} + \dfrac {n - suf_{r + 1}}{n - r} = \left(\dfrac nr \right) ^ {a_{r + 1} - a_r} (g_{a_{r + 1}} + \dfrac {n - suf_{r + 1}}{n - r})</script><p>直接计算可以得到 $O(n\log a)$，可以通过。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	std::cin &gt;&gt; n;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) <span class="built_in">scanf</span>(<span class="string">&quot;%lld&quot;</span>, a + i);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = n - <span class="number">1</span>, x, tmp; i; -- i) &#123;</span><br><span class="line">		x = <span class="built_in">qpow</span>((LL) n * <span class="built_in">qpow</span>(i) % Mod, a[i + <span class="number">1</span>] - a[i]);</span><br><span class="line">		res[i] = (res[i + <span class="number">1</span>] + (LL) <span class="built_in">adj</span>(tmp = n - suf[i + <span class="number">1</span>]) * <span class="built_in">qpow</span>(n - i)) % Mod * x % Mod;</span><br><span class="line">		res[i] = (res[i] + (LL) (Mod - tmp) * <span class="built_in">qpow</span>(n - i)) % Mod;</span><br><span class="line">		<span class="built_in">adj</span>(suf[i] = suf[i + <span class="number">1</span>] + res[i] - Mod);</span><br><span class="line">	&#125;</span><br><span class="line">	std::cout &lt;&lt; res[<span class="number">1</span>] &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
 
@@ -362,7 +375,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -451,7 +464,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -461,13 +474,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

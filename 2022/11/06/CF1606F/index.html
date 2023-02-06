@@ -28,7 +28,7 @@
 <meta property="og:description" content="题意：给定一棵 $n$ 的点的根为 1 的树，定义一次操作为把 $x$ 的所有儿子接到 $x$ 父亲处，并删除 $x$。$q$ 次询问给定 $u, k$，输出任意操作之后 $son(u) - mk$ 的最大值，$m$ 表示操作次数。$n, q\leq 2 \times 10 ^ 5$，6s。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-11-06T11:42:38.000Z">
-<meta property="article:modified_time" content="2022-11-06T12:13:41.278Z">
+<meta property="article:modified_time" content="2023-02-06T13:14:46.085Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="DP 及其优化">
 <meta property="article:tag" content="树相关">
@@ -212,10 +212,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-11-06 19:42:38 / Modified: 20:13:41" itemprop="dateCreated datePublished" datetime="2022-11-06T19:42:38+08:00">2022-11-06</time>
+              <time title="Created: 2022-11-06 19:42:38" itemprop="dateCreated datePublished" datetime="2022-11-06T19:42:38+08:00">2022-11-06</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-02-06 21:14:46" itemprop="dateModified" datetime="2023-02-06T21:14:46+08:00">2023-02-06</time>
+              </span>
 
           <br>
             <span class="post-meta-item" title="Symbols count in article">
@@ -244,16 +250,23 @@
       
         <p>题意：给定一棵 $n$ 的点的根为 1 的树，定义一次操作为把 $x$ 的所有儿子接到 $x$ 父亲处，并删除 $x$。$q$ 次询问给定 $u, k$，输出任意操作之后 $son(u) - mk$ 的最大值，$m$ 表示操作次数。$n, q\leq 2 \times 10 ^ 5$，6s。</p>
 <span id="more"></span>
-
 <p>比较经典，但是没做过，于是 vp 时没有思路……</p>
-<p>首先考虑暴力 DP 的过程，记 $f(u)$ 表示把 $u$ 删除，在删除前的儿子个数（定义比较奇怪？），容易得到转移式：<br>$$<br>f(u) = -k + \sum_{v \in son(u)} \max\{1, f(v)\}<br>$$<br>考虑对其进行化简，记 $s_u$ 表示 $u$ 在<strong>原树</strong>上的儿子，然后可以得到：<br>$$<br>f(u) = -k + s_u + \sum_{v \in son(u)} \max\{0, f(v) - 1\}<br>$$<br>注意到如果 $f(v) - k - 1 &lt; 0$ 的话，我们可以<strong>认为 $(u, v)$ 不连通</strong>，从而达到对 $0$ 取 $\max$ 的效果。</p>
-<p>现在忽视掉 $\max$ 的话，我们可以写出比较好的形式：<br>$$<br>\begin{aligned}<br>f(u) =&amp; -k +  s_u + \sum_{v\in son(u)} (f(v) - 1)\\<br>=&amp; sum_u - (k + 1) sz_u + 1<br>\end{aligned}<br>$$<br>$sum_u$ 表示在<strong>联通树</strong>上在 $u$ 子树内部的<strong>原树</strong>度数和，所以 $sum_u$ 不是 $sz_u - 1$，需要注意。</p>
+<p>首先考虑暴力 DP 的过程，记 $f(u)$ 表示把 $u$ 删除，在删除前的儿子个数（定义比较奇怪？），容易得到转移式：</p>
+<script type="math/tex; mode=display">
+f(u) = -k + \sum_{v \in son(u)} \max\{1, f(v)\}</script><p>考虑对其进行化简，记 $s_u$ 表示 $u$ 在<strong>原树</strong>上的儿子，然后可以得到：</p>
+<script type="math/tex; mode=display">
+f(u) = -k + s_u + \sum_{v \in son(u)} \max\{0, f(v) - 1\}</script><p>注意到如果 $f(v) - k - 1 &lt; 0$ 的话，我们可以<strong>认为 $(u, v)$ 不连通</strong>，从而达到对 $0$ 取 $\max$ 的效果。</p>
+<p>现在忽视掉 $\max$ 的话，我们可以写出比较好的形式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+f(u) =& -k +  s_u + \sum_{v\in son(u)} (f(v) - 1)\\
+=& sum_u - (k + 1) sz_u + 1
+\end{aligned}</script><p>$sum_u$ 表示在<strong>联通树</strong>上在 $u$ 子树内部的<strong>原树</strong>度数和，所以 $sum_u$ 不是 $sz_u - 1$，需要注意。</p>
 <p>根据这个式子，由于 $f(u)$ 要 $\geq 1$ 才会被认为是向父亲连边了，于是我们可以得到 $k\leq \dfrac {sum_u}{sz_u} - 1$ 时 $f(u)$ 相当于是向父亲连边。</p>
 <p>改变联通性过后，$fa(u)\to top(u)$ 的 $sum$ 和 $sz$ 都会发生变化，同理他们的 $k$ 的阈值也会发生变化。但是注意到只有 $top(u)$ 的阈值时受关注的，因为其他点都已经向父亲联通了。修改这个可以使用差分转化为单点加子树查，于是树状数组可以做到 $O(n\log n)$。</p>
 <p>维护所有的阈值只需要用一个 <code>std::priority_queue</code> 维护，计算时将询问按 $k$ 从大到小处理即可。注意 $top(u)$ 联通性改变过后，他的阈值一定是变大，所以没必要删除原来的。复杂度 $O(n\log n)$，轻松通过。</p>
 <p>总结：<strong>树上取 $\max / \min$ 时可以转化为和 0 比较，使用连通性去掉 $\max / \min$。</strong></p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Fenwick</span> &#123;</span><br><span class="line">	<span class="type">int</span> tr[N];</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> c)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (!x) <span class="keyword">return</span> <span class="built_in">puts</span>(<span class="string">&quot;Failed&quot;</span>), <span class="built_in">void</span>();</span><br><span class="line">		<span class="keyword">for</span> (; x &lt; N; x += (x &amp; -x)) tr[x] += c;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="type">int</span> <span class="title">ask</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123;</span><br><span class="line">		<span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (; x; x ^= (x &amp; -x)) res += tr[x];</span><br><span class="line">		<span class="keyword">return</span> res;</span><br><span class="line">	&#125;</span><br><span class="line">&#125; T1, T2;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">find</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123; <span class="keyword">return</span> x == f[x] ? x : f[x] = <span class="built_in">find</span>(f[x]); &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> fa = <span class="number">0</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	nw[dfn[x] = ++ *dfn] = x, ::fa[x] = fa, sz[x] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> v : g[x])</span><br><span class="line">		<span class="keyword">if</span> (v ^ fa) <span class="built_in">dfs</span>(v, x), sz[x] += sz[v];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">ask</span><span class="params">(Fenwick &amp;T, <span class="type">int</span> x)</span> </span>&#123; <span class="keyword">return</span> T.<span class="built_in">ask</span>(dfn[x] + sz[x] - <span class="number">1</span>) - T.<span class="built_in">ask</span>(dfn[x] - <span class="number">1</span>); &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">update</span><span class="params">(<span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (vis[x] || x == <span class="number">1</span>) <span class="keyword">return</span>;</span><br><span class="line">	vis[x] = <span class="literal">true</span>;</span><br><span class="line">	<span class="built_in">assert</span>(f[x] == x);</span><br><span class="line">	<span class="type">int</span> sz = <span class="built_in">ask</span>(T1, x), sum = <span class="built_in">ask</span>(T2, x), anc;</span><br><span class="line">	f[x] = <span class="built_in">find</span>(fa[x]), anc = <span class="built_in">find</span>(x);</span><br><span class="line">	<span class="comment">// std::cout &lt;&lt; &quot;Update &quot; &lt;&lt; x &lt;&lt; &#x27; &#x27; &lt;&lt; sz &lt;&lt; &#x27; &#x27; &lt;&lt; fa[x] &lt;&lt; &#x27; &#x27; &lt;&lt; find(fa[x]) &lt;&lt; std::endl;</span></span><br><span class="line">	T2.<span class="built_in">add</span>(dfn[fa[x]], sum), T1.<span class="built_in">add</span>(dfn[fa[x]], sz);</span><br><span class="line">	<span class="keyword">if</span> (fa[anc]) T1.<span class="built_in">add</span>(dfn[fa[anc]], -sz), T2.<span class="built_in">add</span>(dfn[fa[anc]], -sum);</span><br><span class="line">	<span class="built_in">assert</span>(<span class="built_in">ask</span>(T1, anc) &gt;= <span class="number">0</span> &amp;&amp; <span class="built_in">ask</span>(T2, anc) &gt;= <span class="number">0</span>);</span><br><span class="line">	pq.<span class="built_in">push</span>(&#123;<span class="built_in">ask</span>(T2, anc) / <span class="built_in">ask</span>(T1, anc) - <span class="number">1</span>, anc&#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	std::cin &gt;&gt; n;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) f[i] = i;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>, u, v; i &lt; n; ++ i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%lld %lld&quot;</span>, &amp;u, &amp;v);</span><br><span class="line">		g[u].<span class="built_in">push_back</span>(v), g[v].<span class="built_in">push_back</span>(u);</span><br><span class="line">	&#125;</span><br><span class="line">	std::cin &gt;&gt; Q;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= Q; ++ i) <span class="built_in">scanf</span>(<span class="string">&quot;%lld %lld&quot;</span>, &amp;q[i].u, &amp;q[i].k), q[i].id = i;</span><br><span class="line">	std::<span class="built_in">sort</span>(q + <span class="number">1</span>, q + Q + <span class="number">1</span>, [&amp;](Query &amp;q1, Query &amp;q2) &#123;</span><br><span class="line">		<span class="keyword">return</span> q1.k &gt; q2.k;</span><br><span class="line">	&#125;);</span><br><span class="line">	<span class="built_in">dfs</span>(<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) &#123;</span><br><span class="line">		T1.<span class="built_in">add</span>(dfn[i], <span class="number">1</span>), son[i] = g[i].<span class="built_in">size</span>() - (i &gt; <span class="number">1</span>);</span><br><span class="line">		T2.<span class="built_in">add</span>(dfn[i], son[i]);</span><br><span class="line">		<span class="keyword">if</span> (i ^ <span class="number">1</span>)</span><br><span class="line">			T1.<span class="built_in">add</span>(dfn[fa[i]], <span class="number">-1</span>), T2.<span class="built_in">add</span>(dfn[fa[i]], -son[i]), pq.<span class="built_in">push</span>(&#123;son[i] - <span class="number">1</span>, i&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>, x; i &lt;= Q; ++ i) &#123;</span><br><span class="line">		<span class="keyword">while</span> (!pq.<span class="built_in">empty</span>() &amp;&amp; pq.<span class="built_in">top</span>().first &gt;= q[i].k)</span><br><span class="line">			x = pq.<span class="built_in">top</span>().second, pq.<span class="built_in">pop</span>(), <span class="built_in">update</span>(x);</span><br><span class="line">		<span class="comment">// std::cout &lt;&lt; &quot;Query &quot; &lt;&lt; q[i].u &lt;&lt; &#x27; &#x27; &lt;&lt; q[i].k &lt;&lt; &#x27; &#x27; &lt;&lt; ask(T1, q[i].u) &lt;&lt; &#x27; &#x27; &lt;&lt; ask(T2, q[i].u) &lt;&lt; &#x27;\n&#x27;;</span></span><br><span class="line">		res[q[i].id] = <span class="built_in">ask</span>(T2, q[i].u) - (q[i].k + <span class="number">1</span>) * <span class="built_in">ask</span>(T1, q[i].u) + <span class="number">1</span> + q[i].k;</span><br><span class="line">		<span class="comment">// res[q[i].id] = std::max(res[q[i].id], (int) g[q[i].u].size() - 1);</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= Q; ++ i) <span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>, res[i]);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
     </div>
 
@@ -356,7 +369,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -445,7 +458,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -455,13 +468,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

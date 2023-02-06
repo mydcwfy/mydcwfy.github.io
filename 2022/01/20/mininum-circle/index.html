@@ -244,26 +244,23 @@
       
         <p>还是一个计算几何。</p>
 <span id="more"></span>
-
 <h2 id="1-性质"><a href="#1-性质" class="headerlink" title="1. 性质"></a>1. 性质</h2><h3 id="1）唯一性"><a href="#1）唯一性" class="headerlink" title="1）唯一性"></a>1）唯一性</h3><p>明显，如果我们能找到两个圆的话，他们的交也一定是可以的。我们可以尝试构造以相交的弦为直径构造一个圆，很明显会更小。</p>
 <img src="/2022/01/20/mininum-circle/%E5%94%AF%E4%B8%80%E6%80%A7.png" class="">
-
-<h3 id="2）"><a href="#2）" class="headerlink" title="2）"></a>2）</h3><p><strong>如果 $P$ 不在集合 $S$ 的最小覆盖圆的内部，则 $P$ 在 ${P}\cup S$ 的最小覆盖圆的边上。</strong></p>
+<h3 id="2）"><a href="#2）" class="headerlink" title="2）"></a>2）</h3><p><strong>如果 $P$ 不在集合 $S$ 的最小覆盖圆的内部，则 $P$ 在 $\{P\}\cup S$ 的最小覆盖圆的边上。</strong></p>
 <p>首先，一个最小覆盖圆肯定会经过集合内的至少三个点。（在集合点数 $\geq 3$ 的时候）</p>
-<p>反证：假设 $P$ 不在 ${P}\cup S$ 的最小覆盖圆的边上，那么 ${P}\cup S$ 的最小覆盖圆就是 $S$ 的最小覆盖圆。</p>
-<p>但是 $S$ 的最小覆盖圆是无法覆盖到 $P$ 的，所以就会导致 ${P}\cup S$ 的最小圆覆盖无法覆盖到 $P$，矛盾，故原命题成立。</p>
+<p>反证：假设 $P$ 不在 $\{P\}\cup S$ 的最小覆盖圆的边上，那么 $\{P\}\cup S$ 的最小覆盖圆就是 $S$ 的最小覆盖圆。</p>
+<p>但是 $S$ 的最小覆盖圆是无法覆盖到 $P$ 的，所以就会导致 $\{P\}\cup S$ 的最小圆覆盖无法覆盖到 $P$，矛盾，故原命题成立。</p>
 <h2 id="2-算法流程"><a href="#2-算法流程" class="headerlink" title="2. 算法流程"></a>2. 算法流程</h2><p>首先随机化，防止复杂度退化。</p>
 <p>接着，我们将圆设置为 $(p(1), 0)$，表示圆心和半径。</p>
-<p>然后，我们枚举每一个点，如果当前点 $p(i)$ 不在最小覆盖圆里的话，那么，我们由前面的性质得到，$p(i)$ 一定在 ${1, …, i}$ 的最小圆覆盖的边上。</p>
+<p>然后，我们枚举每一个点，如果当前点 $p(i)$ 不在最小覆盖圆里的话，那么，我们由前面的性质得到，$p(i)$ 一定在 $\{1, …, i\}$ 的最小圆覆盖的边上。</p>
 <p>现在，我们将圆设置为 $(p(i), 0)$，然后再暴力枚举前面的点。</p>
-<p>如果如果 $p(j)$ 不在圆内的话，那么 $p(j)$ 在 ${1, …, j}\cup{i}$ 的最小圆覆盖的边上。同时，由于 $p(i)$ 不在 ${1, …, i - 1}$ 的最小圆覆盖里，那么一定导致 $p(i)$ 不在 ${1, …, j}$ 的最小覆盖圆上。</p>
-<p>那么，我们就可以得到，$p(i), p(j)$ 都在 ${1, …, j}\cup {i}$ 的圆的边上。</p>
+<p>如果如果 $p(j)$ 不在圆内的话，那么 $p(j)$ 在 $\{1, …, j\}\cup\{i\}$ 的最小圆覆盖的边上。同时，由于 $p(i)$ 不在 $\{1, …, i - 1\}$ 的最小圆覆盖里，那么一定导致 $p(i)$ 不在 $\{1, …, j\}$ 的最小覆盖圆上。</p>
+<p>那么，我们就可以得到，$p(i), p(j)$ 都在 $\{1, …, j\}\cup \{i\}$ 的圆的边上。</p>
 <p>因为找一个圆需要 $3$ 个点才能确定，所以我们再去寻找一个点。</p>
-<p>我们将圆设置为 $p(i), p(j)$ 为直径的圆，再从前循环 $p(k)$，寻找到 $p(k)$ 不在 $p(i), p(j)$ 为直径的圆上。仿照前面的证明，我们就可以得到 $p(k), p(i), p(j)$ 都在圆上，我们就是求出了 ${1, …, k} \cup{i, j}$ 的最小圆覆盖。</p>
-<p>最后我们一直循环，直到最后覆盖到了 ${1, …, i - 1}\cup{i}$ 也就是 ${1, …, i}$ 的圆覆盖。</p>
+<p>我们将圆设置为 $p(i), p(j)$ 为直径的圆，再从前循环 $p(k)$，寻找到 $p(k)$ 不在 $p(i), p(j)$ 为直径的圆上。仿照前面的证明，我们就可以得到 $p(k), p(i), p(j)$ 都在圆上，我们就是求出了 $\{1, …, k\} \cup\{i, j\}$ 的最小圆覆盖。</p>
+<p>最后我们一直循环，直到最后覆盖到了 $\{1, …, i - 1\}\cup\{i\}$ 也就是 $\{1, …, i\}$ 的圆覆盖。</p>
 <h2 id="3-复杂度"><a href="#3-复杂度" class="headerlink" title="3. 复杂度"></a>3. 复杂度</h2><p>看似有 $O(n ^ 3)$，但是两步判断都是 $\dfrac{3}{n}$ 的概率，我们就可以得到时间复杂度为 $O(n)$。（感觉特别玄学</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Point <span class="title">get_point</span><span class="params">(Point p1, Point k1, Point p2, Point k2)</span></span>&#123;</span><br><span class="line">	Point u = p1 - p2;</span><br><span class="line">	<span class="type">double</span> t = (k2 * u) / (k1 * k2);</span><br><span class="line">	<span class="keyword">return</span> p1 + k1 * t;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Circle <span class="title">circle_by_point</span><span class="params">(Point a, Point b, Point c)</span></span>&#123;</span><br><span class="line">	<span class="keyword">auto</span> l1 = <span class="built_in">get_line</span>(a, b), l2 = <span class="built_in">get_line</span>(a, c);</span><br><span class="line">	Point o = <span class="built_in">get_point</span>(l1.first, l1.second, l2.first, l2.second);</span><br><span class="line">	<span class="keyword">return</span> &#123;o, <span class="built_in">dist2</span>(a, o)&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Circle <span class="title">min_circle</span><span class="params">(Point *p, <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">random_shuffle</span>(p + <span class="number">1</span>, p + n + <span class="number">1</span>);</span><br><span class="line">	Circle ans = &#123;p[<span class="number">1</span>], <span class="number">0</span>&#125;;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n; ++ i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="built_in">in_circle</span>(ans, p[i])) <span class="keyword">continue</span>;</span><br><span class="line">		ans = &#123;p[i], <span class="number">0</span>&#125;;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt; i; ++ j)&#123;</span><br><span class="line">			<span class="keyword">if</span> (<span class="built_in">in_circle</span>(ans, p[j])) <span class="keyword">continue</span>;</span><br><span class="line">			ans = &#123;(p[i] + p[j]) / <span class="number">2</span>, <span class="built_in">dist2</span>((p[i] + p[j]) / <span class="number">2</span>, p[i])&#125;;</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> k = <span class="number">1</span>; k &lt; j; ++ k)</span><br><span class="line">				<span class="keyword">if</span> (!<span class="built_in">in_circle</span>(ans, p[k])) ans = <span class="built_in">circle_by_point</span>(p[i], p[j], p[k]);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	ans.r = <span class="built_in">sqrt</span>(ans.r);</span><br><span class="line">	<span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
     </div>
 
@@ -365,7 +362,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -454,7 +451,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -464,13 +461,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

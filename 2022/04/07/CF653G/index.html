@@ -28,7 +28,7 @@
 <meta property="og:description" content="一道埃筛 + 组合数学的题目。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-04-07T08:28:48.000Z">
-<meta property="article:modified_time" content="2022-05-02T13:45:19.480Z">
+<meta property="article:modified_time" content="2023-02-06T13:14:46.043Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="CF">
 <meta property="article:tag" content="组合数学">
@@ -221,7 +221,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-02 21:45:19" itemprop="dateModified" datetime="2022-05-02T21:45:19+08:00">2022-05-02</time>
+                <time title="Modified: 2023-02-06 21:14:46" itemprop="dateModified" datetime="2023-02-06T21:14:46+08:00">2023-02-06</time>
               </span>
 
           <br>
@@ -251,7 +251,6 @@
       
         <p>一道埃筛 + 组合数学的题目。</p>
 <span id="more"></span>
-
 <p>题意：给定一个序列 $\{a\}$，执行以下的操作直到所有数相等：乘一个质数或除一个质数。求所有子序列最少操作次数的和，对 $10 ^ 9 + 7$ 取模。$n, a_i\leq 3\times 10 ^ 5$，5 s。可以加强到 $n, a_i\leq 2\times 10 ^ 7$。</p>
 <p>容易发现每一个质数是独立的，可以分开计算贡献。另外，显然当取质数次数的中位数是最优的策略。</p>
 <p>对每一个质数分别考虑，假设当前按质数次数降序排名为 $i$ 的数次数为 $x_i$，中位数为 $x$，那么答案为 $|x_i - x|$。</p>
@@ -262,13 +261,15 @@
 <li>$a = b$，则 $x_i$ 贡献为 0。</li>
 <li>$a &gt; b$，则 $x_i$ 贡献为负。</li>
 </ol>
-<p>$a, b$ 的相对关系看起来不好枚举，我们换做 $i - 1 - a + b$ 与 $i - 1$ 的大小关系可能更好枚举。于是我们可以得到下面的式子：<br>$$<br>\sum_{j = i} ^ {n - 1} \binom{n - 1}{j} - \sum_{j = 0} ^ {i - 2} \binom{n - 1}{j}<br>$$</p>
-<p>我们可以预处理 $f(k) = \sum_{i = k}^{n - 1} \binom{n - 1}i - \sum_{i = 0}^{k - 2}\binom{n - 1}i$，可能会更好求。</p>
-<p>发现 $x_i$ 一样的段，贡献是连续的，也就是 $f(k)$ 是一段的和。假设枚举次幂 $t$，设 $x_i\geq t$ 的个数为 $a$，$x_i &gt; t$ 的个数为 $b$，那么 $t$ 的贡献就是：<br>$$<br>t\sum_{i = b + 1} ^ a f(i)<br>$$<br>再次前缀和 $g(i) = \sum_{j = 1} ^ i f(j)$，那么这个贡献也可以 $O(1)$ 计算。那么瓶颈在于计算 $x_i\geq t$ 的个数。这个可以通过埃筛来计算。</p>
+<p>$a, b$ 的相对关系看起来不好枚举，我们换做 $i - 1 - a + b$ 与 $i - 1$ 的大小关系可能更好枚举。于是我们可以得到下面的式子：</p>
+<script type="math/tex; mode=display">
+\sum_{j = i} ^ {n - 1} \binom{n - 1}{j} - \sum_{j = 0} ^ {i - 2} \binom{n - 1}{j}</script><p>我们可以预处理 $f(k) = \sum_{i = k}^{n - 1} \binom{n - 1}i - \sum_{i = 0}^{k - 2}\binom{n - 1}i$，可能会更好求。</p>
+<p>发现 $x_i$ 一样的段，贡献是连续的，也就是 $f(k)$ 是一段的和。假设枚举次幂 $t$，设 $x_i\geq t$ 的个数为 $a$，$x_i &gt; t$ 的个数为 $b$，那么 $t$ 的贡献就是：</p>
+<script type="math/tex; mode=display">
+t\sum_{i = b + 1} ^ a f(i)</script><p>再次前缀和 $g(i) = \sum_{j = 1} ^ i f(j)$，那么这个贡献也可以 $O(1)$ 计算。那么瓶颈在于计算 $x_i\geq t$ 的个数。这个可以通过埃筛来计算。</p>
 <p>具体来说，我们直接考虑枚举质数 $p$，然后对于他的次幂，暴力计算次幂的倍数有多少个。据说时间复杂度是 $O(n\log\log n)$ 的，实测 $4\times 10 ^ 7$ 也只要 0.5s（不算读入）。有好心人发一下证明吗？</p>
 <p>代码比较简短。放一个主函数。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">pre[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt; n; ++ j) <span class="built_in">adj</span>(pre[j] = pre[j - <span class="number">1</span>] + <span class="built_in">C</span>(n - <span class="number">1</span>, j) - Mod);</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>, tmp; i &lt;= n; ++ i)</span><br><span class="line">	<span class="built_in">adj</span>(ans[i] = ans[i - <span class="number">1</span>] + <span class="built_in">adj</span>(<span class="built_in">adj</span>(tmp = pre[n - <span class="number">1</span>] - pre[i - <span class="number">1</span>]) -= (i == <span class="number">1</span> ? <span class="number">0</span> : pre[i - <span class="number">2</span>])) - Mod);</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">2</span>, j; i &lt;= mx; ++ i) &#123;</span><br><span class="line">	<span class="keyword">if</span> (st[i]) <span class="keyword">continue</span>;</span><br><span class="line">	<span class="keyword">for</span> (j = i &lt;&lt; <span class="number">1</span>; j &lt;= mx; j += i) st[j] = <span class="literal">true</span>;</span><br><span class="line">	LL k = i;</span><br><span class="line">	<span class="keyword">for</span> (cntp[j = <span class="number">1</span>] = <span class="number">0</span>; k &lt;= mx; cntp[++ j] = <span class="number">0</span>, k *= i)</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> l = k; l &lt;= mx; l += k) cntp[j] += cnt[l];</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> l = j - <span class="number">1</span>, tmp; l; -- l)</span><br><span class="line">		res = (res + (LL)<span class="built_in">adj</span>(tmp = ans[cntp[l]] - ans[cntp[l + <span class="number">1</span>]]) * l) % Mod;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
     </div>
 
@@ -372,7 +373,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -461,7 +462,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -471,13 +472,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

@@ -249,7 +249,6 @@
       
         <p>All Accepted。</p>
 <span id="more"></span>
-
 <h3 id="A"><a href="#A" class="headerlink" title="A"></a>A</h3><p>题意：给定一个数 $n$，判断 $n$ 的奇因数多还是偶因数多。$T(T\leq 2\times 10 ^ 5)$ 组数据，$n\leq 10 ^ {18}$。</p>
 <p>容易发现如果 $n$ 是奇数肯定是奇因数多，否则如果 $n$ 是 4 的倍数，那么如果 $d$ 是奇因数，那么 $2d, 4d$ 都是偶因数，这样 $n$ 的偶因数多。否则一样多。</p>
 <h3 id="B"><a href="#B" class="headerlink" title="B"></a>B</h3><p>题意：给定一个序列 $A$，问所有非空子序列 $B$ 的 $\max(B)\times \min(B)$ 的和。$n\leq 2\times 10 ^ 5$，答案对 998244353 取模。</p>
@@ -267,7 +266,6 @@
 <p>注意到一棵子树只会对外面产生的影响由两种：一是关键点距离根距离 $&lt;d$，那么会对外面的一些选择产生影响。否则就是至少需要距离根不超过某一值的关键点。</p>
 <p>注意到不同子树之间合并是容易的，反正可能细节比较多就是了。我直接贴代码。从 Um_nik 的写法中得到的，正数表示第一种情况，否则表示第二种情况。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> fa = <span class="number">0</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	f[x] = add[x] = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> v : g[x]) &#123;</span><br><span class="line">		<span class="keyword">if</span> (v == fa) <span class="keyword">continue</span>;</span><br><span class="line">		<span class="built_in">dfs</span>(v, x);</span><br><span class="line">		f[x] += f[v];</span><br><span class="line">		<span class="keyword">if</span> (add[x] &gt; add[v]) std::<span class="built_in">swap</span>(add[x], add[v]);</span><br><span class="line">		<span class="keyword">if</span> (add[x] &lt;= <span class="number">0</span> &amp;&amp; add[v] &gt; <span class="number">0</span> &amp;&amp; add[v] - add[x] &lt;= dis) add[x] = add[v];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (add[x] == -dis) f[x] ++, add[x] = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (add[x] &gt; <span class="number">0</span>) add[x] ++;</span><br><span class="line">	<span class="keyword">else</span> add[x] --;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">check</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="built_in">dfs</span>(<span class="number">1</span>), f[<span class="number">1</span>] + (add[<span class="number">1</span>] &lt; <span class="number">0</span>) &lt;= k; &#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="F"><a href="#F" class="headerlink" title="F"></a>F</h3><p>题意：有 $n$ 个序列，每个序列长度为 $m_i$，两个人轮流拿数，每次可以把一个长度不为 1 的序列的首尾任意一个数拿走。在两个人都使用最优走法时（先手想让剩的 $n$ 个数和最大，后手相反），问剩的数的和。$n, \sum m\leq 2\times 10 ^ 5$。</p>
 <p>假设所有数列的长度都是奇数，我们想一想该如何选。容易发现此时后手更有主动权，因为如果后手想要维持保留最终点的话时很容易做到的，而他也可以不这么选择。也就是说，如果先手选择的左半，后手也可以选择左半，此时后手肯定希望选到 $a(mid + 1)$，因为他不可能选到 $a(mid + 2)$（先手可以和他平衡），既然选择了删除左半，肯定是希望选到 $a(mid + 1)$。而如果先手先删除右半，那么后手就有机会选择 $a(mid - 1)$。这样的话，先手有能力去掉 $a(mid - 1)$ 和 $a(mid + 1)$ 中的较小值的，剩下的再和 $a(mid)$ 取 $\min$。这样的话，最后能取到的一定是 $\min(a(mid), \max(a(mid - 1), a(mid + 1)))$。</p>
 <p>然后考虑有多个序列的。前面说到后手更有主动权，那么最开始的后手肯定并不希望自己成为先手，而这个又是可以实现的，就是和先手在同一条序列上操作。容易发现操作完后先后手顺序不变，所以直接简单的把所有加起来即可。</p>
@@ -376,7 +374,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -465,7 +463,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -475,13 +473,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

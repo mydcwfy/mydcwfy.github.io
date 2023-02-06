@@ -246,12 +246,13 @@
       
         <p>有趣的数数题，但压轴题确实码量较大。</p>
 <span id="more"></span>
-
 <p>题意：给定 $L, R$，问有多少个 $n$ 元组 $(a_1, a_2, \cdots, a_n)$ 满足 $a_i\in [L, R]$ 并且 $\sum a$ 10 进制表示从高位向低位数字不增。$L, R\leq 10 ^ {1000}$，$k\leq 50$，6s。</p>
 <p>并不清楚为什么要给 6s，反正我代码最大点 200- ms，目前（2022-06-23）LOJ 最优解，大概是 rk2 速度的 4 倍。</p>
 <p>以下令 $m = 10$，用于表示复杂度。</p>
 <p>容易发现我们只有 $L$ 的限制是好做的，我们可以用插板法用一个组合数表示。</p>
-<p>考虑容斥，计算钦定有 $k$ 个超出 $R$ 的限制的（似乎是二项式反演的弱化版），那么我们可以选择 $k$ 个超出限制，至少为 $R + 1$，这一部分需要乘上 $\binom nk$。假设最终的和为 $s$，那么可以得到方案数为：<br>$$<br>\binom{s - k(R + 1) - (n - k)L + n - 1}{n - 1}<br>$$<br>注意到 $s$ 必须 $\geq k(R + 1) + (n - k)L$，同时需要满足题目给的数位单调不降的特点，显然使用数位 DP。下面考虑如何计算这个组合数。</p>
+<p>考虑容斥，计算钦定有 $k$ 个超出 $R$ 的限制的（似乎是二项式反演的弱化版），那么我们可以选择 $k$ 个超出限制，至少为 $R + 1$，这一部分需要乘上 $\binom nk$。假设最终的和为 $s$，那么可以得到方案数为：</p>
+<script type="math/tex; mode=display">
+\binom{s - k(R + 1) - (n - k)L + n - 1}{n - 1}</script><p>注意到 $s$ 必须 $\geq k(R + 1) + (n - k)L$，同时需要满足题目给的数位单调不降的特点，显然使用数位 DP。下面考虑如何计算这个组合数。</p>
 <p>容易发现这个组合数是一个关于 $s - k(R + 1) - (n - k)L$ 的不超过 $n - 1$ 次多项式，那么我们可以把这个式子拆分为不同幂次的和。维护不同幂次的答案显然可以使用一个结构体维护，然后统一转移。具体的，使用二项式定理展开，$a(i), b(j)$ 乘 $\binom{i + j}i$ 到 $c(i + j)$。</p>
 <p>考虑数位 DP 的具体过程，注意到我们没有上界，于是我们可以强行规定一个上界，使它比所有的 $k(R + 1) + (n - k)L$ 都要大。为了简洁我们直接设定位数不超过 $|R| + 3$，容易发现 $k(R + 1) + (n - k)L$ 肯定无法达到上界。</p>
 <p>我们可以使用一个简单的预处理 $f(i, j)$ 表示 $i$ 位，最高位是 $j$ 且满足条件的所有数的各次幂。容易发现转移可以做到 $O(|R|\times m\times n ^ 2)$。</p>
@@ -363,7 +364,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -452,7 +453,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -462,13 +463,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

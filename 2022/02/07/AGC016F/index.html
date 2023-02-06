@@ -251,7 +251,6 @@
       
         <p>$SG$ 函数的妙用。</p>
 <span id="more"></span>
-
 <h2 id="1-题意"><a href="#1-题意" class="headerlink" title="1. 题意"></a>1. 题意</h2><p>给定一个有向图，其中边都是小编号向大编号连边。现在 Alice 和 Bob 交替移动两个石子。两个石子最开始在 1 和 2。</p>
 <p>现在要求只保留一些边，求在剩下的图中 Alice 能胜的情况个数。答案模 $1e9 + 7$。</p>
 <h2 id="2-题解"><a href="#2-题解" class="headerlink" title="2. 题解"></a>2. 题解</h2><p>很明显，我们需要求 $sg(1) != sg(2)$ 的方案数，这个可以简单的用总数减 $sg(1) = sg(2)$  的方案数。</p>
@@ -263,7 +262,6 @@
 <p>我们暴力枚举 $S$，枚举子集的时间复杂度为 $O(3 ^ n)$，可以通过。</p>
 <p><strong>总结：删掉 $sg = 0$ 的状态，所有状态 $sg$ 减一。</strong></p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> u, v, i = <span class="number">1</span>; i &lt;= m; ++ i)</span><br><span class="line">&#123;</span><br><span class="line">	std::cin &gt;&gt; u &gt;&gt; v;</span><br><span class="line">	out[-- u] |= (<span class="number">1</span> &lt;&lt; -- v);</span><br><span class="line">&#125;</span><br><span class="line">f[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; (<span class="number">1</span> &lt;&lt; n); ++ i)</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> j = i; j; j = (j - <span class="number">1</span>) &amp; i)&#123;</span><br><span class="line">		<span class="keyword">if</span> ((i &amp; <span class="number">1</span>) ^ (i &gt;&gt; <span class="number">1</span> &amp; <span class="number">1</span>)) <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">if</span> ((j &amp; <span class="number">1</span>) ^ (j &gt;&gt; <span class="number">1</span> &amp; <span class="number">1</span>)) <span class="keyword">continue</span>;</span><br><span class="line">		LL now = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> k = <span class="number">0</span>; k &lt; n; ++ k)</span><br><span class="line">			<span class="keyword">if</span> ((i ^ j) &gt;&gt; k &amp; <span class="number">1</span>) now = now * (pw[cnt[out[k] &amp; j]] - <span class="number">1</span>) % Mod;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (j &gt;&gt; k &amp; <span class="number">1</span>) now = now * (pw[cnt[out[k] &amp; (i ^ j)]]) % Mod;</span><br><span class="line">		f[i] = (f[i] + f[i ^ j] * now) % Mod;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-
 
     </div>
 
@@ -368,7 +366,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -457,7 +455,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -467,13 +465,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

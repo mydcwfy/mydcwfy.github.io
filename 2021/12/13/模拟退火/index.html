@@ -242,7 +242,6 @@
       
         <p><strong>骗分大法好！</strong></p>
 <span id="more"></span>
-
 <h2 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h2><p>一种神仙的随机算法，在你找不到 DP 的方法时可以使用<del>来骗分</del>。比如我在 NOIP 考场上 T3 就骗了 96 pts（虽然差一点就想到了 DP 正解）。</p>
 <h2 id="2-思想"><a href="#2-思想" class="headerlink" title="2. 思想"></a>2. 思想</h2><p>首先，它本身是在一个很大的 $x$ 取值范围寻找函数的最优解（注意函数不一定是单峰或单调）。</p>
 <p>下面默认寻找最小值。</p>
@@ -264,7 +263,6 @@
 <p>然后，<strong>尽可能的推出一些性质（比如贪心构造，即使可能正确性有误），尽量的靠近最优解</strong>。这样的正确性比较高。（比如 NOIP T3）</p>
 <p>下面给出一个简单的模板：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">sa</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> ans = INF, now;</span><br><span class="line">	<span class="type">double</span> k = ;<span class="comment">//自定义参数</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">double</span> t = <span class="number">1e7</span>; t &gt; <span class="number">1e-7</span>; t *= <span class="number">0.999997</span>)<span class="comment">//衰减参数</span></span><br><span class="line">	&#123;<span class="comment">//先生成新解 cur</span></span><br><span class="line">		<span class="keyword">if</span> (<span class="built_in">clock</span>() / CLOCKS_PER_SEC &gt; <span class="number">0.9</span>) <span class="keyword">return</span> ans;</span><br><span class="line">		<span class="type">int</span> cur = <span class="built_in">get_ans</span>();</span><br><span class="line">		<span class="keyword">if</span> (cur &lt; now || <span class="built_in">exp</span>(- (cur - now) * t * k) &lt; <span class="built_in">rand</span>() / RAND_MAX) now = cur;<span class="comment">//比较两解，如果大的话有一定概率跳过去</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="4-例题"><a href="#4-例题" class="headerlink" title="4. 例题"></a>4. 例题</h2><h4 id="T1：-NOIP2021-T3-方差"><a href="#T1：-NOIP2021-T3-方差" class="headerlink" title="T1：[NOIP2021 T3]方差"></a>T1：[NOIP2021 T3]方差</h4><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P7962">题目传送门 Luogu</a></p>
 <p>注意至少要推出差分的性质，得分会至少有 50-70 pts。</p>
 <p>给出考场的 96 pts 代码，Luogu 民间数据 88 pts。（去掉了 <code>freopen</code>，中文注释是后来加的）</p>
@@ -370,7 +368,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -459,7 +457,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -469,13 +467,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

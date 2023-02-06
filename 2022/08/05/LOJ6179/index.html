@@ -28,7 +28,7 @@
 <meta property="og:description" content="题意：求 $\sum_{i &#x3D; 1} ^ n \sum_{j &#x3D; 1} ^ m \varphi(ij)\bmod 998244353$。$T(T\leq 10 ^ 5)$ 组数据，$n, m\leq 10 ^ 5$，4s，64MB。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-08-05T13:10:13.000Z">
-<meta property="article:modified_time" content="2022-08-05T13:37:29.819Z">
+<meta property="article:modified_time" content="2023-02-06T13:13:15.288Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="数论">
 <meta property="article:tag" content="平衡规划">
@@ -211,10 +211,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-08-05 21:10:13 / Modified: 21:37:29" itemprop="dateCreated datePublished" datetime="2022-08-05T21:10:13+08:00">2022-08-05</time>
+              <time title="Created: 2022-08-05 21:10:13" itemprop="dateCreated datePublished" datetime="2022-08-05T21:10:13+08:00">2022-08-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-02-06 21:13:15" itemprop="dateModified" datetime="2023-02-06T21:13:15+08:00">2023-02-06</time>
+              </span>
 
           <br>
             <span class="post-meta-item" title="Symbols count in article">
@@ -243,9 +249,16 @@
       
         <p>题意：求 $\sum_{i = 1} ^ n \sum_{j = 1} ^ m \varphi(ij)\bmod 998244353$。$T(T\leq 10 ^ 5)$ 组数据，$n, m\leq 10 ^ 5$，4s，64MB。</p>
 <span id="more"></span>
-
 <p>首先一个容易发现的性质是 $\varphi(ij) = \dfrac{\varphi(i) \varphi(j) \gcd(i, j)}{\varphi(\gcd(i, j))}$。考虑每个质因数的贡献即可。</p>
-<p>那么一阵推导（默认 $n\leq m$）：<br>$$<br>\begin{aligned}<br>ans =&amp; \sum_{i = 1} ^ n \sum_{j = 1} ^ m \dfrac{\varphi(i) \varphi(j) \gcd(i, j)}{\varphi(\gcd(i, j))}\\<br>=&amp; \sum_{d = 1} ^ n \dfrac d{\varphi(d)} \sum_{i = 1} ^ {\frac nd} \sum_{j = 1} ^ {\frac md} [\gcd(i, j) = 1] \varphi(id) \varphi(jd)\\<br>=&amp; \sum_{d = 1} ^ n \dfrac d{\varphi(d)} \sum_{i = 1} ^ {\frac nd} \sum_{j = 1} ^ {\frac md} \varphi(id) \varphi(jd) \sum_{k | i, k | j} \mu(k)\\<br>=&amp; \sum_{d = 1} ^ n \dfrac d{\varphi(d)} \sum_{k = 1} ^ {\frac nd} \mu(k) \sum_{i = 1} ^ {\frac n{dk}}\sum_{j = 1} ^ {\frac m{dk}} \varphi(idk) \varphi(jdk)\\<br>=&amp; \sum_{T = 1} ^ n (\sum_{i = 1} ^ {\frac nT} \varphi(iT)) (\sum_{j = 1} ^ {\frac mT} \varphi(jT)) \sum_{d | T} \dfrac {d\mu(\dfrac Td)}{\varphi(d)}<br>\end{aligned}<br>$$<br>容易发现后面的 $\sum_{d | T} \dfrac {d\mu(\dfrac Td)}{\varphi(d)}$ 可以在 $O(n\log n)$ 的时间预处理，如果求出了前面的一坨，容易单次 $O(\sqrt n)$ 整除分块计算。问题在于前面的这两个不是很好和整除分块一起计算。</p>
+<p>那么一阵推导（默认 $n\leq m$）：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+ans =& \sum_{i = 1} ^ n \sum_{j = 1} ^ m \dfrac{\varphi(i) \varphi(j) \gcd(i, j)}{\varphi(\gcd(i, j))}\\
+=& \sum_{d = 1} ^ n \dfrac d{\varphi(d)} \sum_{i = 1} ^ {\frac nd} \sum_{j = 1} ^ {\frac md} [\gcd(i, j) = 1] \varphi(id) \varphi(jd)\\
+=& \sum_{d = 1} ^ n \dfrac d{\varphi(d)} \sum_{i = 1} ^ {\frac nd} \sum_{j = 1} ^ {\frac md} \varphi(id) \varphi(jd) \sum_{k | i, k | j} \mu(k)\\
+=& \sum_{d = 1} ^ n \dfrac d{\varphi(d)} \sum_{k = 1} ^ {\frac nd} \mu(k) \sum_{i = 1} ^ {\frac n{dk}}\sum_{j = 1} ^ {\frac m{dk}} \varphi(idk) \varphi(jdk)\\
+=& \sum_{T = 1} ^ n (\sum_{i = 1} ^ {\frac nT} \varphi(iT)) (\sum_{j = 1} ^ {\frac mT} \varphi(jT)) \sum_{d | T} \dfrac {d\mu(\dfrac Td)}{\varphi(d)}
+\end{aligned}</script><p>容易发现后面的 $\sum_{d | T} \dfrac {d\mu(\dfrac Td)}{\varphi(d)}$ 可以在 $O(n\log n)$ 的时间预处理，如果求出了前面的一坨，容易单次 $O(\sqrt n)$ 整除分块计算。问题在于前面的这两个不是很好和整除分块一起计算。</p>
 <p>考虑有两种处理办法：</p>
 <ol>
 <li>预处理 $f(n, m, T) = \sum_{i = 1} ^ n \sum_{j = 1} ^ m  \varphi(iT) \varphi(jT)$ 并使用前缀和，这样就可以使用整除分块。</li>
@@ -353,7 +366,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -442,7 +455,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -452,13 +465,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

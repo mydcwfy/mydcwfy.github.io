@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://mydcwfy.github.io/2022/01/19/%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95%E5%9F%BA%E7%A1%80/%E5%BF%AB%E9%80%9F%E6%8E%92%E6%96%A5%E5%AE%9E%E9%AA%8C.png">
 <meta property="og:image" content="https://mydcwfy.github.io/2022/01/19/%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95%E5%9F%BA%E7%A1%80/%E5%BF%AB%E9%80%9F%E6%8E%92%E6%96%A5%E5%AE%9E%E9%AA%8C2.png">
 <meta property="article:published_time" content="2022-01-19T06:28:54.000Z">
-<meta property="article:modified_time" content="2022-01-19T12:32:46.419Z">
+<meta property="article:modified_time" content="2023-02-06T13:13:15.115Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="计算几何">
 <meta name="twitter:card" content="summary">
@@ -213,10 +213,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-01-19 14:28:54 / Modified: 20:32:46" itemprop="dateCreated datePublished" datetime="2022-01-19T14:28:54+08:00">2022-01-19</time>
+              <time title="Created: 2022-01-19 14:28:54" itemprop="dateCreated datePublished" datetime="2022-01-19T14:28:54+08:00">2022-01-19</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-02-06 21:13:15" itemprop="dateModified" datetime="2023-02-06T21:13:15+08:00">2023-02-06</time>
+              </span>
 
           <br>
             <span class="post-meta-item" title="Symbols count in article">
@@ -224,7 +230,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>3.9k</span>
+              <span>3.8k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -245,64 +251,53 @@
       
         <p>需要的初高中几何知识是比较多的。</p>
 <span id="more"></span>
-
-<h2 id="1-数学基础"><a href="#1-数学基础" class="headerlink" title="1. 数学基础"></a>1. 数学基础</h2><p>$$<br>\begin{aligned}<br>\pi &amp;= \arccos(-1)\\<br>c^2 &amp;= a^2 + b^2 - 2ab\cos\theta<br>\end{aligned}<br>$$</p>
-<p>第一个的原理来自于：$\cos \pi = -1$。</p>
+<h2 id="1-数学基础"><a href="#1-数学基础" class="headerlink" title="1. 数学基础"></a>1. 数学基础</h2><script type="math/tex; mode=display">
+\begin{aligned}
+\pi &= \arccos(-1)\\
+c^2 &= a^2 + b^2 - 2ab\cos\theta
+\end{aligned}</script><p>第一个的原理来自于：$\cos \pi = -1$。</p>
 <p>第二个是一个余弦定理。</p>
 <h2 id="2-关于浮点数"><a href="#2-关于浮点数" class="headerlink" title="2. 关于浮点数"></a>2. 关于浮点数</h2><p>比如我们比较两个数的时候，他们可能因为计算的误差而不同。所以我们必须定义一个 $\epsilon$，表示两个的差别，如果在 $\epsilon$ 中的话，我们就认为这两个数相等。$\epsilon$ 可以定义为 $10^{-8}, 10^{-9}$ 等等。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">double</span> eps = <span class="number">1e-9</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">is_equal</span><span class="params">(<span class="type">double</span> x, <span class="type">double</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">fabs</span>(x - y) &lt; eps;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>同样，如果比较两个数的大小，我们同样也要使用 $\epsilon$：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">cmp</span><span class="params">(<span class="type">double</span> x, <span class="type">double</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">fabs</span>(x - y) &lt; eps) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> x &gt; y ? <span class="number">1</span> : <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="3-向量"><a href="#3-向量" class="headerlink" title="3. 向量"></a>3. 向量</h2><p>首先，简单的向量加减不再展开。</p>
-<p>我们先介绍点乘：$a \cdot b = |a||b|\cos&lt;a, b&gt;$。</p>
+<p>我们先介绍点乘：$a \cdot b = |a||b|\cos<a, b>$。</p>
 <p>如果在二维点坐标下计算，就是 $(a, b) \cdot (c, d) = ac + bd$。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">double</span> <span class="title">dot</span><span class="params">(Point a, Point b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a.x * b.x + a.y * b.y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>我们计算一个向量的模的时候，可以直接计算就是了，也可以 $|a| = \sqrt{a \cdot a}$。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">double</span> <span class="title">length</span><span class="params">(Point a)</span></span>&#123;<span class="keyword">return</span> <span class="built_in">sqrt</span>(<span class="built_in">dot</span>(a, a));&#125;</span><br></pre></td></tr></table></figure>
-
 <p>我们可以使用点乘来计算两个之间的夹角。</p>
-<p>$\cos&lt;a, b&gt; = \dfrac{a\cdot b}{|a||b|}$。</p>
+<p>$\cos<a, b> = \dfrac{a\cdot b}{|a||b|}$。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">double</span> <span class="title">get_angle</span><span class="params">(Point a, Point b)</span></span>&#123;<span class="keyword">return</span> <span class="built_in">acos</span>(<span class="built_in">dot</span>(a) / <span class="built_in">length</span>(a) / <span class="built_in">length</span>(b));&#125;</span><br></pre></td></tr></table></figure>
-
-<p>还有一种乘法，是叉乘：$a\times b = |a||b|\sin&lt;a, b&gt;$。</p>
+<p>还有一种乘法，是叉乘：$a\times b = |a||b|\sin<a, b>$。</p>
 <p>如果是二维点坐标，就是 $(a, b)\times (c, d) = ad - bc$。</p>
 <p>如果叉乘大于 0 的话，那么 $a$ 向量在 $b$ 向量的顺时针的方向。注意叉乘没有交换性。一般将叉乘重载为乘法。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">double</span> <span class="title">cross</span><span class="params">(Point a, Point b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a.x * b.y - a.y * b.x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>还有一个，我们转一个角。</p>
 <p>直接写出公式，证明可以使用和差角公式：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Point <span class="title">rotate</span><span class="params">(Point a, <span class="type">double</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;a.x * <span class="built_in">cos</span>(c) - a.y * <span class="built_in">sin</span>(c), a.x * <span class="built_in">sin</span>(c) + a.y * <span class="built_in">cos</span>(c)&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="4-计算几何"><a href="#4-计算几何" class="headerlink" title="4. 计算几何"></a>4. 计算几何</h2><p>似乎能写的似乎不多……</p>
 <p>我们简单的看几个比较常用的。</p>
 <h3 id="1）直线相交"><a href="#1）直线相交" class="headerlink" title="1）直线相交"></a>1）直线相交</h3><p>首先，判断两个直线是否相交：$a\times b \not= 0$。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">is_cross</span><span class="params">(Point a, Point b)</span></span>&#123;<span class="keyword">return</span> <span class="built_in">cross</span>(a, b) != <span class="number">0</span>;&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="2）线段相交"><a href="#2）线段相交" class="headerlink" title="2）线段相交"></a>2）线段相交</h3><p>分为两步：快速排斥实验和跨立实验。</p>
 <p>快速排斥实验是指如果两个线段所在的矩形如果不相交，那么两条线段一定不相交。</p>
 <img src="/2022/01/19/%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95%E5%9F%BA%E7%A1%80/%E5%BF%AB%E9%80%9F%E6%8E%92%E6%96%A5%E5%AE%9E%E9%AA%8C.png" class="">
-
 <p>如果两个线段所在的矩形是相交的，也不说明两条线段是相交的。</p>
 <img src="/2022/01/19/%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95%E5%9F%BA%E7%A1%80/%E5%BF%AB%E9%80%9F%E6%8E%92%E6%96%A5%E5%AE%9E%E9%AA%8C2.png" class="">
-
 <p>我们需要判断两个线段相交的话，需要判断一个线段的两个点是否在另外一个线段所在直线的两侧。</p>
 <p>具体来说，就是判断 $(p3 - p1) \times (p2 - p1)$ 与 $(p4 - p1) \times (p2 - p1)$ 是否异号。</p>
 <p>另外，我们可以直接对这两条线段都这么计算，可以省去第一步。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">cross_seg</span><span class="params">(Point p1, Point p2, Point p3, Point p4)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (((p1 - p3) * (p4 - p3)) * ((p2 - p3) * (p4 - p3)) &gt; eps) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">if</span> (((p3 - p1) * (p2 - p1)) * ((p4 - p1) * (p2 - p1)) &gt; eps) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="3）判断一个点是否在多边形内"><a href="#3）判断一个点是否在多边形内" class="headerlink" title="3）判断一个点是否在多边形内"></a>3）判断一个点是否在多边形内</h3><p>注意不一定是凸多边形。</p>
 <p>有一个结论：<strong>经过凸多边形的边奇数次，就在凸多边形内。</strong></p>
 <p>很明显，没经过一次边，就会导致从外到内，或者从内到外。最后一定是在外部，所以奇数次的话该点就在里面。</p>
 <p>注意这个结论在经过某一个顶点或者射线与边重合时并不适用，所以我们随机一个在凸多边形外部的点判断就可以了。</p>
 <p>（不保证代码正确</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">in_polygon</span><span class="params">(Point *p, Point a, <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	p[n + <span class="number">1</span>] = p[<span class="number">1</span>];</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (<span class="built_in">fabs</span>((p[<span class="number">1</span>] - p[i]) * (p[i + <span class="number">1</span>] - p[i])) &lt; eps &amp;&amp;</span><br><span class="line">		<span class="built_in">dot</span>(p[<span class="number">1</span>] - p[i], p[i + <span class="number">1</span>] - p[i]) &gt; eps &amp;&amp; <span class="built_in">dot</span>(p[i + <span class="number">1</span>] - p[<span class="number">1</span>], p[i + <span class="number">1</span>] - p[i]) &gt; eps)</span><br><span class="line">			<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		Point c = &#123;(<span class="type">double</span>)<span class="built_in">rand</span>(), (<span class="type">double</span>)<span class="built_in">rand</span>()&#125;;</span><br><span class="line">		<span class="type">bool</span> flag = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n &amp;&amp; !flag; ++ i)</span><br><span class="line">			<span class="keyword">if</span> (<span class="built_in">fabs</span>((c - a) * (p[i] - a)) &lt; eps &amp;&amp; <span class="built_in">fabs</span>((c - a) * (p[i + <span class="number">1</span>] - a)) &lt; eps)</span><br><span class="line">			&#123;</span><br><span class="line">				flag = <span class="number">1</span>;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		<span class="keyword">if</span> (flag) <span class="keyword">continue</span>;</span><br><span class="line">		flag = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line">			flag ^= <span class="built_in">cross_seg</span>(a, c, p[i], p[i + <span class="number">1</span>]);</span><br><span class="line">		<span class="keyword">return</span> flag;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="4）多边形面积"><a href="#4）多边形面积" class="headerlink" title="4）多边形面积"></a>4）多边形面积</h3><p>这是一个结论，我们就不证明了。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">sum_area</span><span class="params">(Point *p, <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">double</span> res = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">2</span>; i &lt; n; ++ i)</span><br><span class="line">		res += (p[i + <span class="number">1</span>] - p[<span class="number">1</span>]) * (p[i] - p[<span class="number">1</span>]);</span><br><span class="line">	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="5-例题"><a href="#5-例题" class="headerlink" title="5. 例题"></a>5. 例题</h2><h3 id="T1：玩具"><a href="#T1：玩具" class="headerlink" title="T1：玩具"></a>T1：玩具</h3><p><a target="_blank" rel="noopener" href="http://poj.org/problem?id=2318">题目传送门 POJ</a></p>
 <p>我们二分，找到第一个在该点左边的隔板。判断这个点是否在线段的右边（这里是顺时针方向），直接用叉乘即可。</p>
 <details>
@@ -411,7 +406,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -500,7 +495,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -510,13 +505,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

@@ -28,7 +28,7 @@
 <meta property="og:description" content="神秘二项式反演 + EGF 推导题目。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-06-19T08:02:03.000Z">
-<meta property="article:modified_time" content="2022-06-19T08:33:44.790Z">
+<meta property="article:modified_time" content="2023-02-06T13:14:45.943Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="组合数学">
 <meta property="article:tag" content="多项式">
@@ -212,10 +212,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-06-19 16:02:03 / Modified: 16:33:44" itemprop="dateCreated datePublished" datetime="2022-06-19T16:02:03+08:00">2022-06-19</time>
+              <time title="Created: 2022-06-19 16:02:03" itemprop="dateCreated datePublished" datetime="2022-06-19T16:02:03+08:00">2022-06-19</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-02-06 21:14:45" itemprop="dateModified" datetime="2023-02-06T21:14:45+08:00">2023-02-06</time>
+              </span>
 
           <br>
             <span class="post-meta-item" title="Symbols count in article">
@@ -223,7 +229,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>1.8k</span>
+              <span>1.7k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -244,14 +250,24 @@
       
         <p>神秘二项式反演 + EGF 推导题目。</p>
 <span id="more"></span>
-
 <p>题意：有 $n$ 个 $[1, D]$ 的随机变量，求至少能组成 $m$ 个相同数字的二元组的方案数。$n, m\leq 10 ^ 9$，$ D\leq 10 ^ 5$。</p>
 <p>显然可以计算出现次数为奇数的 $\leq n - 2\times m$ 个。</p>
 <p>首先特判 $2\times m&gt;n$ 和 $2\times m\leq n - D$ 的情况，答案分别为 0 和 $D ^ n$。</p>
 <p>容易发现我们需要对整个序列使用 EGF。我们知道 $\{a, a ^ 2, a ^ 3, \cdots\}$ 的 EGF 是 $e ^ {ax}$，那么 $\{1,1, 1, \cdots\}$ 的 EGF 是 $e ^ x$，$\{1, -1, 1, -1\}$ 的 EGF 是 $e ^ {-x}$，那么我们只要奇数的，那么就是 $\dfrac{e ^ x - e ^ {-x}}{2}$。</p>
 <p>那么我们现在需要计算 $\forall k\in [1, n - 2\times m]$ 的答案，记为 $f(k)$。</p>
 <p>这个是一个恰好的形式，然后考虑二项式反演，计算<strong>钦定 $k$ 个为奇数的答案</strong>，记为 $g(k)$。</p>
-<p>按照刚才的 EGF，我们可以写出 $g(k)$ 的生成函数：<br>$$<br>\begin{aligned}<br>g(k) =&amp; (\dfrac{e ^ x - e ^ {-x}}{2}) ^ ke ^ {(D - k)x}[n] \binom Dk \\<br>=&amp; (e ^ {2x} - 1) ^ ke ^ {(D - 2k)x}[n] \dfrac{\binom Dk}{2 ^ k}\\<br>=&amp; \dfrac{\binom Dk}{2 ^ k} \sum_{i = 0} ^ k \binom ki (-1) ^ {k - i} e ^ {(D - 2k + 2i)x}[n]<br>\end{aligned}<br>$$<br>最后一步是二项式定理展开。然后我们就可以得到 $g(k)$ 的表达式：<br>$$<br>\begin{aligned}<br>g(k) =&amp; \dfrac{\binom Dk}{2 ^ k}\sum_{i = 0} ^ k \binom ki (-1) ^ {k - i} (D - 2k + 2i) ^ n \\<br>=&amp; \dfrac{D!}{(D - k)!2 ^ k}\sum_{i = 0} ^ k \dfrac{1}{i!} (D - 2k + 2i) ^ n\dfrac{(-1) ^ {k - i}}{(k - i)!}<br>\end{aligned}<br>$$<br>于是可以卷积计算 $g(k)$，时间复杂度 $O(D\log D)$。</p>
+<p>按照刚才的 EGF，我们可以写出 $g(k)$ 的生成函数：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+g(k) =& (\dfrac{e ^ x - e ^ {-x}}{2}) ^ ke ^ {(D - k)x}[n] \binom Dk \\
+=& (e ^ {2x} - 1) ^ ke ^ {(D - 2k)x}[n] \dfrac{\binom Dk}{2 ^ k}\\
+=& \dfrac{\binom Dk}{2 ^ k} \sum_{i = 0} ^ k \binom ki (-1) ^ {k - i} e ^ {(D - 2k + 2i)x}[n]
+\end{aligned}</script><p>最后一步是二项式定理展开。然后我们就可以得到 $g(k)$ 的表达式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+g(k) =& \dfrac{\binom Dk}{2 ^ k}\sum_{i = 0} ^ k \binom ki (-1) ^ {k - i} (D - 2k + 2i) ^ n \\
+=& \dfrac{D!}{(D - k)!2 ^ k}\sum_{i = 0} ^ k \dfrac{1}{i!} (D - 2k + 2i) ^ n\dfrac{(-1) ^ {k - i}}{(k - i)!}
+\end{aligned}</script><p>于是可以卷积计算 $g(k)$，时间复杂度 $O(D\log D)$。</p>
 <p>然后按照 <a href="/2022/06/18/Luogu-P4491/">Luogu P4491 染色</a> 的套路，容易把二项式反演的过程卷积加速，于是总复杂度 $O(D\log D)$。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">init</span>();</span><br><span class="line">    <span class="type">int</span> D, n, m;</span><br><span class="line">    std::cin &gt;&gt; D &gt;&gt; n &gt;&gt; m;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="number">2</span> * m &gt; n)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">puts</span>(<span class="string">&quot;0&quot;</span>), <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="number">2</span> * m &lt;= n - D)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="built_in">qpow</span>(D, n)), <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">poly <span class="title">a</span><span class="params">(D + <span class="number">1</span>)</span>, <span class="title">b</span><span class="params">(infact, infact + D + <span class="number">1</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>, op = <span class="number">1</span>, tmp; i &lt;= D; ++ i, op = Mod - op)</span><br><span class="line">        a[i] = <span class="built_in">qpow</span>(<span class="built_in">adj</span>(tmp = D - <span class="number">2</span> * i), n) * (LL) infact[i] % Mod * op % Mod;</span><br><span class="line"></span><br><span class="line">    a = a * b, a.<span class="built_in">resize</span>(D + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= D; ++ i)</span><br><span class="line">        a[i] = (LL) a[i] * fact[D] % Mod * infact[D - i] % Mod * <span class="built_in">qpow</span>(<span class="number">2</span>, Mod - <span class="number">1</span> - i) % Mod;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= D; ++ i)</span><br><span class="line">        a[i] = (LL) a[i] * fact[i] % Mod;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= D; ++ i)</span><br><span class="line">        <span class="keyword">if</span> (i &amp; <span class="number">1</span>)</span><br><span class="line">            <span class="built_in">adj</span>(b[i] = -b[i]);</span><br><span class="line"></span><br><span class="line">    std::<span class="built_in">reverse</span>(b.<span class="built_in">begin</span>(), b.<span class="built_in">end</span>());</span><br><span class="line">    a = a * b;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= D; ++ i)</span><br><span class="line">        a[i + D] = (LL) a[i + D] * infact[i] % Mod;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= n - <span class="number">2</span> * m; ++ i)</span><br><span class="line">        <span class="built_in">adj</span>(res += a[i + D] - Mod);</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; res &lt;&lt; std::endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -356,7 +372,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -445,7 +461,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -455,13 +471,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

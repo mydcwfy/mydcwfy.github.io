@@ -243,8 +243,9 @@
       
         <p>哈哈，没事就做提答题。</p>
 <span id="more"></span>
-
-<p>题意：给定长度为 $n$ 的序列 $a$，定义一个排列 $p$ 的权值为：<br>$$<br>\sum_{i = 1} ^ n p_i a_{p_{i - 1}} a_{p_i} a_{p_{i + 1}}<br>$$<br>请给出一个排列，使得该权值尽量大。$n, a_i\leq 10 ^ 3$。已给出所有数据点。</p>
+<p>题意：给定长度为 $n$ 的序列 $a$，定义一个排列 $p$ 的权值为：</p>
+<script type="math/tex; mode=display">
+\sum_{i = 1} ^ n p_i a_{p_{i - 1}} a_{p_i} a_{p_{i + 1}}</script><p>请给出一个排列，使得该权值尽量大。$n, a_i\leq 10 ^ 3$。已给出所有数据点。</p>
 <p>显然考虑乱搞。</p>
 <p>有一个比较神秘的思路就是你每次随机交换两个数，然后计算答案。但是有一个问题就是你很容易陷入一个局部最优解，导致怎么都跳不出来。可以考虑类似模拟退火的做法，随机一定概率接受新解。</p>
 <p>这里需要优化复杂度（？）的地方是你需要 $O(1)$ 计算 $val$ 的变化量，可以暴力推式子，如果像我一样懒的人可以把所有影响到的位置重新算一遍，可能略慢一些。</p>
@@ -354,7 +355,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -443,7 +444,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -453,13 +454,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

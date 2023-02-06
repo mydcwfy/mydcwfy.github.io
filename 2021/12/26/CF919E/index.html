@@ -228,7 +228,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>1.3k</span>
+              <span>1.2k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -249,8 +249,9 @@
       
         <p>模拟和逆元题目。</p>
 <span id="more"></span>
-
-<h2 id="1-题意"><a href="#1-题意" class="headerlink" title="1. 题意"></a>1. 题意</h2><p>求<br>$$<br>n\cdot a^n\equiv b\pmod p<br>$$<br>在 $[1,x]$ 的正整数解的个数，其中 $a,b,p,x$ 给定。</p>
+<h2 id="1-题意"><a href="#1-题意" class="headerlink" title="1. 题意"></a>1. 题意</h2><p>求</p>
+<script type="math/tex; mode=display">
+n\cdot a^n\equiv b\pmod p</script><p>在 $[1,x]$ 的正整数解的个数，其中 $a,b,p,x$ 给定。</p>
 <p>$p\leq10^6+3,x\leq10^{12},1\leq a,b&lt;p$。</p>
 <h2 id="2-思路"><a href="#2-思路" class="headerlink" title="2. 思路"></a>2. 思路</h2><p>首先，看到 $p\leq10^6+3$，一定是要 $O(p)$ 枚举，然后再做。</p>
 <h4 id="a）枚举-n"><a href="#a）枚举-n" class="headerlink" title="a）枚举 $n$"></a>a）枚举 $n$</h4><p>那么，原题转化为了 $t\cdot a^n\equiv b\pmod p$ 的解了。</p>
@@ -263,7 +264,13 @@
 <p>于是，我们可以 $O(\log p)$ 求出逆元（因为一定有），那么，我们就可以求出 $n\bmod p$ 的值。</p>
 <h4 id="c）合并答案"><a href="#c）合并答案" class="headerlink" title="c）合并答案"></a>c）合并答案</h4><p>这道题在 CF 上有中国剩余定理的标签，大概就是这里用的吧。</p>
 <p>我们已经得到了 $t1=n\bmod (p-1)$ 和 $t2=n\bmod p$ 的值，直接由中国剩余定理就可以了。</p>
-<p>其实手玩也不是不可以，直接设 $n=kp+t2$，代入第一个就可以得到：<br>$$<br>\begin{aligned}<br>kp+t2&amp;\equiv t1 \pmod {p-1}\<br>k+t2&amp;\equiv t1\pmod {p-1}\<br>k&amp;\equiv t2-t1\pmod {p-1}<br>\end{aligned}<br>$$<br>就解出了 $n$ 的最小正整数取值了。</p>
+<p>其实手玩也不是不可以，直接设 $n=kp+t2$，代入第一个就可以得到：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+kp+t2&\equiv t1 \pmod {p-1}\\
+k+t2&\equiv t1\pmod {p-1}\\
+k&\equiv t2-t1\pmod {p-1}
+\end{aligned}</script><p>就解出了 $n$ 的最小正整数取值了。</p>
 <p>周期<del>很明显</del>是 $p\cdot(p-1)$，将答案加入即可。</p>
 <h2 id="3-代码"><a href="#3-代码" class="headerlink" title="3. 代码"></a>3. 代码</h2><p>实际实现的时候可以预处理算出 $a$ 的逆元，每次枚举 ${a^t}$ 的逆元的时候可以通过 ${a^{t-1}}^{-1}$ 乘上 $a^{-1}$ 即可。</p>
 <p>码风略丑，请见谅。</p>
@@ -370,7 +377,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -459,7 +466,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -469,13 +476,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

@@ -247,7 +247,6 @@
       
         <p>基环树的简单题目。</p>
 <span id="more"></span>
-
 <h2 id="1-题意"><a href="#1-题意" class="headerlink" title="1. 题意"></a>1. 题意</h2><ul>
 <li>给定一个 $n\times m$ 的黑白网格，每一个点都会有一个方向，如果放置的机器人走到这里的话，将会按照该方向走下去。现在要放置最多的机器人，使得机器人永远不会走到同一个点上（每一步中间相遇的不算）。在放置最多的基础上，要求最开始放在黑色上的机器人最多。</li>
 <li>有 $t$ 组数据，$n\times m\leq10^6,\sum n\times m\leq10^6,t\leq5\times10^4$。</li>
@@ -264,7 +263,6 @@
 <p>已经是黑色点的我们可以不管了，我们可以将一些白色的点替换为非环的黑点。</p>
 <p>我们画一个图，来看一下需要满足什么样的条件才可以。</p>
 <img src="/2021/12/26/CF1335F/CF1335F.png" class="">
-
 <p>当前，如果我们将一个机器人放在 b 点，经过两步之后，就会走到 c 点，如果最开始放在 a 点，也会走到 c 点。</p>
 <p>所以其实 a 点和 b 点是等价的，换句话说，他们最后在环上的位置是等价的。</p>
 <p>推广一下，对于任意一个点，假设他向上走走到环里需要的步数为 $x$，那么他就等价于环里距他最近的点往回走 $x$ 步得到的点。</p>
@@ -377,7 +375,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -466,7 +464,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -476,13 +474,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

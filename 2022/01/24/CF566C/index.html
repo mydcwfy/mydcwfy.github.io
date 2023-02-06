@@ -252,7 +252,6 @@
       
         <p>求导的思想找极值点挺不错的，还有点分治降低树的高度。</p>
 <span id="more"></span>
-
 <h2 id="1-题意"><a href="#1-题意" class="headerlink" title="1. 题意"></a>1. 题意</h2><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF566C">题目传送门 Luogu</a></p>
 <p><a target="_blank" rel="noopener" href="https://codeforces.com/problemset/problem/566/C">题目传送门 Codeforces</a></p>
 <p>求有点权、边的长度的树的重心，距离定义为 $(\sum w)^{\frac32}$，注意要求落在点上，并且求出该点到其他点的距离和。</p>
@@ -270,7 +269,6 @@
 <p>我们层层逼近，一定只有 $\log n$ 层，时间复杂度为 $O(n \log n)$，可以通过。</p>
 <p><strong>总结：求导逼近极值点；点分治降低树高度</strong>。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> fa, <span class="type">double</span> &amp;dev, <span class="type">int</span> nowd)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// if (vis[x]) return;</span></span><br><span class="line">	sum += <span class="built_in">pow</span>(nowd, <span class="number">1.5</span>) * a[x], dev += <span class="number">1.5</span> * <span class="built_in">sqrt</span>(nowd) * a[x];</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = h[x]; ~i; i = ne[i])</span><br><span class="line">		<span class="keyword">if</span> (e[i] != fa) <span class="built_in">dfs</span>(e[i], x, dev, nowd + w[i]);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">(<span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (vis[x]) <span class="keyword">return</span>;</span><br><span class="line">	<span class="built_in">get_wc</span>(x, <span class="number">-1</span>, <span class="built_in">get_size</span>(x, <span class="number">-1</span>), x);<span class="comment">//求重心</span></span><br><span class="line">	vis[x] = <span class="number">1</span>;</span><br><span class="line">	sum = <span class="number">0</span>;</span><br><span class="line">	<span class="type">double</span> sumd = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = h[x]; ~i; i = ne[i])</span><br><span class="line">	&#123;</span><br><span class="line">		dv[e[i]] = <span class="number">0</span>, <span class="built_in">dfs</span>(e[i], x, dv[e[i]], w[i]), sumd += dv[e[i]];<span class="comment">//求导数</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (sum &lt; res) res = sum, ansu = x;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = h[x]; ~i; i = ne[i])</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (sumd - <span class="number">2</span> * dv[e[i]] &lt;= <span class="number">0</span>)&#123;<span class="comment">//这里是一步推导，我们如果向这边的话，其他的导数为正，这个为负，也就是总和减去两倍当前的导数</span></span><br><span class="line">			<span class="built_in">work</span>(e[i]);</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
     </div>
 
@@ -376,7 +374,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -465,7 +463,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -475,13 +473,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

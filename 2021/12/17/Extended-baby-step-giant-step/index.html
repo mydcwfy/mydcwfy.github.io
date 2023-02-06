@@ -249,7 +249,6 @@
       
         <p>同步发表于 P4195 题解。</p>
 <span id="more"></span>
-
 <h2 id="0-前置知识-amp-废话"><a href="#0-前置知识-amp-废话" class="headerlink" title="0. 前置知识 &amp; 废话"></a>0. 前置知识 &amp; 废话</h2><p>逆元。</p>
 <p><a href="/2021/12/17/Inverse-element/">我的逆元 Blog</a></p>
 <h2 id="1-普通版-BSGS"><a href="#1-普通版-BSGS" class="headerlink" title="1. 普通版 BSGS"></a>1. 普通版 BSGS</h2><p>要求 $\gcd(a,p)=1$。</p>
@@ -260,9 +259,13 @@
 <p>其实，我们可以先将 $b\times a^m$ 全部用 Hash 存下来。</p>
 <p>这样就可以直接查找了。</p>
 <h2 id="2-扩展版-BSGS"><a href="#2-扩展版-BSGS" class="headerlink" title="2. 扩展版 BSGS"></a>2. 扩展版 BSGS</h2><p>想办法解决问题，我们应该实现 $\gcd(a,p)=1$。</p>
-<p>首先，同余具有一条性质：<br>$$<br>a=b\pmod c (\gcd(a,c)=1)\Leftrightarrow a\times d=b\times d\pmod {c\times d}<br>$$<br>可以感性的理解一下 （<del>主要是不会证</del>）。</p>
+<p>首先，同余具有一条性质：</p>
+<script type="math/tex; mode=display">
+a=b\pmod c (\gcd(a,c)=1)\Leftrightarrow a\times d=b\times d\pmod {c\times d}</script><p>可以感性的理解一下 （<del>主要是不会证</del>）。</p>
 <p>那么，我们就可以执行消除因子。</p>
-<p>每次在两边除以 $d=\gcd(a,p)$。<br>$$<br>a^x=b\pmod p\Rightarrow \dfrac{a}{d}\times a^{x-1}=\dfrac{b}{d}\pmod {\dfrac{p}{d}}<br>$$<br>重复执行该语段，直到 $\gcd(a,p)=1$ 为止。</p>
+<p>每次在两边除以 $d=\gcd(a,p)$。</p>
+<script type="math/tex; mode=display">
+a^x=b\pmod p\Rightarrow \dfrac{a}{d}\times a^{x-1}=\dfrac{b}{d}\pmod {\dfrac{p}{d}}</script><p>重复执行该语段，直到 $\gcd(a,p)=1$ 为止。</p>
 <p>将所有的 $\dfrac{a}{d}$ 都乘起来，记为 $tot$。</p>
 <p>假设执行了 $cnt$ 次，则原问题转化为 $tot\times a^{x-cnt}=b\pmod p\Leftrightarrow a^{x-cnt}=b\times tot^{-1}\pmod p$</p>
 <p>注意，这里有一些细节：</p>
@@ -373,7 +376,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -462,7 +465,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -472,13 +475,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

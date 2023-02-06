@@ -28,7 +28,7 @@
 <meta property="og:description" content="nb 莫比乌斯反演题，和常规套路不同。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-07-09T02:40:37.000Z">
-<meta property="article:modified_time" content="2022-07-09T03:04:45.309Z">
+<meta property="article:modified_time" content="2023-02-06T13:13:15.495Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="组合数学">
 <meta property="article:tag" content="数论">
@@ -213,10 +213,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-07-09 10:40:37 / Modified: 11:04:45" itemprop="dateCreated datePublished" datetime="2022-07-09T10:40:37+08:00">2022-07-09</time>
+              <time title="Created: 2022-07-09 10:40:37" itemprop="dateCreated datePublished" datetime="2022-07-09T10:40:37+08:00">2022-07-09</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-02-06 21:13:15" itemprop="dateModified" datetime="2023-02-06T21:13:15+08:00">2023-02-06</time>
+              </span>
 
           <br>
             <span class="post-meta-item" title="Symbols count in article">
@@ -224,7 +230,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>2.3k</span>
+              <span>2.2k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -245,12 +251,31 @@
       
         <p>nb 莫比乌斯反演题，和常规套路不同。</p>
 <span id="more"></span>
-
-<p>题意：<br>$$<br>\sum_{i = 1} ^ n \gcd(i, n) ^ x \text{lcm}(i, n) ^ y \bmod 10 ^ 9 + 7<br>$$<br>$T(T\leq 100)$ 次询问，每次给出 $n, x, y$，$n\leq 10 ^ {18}$，$x, y\leq 3000$。</p>
-<p>看到 $n\leq 10 ^ {18}$ 似乎不对劲，但还是先套路莫反。<br>$$<br>\begin{aligned}<br>&amp;\sum_{i = 1} ^ n \sum_{d = 1} ^ n [\gcd(i, n) = d] d ^ x (\dfrac{in}d) ^ y\\<br>=&amp; \sum_{d | n} \sum_{i = 1} ^ {\frac nd} d ^ x (in) ^ y [\gcd(i, \dfrac nd) = 1]\\<br>=&amp; \sum_{d | n} d ^ x \sum_{i = 1} ^ n d ^ x (in) ^ y \sum_{s | i, s | \frac nd} \mu(s)\\<br>=&amp; n ^ y \sum_{d | n} d ^ x \sum_{s | \frac nd}\mu(s) s ^ y \sum_{i = 1} ^ {\frac n{ds}} i ^ y<br>\end{aligned}<br>$$<br>做到这里，似乎再化开，令 $T = ds$ 没有意义了，因为至少需要枚举 $T$，少说也得整除分块，复杂度 $O(\sqrt n)$ 不可接受。</p>
+<p>题意：</p>
+<script type="math/tex; mode=display">
+\sum_{i = 1} ^ n \gcd(i, n) ^ x \text{lcm}(i, n) ^ y \bmod 10 ^ 9 + 7</script><p>$T(T\leq 100)$ 次询问，每次给出 $n, x, y$，$n\leq 10 ^ {18}$，$x, y\leq 3000$。</p>
+<p>看到 $n\leq 10 ^ {18}$ 似乎不对劲，但还是先套路莫反。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\sum_{i = 1} ^ n \sum_{d = 1} ^ n [\gcd(i, n) = d] d ^ x (\dfrac{in}d) ^ y\\
+=& \sum_{d | n} \sum_{i = 1} ^ {\frac nd} d ^ x (in) ^ y [\gcd(i, \dfrac nd) = 1]\\
+=& \sum_{d | n} d ^ x \sum_{i = 1} ^ n d ^ x (in) ^ y \sum_{s | i, s | \frac nd} \mu(s)\\
+=& n ^ y \sum_{d | n} d ^ x \sum_{s | \frac nd}\mu(s) s ^ y \sum_{i = 1} ^ {\frac n{ds}} i ^ y
+\end{aligned}</script><p>做到这里，似乎再化开，令 $T = ds$ 没有意义了，因为至少需要枚举 $T$，少说也得整除分块，复杂度 $O(\sqrt n)$ 不可接受。</p>
 <p>发现一个绊脚石是 $\sum_{i = 1} ^ {\frac n{ds}}i ^ y$，这个自然数幂导致我们没法快速计算，因为前面的函数 $d ^ x, \mu(s) s ^ y$ 都可以狄利克雷卷积，但这个没法。</p>
-<p>考虑使用伯努利数，把这样的一个式子写成 $\dfrac n{ds}$ 的次幂和：<br>$$<br>\begin{aligned}<br>&amp;\sum_{i = 1} ^ {\frac n {ds}} i ^ y\\<br>=&amp; \sum_{k = 0} ^ y \binom{y + 1}k B_k ^ + (\dfrac n{ds}) ^ {y + 1 - k}<br>\end{aligned}<br>$$<br>其中 $B_k^+$ 和 $B_k$ 的伯努利数略有区别，$B_k^+$ 在 $B_1^+$ 时取的 $\dfrac 12$，而 $B_k$ 在 $B_1$ 取的是 $-\dfrac 12$。伯努利数可以在 $O(y ^ 2)$ 的时间内递推出前 $y$ 项，不再赘述，可以接受。</p>
-<p>带入原式，大力计算：<br>$$<br>\begin{aligned}<br>&amp; n ^ y \sum_{d | n} d ^ x \sum_{s | \frac nd}\mu(s) s ^ y \sum_{i = 1} ^ {\frac n{ds}} i ^ y\\<br>=&amp; \dfrac{n ^ y}{y + 1} \sum_{d | n} d ^ x \sum_{s | \frac nd}\mu(s) s ^ y \sum_{k = 0} ^ y \binom{y + 1}k B_k^+ (\dfrac n{ds}) ^ {y + 1 - k}\\<br>=&amp; \dfrac{n ^ y}{y + 1} \sum_{k = 0} ^ y \binom{y + 1}k B_k ^ + \sum_{d | n} d ^ x \sum_{s | \frac nd} \mu(s) s ^y (\dfrac{n}{ds}) ^ {y + 1 - k}<br>\end{aligned}<br>$$<br>枚举 $k$ 是可以接受的，那么现在考虑怎么计算后面的 $\sum_{d | n} d ^ x \sum_{e | \frac nd} \mu(s)s ^ y(\dfrac n{ds}) ^ {y + 1 - k}$。发现这个其实一个积性函数，是 $id ^ x \times (\mu\cdot id ^ y)\times id ^ {y + 1 - k}$，可以拆开每一个质数计算答案。而每一个质数计算的时候，相当于计算 $f(p ^ c)$，由于 $\mu$ 的有效位置只有 $1, p$ 两个位置，只需要考虑剩下的两个分配次幂即可。得到质因数的办法显然 Pollard-Rho，时间复杂度 $O(\sqrt p)$。</p>
+<p>考虑使用伯努利数，把这样的一个式子写成 $\dfrac n{ds}$ 的次幂和：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\sum_{i = 1} ^ {\frac n {ds}} i ^ y\\
+=& \sum_{k = 0} ^ y \binom{y + 1}k B_k ^ + (\dfrac n{ds}) ^ {y + 1 - k}
+\end{aligned}</script><p>其中 $B_k^+$ 和 $B_k$ 的伯努利数略有区别，$B_k^+$ 在 $B_1^+$ 时取的 $\dfrac 12$，而 $B_k$ 在 $B_1$ 取的是 $-\dfrac 12$。伯努利数可以在 $O(y ^ 2)$ 的时间内递推出前 $y$ 项，不再赘述，可以接受。</p>
+<p>带入原式，大力计算：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+& n ^ y \sum_{d | n} d ^ x \sum_{s | \frac nd}\mu(s) s ^ y \sum_{i = 1} ^ {\frac n{ds}} i ^ y\\
+=& \dfrac{n ^ y}{y + 1} \sum_{d | n} d ^ x \sum_{s | \frac nd}\mu(s) s ^ y \sum_{k = 0} ^ y \binom{y + 1}k B_k^+ (\dfrac n{ds}) ^ {y + 1 - k}\\
+=& \dfrac{n ^ y}{y + 1} \sum_{k = 0} ^ y \binom{y + 1}k B_k ^ + \sum_{d | n} d ^ x \sum_{s | \frac nd} \mu(s) s ^y (\dfrac{n}{ds}) ^ {y + 1 - k}
+\end{aligned}</script><p>枚举 $k$ 是可以接受的，那么现在考虑怎么计算后面的 $\sum_{d | n} d ^ x \sum_{e | \frac nd} \mu(s)s ^ y(\dfrac n{ds}) ^ {y + 1 - k}$。发现这个其实一个积性函数，是 $id ^ x \times (\mu\cdot id ^ y)\times id ^ {y + 1 - k}$，可以拆开每一个质数计算答案。而每一个质数计算的时候，相当于计算 $f(p ^ c)$，由于 $\mu$ 的有效位置只有 $1, p$ 两个位置，只需要考虑剩下的两个分配次幂即可。得到质因数的办法显然 Pollard-Rho，时间复杂度 $O(\sqrt p)$。</p>
 <p>那么预处理时间复杂度为 $O(y ^ 2)$，单次询问时间复杂度 $O(n ^ {\frac 14} + y\cdot \text{poly}\log n)$，可以通过。</p>
 <p>代码比较冗长，主要是 Pollard-Rho 太长了，就放一个求解函数。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	LL n;</span><br><span class="line">	<span class="type">int</span> x, y;</span><br><span class="line">	std::cin &gt;&gt; n &gt;&gt; x &gt;&gt; y;</span><br><span class="line">	std::vector&lt;LL&gt; tmpfac = <span class="built_in">Pollard_Rho</span>(n);</span><br><span class="line">	LL tmp = n;</span><br><span class="line">	std::vector&lt;PLI&gt; fac;</span><br><span class="line">	<span class="keyword">for</span> (LL &amp;x : tmpfac)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="type">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">while</span> (tmp % x == <span class="number">0</span>) cnt ++, tmp /= x;</span><br><span class="line">		fac.<span class="built_in">push_back</span>(&#123;x, cnt&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> k = <span class="number">0</span>; k &lt;= y; ++ k)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="type">int</span> cur = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">auto</span> [p, t] : fac)</span><br><span class="line">		&#123;</span><br><span class="line">			p %= Mod;</span><br><span class="line">			<span class="type">int</span> mul = <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= t; ++ i)</span><br><span class="line">				<span class="built_in">adj</span>(mul += <span class="built_in">qpow</span>(p, i * (y + <span class="number">1</span> - k) + (t - i) * x) - Mod);</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; t; ++ i)</span><br><span class="line">				<span class="built_in">adj</span>(mul -= <span class="built_in">qpow</span>(p, i * (y + <span class="number">1</span> - k) + y + (t - i - <span class="number">1</span>) * x));</span><br><span class="line">			cur = (LL) cur * mul % Mod;</span><br><span class="line">		&#125;</span><br><span class="line">		res = (res + (LL) cur * <span class="built_in">C</span>(y + <span class="number">1</span>, k) % Mod * B[k]) % Mod;</span><br><span class="line">	&#125;</span><br><span class="line">	res = (LL) res * <span class="built_in">qpow</span>(n % Mod, y) % Mod * <span class="built_in">qpow</span>(y + <span class="number">1</span>) % Mod;</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -356,7 +381,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -445,7 +470,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -455,13 +480,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

@@ -243,7 +243,6 @@
       
         <p>题意：给定 $n$ 个点的树，定义一个点是好的当且仅当它和它的所有祖先都是黑色的，从所有点都是白点开始，任选一个不好的点染成黑色，问期望染多少次使得所有都是黑色。$n\leq 2\times 10 ^ 5$，对 998244353 取模。</p>
 <span id="more"></span>
-
 <p>非常 nb 的期望题，做了一整场 /cy</p>
 <p>和题解角度不同，我们考虑每个点的时候，需要考虑它没被祖先覆盖的概率，然后再在它的子树内部任意选，直到选到这个点为止。容易发现我们如果没选在子树内部的话，根据期望的线性性，我们可以把不同子树之间的答案直接加就好了。</p>
 <p>首先考虑在它的子树内部任意选的期望。因为子树的根是没有被选中的，所以所有点都是不好的点，那么期望就是 $sz(x)$ 能选中子树的根。</p>
@@ -351,7 +350,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -440,7 +439,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -450,13 +449,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

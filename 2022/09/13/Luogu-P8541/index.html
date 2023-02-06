@@ -243,7 +243,6 @@
       
         <p>题意：交互题。定义 $f(x)$ 为严格大于 $x$ 的最小完全平方数，$g(x)$ 为小于等于 $x$ 的最大完全平方数。你需要猜一个 $\in[1, 10 ^ {12}]$ 中的一个数 $a$，用少于 64 次的询问得到答案，单次你给出 $t(t\in [0, 10 ^ 9])$，会返回 $a + t$ 是否满足 $x - g(x) &lt; f(x) - x$。$T(T\leq 2\times 10 ^ 3)$ 组数据，2s。</p>
 <span id="more"></span>
-
 <p>首先发现 $[i ^ 2, (i + 1) ^ 2)$ 中恰好有 $i + 1$ 个满足条件的数，$i$ 个不满足条件的数，分界线为 $i(i + 1)$（该数满足）。</p>
 <p>然后考虑找到第一个不和 $a$ 性质相同的位置。如何找到呢？注意到我们其实并不知道上界，但是我们有一个关键的性质：如果 $a$ 和 $a + t$ 在同一段，那么 $a + 2t$ 和 $a$ 中间最多只有一个分界线。具体证明可以考虑段长不降的性质。于是我们可以靠这个进行倍增，找到最小的 $b$ 使得 $a + 2 ^ b$ 和 $a + 2 ^ {b + 1}$ 性质不同。这中间显然只有一个分界线，于是我们直接在这个区间进行二分即可。</p>
 <p>如果我们找到这个分界线的位置，显然就可以求出 $a$ 了。根据上面的结论，我们可以类似地找到下一个分界线的位置即可，这样就可以询问 $4\log \sqrt a$ 次得到答案，需要 $\approx 80$ 次，还差一点。</p>
@@ -350,7 +349,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -439,7 +438,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -449,13 +448,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

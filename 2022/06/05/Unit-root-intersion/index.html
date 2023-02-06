@@ -28,7 +28,7 @@
 <meta property="og:description" content="处理整除时才有贡献的利器。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-06-05T02:56:41.000Z">
-<meta property="article:modified_time" content="2022-06-05T07:14:34.240Z">
+<meta property="article:modified_time" content="2023-02-06T13:13:15.177Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="单位根反演">
 <meta property="article:tag" content="数学">
@@ -211,10 +211,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-06-05 10:56:41 / Modified: 15:14:34" itemprop="dateCreated datePublished" datetime="2022-06-05T10:56:41+08:00">2022-06-05</time>
+              <time title="Created: 2022-06-05 10:56:41" itemprop="dateCreated datePublished" datetime="2022-06-05T10:56:41+08:00">2022-06-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-02-06 21:13:15" itemprop="dateModified" datetime="2023-02-06T21:13:15+08:00">2023-02-06</time>
+              </span>
 
           <br>
             <span class="post-meta-item" title="Symbols count in article">
@@ -222,7 +228,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>5k</span>
+              <span>4.9k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -243,31 +249,79 @@
       
         <p>处理整除时才有贡献的利器。</p>
 <span id="more"></span>
-
 <h2 id="1-代换公式"><a href="#1-代换公式" class="headerlink" title="1. 代换公式"></a>1. 代换公式</h2><p>前置知识：FFT / NTT。</p>
-<p>如果你对 FFT 的证明过程比较熟悉的话，你应该会记得一个叫单位根的东西 $\omega_{n}^k$，他还有一个特殊的性质：<br>$$<br>\dfrac 1n \sum_{i = 0} ^ {n - 1} \omega_{n}^{ik} = [n | k]<br>$$<br>如何证明这个结论呢？</p>
-<p>当 $k\bmod n\not= 0$ 时，我们的公比为 $\omega_{n}^k$ 不是 1，考虑使用等比数列求和公式：<br>$$<br>\sum_{i = 0} ^ {n - 1} \omega_{n}^{ik} = \dfrac{\omega_n^{nk} - 1}{\omega_{n}^k - 1}<br>$$<br>上面的 $\omega_{n}^{nk}$ 等于 1，所以整个式子等于 0。原式成立。</p>
+<p>如果你对 FFT 的证明过程比较熟悉的话，你应该会记得一个叫单位根的东西 $\omega_{n}^k$，他还有一个特殊的性质：</p>
+<script type="math/tex; mode=display">
+\dfrac 1n \sum_{i = 0} ^ {n - 1} \omega_{n}^{ik} = [n | k]</script><p>如何证明这个结论呢？</p>
+<p>当 $k\bmod n\not= 0$ 时，我们的公比为 $\omega_{n}^k$ 不是 1，考虑使用等比数列求和公式：</p>
+<script type="math/tex; mode=display">
+\sum_{i = 0} ^ {n - 1} \omega_{n}^{ik} = \dfrac{\omega_n^{nk} - 1}{\omega_{n}^k - 1}</script><p>上面的 $\omega_{n}^{nk}$ 等于 1，所以整个式子等于 0。原式成立。</p>
 <p>当 $k\bmod n = 0$ 时，每一项都是 1，求和后除以 $n$ 就是 1 了。</p>
 <p>这个有什么用了？当遇到 $[i\bmod n = j]$ 这种情况时，我们可以考虑时候单位根反演展开，和其他项合并以快速计算。我们来看几道例题。</p>
 <h2 id="2-例题"><a href="#2-例题" class="headerlink" title="2. 例题"></a>2. 例题</h2><h4 id="T1：LJJ-学二项式定理"><a href="#T1：LJJ-学二项式定理" class="headerlink" title="T1：LJJ 学二项式定理"></a>T1：LJJ 学二项式定理</h4><p><a target="_blank" rel="noopener" href="https://loj.ac/p/6485">题目传送门 LOJ</a></p>
 <p>看到 $a_{i\bmod 4}$，这个就是经典的单位根反演了。</p>
-<p>首先我们化成上面的那个形式：<br>$$<br>ans = \sum_{i = 0} ^ n \binom ni s ^ i \sum_{j = 0} ^ 3 a_j [i\bmod 4 = j]<br>$$<br>$[i\bmod 4 = j] = [4 | (i - j)]$，然后对后面这个式子用单位根反演大力展开：<br>$$<br>\sum_{j = 0} ^ 3 a_j[i\bmod 4 = j] = \sum_{j = 0} ^ 3 \dfrac{a_j}{4} \sum_{k = 0} ^ 3 \omega_{4}^{ik - jk}<br>$$<br>然后 $n$ 在前面是没有出路的，我们考虑将 $j, k$ 放在前面，分离单位根的 $i, j$ 变量：<br>$$<br>ans = \sum_{k = 0} ^ 3 \sum_{j = 0} ^ 3 \omega_{4}^{-jk}\dfrac{a_j}4 \sum_{i = 0} ^ n \binom ni s ^ i \omega_{4}^{ik}<br>$$<br>后面是一个二项式定理，我们直接合并为 $(s \omega_{4}^k + 1) ^ n$。这样暴力枚举 $j, k$，快速幂即可做到 $O(\log n)$ 单次。处理单位根按照 NTT 里面的求法即可。</p>
+<p>首先我们化成上面的那个形式：</p>
+<script type="math/tex; mode=display">
+ans = \sum_{i = 0} ^ n \binom ni s ^ i \sum_{j = 0} ^ 3 a_j [i\bmod 4 = j]</script><p>$[i\bmod 4 = j] = [4 | (i - j)]$，然后对后面这个式子用单位根反演大力展开：</p>
+<script type="math/tex; mode=display">
+\sum_{j = 0} ^ 3 a_j[i\bmod 4 = j] = \sum_{j = 0} ^ 3 \dfrac{a_j}{4} \sum_{k = 0} ^ 3 \omega_{4}^{ik - jk}</script><p>然后 $n$ 在前面是没有出路的，我们考虑将 $j, k$ 放在前面，分离单位根的 $i, j$ 变量：</p>
+<script type="math/tex; mode=display">
+ans = \sum_{k = 0} ^ 3 \sum_{j = 0} ^ 3 \omega_{4}^{-jk}\dfrac{a_j}4 \sum_{i = 0} ^ n \binom ni s ^ i \omega_{4}^{ik}</script><p>后面是一个二项式定理，我们直接合并为 $(s \omega_{4}^k + 1) ^ n$。这样暴力枚举 $j, k$，快速幂即可做到 $O(\log n)$ 单次。处理单位根按照 NTT 里面的求法即可。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	wn[<span class="number">0</span>] = <span class="number">1</span>, wn[<span class="number">1</span>] = <span class="built_in">qpow</span>(<span class="number">3</span>, (Mod - <span class="number">1</span>) &gt;&gt; <span class="number">2</span>);</span><br><span class="line">	wn[<span class="number">2</span>] = Mod - <span class="number">1</span>, wn[<span class="number">3</span>] = <span class="built_in">qpow</span>(<span class="number">3</span>, (Mod - <span class="number">1</span>) / <span class="number">4</span> * <span class="number">3</span>);</span><br><span class="line">	inv4 = <span class="built_in">qpow</span>(<span class="number">4</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> a[<span class="number">4</span>], s, res = <span class="number">0</span>;</span><br><span class="line">	LL n;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%lld %d %d %d %d %d&quot;</span>, &amp;n, &amp;s, a, a + <span class="number">1</span>, a + <span class="number">2</span>, a + <span class="number">3</span>);</span><br><span class="line">	n %= (Mod - <span class="number">1</span>);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; ++ i)</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; <span class="number">4</span>; ++ j)</span><br><span class="line">			res = (res + (LL) a[i] * wn[(<span class="number">4</span> - (i * j &amp; <span class="number">3</span>)) &amp; <span class="number">3</span>] % Mod</span><br><span class="line">				* <span class="built_in">qpow</span>((LL) s * wn[j] % Mod + <span class="number">1</span>, n)) % Mod;</span><br><span class="line">	res = (LL) res * inv4 % Mod;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, res);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h4 id="T2：PYXFIB"><a href="#T2：PYXFIB" class="headerlink" title="T2：PYXFIB"></a>T2：PYXFIB</h4><p><a target="_blank" rel="noopener" href="https://hydro.ac/d/bzoj/p/3328">题目传送门 HydroOJ - BZOJ</a></p>
-<p>答案容易写作：<br>$$<br>ans = \sum_{i = 0} ^ n [k | i] \binom ni F_i<br>$$<br>其中 $F_i$ 表示第 $i$ 项斐波那契数。</p>
-<p>还是直接单位根反演：<br>$$<br>\begin{aligned}<br>ans =&amp; \sum_{i = 0} ^ n \binom ni \dfrac{F_i}{k} \sum_{j = 0} ^ {k - 1} \omega_k^{ij}\\<br>=&amp; \dfrac 1k \sum_{j = 0} ^ {k - 1} \sum_{i = 0} ^ n \binom ni F_i \omega_k^{ij}<br>\end{aligned}<br>$$<br>现在我们有一个 $F_i$ 无法化开，不能像上面一样变形。但是我们知道 $F_n = \dfrac 1{\sqrt 5}\left((\dfrac {1 + \sqrt 5}2) ^ n - (\dfrac{1 - \sqrt 5}2) ^ n \right)$，如果 5 在该质数下有二次剩余，我们可以写作幂次的加减。但很可惜，这道题没有给出这样的条件。</p>
+<p>答案容易写作：</p>
+<script type="math/tex; mode=display">
+ans = \sum_{i = 0} ^ n [k | i] \binom ni F_i</script><p>其中 $F_i$ 表示第 $i$ 项斐波那契数。</p>
+<p>还是直接单位根反演：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+ans =& \sum_{i = 0} ^ n \binom ni \dfrac{F_i}{k} \sum_{j = 0} ^ {k - 1} \omega_k^{ij}\\
+=& \dfrac 1k \sum_{j = 0} ^ {k - 1} \sum_{i = 0} ^ n \binom ni F_i \omega_k^{ij}
+\end{aligned}</script><p>现在我们有一个 $F_i$ 无法化开，不能像上面一样变形。但是我们知道 $F_n = \dfrac 1{\sqrt 5}\left((\dfrac {1 + \sqrt 5}2) ^ n - (\dfrac{1 - \sqrt 5}2) ^ n \right)$，如果 5 在该质数下有二次剩余，我们可以写作幂次的加减。但很可惜，这道题没有给出这样的条件。</p>
 <p>看到斐波那契数，容易想到矩阵乘法，注意还是需要把次幂联系起来，否则无法计算。</p>
-<p>直接将转移矩阵的 $n$ 次方写入，那么 $F_i = mat ^ i_{1, 1}$。于是我们直接带入可得：<br>$$<br>ans = \dfrac 1k \sum_{j = 0} ^ {k - 1} \sum_{i = 0} ^ n \binom ni \omega_k^{ij}mat ^ i_{1, 1}<br>$$<br>考虑前面我们处理 $\sum_{i = 0} ^ n \binom ni x ^ i$ 的时候，我们相当于是添上了乘法单位元 1 的 $n - i$ 次方。这里同样，我们添上单位矩阵 $I$ 的 $n - i$ 次方，于是答案可以写作：<br>$$<br>ans = \dfrac 1k\sum_{j = 0} ^ {k - 1} (\omega_k^{j}mat + I) ^ n_{1, 1}<br>$$<br>直接计算即可，复杂度 $O(k\log n)$。</p>
+<p>直接将转移矩阵的 $n$ 次方写入，那么 $F_i = mat ^ i_{1, 1}$。于是我们直接带入可得：</p>
+<script type="math/tex; mode=display">
+ans = \dfrac 1k \sum_{j = 0} ^ {k - 1} \sum_{i = 0} ^ n \binom ni \omega_k^{ij}mat ^ i_{1, 1}</script><p>考虑前面我们处理 $\sum_{i = 0} ^ n \binom ni x ^ i$ 的时候，我们相当于是添上了乘法单位元 1 的 $n - i$ 次方。这里同样，我们添上单位矩阵 $I$ 的 $n - i$ 次方，于是答案可以写作：</p>
+<script type="math/tex; mode=display">
+ans = \dfrac 1k\sum_{j = 0} ^ {k - 1} (\omega_k^{j}mat + I) ^ n_{1, 1}</script><p>直接计算即可，复杂度 $O(k\log n)$。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">findrt</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	std::vector&lt;<span class="type">int</span>&gt; fac;</span><br><span class="line">	<span class="type">int</span> cur = Mod - <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">2</span>; i &lt;= cur / i; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (cur % i == <span class="number">0</span>) &#123;</span><br><span class="line">			fac.<span class="built_in">push_back</span>(i);</span><br><span class="line">			<span class="keyword">while</span> (cur % i == <span class="number">0</span>) cur /= i;</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">if</span> (cur ^ <span class="number">1</span>) fac.<span class="built_in">push_back</span>(cur);</span><br><span class="line">	<span class="keyword">auto</span> check = [&amp;](<span class="type">int</span> x) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> t : fac)</span><br><span class="line">			<span class="keyword">if</span> (<span class="built_in">qpow</span>(x, (Mod - <span class="number">1</span>) / t) == <span class="number">1</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; Mod; ++ i)</span><br><span class="line">		<span class="keyword">if</span> (<span class="built_in">check</span>(i)) <span class="keyword">return</span> i;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">work</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	LL n;</span><br><span class="line">	<span class="type">int</span> k, res = <span class="number">0</span>;</span><br><span class="line">	std::cin &gt;&gt; n &gt;&gt; k &gt;&gt; Mod;</span><br><span class="line">	wn[<span class="number">0</span>] = <span class="number">1</span>, wn[<span class="number">1</span>] = <span class="built_in">qpow</span>(<span class="built_in">findrt</span>(), (Mod - <span class="number">1</span>) / k);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">2</span>; i &lt; k; ++ i) wn[i] = (LL) wn[i - <span class="number">1</span>] * wn[<span class="number">1</span>] % Mod;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; k; ++ i)</span><br><span class="line">	&#123;</span><br><span class="line">		Matrix cur&#123;&#123;&#123;<span class="number">1</span>, wn[i]&#125;, &#123;wn[i], wn[i] + <span class="number">1</span>&#125;&#125;&#125;;</span><br><span class="line">		cur = <span class="built_in">qpow</span>(cur, n), <span class="built_in">adj</span>(res += cur[<span class="number">1</span>][<span class="number">1</span>] - Mod);</span><br><span class="line">	&#125;</span><br><span class="line">	res = (LL) res * <span class="built_in">qpow</span>(k) % Mod;</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h4 id="T3：小猪佩奇学数学"><a href="#T3：小猪佩奇学数学" class="headerlink" title="T3：小猪佩奇学数学"></a>T3：小猪佩奇学数学</h4><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5591">题目传送门 Luogu</a></p>
 <p>保证了 $k$ 是 2 的次幂，显然就需要单位根了，否则单位根就不好求了……</p>
 <p>看到 $\lfloor\dfrac ik \rfloor$ 很神秘，先乘 $k$ 最后除回去，那么 $k\lfloor \dfrac ik\rfloor = i - i\bmod k$。</p>
-<p>看到 $i\bmod k$，果断化为 $\sum_{j = 0} ^ {k - 1} j[k | (i - j)]$，然后单位根反演，于是就可以得到：<br>$$<br>i\bmod k = \sum_{j = 0} ^ {k - 1} \dfrac jk\sum_{l = 0} ^ {k - 1} \omega_k ^ {il - jl}<br>$$<br>带回原式：<br>$$<br>k\times ans = \sum_{i = 0} ^ n \binom ni p ^ i (i - \sum_{j = 0} ^ {k - 1} \dfrac jk \sum_{j = 0} ^ {k - 1}\omega_k^{il - jl})<br>$$<br>原式化为了两边，分别计算。<br>$$<br>ans1 = \sum_{i = 0} ^ n\binom ni p ^ i i<br>$$<br>孤零零的 $i$ 很烦，我们考虑将其合并进入组合数：<br>$$<br>\begin{aligned}<br>ans1 =&amp; \sum_{i = 0} ^ n \dfrac{n!p ^ ii}{i!(n - i)!}\\<br>=&amp; n\sum_{i = 1} ^ n \dfrac{(n - 1)!p ^ i}{(i - 1)!(n - i)!}\\<br>=&amp; np\sum_{i = 1} ^ n \binom{n - 1}{i - 1} p ^ {i - 1}\\<br>=&amp; np (p + 1) ^ {n - 1}<br>\end{aligned}<br>$$<br>这样第一部分可以在 $O(\log n)$ 的时间内解决。</p>
-<p>接下来考虑第二部分：<br>$$<br>\begin{aligned}<br>k\times ans2 =&amp; \sum_{i = 0} ^ n \binom ni p ^ i\sum_{j = 0} ^ {k - 1} j\sum_{l = 0} ^ {k - 1} \omega_k^{ik - jk}<br>\end{aligned}<br>$$<br>仍然考虑先枚举 $j, l$，那么可以写作：<br>$$<br>\begin{aligned}<br>k\times ans2 =&amp; \sum_{j = 0} ^ {k - 1}j \sum_{l = 0} ^ {k - 1} \omega_k^{-jl} \sum_{i = 0} ^ {n}\binom ni p ^ i \omega_k^{il}\\<br>=&amp; \sum_{j = 0} ^ {k - 1}j \sum_{l = 0} ^ {k - 1} \omega_k^{-jl}(p\omega_k^{l} + 1) ^ n<br>\end{aligned}<br>$$<br>这样就得到了 $O(k ^ 2\log n)$ 的做法，可以得 60 pts。</p>
-<p>后面 $l$ 一坨不好化开，我们看到 $j$ 相关的形式比较少，于是交换 $j, l$ 顺序：<br>$$<br>k\times ans2 = \sum_{l = 0} ^ {k - 1} (p\omega_k ^{l} + 1) ^ n\sum_{j = 0} ^ {k - 1} j\omega_k^{-jl}<br>$$<br>这里后面一坨还是不好计算，但是由于单位根特殊的性质 $\omega_k^{nk} = 0$，我们可以考虑错位减一下。</p>
-<p>设 $S(x) = \sum_{j = 0} ^ {k - 1} j\omega_k^{jx}$，则有：<br>$$<br>\begin{aligned}<br>S(x) =&amp; \sum_{j = 0} ^ {k - 1} j\omega_k^{jx}\\<br>\omega_k^{x} S(x) =&amp; \sum_{j = 1} ^ k (j - 1)\omega_k^{jx}\\<br>(\omega_k^{x} - 1)S(x) =&amp; (k - 1)\omega_k^{jk} -\sum_{j = 1} ^ {k - 1} \omega_k^{jx}<br>\end{aligned}<br>$$<br>前面的 $(k - 1)\omega_k^{jk}$ 就是 $k - 1$，后面的 $\sum_{j = 1} ^ {k - 1} \omega_k^{jx}$ 其实是 -1，因为我们尝试加上 $\omega_k^0$ 整个式子就变成 0 了。</p>
+<p>看到 $i\bmod k$，果断化为 $\sum_{j = 0} ^ {k - 1} j[k | (i - j)]$，然后单位根反演，于是就可以得到：</p>
+<script type="math/tex; mode=display">
+i\bmod k = \sum_{j = 0} ^ {k - 1} \dfrac jk\sum_{l = 0} ^ {k - 1} \omega_k ^ {il - jl}</script><p>带回原式：</p>
+<script type="math/tex; mode=display">
+k\times ans = \sum_{i = 0} ^ n \binom ni p ^ i (i - \sum_{j = 0} ^ {k - 1} \dfrac jk \sum_{j = 0} ^ {k - 1}\omega_k^{il - jl})</script><p>原式化为了两边，分别计算。</p>
+<script type="math/tex; mode=display">
+ans1 = \sum_{i = 0} ^ n\binom ni p ^ i i</script><p>孤零零的 $i$ 很烦，我们考虑将其合并进入组合数：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+ans1 =& \sum_{i = 0} ^ n \dfrac{n!p ^ ii}{i!(n - i)!}\\
+=& n\sum_{i = 1} ^ n \dfrac{(n - 1)!p ^ i}{(i - 1)!(n - i)!}\\
+=& np\sum_{i = 1} ^ n \binom{n - 1}{i - 1} p ^ {i - 1}\\
+=& np (p + 1) ^ {n - 1}
+\end{aligned}</script><p>这样第一部分可以在 $O(\log n)$ 的时间内解决。</p>
+<p>接下来考虑第二部分：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+k\times ans2 =& \sum_{i = 0} ^ n \binom ni p ^ i\sum_{j = 0} ^ {k - 1} j\sum_{l = 0} ^ {k - 1} \omega_k^{ik - jk}
+\end{aligned}</script><p>仍然考虑先枚举 $j, l$，那么可以写作：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+k\times ans2 =& \sum_{j = 0} ^ {k - 1}j \sum_{l = 0} ^ {k - 1} \omega_k^{-jl} \sum_{i = 0} ^ {n}\binom ni p ^ i \omega_k^{il}\\
+=& \sum_{j = 0} ^ {k - 1}j \sum_{l = 0} ^ {k - 1} \omega_k^{-jl}(p\omega_k^{l} + 1) ^ n
+\end{aligned}</script><p>这样就得到了 $O(k ^ 2\log n)$ 的做法，可以得 60 pts。</p>
+<p>后面 $l$ 一坨不好化开，我们看到 $j$ 相关的形式比较少，于是交换 $j, l$ 顺序：</p>
+<script type="math/tex; mode=display">
+k\times ans2 = \sum_{l = 0} ^ {k - 1} (p\omega_k ^{l} + 1) ^ n\sum_{j = 0} ^ {k - 1} j\omega_k^{-jl}</script><p>这里后面一坨还是不好计算，但是由于单位根特殊的性质 $\omega_k^{nk} = 0$，我们可以考虑错位减一下。</p>
+<p>设 $S(x) = \sum_{j = 0} ^ {k - 1} j\omega_k^{jx}$，则有：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+S(x) =& \sum_{j = 0} ^ {k - 1} j\omega_k^{jx}\\
+\omega_k^{x} S(x) =& \sum_{j = 1} ^ k (j - 1)\omega_k^{jx}\\
+(\omega_k^{x} - 1)S(x) =& (k - 1)\omega_k^{jk} -\sum_{j = 1} ^ {k - 1} \omega_k^{jx}
+\end{aligned}</script><p>前面的 $(k - 1)\omega_k^{jk}$ 就是 $k - 1$，后面的 $\sum_{j = 1} ^ {k - 1} \omega_k^{jx}$ 其实是 -1，因为我们尝试加上 $\omega_k^0$ 整个式子就变成 0 了。</p>
 <p>那么我们可以得到 $S(x) = \dfrac{k}{\omega_k^{x} - 1}$，唯一注意 $n | x$ 的时候 $S(x) = \dfrac{n(n - 1)}2$。总复杂度 $O(k\log n)$，可以通过。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">wnsum</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> mul)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (mul == n) <span class="keyword">return</span> (LL) n * (n - <span class="number">1</span>) / <span class="number">2</span> % Mod;</span><br><span class="line">	<span class="keyword">else</span> <span class="built_in">return</span> (LL) n * <span class="built_in">qpow</span>(wn[mul] - <span class="number">1</span>) % Mod;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	std::cin &gt;&gt; n &gt;&gt; p &gt;&gt; k;</span><br><span class="line">	wn[<span class="number">0</span>] = <span class="number">1</span>, wn[<span class="number">1</span>] = <span class="built_in">qpow</span>(<span class="number">3</span>, (Mod - <span class="number">1</span>) / k); </span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">2</span>; i &lt; k; ++ i) wn[i] = (LL) wn[i - <span class="number">1</span>] * wn[<span class="number">1</span>] % Mod;</span><br><span class="line">	<span class="type">int</span> res = (LL) n * <span class="built_in">qpow</span>(p + <span class="number">1</span>, n - <span class="number">1</span>) % Mod * p % Mod, res2 = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> l = <span class="number">0</span>; l &lt; k; ++ l)</span><br><span class="line">		res2 = (res2 + (LL) <span class="built_in">qpow</span>((LL) p * wn[l] % Mod + <span class="number">1</span>, n) * <span class="built_in">wnsum</span>(k, k - l)) % Mod;</span><br><span class="line">	res2 = res2 * (LL) <span class="built_in">qpow</span>(k) % Mod;</span><br><span class="line">	<span class="built_in">adj</span>(res -= res2), res = (LL) res * <span class="built_in">qpow</span>(k) % Mod;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, res);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -372,7 +426,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -461,7 +515,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -471,13 +525,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

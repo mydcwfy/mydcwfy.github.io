@@ -242,7 +242,6 @@
       
         <p>组合数学真有趣。</p>
 <span id="more"></span>
-
 <p>题意：现在有 $A + B$ 个球组成的序列，前 $A$ 个是红色的，后 $B$ 个是蓝球，你可以在开始时选定两个数 $s, t$，你可以从 $1, s, t$ 三个位置取出球。问取出球的不同序列的个数，对 $10 ^ 9 + 7$ 取模。$A, B\leq 2000$。</p>
 <p>其实注意到我们并不能直接枚举 $s, t$ 计算，因为不同的 $s, t$ 可能得到相同的结果。考虑另外的转换方式。</p>
 <p>首先注意到在 $len \geq t$ 的时候，$s$ 是没有意义的，因为它如果拿走的是红球，可以被 1 所替代，如果拿的是蓝球，可以被 $t$ 所替代，所以我们可以只先考虑 $t$ 取的情况。</p>
@@ -250,7 +249,9 @@
 <p>假设我们前面取了 $i$ 个蓝球，那么等到 $s$ 取的时候，和 $t$ 的情况类似，但是只剩下 $B - i$ 个蓝球了，和刚才一样，我们从 $B - i$ 次机会中选择 $j$ 种，选完$B - i$ 次过后就只剩 1 位置可以选了。</p>
 <p>我们现在相当于是只考虑了蓝球的情况，还需要考虑红球的情况。红球有 3  个去向：在 $t$ 拿到第一个蓝球之前，在 $s$ 和 $t$ 之间，在 $s$ 选完的后面。$t$ 选择的时候消耗了 $B - i$ 个红球，$s$ 选择的时候消耗了 $B - i - j$ 个红球（消耗是指混在蓝球当中的那些红球），那么剩下了 $A - 2\times B + 2\times i + j$ 个红球可以放在三个位置。利用插板法可以得到贡献。</p>
 <p>最后由于 $s, t$ 可能取不到一个蓝球，注意到这时的蓝球一定是一段的，贡献为 $A + 1$。</p>
-<p>于是最后的答案为：<br>$$<br>\sum_{i = 1} ^ B \sum_{j = 1} ^ {B - i} \binom Bi \binom{B - i} j \binom {A - 2\times B + 2\times i + j + 2}2 + A + 1<br>$$<br>直接计算即可，时间复杂度 $O(A + B ^ 2)$。</p>
+<p>于是最后的答案为：</p>
+<script type="math/tex; mode=display">
+\sum_{i = 1} ^ B \sum_{j = 1} ^ {B - i} \binom Bi \binom{B - i} j \binom {A - 2\times B + 2\times i + j + 2}2 + A + 1</script><p>直接计算即可，时间复杂度 $O(A + B ^ 2)$。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">init</span>();</span><br><span class="line">	<span class="type">int</span> A, B, res = <span class="number">0</span>;</span><br><span class="line">	std::cin &gt;&gt; A &gt;&gt; B;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= B; ++ i)</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; i + j &lt;= B; ++ j)</span><br><span class="line">			res = (res + (LL) <span class="built_in">C</span>(B - <span class="number">1</span>, i - <span class="number">1</span>) * <span class="built_in">C</span>(B - i - <span class="number">1</span>, j - <span class="number">1</span>) % Mod</span><br><span class="line">				* <span class="built_in">C</span>(A - <span class="number">2</span> * B + <span class="number">2</span> * i + j + <span class="number">2</span>, <span class="number">2</span>)) % Mod;</span><br><span class="line">	res = (res + A + <span class="number">1</span>) % Mod;</span><br><span class="line">	std::cout &lt;&lt; res &lt;&lt; std::endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
 
@@ -351,7 +352,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -440,7 +441,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -450,13 +451,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

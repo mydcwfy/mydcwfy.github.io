@@ -243,14 +243,12 @@
       
         <p>矩阵树定理，好像和 2020 联合省选 作业题 套路类似。</p>
 <span id="more"></span>
-
 <p>题意：给定 $n$ 个点的树，问在所有 $n$ 个点的完全图的生成树中，与原树有 $k$ 条边相同的方案数。输出 $\forall k\in[0, n - 1]$ 的答案。$n\leq 100$。</p>
 <p>看作多项式，如果我们把原树中的边记作 $x$，非原树中的边记作 1，那么最后所有生成树的和可以记为一个多项式，这样最后每一项的系数就对应着答案。</p>
 <p>但是多项式卷积需要 $O(n\log n)$ 的时间，而应用矩阵树定理，计算行列式时有 $O(n ^ 3)$，总复杂度 $O(n ^ 4\log n)$，无法通过。</p>
 <p>考虑常见套路：<strong>多次多项式乘法的时候，可以考虑维护点值而不是多项式本身</strong>。这样就可以避免不必要的多项式点值与系数之间的转换。</p>
 <p>那么任取 $n$ 个点值，带入计算行列式，这样我们就得到了答案多项式的点值表达，最后高斯消元一下即可。时间复杂度 $O(n ^ 4)$。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">det</span><span class="params">(<span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> x = <span class="number">0</span>, res = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="type">int</span> t = <span class="number">-1</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = i; j &lt;= n; ++ j)</span><br><span class="line">			<span class="keyword">if</span> (a[j][i]) &#123;</span><br><span class="line">				t = i;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		<span class="keyword">if</span> (!~t) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">if</span> (t ^ i) std::<span class="built_in">swap</span>(a[t], a[i]), x ^= <span class="number">1</span>;</span><br><span class="line">		<span class="type">int</span> Inv = <span class="built_in">qpow</span>(a[i][i]);</span><br><span class="line">		res = (LL) res * a[i][i] % Mod;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = i; j &lt;= n + <span class="number">1</span>; ++ j) a[i][j] = (LL) a[i][j] * Inv % Mod;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt;= n; ++ j)</span><br><span class="line">			<span class="keyword">if</span> (j ^ i &amp;&amp; a[j][i])</span><br><span class="line">				<span class="keyword">for</span> (<span class="type">int</span> k = n + <span class="number">1</span>; k &gt;= i; -- k)</span><br><span class="line">					<span class="built_in">adj</span>(a[j][k] -= (LL) a[i][k] * a[j][i] % Mod);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> x ? <span class="built_in">adj</span>(res = -res) : res;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	std::cin &gt;&gt; n;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>, u, v; i &lt; n; ++ i)</span><br><span class="line">	&#123;</span><br><span class="line">		std::cin &gt;&gt; u &gt;&gt; v;</span><br><span class="line">		edg[u][v] ++, edg[v][u] ++, d[u] ++, d[v] ++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> mul = <span class="number">1</span>; mul &lt;= n; ++ mul)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; n; ++ i)</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt; n; ++ j)</span><br><span class="line">				<span class="built_in">adj</span>(<span class="built_in">adj</span>(a[i][j] = -edg[i][j] * mul) -= ((i != j) - edg[i][j]));</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; n; ++ i)</span><br><span class="line">			a[i][i] = (a[i][i] + (LL) d[i] * mul + (n - <span class="number">1</span> - d[i])) % Mod;</span><br><span class="line">		f[mul] = <span class="built_in">det</span>(n - <span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i)</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt;= n; ++ j) a[i][j] = <span class="built_in">qpow</span>(i, j - <span class="number">1</span>);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) a[i][n + <span class="number">1</span>] = f[i];</span><br><span class="line">	<span class="built_in">det</span>(n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; ++ i) <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, a[i][n + <span class="number">1</span>]);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
     </div>
 
@@ -352,7 +350,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -441,7 +439,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -451,13 +449,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

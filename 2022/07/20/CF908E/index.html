@@ -28,7 +28,7 @@
 <meta property="og:description" content="题意：给定 $n$ 个二进制下 $m$ 位的数，问有多少个集合 $S$ 包含这 $n$ 个数并且满足取反、与运算封闭（即任意对 $S$ 集合内部元素取反或者是与运算操作得到的数都 $\in S$），问都多少个这样的 $S$。$m\leq 1000$，$n\leq 50$，对 $10 ^ 9 + 7$ 取模。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-07-20T12:56:42.000Z">
-<meta property="article:modified_time" content="2022-07-20T13:26:31.255Z">
+<meta property="article:modified_time" content="2023-02-06T13:14:45.943Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="组合数学">
 <meta property="article:tag" content="构造">
@@ -211,10 +211,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-07-20 20:56:42 / Modified: 21:26:31" itemprop="dateCreated datePublished" datetime="2022-07-20T20:56:42+08:00">2022-07-20</time>
+              <time title="Created: 2022-07-20 20:56:42" itemprop="dateCreated datePublished" datetime="2022-07-20T20:56:42+08:00">2022-07-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-02-06 21:14:45" itemprop="dateModified" datetime="2023-02-06T21:14:45+08:00">2023-02-06</time>
+              </span>
 
           <br>
             <span class="post-meta-item" title="Symbols count in article">
@@ -243,7 +249,6 @@
       
         <p>题意：给定 $n$ 个二进制下 $m$ 位的数，问有多少个集合 $S$ 包含这 $n$ 个数并且满足取反、与运算封闭（即任意对 $S$ 集合内部元素取反或者是与运算操作得到的数都 $\in S$），问都多少个这样的 $S$。$m\leq 1000$，$n\leq 50$，对 $10 ^ 9 + 7$ 取模。</p>
 <span id="more"></span>
-
 <p>首先容易发现一个结论：或和异或操作都是可以实现的。</p>
 <p>一顿构造得到：$a|b = \sim((\sim a)\odot (\sim b))$，$a\oplus b = (a | b)\odot (\sim(a\odot b))$。那么下面相当于 3 种基本运算都可以使用并且是封闭的。</p>
 <p>假设一个集合 $\{x_1, x_2, \dots, x_k\}$ 在 $n$ 个数中，这些位置出现 01 是相同的（即要么都出现 0，要么都出现 1）。考虑以下一个结论：$S$ 和这样的集合划分一一对应。</p>
@@ -353,7 +358,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">207</span>
+          <span class="site-state-item-count">210</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -442,7 +447,7 @@
 <div class="copyright">
   
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -452,13 +457,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">710k</span>
+    <span title="Symbols count total">715k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:43</span>
+    <span title="Reading time total">25:54</span>
 </div>
 
 <div>

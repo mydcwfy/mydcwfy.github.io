@@ -28,7 +28,7 @@
 <meta property="og:description" content="有点重要的知识点，不记得省选考不考了。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-04-09T08:09:16.000Z">
-<meta property="article:modified_time" content="2023-02-06T13:14:45.943Z">
+<meta property="article:modified_time" content="2023-02-20T13:18:16.861Z">
 <meta property="article:author" content="mydcwfy">
 <meta property="article:tag" content="集合幂级数">
 <meta property="article:tag" content="数学">
@@ -214,13 +214,6 @@
 
               <time title="Created: 2022-04-09 16:09:16" itemprop="dateCreated datePublished" datetime="2022-04-09T16:09:16+08:00">2022-04-09</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-02-06 21:14:45" itemprop="dateModified" datetime="2023-02-06T21:14:45+08:00">2023-02-06</time>
-              </span>
 
           <br>
             <span class="post-meta-item" title="Symbols count in article">
@@ -235,7 +228,7 @@
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>11 mins.</span>
+              <span>12 mins.</span>
             </span>
 
         </div>
@@ -280,7 +273,7 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> bit, tot = <span class="number">1</span> &lt;&lt; bit;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> mid = <span class="number">1</span>; mid &lt; tot; mid &lt;&lt;= <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; tot; i += (mid &lt;&lt; <span class="number">1</span>))</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; mid; ++ j) &#123;</span><br><span class="line">            <span class="type">int</span> x = a[i + j], y = a[i + j + mid];</span><br><span class="line">            a[i + j] = x + y, a[i + j + mid] = x - y;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
 <p>发现和 NTT 其实是很像的。其实集合幂级数和多项式是有很多相似点的，我们这里才刚刚看到。</p>
 <p>显然，时间复杂度为 $O(n2 ^ n)$。</p>
-<h2 id="3-实现卷积"><a href="#3-实现卷积" class="headerlink" title="3. 实现卷积"></a>3. 实现卷积</h2><h3 id="1）与卷积"><a href="#1）与卷积" class="headerlink" title="1）与卷积"></a>1）与卷积</h3><p>考虑证明假设 $C(x) = \sum_{i = 0} ^ {2 ^ n - 1}x ^ i \sum_{j\odot k = i} [x ^ j]A(x) <em> [x ^ k]B(x)$，那么对 $A, B, C$ 高位前缀和后，$C(x) = \sum_{i = 0} ^ {2 ^ n - 1}x ^ i[x ^ i]A(x) </em> [x ^ i]B(x)$。</p>
+<h2 id="3-实现卷积"><a href="#3-实现卷积" class="headerlink" title="3. 实现卷积"></a>3. 实现卷积</h2><h3 id="1）与卷积"><a href="#1）与卷积" class="headerlink" title="1）与卷积"></a>1）与卷积</h3><p>考虑证明假设 $C(x) = \sum_{i = 0} ^ {2 ^ n - 1}x ^ i \sum_{j\odot k = i} [x ^ j]A(x) \times [x ^ k]B(x)$，那么对 $A, B, C$ 高位前缀和后，$C(x) = \sum_{i = 0} ^ {2 ^ n - 1}x ^ i[x ^ i]A(x) \times [x ^ i]B(x)$。</p>
 <p>考虑每一对 $j, k$，最后 $j, k$ 一定会贡献到 $j\odot k$ 的所有子集，即 $\forall x\subseteq (j\odot k)$。而 $C$ 贡献显然也是 $\forall x\subseteq i$，这和前面的贡献是相同的。</p>
 <p>于是我们先对 $A, B$ 高位前缀和，乘起来，再做高位前缀和的逆变换就可以得到 $C$ 了。</p>
 <p>逆变换就将加号变为减号即可。</p>
@@ -405,7 +398,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">210</span>
+          <span class="site-state-item-count">212</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -504,13 +497,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">Symbols count total: </span>
-    <span title="Symbols count total">715k</span>
+    <span title="Symbols count total">721k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">Reading time total &asymp;</span>
-    <span title="Reading time total">25:54</span>
+    <span title="Reading time total">26:07</span>
 </div>
 
 <div>
